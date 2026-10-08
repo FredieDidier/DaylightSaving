@@ -23,7 +23,9 @@
 # date and leaves no counterfactual for the treated observations of that day.
 #
 # Inference: stratified cluster bootstrap over UFs (11 treated and 12 control
-# states drawn with replacement, duplicates relabelled), B = 299.
+# states drawn with replacement, duplicates relabelled), B = 299. The state
+# draws are made up front from the seed, so the result does not depend on how
+# many cores fit them (DS_CORES, default 5).
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -31,6 +33,7 @@ source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages(library(fixest))
 
 B <- as.integer(Sys.getenv("DS_BOOT", unset = "299"))
+CORES <- as.integer(Sys.getenv("DS_CORES", unset = "5"))
 set.seed(20191103)                       # the Sunday DST would have started
 
 SEASONS <- season_range()
@@ -40,9 +43,13 @@ ev <- as.data.table(read_parquet(EVENTS_FILE))
 
 FE_I <- "| uf^window + uf^sy + week + dow"
 
-impute <- function(p, trend) {
+# tol: convergence tolerance of the fixed-effect demeaning. The bootstrap uses
+# 1e-4 instead of the default 1e-6: on PRF deaths it cuts a fit from ~26 s to
+# ~3 s and moves the ATT in the fifth decimal (0.25647 vs 0.25648).
+impute <- function(p, trend, tol = 1e-6) {
   f <- as.formula(paste(if (trend) "y ~ tw:t" else "y ~ 1", FE_I))
-  m <- fepois(f, data = p[twp == 0], notes = FALSE, warn = FALSE, combine.quick = FALSE)
+  m <- fepois(f, data = p[twp == 0], notes = FALSE, warn = FALSE, combine.quick = FALSE,
+              fixef.tol = tol)
   tr <- p[twp == 1]
   tr[, yhat := predict(m, newdata = tr)]
   # A fixed-effect group dropped for being all zeros has a fitted mean of 0.
@@ -70,14 +77,24 @@ draw_panel <- function(p, idx_t, idx_c) {
   pick <- c(TREATED[idx_t], CONTROL[idx_c])
   rbindlist(lapply(seq_along(pick), function(k) p[uf == pick[k]][, uf := paste0(uf, "_", k)]))
 }
+idx <- lapply(seq_len(nrow(cases)), function(i)
+  lapply(seq_len(B), function(r) list(t = sample.int(length(TREATED), replace = TRUE),
+                                      c = sample.int(length(CONTROL), replace = TRUE))))
 boot <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
   cs <- cases[i]
   p  <- make_panel(ev, days, cs$outcome, cs$bin, cs$side)
-  draws <- t(replicate(B, c(att(impute(pb <- draw_panel(p,
-                                                        sample.int(length(TREATED), replace = TRUE),
-                                                        sample.int(length(CONTROL), replace = TRUE)),
-                                       FALSE)),
-                            att(impute(pb, TRUE)))))
+  t0 <- Sys.time()
+  draws <- parallel::mclapply(idx[[i]], function(d) {
+    setFixest_nthreads(1)
+    pb <- draw_panel(p, d$t, d$c)
+    c(att(impute(pb, FALSE, tol = 1e-4)), att(impute(pb, TRUE, tol = 1e-4)))
+  }, mc.cores = CORES)
+  # A failed worker returns a try-error instead of two numbers.
+  stopifnot(all(vapply(draws, function(x) is.numeric(x) && length(x) == 2L, logical(1))))
+  draws <- do.call(rbind, draws)
+  stopifnot(nrow(draws) == B)
+  message(sprintf("  %s, %s: %d draws in %.1f min", cs$outcome, cs$side, B,
+                  as.numeric(difftime(Sys.time(), t0, units = "mins"))))
   data.table(cs, trend = c(FALSE, TRUE),
              se = apply(draws, 2, sd, na.rm = TRUE),
              lo = apply(draws, 2, quantile, 0.025, na.rm = TRUE),

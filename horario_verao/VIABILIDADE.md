@@ -28,18 +28,31 @@ verão, a parcela anotada como anoitecer ou plena noite foi:
 
 | | antes de 2019 | depois de 2019 |
 |---|--:|--:|
-| tratados | 47,0% | 82,8% |
-| controle | 96,4% | 98,0% |
+| tratados | 47,2% | 82,8% |
+| controle | 96,3% | 98,0% |
 
-Diferença tripla: **+34 p.p. (EP 1,4)**. O tratamento é real, grande, e
+Diferença tripla: **+33,7 p.p. (EP 1,5)** (rodada com o SIM próprio,
+2008/09–2023/24; antes 47,0 / 96,4 e +34 (1,4)). O tratamento é real, grande, e
 medido por um terceiro que não sabe da pesquisa.
 
 ## 3. Blocos de hora no nível estadual: ruído
 
 Com o relógio cortado em blocos fixos (17–20h etc.), as mortes de trânsito
-sobem ao entardecer (SIM +9%, p = 0,04), mas o total do dia não se mexe, e o
-estudo de eventos por temporada é ruidoso. Blocos fixos misturam a hora que
-mudou de luz com horas que não mudaram.
+sobem pouco ao entardecer e o total do dia não se mexe; o estudo de eventos por
+temporada é ruidoso. Blocos fixos misturam a hora que mudou de luz com horas que
+não mudaram.
+
+Rodada vigente (SIM próprio, 2008/09–2023/24, `viability_numbers.rds`), 17–20h:
+SIM trânsito +6,5% (p = 0,17; era +9%, p = 0,04 na rodada antiga); PRF mortes
++21% (p = 0,08); PRF com vítima −1,3% (p = 0,69). Dia todo: −0,8%, −6,4%, −0,9%.
+
+**Sinal a examinar, não resultado:** as agressões do SIM (todos os locais,
+inclusive hospital, hora do óbito) sobem no dia todo (+4,6%, p = 0,03), às
+8–17h (+7,2%, p = 0,007) e às 17–20h (+16,4%, p = 0,003). No desenho afiado
+(só óbito na via, hora que trocou de luz) a agressão dá +13,8%, p = 0,39. Um
+efeito no nível do dia inteiro não tem a assinatura da luz; antes de qualquer
+leitura, ver se é tendência diferencial da violência entre S/SE/CO e N/NE
+(estudo de eventos por temporada).
 
 ## 4. O desenho afiado: a hora que trocou de luz
 
@@ -184,10 +197,121 @@ UF × dia × hora relativa ao sol, com efeito fixo de UF × dia, que absorve tod
 choque diário de tráfego do estado (chuva, feriado, volume); o tratamento passa
 a ser bin 0 × tratado × janela × pós.
 
-**Pendente desta rodada:** `06_imputation.R` (imputação com e sem tendência
-pré, bootstrap de estados, B = 299) e `07_inference.R` (wild bootstrap com
-B = 9.999, aleatorização e excesso de zeros) estavam rodando ao pausar. Os
-resultados ficam em `audit/imputation.rds` e `audit/inference.rds`.
+**Inferência sem assintótica de 23 clusters (`07_inference.R`, `audit/inference.rds`).**
+Wild cluster restrito (Webb, B = 9.999) no análogo linear; aleatorização dos 11
+estados tratados (999 sorteios) no Poisson; checagem de excesso de zeros.
+
+| desfecho | hora | Poisson (lp) | WCR p | IC 95% WCR (% da base) | aleatorização p | zeros obs. / Poisson | dispersão |
+|---|---|--:|--:|---|--:|---|--:|
+| SIM, mortes na via | noite, bin 0 | 29,5 | **0,009** | [12, 82] | **0,015** | 88,2 / 87,6% | 1,16 |
+| SIM, mortes na via | manhã, bin 0 | −3,2 | 0,61 | [−28, 14] | 0,83 | 92,0 / 91,5% | 1,23 |
+| PRF, mortes | noite, bin 0 | 56,2 | **0,002** | [36, 144] | **0,017** | 92,3 / 91,6% | 1,26 |
+| PRF, mortes | manhã, bin 0 | −15,0 | 0,019 | [−46, −5] | 0,45 | 93,8 / 92,7% | 1,57 |
+| PRF, com vítima | noite, bin 0 | 22,9 | **0,001** | [12, 51] | **0,001** | 65,4 / 65,9% | 0,93 |
+| PRF, com vítima | manhã, bin 0 | −15,3 | 0,053 | [−19, 0] | 0,060 | 77,3 / 77,6% | 0,94 |
+
+- **A hora que escureceu passa nos dois testes que não dependem de 23 clusters,
+  nos três desfechos.** A aleatorização é a mais exigente (pergunta se outros 11
+  estados quaisquer dariam efeito tão grande): 15, 17 e 1 em 999.
+- A manhã que ganhou luz: sinais negativos nos três; só a PRF chega perto
+  (mortes: WCR p = 0,02, mas aleatorização p = 0,45).
+- **Sem excesso de zeros:** a parcela de zeros observada bate com a implicada
+  pelo Poisson em todos os casos (diferença < 1 p.p.), e a dispersão é 0,9–1,6.
+  Confirma a decisão de não usar zero-inflated nem binomial negativo.
+
+**Imputação (`06_imputation.R`, `audit/imputation.rds`).** Modelo ajustado só
+nas observações não tratadas (FE de UF × janela, UF × temporada, semana,
+dia da semana); contrafactual previsto para os dias de verão dos tratados após
+2019. Bootstrap estratificado de estados, B = 299 (IC percentil).
+
+| desfecho | hora | sem tendência | IC 95% | tendência pré extrapolada | IC 95% | excesso (5 temporadas) |
+|---|---|--:|---|--:|---|--:|
+| SIM, mortes na via | noite | **+31,8%** | [7, 54] | +37,9% | [−11, 103] | 170 (sem tend.) |
+| SIM, mortes na via | manhã | −5,9% | [−24, 15] | +6,6% | [−36, 83] | |
+| PRF, mortes | noite | **+63,0%** | [2, 158] | +25,6% | [−24, 108] | 113 |
+| PRF, mortes | manhã | −21,6% | [−58, 13] | +58% | [−42, 246] | |
+| PRF, com vítima | noite | **+24,4%** | [14, 39] | +9,6% | [−4, 29] | 548 |
+| PRF, com vítima | manhã | **−14,5%** | [−29, −1] | +1,3% | [−28, 45] | |
+
+- Sem tendência, a imputação repete o Poisson (SIM +32% contra +34%). O excesso
+  no SIM é de **~34 mortes na via por verão** (170 em 5 temporadas), dentro da
+  conta de guardanapo do §4.
+- **Com a tendência pré aprendida só antes de 2019 e extrapolada:** no SIM o
+  ponto **não cai** (38%), só o IC se abre — a tendência pré do SIM é plana, e
+  extrapolá-la custa precisão, não efeito. Na PRF o ponto cai à metade ou mais
+  (mortes 63 → 26; com vítima 24 → 10) e perde significância: é a mesma
+  fragilidade do §6, agora pelo estimador que não deixa a tendência absorver o
+  efeito. **O SIM continua sendo o resultado âncora; a PRF corrobora sem a
+  tendência e fica ambígua com ela.**
+- A manhã da PRF com vítima cai 14,5% sem tendência (IC exclui zero), em linha
+  com a quádrupla (§8); com tendência, some.
+- Por temporada (SIM, com tendência): 83, 55, 17, 11, 42%. O efeito existe em
+  todas as cinco temporadas pós, maior na primeira.
+- Execução: o bootstrap roda em paralelo (`DS_CORES`, 5 núcleos, 26 min) com
+  tolerância do demeaning de 1e-4 nos sorteios (a estimativa pontual usa a
+  padrão; a diferença no ATT é de 1e-5).
+
+## 8. Diferença quádrupla dentro do dia (`10_within_day.R`): não reduz o ruído
+
+**Desenho.** Painel UF × dia × hora relativa ao pôr (ou nascer) do sol padrão,
+com FE de UF × dia, que absorve todo choque diário do estado, mais as versões
+por hora dos FE da tripla (UF × hora × janela, UF × hora × temporada,
+hora × data). Horas de referência, cuja luz não muda: −5 a −3 e +2 a +4 à noite;
+−4 a −2 e +2 a +4 de manhã. As horas −2, −1, 0 e +1 (noite) e −1, 0, +1 (manhã)
+têm coeficiente próprio. O coeficiente lê a mudança na parcela dos eventos do
+estado-dia que cai naquela hora.
+
+**Hora que escureceu (bin 0), log points (EP por UF):**
+
+| desfecho | tripla (§7) | quádrupla | só ref. do dia | só ref. da noite |
+|---|--:|--:|--:|--:|
+| SIM, mortes na via | 29,5 (9,0) | 28,0 (12,4) | 25,5 (16,6) | 29,2 (12,4) |
+| PRF, mortes | 56 (21) | 93 (31) | 102 (47) | 106 (29) |
+| PRF, com vítima | 22,9 (5,7) | 31,4 (7,7) | 32,7 (8,2) | 30,4 (9,1) |
+
+O efeito não depende de qual conjunto de horas serve de referência.
+
+- **O EP não cai: sobe.** E o desvio-padrão dos coeficientes pré por temporada
+  continua em ~20 lp no SIM (era 16,5). O ruído é de contagem: ~110 mortes por
+  temporada naquela hora nos tratados dão ±10–15% só de Poisson, e isso nenhum
+  FE tira. O FE de UF × dia ainda descarta os UF-dias sem evento (dois terços
+  no SIM).
+- **Wald pré rejeita** (estatística ~33–37 com 10 g.l., p ≈ 10⁻⁴ nos três). As
+  médias pré ficam abaixo de zero (SIM −11; PRF mortes −12; com vítima −6 lp),
+  ou seja, a referência 2018/19 é uma temporada alta. Com 23 clusters, o Wald
+  robusto sobre 10 coeficientes tende a rejeitar demais; não ler sozinho.
+- **HonestDiD (média pós):** ruptura M = 0,05 (SIM), 0,02 (PRF mortes),
+  0,03 (com vítima); Mbar = 0, 0, 0,25. Igual ou pouco melhor que a tripla.
+- **Coisas que a quádrupla mostra e valem guardar:**
+  - **Hora +1** (a segunda após o pôr do sol padrão, que era crepúsculo com
+    horário de verão e virou noite fechada) também sobe: SIM +17,5 (11,7),
+    PRF mortes +37 (21), com vítima +15,8 (8,6). O efeito do escuro se espalha
+    para a hora seguinte, como a física da luz manda.
+  - **Hora −1 na PRF** continua negativa (−13,7, p = 0,05 nos com vítima), mesmo
+    comparando dentro do mesmo estado-dia. O quebra-cabeça do §5 não é choque
+    diário.
+  - **Manhã, PRF com vítima, bin 0: −20,4 (9,7), p = 0,036.** A hora que ganhou
+    luz perdeu acidentes, com o tamanho parecido com o ganho da noite (+31). É a
+    peça que faltava para fechar a conta da realocação. No SIM a manhã é nula.
+- **Avisos da rodada (conferidos em 08/10/2026):**
+  - *Demeaning sem convergência:* só 2 dos 21 ajustes, ambos colunas de
+    robustez "só referência da noite": SIM manhã e PRF mortes noite. Nenhum é a
+    especificação principal nem o estudo de eventos. Reajustados com 30 mil
+    iterações (o padrão é 10 mil), os coeficientes e o EP batem até a 3ª casa
+    decimal em log points (PRF mortes bin 0: 106,038 nos dois; SIM manhã:
+    11,519 nos dois). Inofensivo.
+  - *HonestDiD (os outros 43):* "Solution may be inaccurate" do otimizador em
+    todos os M da suavidade (SIM e PRF mortes); "CI is open" só em Mbar = 2;
+    e um aviso de descontinuação do R. Teste de escala (o FLCI é equivariante:
+    resolver com b × 100, V × 100², M × 100 e dividir por 100): limites iguais
+    até 0,1 lp. Os limites e as rupturas são confiáveis; só o IC em Mbar = 2
+    é mais largo que o reportado (bateu na grade). O `08_honestdid.R` deve
+    emitir os mesmos avisos; não conferido, mas o teste de escala vale lá também.
+- **Decisão:** a quádrupla vira robustez (e fonte da hora +1 e da manhã), não o
+  desenho principal. O principal segue a tripla em [0, 60).
+- Figura: `fig05_within_day_event_study` (refeita depois da correção do locale
+  em `00_utils.R`; a primeira versão tinha "×" virando "..").
+- Aleatorização da quádrupla: desligada por padrão (`DS_RI`), ~35 s por ajuste.
 
 ## Leitura
 
@@ -199,5 +323,6 @@ resultados ficam em `audit/imputation.rds` e `audit/inference.rds`.
   wild bootstrap ou permutação; COVID nas temporadas 2020/21–2021/22; o efeito
   no total do dia é zero, então o paper é sobre **realocação de risco para o
   escuro**, e a manhã precisa ser estimada com cuidado para fechar a conta.
-- **Ainda não feito:** a varredura de literatura (passo 3). O resultado só
-  vale se ninguém tiver publicado exatamente isso.
+- **Literatura:** varredura feita (passo 3) e referências (?) conferidas na
+  fonte em 08/10/2026; ver `LITERATURE.md`. Nenhum trabalho usa a abolição de
+  2019 para trânsito.

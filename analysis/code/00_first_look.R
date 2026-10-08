@@ -24,7 +24,8 @@
 # flat after. An outcome scheduled by the clock should be flat in both.
 #
 # Writes figures to analysis/output/graphs/ and a numbers file to the Dropbox
-# audit folder. Reads WorldCupHealth files; never writes there.
+# audit folder. SIM comes from this project's build (build/05_download_sim.R);
+# SINASC is read from WorldCupHealth, which is never written to.
 # =============================================================================
 
 source(here::here("config", "config.R"))

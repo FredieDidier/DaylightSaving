@@ -186,6 +186,13 @@ save_fig <- function(plot, name, width = FIG_WIDTH, height = 4.2) {
 # non-ASCII character in a source file with the wrong encoding, which renders
 # as "..." on both devices. A \u escape is plain ASCII in the file and becomes
 # a UTF-8 string when parsed.
+#
+# A \u escape is not enough when R starts in the C locale (LANG unset, as in a
+# non-login shell): it then cannot represent the character and the label
+# prints as "..". Force a UTF-8 character type so figures do not depend on the
+# shell that runs the script.
+if (!isTRUE(l10n_info()$`UTF-8`))
+  invisible(suppressWarnings(Sys.setlocale("LC_CTYPE", "en_US.UTF-8")))
 hour_ampm <- function(h) {
   h <- h %% 24
   ifelse(h == 0, "midnight", ifelse(h == 12, "noon",

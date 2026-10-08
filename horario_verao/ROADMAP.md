@@ -17,14 +17,33 @@ nos dados é a da skill de projeto.
 | 4 | **Skills.** `horario-verao-econ` (campo) e `paper-horario-verao` (projeto), em `horario_verao/skills/` e instaladas em `~/.claude/skills/` | ✅ 08/10/2026 |
 | 5 | **PAPER.md.** Pergunta, desenho, exibições previstas, o que não entra | ⬜ |
 
-## Retomar daqui (pausa de 08/10/2026)
+## Retomar daqui (08/10/2026, segunda sessão)
 
-1. Ler `audit/imputation.rds` e `audit/inference.rds` (06 e 07 rodaram durante
-   a pausa) e registrar em `VIABILIDADE.md` §7.
-2. Diferença quádrupla dentro do dia (FE de UF × dia) para reduzir o ruído que
-   derruba o HonestDiD.
-3. Rodar de novo o 00 e o 01 com o SIM próprio (hoje ainda mostram a rodada antiga).
-4. Conferir na fonte as referências (?) do `LITERATURE.md`.
+Feito nesta sessão:
+- ✅ `inference.rds` lido e registrado (VIABILIDADE §7): a hora que escureceu passa
+  no wild bootstrap e na aleatorização dos estados nos três desfechos.
+- ✅ Diferença quádrupla dentro do dia (`10_within_day.R`, VIABILIDADE §8): **não
+  reduz o ruído** (é ruído de contagem). Fica como robustez; mostra a hora +1
+  subindo e a manhã da PRF caindo (−20 lp, p = 0,04).
+- ✅ 00 e 01 já rodavam com o SIM próprio; textos atualizados (PRIMEIRA_OLHADA,
+  VIABILIDADE §2–3). Novo: agressões (todos os locais) sobem no nível do dia.
+- ✅ Referências (?) do `LITERATURE.md` conferidas; sobram 4 pequenas.
+- ✅ Figuras: `00_utils.R` força LC_CTYPE UTF-8 (em locale C o "×" saía "..").
+- ✅ 06 reescrito: bootstrap paralelo, 26 min em vez de 7–9 h.
+
+Próximos:
+1. ✅ Imputação lida (VIABILIDADE §7): SIM +32%, e +38% com a tendência pré
+   extrapolada (IC largo); PRF cai à metade com a tendência.
+2. ✅ Avisos do 10 conferidos: 2 de convergência (inofensivos, coeficientes
+   iguais com 3× as iterações) e 43 do HonestDiD (limites estáveis ao teste de
+   escala). VIABILIDADE §8.
+3. Agressões do SIM: estudo de eventos por temporada do nível do dia (tendência
+   diferencial S/SE/CO × N/NE?) antes de qualquer leitura.
+4. Fechar a conta da realocação: noite (bins 0 e +1) contra manhã (bin 0), em
+   mortes e acidentes por temporada, com o mesmo modelo.
+5. Passo 5: PAPER.md.
+6. Pendências da literatura: SSRN do Franco et al. (403), números do Toro et al.
+   no artigo, autoria e números do relatório do IIHS, estudos de energia.
 
 ## Decisões tomadas
 
@@ -40,6 +59,8 @@ nos dados é a da skill de projeto.
 | 08/10/2026 | SIM próprio do FTP; período 2008/09–2023/24 | 2008/09 entra; 2025 é preliminar |
 | 08/10/2026 | Janela fica em [pôr do sol, +60) | Janelas mais largas diluem o efeito e pioram a pré-tendência |
 | 08/10/2026 | Sem zero-inflated nem binomial negativo | Poisson PML só exige a média certa; zeros vêm de eventos raros, não de zeros estruturais |
+| 08/10/2026 | Diferença quádrupla (FE de UF × dia) fica como robustez | EP não cai; o ruído é de contagem, não de choque diário |
+| 08/10/2026 | Bootstrap do 06 em paralelo (`DS_CORES`), sorteios feitos antes | Serial levaria 7–9 h; o resultado não depende do nº de núcleos |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 
 ## Pendências pequenas

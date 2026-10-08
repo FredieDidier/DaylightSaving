@@ -1,6 +1,9 @@
 # Primeira olhada nos dados — 08/10/2026
 
-Script: `analysis/code/00_first_look.R` (lê SIM e SINASC limpos do WorldCupHealth).
+Script: `analysis/code/00_first_look.R` (SIM do build próprio, `build/05_download_sim.R`;
+SINASC limpo do WorldCupHealth). Rodado de novo com o SIM próprio em 08/10/2026:
+os números abaixo são os do `first_look_numbers.rds` vigente. Hora faltando no
+SIM: 4,2–8,0% no controle e 2,8–6,8% nos tratados.
 Figura: `analysis/output/graphs/fig00_first_look_hour_profile.png`.
 Números: `Dropbox/DaylightSaving/build/audit/first_look_numbers.rds`.
 
