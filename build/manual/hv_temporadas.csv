@@ -1,0 +1,35 @@
+temporada,inicio,fim,ufs,atos,verificacao,nota
+1985/86,1985-11-02,1986-03-15,TODAS,"Dec 91.698/1985; Dec 92.310/1986; Dec 92.463/1986",parcial,"Texto do 91.698 nao localizado no Planalto; inicio 02/11 vem do tzdata. Abrangencia nacional e fim em 15/03 conferidos nos 92.310 e 92.463 (o 92.310 prorrogara ate 29/03; o 92.463 extinguiu em 15/03)."
+1986/87,1986-10-25,1987-02-14,TODAS,"Dec 93.316/1986",planalto,
+1987/88,1987-10-25,1988-02-07,TODAS,"Dec 94.922/1987",planalto,
+1988/89,1988-10-16,1989-01-29,RS SC PR SP RJ ES MG GO TO MS MT BA SE AL PE PB RN CE PI MA DF,"Dec 96.676/1988",planalto,"Inclui o futuro Estado do Tocantins, Fernando de Noronha e as ilhas oceanicas. Fora: AC AM PA RR RO AP."
+1989/90,1989-10-15,1990-02-11,RS SC PR SP RJ ES MG GO TO MS MT BA SE AL PE PB RN CE PI MA DF,"Dec 98.077/1989",planalto,
+1990/91,1990-10-21,1991-02-17,RS SC PR SP RJ ES MG BA GO MT MS DF,"Dec 99.530/1990; Dec 99.629/1990",planalto,"O 99.530 nao incluia BA e MT; o 99.629 (19/10/1990) os incluiu dois dias antes do inicio. Saem o Nordeste (exceto BA) e o TO."
+1991/92,1991-10-20,1992-02-09,RS SC PR SP RJ ES MG BA GO MT MS DF,"Dec s/n de 25/09/1991",planalto,
+1992/93,1992-10-25,1993-01-31,RS SC PR SP RJ ES MG BA GO MT MS DF,"Dec s/n de 16/10/1992",planalto,
+1993/94,1993-10-17,1994-02-20,RS SC PR SP RJ ES MG BA GO MT MS AM DF,"Dec 942/1993",planalto,"Unica temporada com o Amazonas apos 1988."
+1994/95,1994-10-16,1995-02-19,RS SC PR SP RJ ES MG BA GO MS DF,"Dec 1.252/1994",planalto,"MT fica FORA nesta temporada. O tzdata (America/Cuiaba) erra e o mantem dentro; vale o decreto."
+1995/96,1995-10-15,1996-02-11,RS SC PR SP RJ ES MG BA GO MT MS TO SE AL DF,"Dec 1.636/1995; Dec 1.674/1995",planalto,"O 1.674 (13/10/1995) incluiu SE e AL dois dias antes do inicio. Volta o MT, entra o TO."
+1996/97,1996-10-06,1997-02-16,RS SC PR SP RJ ES MG GO MT MS TO BA DF,"Dec 2.000/1996",planalto,"Saem SE e AL."
+1997/98,1997-10-06,1998-03-01,RS SC PR SP RJ ES MG GO MT MS TO BA DF,"Dec 2.317/1997; Dec 2.495/1998",planalto,"Inicio numa segunda-feira. O 2.495 prorrogou o fim de 15/02 para 01/03/1998."
+1998/99,1998-10-11,1999-02-21,RS SC PR SP RJ ES MG GO MT MS TO BA DF,"Dec 2.780/1998",planalto,
+1999/00,1999-10-03,2000-02-27,RS SC PR SP RJ ES MG GO MT MS TO BA SE AL PE PB RN CE PI MA RR DF,"Dec 3.150/1999; Dec 3.188/1999",planalto,"O 3.188 (30/09/1999) incluiu SE AL PE PB RN CE PI MA RR tres dias antes do inicio."
+2000/01,2000-10-08,2001-02-18,RS SC PR SP RJ ES MG GO MT MS TO BA DF,"Dec 3.592/2000; Dec 3.630/2000; Dec 3.632/2000",planalto,"Temporada com saidas no meio: PE e RR entram em 08/10 e saem em 15/10/2000 (3.630); SE AL PB RN CE PI MA saem em 22/10/2000 (3.632). Ver hv_excecoes.csv."
+2001/02,2001-10-14,2002-02-17,RS SC PR SP RJ ES MG GO MT MS TO BA SE AL PE PB RN CE PI MA DF,"Dec 3.916/2001",planalto,"Ano do racionamento de energia; o decreto o cita. RR nao volta."
+2002/03,2002-11-03,2003-02-16,RS SC PR SP RJ ES MG GO MT MS TO BA DF,"Dec 4.399/2002",planalto,"Sai o Nordeste (exceto BA)."
+2003/04,2003-10-19,2004-02-15,RS SC PR SP RJ ES MG GO MS DF,"Dec 4.844/2003",planalto,"Saem BA, MT e TO."
+2004/05,2004-11-02,2005-02-20,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 5.223/2004",planalto,"Inicio numa terca-feira (feriado de Finados). Volta o MT."
+2005/06,2005-10-16,2006-02-19,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 5.539/2005",planalto,
+2006/07,2006-11-05,2007-02-25,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 5.920/2006",planalto,
+2007/08,2007-10-14,2008-02-17,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.212/2007",planalto,
+2008/09,2008-10-19,2009-02-15,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008",planalto,"A partir daqui a regra e permanente: 3o domingo de outubro ao 3o domingo de fevereiro; se o fim cair no domingo de carnaval, passa ao domingo seguinte."
+2009/10,2009-10-18,2010-02-21,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008",regra,
+2010/11,2010-10-17,2011-02-20,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008",regra,
+2011/12,2011-10-16,2012-02-26,RS SC PR SP RJ ES MG BA GO MT MS DF,"Dec 6.558/2008; Dec 7.584/2011",planalto,"BA entra (7.584, de 13/10/2011). Fim adiado uma semana: o 3o domingo de fevereiro (19/02) era domingo de carnaval."
+2012/13,2012-10-21,2013-02-17,RS SC PR SP RJ ES MG GO MT MS TO DF,"Dec 6.558/2008; Dec 7.826/2012",planalto,"Sai a BA, entra o TO (7.826, de 15/10/2012)."
+2013/14,2013-10-20,2014-02-16,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008; Dec 8.112/2013",planalto,"Sai o TO."
+2014/15,2014-10-19,2015-02-22,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008",regra,"Fim adiado uma semana: o 3o domingo de fevereiro (15/02) era domingo de carnaval."
+2015/16,2015-10-18,2016-02-21,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008",regra,
+2016/17,2016-10-16,2017-02-19,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008",regra,
+2017/18,2017-10-15,2018-02-18,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008",regra,
+2018/19,2018-11-04,2019-02-17,RS SC PR SP RJ ES MG GO MT MS DF,"Dec 6.558/2008; Dec 9.242/2017",planalto,"O 9.242 moveu o inicio para o 1o domingo de novembro. Ultima temporada. Em out/2018 o governo anunciou adiar o inicio para 18/11 e recuou (fonte: tzdata; sem ato publicado)."

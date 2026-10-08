@@ -1,0 +1,46 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Raw / intermediate data live in Dropbox, never in Git
+*.parquet
+*.dta
+*.rds
+*.dbc
+*.dbf
+*.nc
+*.tif
+*.zip
+*.rar
+*.7z
+*.xlsx
+*.pdf
+*.shp
+*.shx
+*.prj
+*.cpg
+*.csv
+
+# NOT ignored: the hand-coded legal calendar (typed from the decrees; the
+# source of truth for treatment timing)
+!build/manual/*.csv
+
+# NOT ignored: analysis outputs are committed — tables as .tex, figures as
+# PDF and PNG
+!analysis/output/graphs/*.pdf
+
+# LaTeX build artifacts
+latex/*.aux
+latex/*.log
+latex/*.bbl
+latex/*.blg
+latex/*.out
+latex/*.pdf
+latex/*.synctex.gz
+
+# Local Claude Code settings
+.claude/settings.local.json
+
+.DS_Store
+*.html

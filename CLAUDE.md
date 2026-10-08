@@ -1,0 +1,57 @@
+# CLAUDE.md — o build, os dados e as armadilhas
+
+Manual operacional do repositório **DaylightSaving**: o fim do horário de verão
+no Brasil (Decreto 9.772/2019) e seus efeitos sobre trânsito, violência, saúde e
+horário dos nascimentos. A pergunta e o desenho estão em
+`horario_verao/CONTEXTO_PESQUISA.md`; a ordem do trabalho, em
+`horario_verao/ROADMAP.md`.
+
+Responda em **português**. **Comentários de código em inglês.** O manuscrito,
+quando existir, será em inglês.
+
+---
+
+## 1. Geografia do projeto
+
+```
+DaylightSaving/                      (git — código, nunca dado)
+  config/config.R                    DROPBOX_ROOT é a única edição por máquina
+  build/manual/                      calendário legal digitado dos decretos (versionado)
+  build/01_dst_calendar.R            manual/ → painéis UF × temporada e UF × dia
+  analysis/{code,output}
+  latex/
+  horario_verao/                     gestão: contexto, roadmap, tabela, fontes legais, skills
+
+Dropbox/DaylightSaving/build/        (dado, nunca git)
+  calendar/output/                   dst_uf_season.parquet, dst_uf_day.parquet
+  audit/
+```
+
+## 2. Regras
+
+1. **Dado não entra no git.** A exceção é `build/manual/*.csv`: pequeno,
+   digitado à mão dos decretos, e é a fonte do tratamento.
+2. **O decreto vence o tzdata.** O tzdata da IANA é uma ótima compilação, mas
+   erra pelo menos uma vez (MT em 1994/95). Qualquer mudança no calendário
+   precisa citar o ato e o texto em `horario_verao/fontes_legais/`.
+3. **A troca de relógio é à 00:00 local.** Um dia tem `dst = 1` quando
+   `inicio <= data < fim`; o dia do fim já é horário normal.
+4. **`TABELA_ESTADOS.md` é gerada.** Não editar à mão; rodar
+   `Rscript build/01_dst_calendar.R`.
+5. **Hora local, hora solar e UTC são coisas diferentes.** AC e o oeste do AM
+   mudaram de fuso em 2008 e voltaram em 2013; o oeste do PA mudou em 2008 e
+   ficou. Toda análise por hora precisa dizer em qual das três está.
+
+## 3. Calendário legal (o que já está conferido)
+
+- 34 temporadas, de 1985/86 a 2018/19. 33 atos lidos no Planalto. Só o texto do
+  Dec. 91.698/1985 não foi localizado (a abrangência nacional e o fim estão
+  confirmados nos decretos 92.310 e 92.463 de 1986).
+- 2008/09–2018/19 seguem a regra do Dec. 6.558/2008, conferida pelo script:
+  3º domingo de outubro ao 3º domingo de fevereiro, uma semana depois se o fim
+  cair no domingo de carnaval (aconteceu em 2012 e 2015); início no 1º domingo
+  de novembro a partir de 2018 (Dec. 9.242/2017).
+- Dentro da janela dos dados (2009+), o tratamento é o bloco fixo
+  RS SC PR SP RJ ES MG GO MT MS DF, mais **BA em 2011/12** e **TO em 2012/13**.
+- 2000/01 tem saídas no meio da temporada (PE e RR após 1 semana; o resto do NE
+  após 2 semanas): `build/manual/hv_excecoes.csv`.

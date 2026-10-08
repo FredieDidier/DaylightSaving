@@ -1,0 +1,6 @@
+area,de_utc,para_utc,vigencia,ato,verificacao,nota
+AC,-5,-4,2008-06-24,"Lei 11.662/2008",planalto,"Vigencia 60 dias apos a publicacao (25/04/2008); data exata do tzdata."
+AM oeste,-5,-4,2008-06-24,"Lei 11.662/2008",planalto,"Oeste da linha Tabatinga-Porto Acre (Eirunepe, Benjamin Constant, Atalaia do Norte etc.)."
+PA oeste,-4,-3,2008-06-24,"Lei 11.662/2008",planalto,"Oeste do rio Xingu (Santarem, Altamira, Obidos etc.). Nao foi revertido em 2013."
+AC,-4,-5,2013-11-10,"Lei 12.876/2013",planalto,"Vigencia no 2o domingo do mes seguinte a publicacao (31/10/2013): 10/11/2013. Segue referendo de 2010."
+AM oeste,-4,-5,2013-11-10,"Lei 12.876/2013",planalto,
