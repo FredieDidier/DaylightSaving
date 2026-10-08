@@ -41,6 +41,10 @@ no relógio: mais luz de manhã, menos luz no fim da tarde.
    crepúsculo (≈18h–20h) e no amanhecer, e não ao meio-dia. É o mesmo tipo de
    teste por hora do paper da Copa.
 
+## Período
+
+**Jul/2008 a jun/2025**, em temporadas jul–jun (decidido em 08/10/2026): 11 temporadas com horário de verão (2008/09–2018/19) e 6 sem (2019/20–2024/25). Início = primeira temporada sob a regra fixa do Dec. 6.558/2008. Jan–fev/2025 de SIM e SINASC depende de 2025 estar consolidado (conferir no FTP); SIH e PRF podem ir até 2025/26. A temporada 2019/20 termina antes da COVID; 2020/21 e 2021/22 entram com e sem. Voltar a 2004/05 só como robustez.
+
 ## Dados (núcleo: todos públicos, nenhum precisa de LAI)
 
 | fonte | o que dá | grão | acesso |

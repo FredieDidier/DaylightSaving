@@ -1,0 +1,19 @@
+Skills do projeto DaylightSaving
+(fim do horario de verao no Brasil, Decreto 9.772/2019)
+
+Duas pastas:
+  paper-horario-verao/   conhecimento deste projeto (1 arquivo)
+  horario-verao-econ/    conhecimento do campo (SKILL.md + references/)
+
+Instalacao: copie as duas pastas para ~/.claude/skills/ (ja instaladas em 08/10/2026).
+
+Teste de disparo, em conversa nova:
+  "qual o status do projeto do horario de verao?"          -> paper-horario-verao
+  "onde esta o calendario de estados por temporada?"       -> paper-horario-verao
+  "o que a literatura diz sobre luz e roubo?"              -> horario-verao-econ
+  "como separar o canal do sono do canal da luz?"          -> horario-verao-econ
+
+Se alguma nao disparar, o problema esta na "description" do SKILL.md.
+
+ATENCAO: a horario-verao-econ marca com (?) as referencias nao conferidas.
+Nenhuma citacao entra em manuscrito sem verificacao.

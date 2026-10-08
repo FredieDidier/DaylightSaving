@@ -25,10 +25,17 @@ if (nzchar(Sys.getenv("DS_DROPBOX_ROOT")))
 # Convention: input/ keeps the raw file as delivered by the source; output/
 # keeps the constructed object.
 path_calendar_out <- file.path(DROPBOX_ROOT, "build", "calendar", "output")
+path_sim_out      <- file.path(DROPBOX_ROOT, "build", "sim", "output")
 path_audit        <- file.path(DROPBOX_ROOT, "build", "audit")
 
 for (p in c(path_calendar_out, path_audit))
   dir.create(p, recursive = TRUE, showWarnings = FALSE)
+
+# ── Input borrowed from WorldCupHealth (first look only) ────────────────────
+# Cleaned SINASC with clock time, 2009-2024, read by 00_first_look.R alone.
+# Births turned out not to follow the sun, so SINASC has no build of its own.
+# SIM now comes from build/05_download_sim.R.
+path_wch_sinasc <- "/Users/fredie/Library/CloudStorage/Dropbox/WorldCupHealth/build/SINASC/output"
 
 # ── Repository paths (GitHub — versioned) ───────────────────────────────────
 # build/manual/ holds the hand-coded legal calendar. It is small, typed from

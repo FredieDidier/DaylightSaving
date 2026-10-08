@@ -42,7 +42,11 @@ Dropbox/DaylightSaving/build/        (dado, nunca git)
    mudaram de fuso em 2008 e voltaram em 2013; o oeste do PA mudou em 2008 e
    ficou. Toda análise por hora precisa dizer em qual das três está.
 
-## 3. Calendário legal (o que já está conferido)
+## 3. Período
+
+Jul/2008 a jun/2025 (temporadas jul–jun): 11 com horário de verão, 6 sem. Detalhes em `horario_verao/CONTEXTO_PESQUISA.md`.
+
+## 4. Calendário legal (o que já está conferido)
 
 - 34 temporadas, de 1985/86 a 2018/19. 33 atos lidos no Planalto. Só o texto do
   Dec. 91.698/1985 não foi localizado (a abrangência nacional e o fim estão
