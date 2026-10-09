@@ -532,9 +532,41 @@ com o tráfego que saiu da noite, seção 5.7).
 | PRF, mortes | 0,37 | +3,4 (2,6) | 53,9 | 19,8 (21,7) | 47,1 (25,2) |
 | PRF, com vítima | <0,001 | +1,7 (0,7) | 22,2 | 5,6 (8,0) | 22,9 (7,1) |
 
-**Imputação** (`06_imputation.R`): ajusta o modelo só nas observações não
-tratadas, prevê o contrafactual dos tratados depois de 2019 (bootstrap de
-estados, B = 299):
+**Imputação** (`06_imputation.R`; Borusyak, Jaravel & Spiess 2024).
+
+*O problema que ela resolve.* A diferença tripla supõe que, sem a abolição, a
+diferença verão − entressafra dos tratados contra o controle ficaria no **nível
+médio** de antes de 2019. Se essa diferença vinha subindo ou caindo (uma
+tendência), comparar depois com antes mistura a tendência com o efeito. A
+saída óbvia, pôr uma tendência linear na regressão (a coluna "com tendência
+linear" acima), tem um defeito: a tendência é estimada com **todas** as
+temporadas, inclusive as de depois de 2019, e por isso pode engolir parte do
+próprio efeito.
+
+*Como funciona, em três passos:*
+1. Estima o modelo **só nas observações que a abolição não tocou**: todos os
+   dias do controle, todos os dias de entressafra, e os dias de verão dos
+   tratados até 2018/19.
+2. Com esse modelo, **prevê** quantas mortes cada dia de verão dos tratados
+   depois de 2019 teria tido sem a abolição (o contrafactual).
+3. Efeito = mortes observadas ÷ mortes previstas − 1, somando esses dias. Sai
+   em **porcentagem**, não em log points.
+
+Na versão **com tendência**, o passo 1 também aprende uma tendência linear da
+diferença tratado × verão, **só com as temporadas de antes**, e o passo 2 a
+estende para depois. A tendência não vê os anos pós, então não pode absorver o
+efeito: ela responde exatamente à pergunta "e se a tendência de antes tivesse
+continuado?".
+
+Dois detalhes: no lugar do efeito fixo de data entram semana do ano e dia da
+semana (com efeito de data, cada dia pós seria identificado só pelos 12
+estados de controle, quase sempre com zero mortes na hora 0, e o dia cairia);
+e o intervalo vem de um bootstrap que sorteia estados (11 tratados e 12
+controles com reposição, B = 299).
+
+*Por que usamos:* (i) torna o contrafactual explícito; (ii) é o teste mais
+limpo para a crítica "é só tendência"; (iii) dá o efeito temporada a
+temporada.
 
 | | sem tendência | IC 95% | tendência pré extrapolada | IC 95% |
 |---|--:|---|--:|---|
@@ -554,11 +586,55 @@ estados, B = 299):
 - **O efeito aparece nas cinco temporadas pós** (imputação com tendência, SIM:
   84, 55, 18, 10 e 41%), maior na primeira.
 
-**HonestDiD** (`08_honestdid.R`): sob extrapolação linear da tendência, os três
-efeitos são positivos. Mas o "breakdown" é baixo (M ≈ 0,02 no SIM): basta uma
-curvatura pequena na tendência para o intervalo incluir zero. A causa é o ruído:
-com uma hora por dia e ~110 mortes por temporada, cada coeficiente anual oscila
-±15–30 lp. **É uma fraqueza real e deve ser dita assim**, não escondida.
+**HonestDiD** (`08_honestdid.R`; Rambachan & Roth 2023).
+
+*O problema que ele resolve.* Tendência paralela **depois** de 2019 não se
+testa; só se vê o que aconteceu antes. O estudo de eventos mostra quanto a
+diferença tratado × verão oscilou nas temporadas pré. O HonestDiD pergunta:
+**se depois da abolição houvesse um desvio da tendência paralela do mesmo
+tamanho dos que vimos antes, o efeito ainda seria positivo?** Em vez de supor
+desvio zero, ele aceita um desvio limitado e devolve um intervalo de confiança
+válido sob esse limite.
+
+*Os dois limites (as duas colunas da figura `fig_honestdid`):*
+- **Suavidade, M.** O desvio segue a reta extrapolada da tendência pré, mas a
+  inclinação pode mudar até M por temporada. M = 0 é "a tendência de antes
+  continua exatamente"; M maior permite curvatura. M está em log (0,02 = 2 lp).
+- **Magnitude relativa, M̄.** O salto de uma temporada para a outra depois de
+  2019 pode ser até M̄ vezes o maior salto visto antes. M̄ = 1: tão ruim quanto
+  o pior ano pré.
+
+O **breakdown** é o menor M (ou M̄) com que o intervalo passa a incluir zero:
+quanto maior, mais robusto.
+
+*Atenção ao objeto.* O HonestDiD trabalha sobre o estudo de eventos, cuja
+referência é **uma temporada só, 2018/19**. O efeito que ele avalia é a média
+dos cinco coeficientes pós contra 2018/19: no SIM, **14,8 lp**, e não os
+29,2 lp do modelo principal, que compara com a **média** das 11 temporadas pré.
+Como 2018/19 sozinha é ruidosa, o intervalo "original" do SIM já inclui zero
+([−34, 63]).
+
+*O que deu:*
+
+| | média pós (lp) | breakdown M | breakdown M̄ |
+|---|--:|--:|--:|
+| SIM, mortes na via | 14,8 | 0,02 | 0 |
+| PRF, mortes | 62,8 | 0,01 | 0 |
+| PRF, com vítima | 26,0 | 0,075 | 0,25 |
+
+Com a tendência pré estendida em linha reta (M = 0), os três intervalos ficam
+acima de zero. Mas basta uma curvatura pequena (M ≈ 0,01–0,02) para incluir
+zero. A causa é o ruído: com uma hora por dia e ~110 mortes por temporada,
+cada coeficiente anual oscila ±15–30 lp, e o HonestDiD toma essa oscilação
+como desvio possível.
+
+*Por que usamos:* é a análise de sensibilidade que um parecerista espera
+de qualquer diferença em diferenças, e o resultado precisa ser dito como é:
+**o estudo de eventos sozinho não descarta uma violação do tamanho do ruído.**
+O que sustenta o resultado são as outras peças, que uma tendência regional
+não explica: o pico numa hora só (definida pelo pôr do sol de cada
+município), as horas vizinhas e as do meio do dia paradas, a manhã como
+espelho, e o pedestre.
 
 **Diferença quádrupla** (`10_within_day.R`): painel UF × dia × hora relativa ao
 sol, com efeito fixo de **UF × dia**, que absorve qualquer choque diário do
@@ -822,10 +898,12 @@ alternativa.
 - **Diferença quádrupla:** a tripla × hora, com efeito fixo de UF × dia.
 - **WCR:** wild cluster bootstrap restrito (Webb).
 - **Permutação:** sorteio de quais 11 estados são tratados.
-- **Imputação:** estimador de Borusyak, Jaravel & Spiess; ajusta o modelo nos não
-  tratados e prevê o contrafactual.
-- **HonestDiD:** Rambachan & Roth; quanto a tendência pode se desviar da
-  extrapolação linear antes de o efeito perder significância.
+- **Imputação:** estimador de Borusyak, Jaravel & Spiess; ajusta o modelo só
+  nos dias que a abolição não tocou, prevê o contrafactual dos tratados depois
+  de 2019, e pode estender a tendência pré sem deixar que ela veja os anos pós.
+- **HonestDiD:** Rambachan & Roth; intervalo de confiança que continua válido
+  se a tendência paralela falhar depois de 2019 por um tanto parecido com o
+  que falhou antes (M: curvatura; M̄: tamanho relativo ao pior ano pré).
 - **LOCOCOR = 4:** local de ocorrência do óbito na via pública (SIM).
 - **e-DAT:** declaração eletrônica de acidente sem vítima da PRF.
 - **PNCT:** Plano Nacional de Contagem de Tráfego (DNIT).
