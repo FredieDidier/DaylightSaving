@@ -31,7 +31,6 @@ source(here::here("config", "config.R"))
 source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages({
   library(fixest)
-  library(ggplot2)
 })
 
 SEASONS <- season_range()
@@ -106,28 +105,7 @@ fs <- days[uf == "BA", .(date, window, sy)][fs, on = "date", nomatch = 0][window
 fs_tab <- fs[, .(dark_pct = round(100 * mean(fase_dia %in% c("anoitecer", "plena noite")), 1),
                                  n = .N), keyby = sy]
 
-# ── Figure ──────────────────────────────────────────────────────────────────
-fig <- copy(res)
-fig[, outcome := factor(OUTCOME_LAB[outcome], levels = OUTCOME_LAB[TRAFFIC])]
-fig[, side := factor(fifelse(side == "set", "Evening: hour after standard sunset",
-                             "Morning: hour after standard sunrise"),
-                     levels = c("Evening: hour after standard sunset",
-                                "Morning: hour after standard sunrise"))]
-fig[, season := factor(fifelse(sy == BA_SEASON, "2011/12 (Bahia on DST)", "Other seasons"),
-                       levels = c("2011/12 (Bahia on DST)", "Other seasons"))]
-g <- ggplot(fig, aes(sy, 100 * coef, colour = season, shape = season)) +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_point(size = 2.2) +
-  facet_grid(outcome ~ side, scales = "free_y") +
-  scale_x_continuous(breaks = c(2011L, 2015L, 2019L), labels = season_lab,
-                     expand = expansion(add = 0.8)) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["grey"]]), levels(fig$season))) +
-  scale_shape_manual(values = setNames(c(16, 1), levels(fig$season))) +
-  labs(x = "Season (each point: that season against all other Bahia seasons)",
-       y = "Bahia × summer window × season (log points)") +
-  theme_paper()
-save_fig(g, "fig08_bahia_switch", height = 6.4)
+# Figure: drawn by 20_figures.R from the cache saved below.
 
 saveRDS(list(by_season = res, rank = rank_tab, first_stage = fs_tab, seasons = SEASONS),
         file.path(path_audit, "bahia_switch.rds"))

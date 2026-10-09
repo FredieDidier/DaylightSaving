@@ -152,23 +152,44 @@ tendência pré extrapolada; (ii) as horas antes do pôr do sol perdem tanto
 quanto a noite ganha, o que nas rodovias federais parece realocação de hora
 (VIABILIDADE §10).
 
-## Exibições previstas
+## Exibições
 
-1. **Fig. 1**: o primeiro estágio. A parcela anotada como escuro pela PRF,
-   por minuto relativo ao pôr do sol, com e sem horário de verão (04).
-2. **Fig. 2** (`fig07_design`, feita): diagrama do desenho. Pôr do sol padrão e com horário de verão ao
-   longo do ano numa cidade tratada; a hora que trocou de luz sombreada.
-3. **Fig. 3**: efeito por hora relativa ao pôr e ao nascer do sol (fig02). O
-   gráfico central: o pico na hora 0, e nada longe dela.
-4. **Fig. 4**: estudo de eventos por temporada, hora 0 (fig03).
-5. **Tabela 1** (`table1_descriptives`, feita): descritivas por grupo × janela × período.
-6. **Tabela 2**: tripla na hora 0, três desfechos; EP por UF, WCR, permutação.
-7. **Tabela 3**: a conta da realocação (12), com a divisão pedestre × resto (13).
-8. **Tabela 4**: robustez. Tendência pré (imputação), sem COVID, janela mais
-   larga, diferença quádrupla, hora faltante. HonestDiD no apêndice.
-9. **Apêndice**: calendário legal (TABELA_ESTADOS), checagem do relógio da PRF,
-   agressões (11) como nulo, quebra da e-DAT, e a Bahia em 2011/12 como
-   checagem de sinal (`fig08_bahia_switch`, 18; VIABILIDADE §15).
+Todas geradas a partir dos `audit/*.rds`, sem reestimar: figuras por
+`analysis/code/20_figures.R` (`analysis/output/graphs/fig_*.pdf`), tabelas por
+`analysis/code/21_tables.R` (`analysis/output/tables/tab_*.tex`, só o
+`tabular`). Legendas e notas em rascunho, com a equação (1), em
+`latex/exhibits.tex` (compila com `latexmk -pdf`). Nomes dos desfechos, em
+toda figura, tabela e frase: *Road deaths* (SIM, óbito na via),
+*Federal highway deaths* e *Federal highway injury crashes* (PRF). Nunca a
+fonte entre parênteses.
+
+Texto principal
+1. **Fig. 1** `fig_design`: pôr e nascer do sol no relógio, São Paulo 2018/19,
+   com e sem horário de verão; a hora que trocou de luz sombreada.
+2. **Fig. 2** `fig_first_stage`: parcela dos acidentes da PRF anotada como
+   anoitecer ou noite, por minuto desde o pôr do sol padrão (04).
+3. **Fig. 3** `fig_hours_from_sunset`: efeito por hora relativa ao pôr e ao
+   nascer do sol (02). O pico na hora 0, e nada longe dela.
+4. **Fig. 4** `fig_event_study`: hora depois × hora antes do pôr do sol, por
+   temporada (03).
+5. **Tabela 1** `tab_descriptives`: eventos por verão, grupo × janela × período.
+6. **Tabela 2** `tab_main`: hora que escureceu e hora que clareou; EP por UF,
+   WCR, permutação, base por verão.
+7. **Tabela 3** `tab_pedestrians`: pedestre × resto, diferença e parcelas (13, 15).
+8. **Tabela 4** `tab_excess`: excesso por verão, noite, manhã e saldo (12).
+9. **Tabela 5** `tab_traffic_volume`: volume do PNCT, acidentes e risco por
+   veículo, hora a hora (16).
+10. **Tabela 6** `tab_robustness`: hora 0 com tendência, sem 2020–21, FE de
+    UF × dia, duas horas, teste conjunto pré; imputação; placebo das horas
+    sem mudança de luz (05, 06, 09, 10, 19).
+
+Apêndice
+- `fig_within_day` (10), `fig_honestdid` (08), `fig_assault` (11, nulo),
+  `fig_bahia` (18, checagem de sinal; VIABILIDADE §15).
+- Ainda sem exibição: calendário legal (TABELA_ESTADOS), checagem do relógio
+  da PRF por temporada (04), quebra da e-DAT, repetição dos totais do PNCT.
+- Aposentadas (09/10/2026): `fig00` (primeira olhada, com nascimentos) e
+  `fig01` (blocos fixos 5–8h); os números seguem nos `.rds`.
 
 ## O que não entra
 

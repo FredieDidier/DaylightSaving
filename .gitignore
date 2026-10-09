@@ -38,6 +38,8 @@ latex/*.blg
 latex/*.out
 latex/*.pdf
 latex/*.synctex.gz
+latex/*.fls
+latex/*.fdb_latexmk
 
 # Local Claude Code settings
 .claude/settings.local.json

@@ -24,7 +24,6 @@ source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages({
   library(fixest)
   library(HonestDiD)
-  library(ggplot2)
 })
 
 SEASONS <- season_range()
@@ -70,40 +69,7 @@ out <- rbindlist(lapply(TRAFFIC, function(o) {
 
 saveRDS(out, file.path(path_audit, "honestdid.rds"))
 
-# ── Figure ──────────────────────────────────────────────────────────────────
-# Columns: the two restrictions; x: how far the violation may stray (the
-# conventional CI first, at "PT", parallel trends). Rows: outcomes. Strip
-# labels are plotmath, so M-bar is drawn as a real bar over M.
-RESTR <- c("smoothness (M)"            = "Smoothness~(italic(M))",
-           "relative magnitude (Mbar)" = "Relative~magnitude~(italic(bar(M)))")
-orig <- out[restriction == "original", .(outcome, lb, ub)]
-fig <- rbind(
-  orig[rep(seq_len(.N), each = 2)][, `:=`(restriction = rep(names(RESTR), .N / 2), x = "PT",
-                                          kind = "Conventional (parallel trends)")],
-  out[restriction != "original", .(outcome, lb, ub, restriction,
-                                   x = format(param, drop0trailing = TRUE, trim = TRUE),
-                                   kind = "Robust (HonestDiD)")])
-OUT_PARSED <- c("Road~deaths~(SIM)", "Highway~deaths~(PRF)", "Injury~crashes~(PRF)")
-fig[, outcome := factor(OUT_PARSED[match(outcome, TRAFFIC)], levels = OUT_PARSED)]
-fig[, restriction := factor(RESTR[restriction], levels = RESTR)]
-fig[, x := factor(x, levels = unique(c("PT", format(sort(unique(c(M_GRID, MBAR_GRID))),
-                                                    drop0trailing = TRUE, trim = TRUE))))]
-fig[, kind := factor(kind, levels = c("Conventional (parallel trends)", "Robust (HonestDiD)"))]
-g <- ggplot(fig, aes(x, ymin = 100 * lb, ymax = 100 * ub, colour = kind, linetype = kind)) +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_linerange(linewidth = 0.9) +
-  # Free y per panel: the relative-magnitude bounds run to +-500 lp and would
-  # flatten the smoothness panels on a shared scale.
-  facet_wrap(~ outcome + restriction, ncol = 2, scales = "free",
-             labeller = label_parsed) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["blue"]]), levels(fig$kind))) +
-  scale_linetype_manual(values = setNames(c("solid", "solid"), levels(fig$kind))) +
-  labs(x = "Allowed deviation from parallel trends (PT = none)",
-       y = "95% CI, average post effect (log points)") +
-  theme_paper() +
-  theme(axis.text.x = element_text(size = 8))
-save_fig(g, "fig04_honestdid", height = 6.6)
+# Figure: drawn by 20_figures.R from the cache saved above.
 
 options(width = 160)
 print(out[, .(outcome, restriction, param, lb_lp = round(100 * lb, 1), ub_lp = round(100 * ub, 1),

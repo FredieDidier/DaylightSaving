@@ -25,14 +25,13 @@
 #
 # Writes the event-level file reused by 03-13 (with pedestrian / other
 # splits for 13), the bin-by-bin
-# Poisson triple differences, and fig02.
+# Poisson triple differences (figure: 20_figures.R).
 # =============================================================================
 
 source(here::here("config", "config.R"))
 source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages({
   library(fixest)
-  library(ggplot2)
 })
 
 SEASONS <- season_range()
@@ -115,28 +114,7 @@ res <- grid[, {
 res[, `:=`(pct = 100 * (exp(coef) - 1), p = 2 * pnorm(-abs(coef / se)))]
 res[, side := fifelse(side == "set", "evening (rel. to sunset)", "morning (rel. to sunrise)")]
 
-# ── Figure ──────────────────────────────────────────────────────────────────
-fig <- copy(res)
-fig[, outcome := factor(OUTCOME_LAB[outcome], levels = OUTCOME_LAB)]
-fig[, side := factor(fifelse(grepl("^evening", side), "Evening: hours from sunset",
-                             "Morning: hours from sunrise"),
-                     levels = c("Evening: hours from sunset", "Morning: hours from sunrise"))]
-fig[, hour := factor(fifelse(bin == 0, "Hour whose light changed", "Other hours"),
-                     levels = c("Hour whose light changed", "Other hours"))]
-g <- ggplot(fig, aes(bin, 100 * coef, colour = hour, shape = hour)) +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_errorbar(aes(ymin = 100 * (coef - 1.96 * se), ymax = 100 * (coef + 1.96 * se)),
-                width = 0, linewidth = 0.6) +
-  geom_point(size = 2.2) +
-  facet_grid(outcome ~ side, scales = "free_y") +
-  scale_x_continuous(breaks = -3:2, labels = signed_lab) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = c("Hour whose light changed" = PAL[["red"]], "Other hours" = PAL[["grey"]])) +
-  scale_shape_manual(values = c("Hour whose light changed" = 16, "Other hours" = 1)) +
-  labs(x = "Clock hour relative to standard-time sunset or sunrise (0 = first hour after)",
-       y = "Effect of abolition (log points)") +
-  theme_paper()
-save_fig(g, "fig02_sunset_design", height = 7.6)
+# Figure: drawn by 20_figures.R from the cache saved below.
 
 saveRDS(list(results = res, prf_match_pct = prf_match, seasons = SEASONS),
         file.path(path_audit, "sunset_design.rds"))

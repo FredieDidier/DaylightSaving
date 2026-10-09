@@ -136,7 +136,7 @@ theme_paper <- function(base = 10) {
       panel.border       = ggplot2::element_rect(colour = "grey70"),
       axis.text          = ggplot2::element_text(size = base - 1, colour = "grey20"),
       axis.title         = ggplot2::element_text(size = base),
-      strip.text         = ggplot2::element_text(size = base, face = "bold"),
+      strip.text         = ggplot2::element_text(size = base),
       strip.background   = ggplot2::element_rect(fill = "grey94", colour = NA),
       plot.title         = ggplot2::element_blank(),
       plot.subtitle      = ggplot2::element_blank(),
@@ -207,7 +207,47 @@ num_lab <- function(x) {
   out
 }
 signed_lab <- function(x) ifelse(x == 0, "0", ifelse(x > 0, paste0("+", x), paste0("\u2212", abs(x))))
-OUTCOME_LAB <- c("SIM transport deaths, on road" = "Road deaths (SIM)",
-                 "PRF deaths"                    = "Highway deaths (PRF)",
-                 "PRF injury accidents"          = "Injury crashes (PRF)",
-                 "SIM assault deaths, on road"   = "Assault deaths (SIM)")
+# Outcome names: one object, one name, in every figure, table and sentence.
+# Named for what they count, never for the source: death certificates cover
+# every public road, the federal highway police only its own highways, so
+# "Federal highway" is what separates the two death counts.
+OUTCOME_LAB <- c("SIM transport deaths, on road" = "Road deaths",
+                 "PRF deaths"                    = "Federal highway deaths",
+                 "PRF injury accidents"          = "Federal highway injury crashes",
+                 "SIM assault deaths, on road"   = "Assault deaths")
+
+# Outcome headers. Where a figure has one panel per outcome, the outcome name
+# sits above its panel(s) in bold, flush left, with no box; grey strips are
+# kept for the second dimension (evening/morning, restriction). Outcome names
+# never go in a right-hand strip, which reads as a second y axis.
+theme_outcome_strip <- function(base = 10) {
+  ggplot2::theme(strip.text       = ggplot2::element_text(size = base, face = "bold", hjust = 0,
+                                                          margin = ggplot2::margin(4, 0, 3, 0)),
+                 strip.background = ggplot2::element_blank())
+}
+
+# Several outcomes, each a row of panels with a shared y scale inside the row:
+# one ggplot per row, stacked with patchwork. Row titles carry the outcome;
+# the column strips and the x axis are drawn once (top and bottom row), the
+# legend once (bottom row), and the y-axis titles are collected into one.
+# Guides are not collected: patchwork 1.3.0 under ggplot2 4.0 cannot take
+# `& theme()` and would put a collected legend on the right.
+stack_rows <- function(rows, base = 10) {
+  n <- length(rows)
+  rows <- lapply(seq_len(n), function(i) {
+    g <- rows[[i]] + ggplot2::theme(
+      plot.title = ggplot2::element_text(size = base, face = "bold", hjust = 0,
+                                         margin = ggplot2::margin(2, 0, 3, 0)),
+      plot.title.position = "panel")
+    if (i > 1) g <- g + ggplot2::theme(strip.text = ggplot2::element_blank(),
+                                       strip.background = ggplot2::element_blank())
+    if (i < n) g <- g + ggplot2::labs(x = NULL) +
+      ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.ticks.x = ggplot2::element_blank(),
+                     legend.position = "none")
+    g
+  })
+  patchwork::wrap_plots(rows, ncol = 1) + patchwork::plot_layout(axis_titles = "collect")
+}
+
+# Seasons after abolition are shaded and labelled once, in the first panel.
+POST_LABEL <- "Without DST"

@@ -23,7 +23,7 @@
 # moved one hour, D(h) shows the signature f(h-1) - f(h) before 2019 and goes
 # flat after. An outcome scheduled by the clock should be flat in both.
 #
-# Writes figures to analysis/output/graphs/ and a numbers file to the Dropbox
+# Writes a numbers file to the Dropbox
 # audit folder. SIM comes from this project's build (build/05_download_sim.R);
 # SINASC is read from WorldCupHealth, which is never written to.
 # =============================================================================
@@ -33,7 +33,6 @@ source(here::here("analysis", "code", "00_utils.R"))     # figure style
 suppressPackageStartupMessages({
   library(data.table)
   library(arrow)
-  library(ggplot2)
 })
 
 TREATED <- c("RS", "SC", "PR", "SP", "RJ", "ES", "MG", "GO", "MT", "MS", "DF")
@@ -141,28 +140,9 @@ ddd[, ddd_logpts := 100 * (((treated_win_post - treated_off_post) -
                             (control_win_pre  - control_off_pre)))]
 
 # ── 5. Outputs ──────────────────────────────────────────────────────────────
-CAUSE_LAB <- c(vaginal = "Vaginal births", cesarean = "Cesarean births",
-               traffic = "Transport deaths", assault = "Assault deaths",
-               ami = "Heart-attack deaths")
-fig <- copy(prof)
-fig[, cause := factor(CAUSE_LAB[as.character(cause)], levels = CAUSE_LAB)]
-fig[, period := factor(fifelse(period == "pre", "With DST, 2009/10\u20132018/19",
-                               "Without DST, 2019/20\u20132023/24"),
-                       levels = c("With DST, 2009/10\u20132018/19", "Without DST, 2019/20\u20132023/24"))]
-g <- ggplot(fig, aes(hour, 100 * D, colour = period, shape = period, linetype = period)) +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_line(linewidth = 0.6) + geom_point(size = 1.4) +
-  facet_wrap(~ cause, ncol = 2, scales = "free_y") +
-  scale_x_continuous(breaks = seq(0, 18, 6), labels = hour_ampm, expand = expansion(add = 0.5)) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["blue"]]), levels(fig$period))) +
-  scale_shape_manual(values = setNames(c(16, 17), levels(fig$period))) +
-  scale_linetype_manual(values = setNames(c("solid", "22"), levels(fig$period))) +
-  labs(x = "Clock hour", y = "Triple difference in hourly share (p.p.)") +
-  theme_paper() +
-  theme(legend.position = "inside", legend.position.inside = c(0.75, 0.13),
-        legend.direction = "vertical", legend.background = element_blank())
-save_fig(g, "fig00_first_look_hour_profile", height = 7)
+# The first-look figure (births, transport, assault and heart-attack deaths by
+# clock hour) is retired: none of it enters the paper. The numbers stay in
+# the cache below.
 
 saveRDS(list(missing_hour = miss, shift_summary = summ, ddd_levels = ddd, profile = prof),
         file.path(path_audit, "first_look_numbers.rds"))

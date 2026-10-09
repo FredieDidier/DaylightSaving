@@ -25,7 +25,6 @@ suppressPackageStartupMessages({
   library(data.table)
   library(arrow)
   library(fixest)
-  library(ggplot2)
 })
 
 TREATED <- c("RS", "SC", "PR", "SP", "RJ", "ES", "MG", "GO", "MT", "MS", "DF")
@@ -112,30 +111,9 @@ es <- rbindlist(lapply(OUTCOMES, function(o) rbindlist(lapply(c("all day", "dawn
 es <- rbind(es, unique(es[, .(outcome, bin)])[, .(outcome, bin, sy = LAST_PRE, coef = 0, se = 0)])
 
 # ── Outputs ─────────────────────────────────────────────────────────────────
-OUT01 <- c("SIM transport deaths" = "Transport deaths (SIM)", "PRF deaths" = "Highway deaths (PRF)",
-           "PRF injury accidents" = "Injury crashes (PRF)", "SIM assault deaths" = "Assault deaths (SIM)")
-fig <- es[bin != "all day"]
-fig[, outcome := factor(OUT01[outcome], levels = OUT01)]
-fig[, bin := factor(fifelse(bin == "dawn 5-8", "Dawn, 5\u20138 a.m.", "Dusk, 5\u20138 p.m."),
-                    levels = c("Dawn, 5\u20138 a.m.", "Dusk, 5\u20138 p.m."))]
-dodge <- position_dodge(width = 0.55)
-g <- ggplot(fig, aes(sy, 100 * coef, colour = bin, shape = bin)) +
-  annotate("rect", xmin = LAST_PRE + 0.5, xmax = max(SEASONS) + 0.5, ymin = -Inf, ymax = Inf,
-           fill = "grey93") +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_errorbar(aes(ymin = 100 * (coef - 1.96 * se), ymax = 100 * (coef + 1.96 * se)),
-                width = 0, linewidth = 0.45, position = dodge) +
-  geom_point(size = 1.6, position = dodge) +
-  facet_wrap(~ outcome, ncol = 2, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2014, 2018, 2022), labels = season_lab,
-                     expand = expansion(add = 0.5)) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["amber"]], PAL[["blue"]]), levels(fig$bin))) +
-  scale_shape_manual(values = setNames(c(17, 16), levels(fig$bin))) +
-  labs(x = "Season (shaded: after abolition; reference 2018/19)",
-       y = "Treated \u00d7 summer window (log points)") +
-  theme_paper()
-save_fig(g, "fig01_viability_event_study", height = 5.6)
+# The viability event study (fixed 5-8 a.m./p.m. blocks) is retired: the
+# hour measured from sunset (02, 03) replaced it. The numbers stay in the
+# cache below.
 
 saveRDS(list(first_stage_table = fs_tab, first_stage_reg = coeftable(fs_reg),
              ddd = res, event_study = es),

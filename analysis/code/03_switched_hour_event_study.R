@@ -15,7 +15,6 @@ source(here::here("config", "config.R"))
 source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages({
   library(fixest)
-  library(ggplot2)
 })
 
 SEASONS <- season_range()
@@ -44,29 +43,7 @@ plac <- rbindlist(lapply(TRAFFIC, function(o) {
              n_fake = length(fake), n_fake_larger = sum(abs(fake) >= abs(real)))
 }))
 
-# ── Figure ──────────────────────────────────────────────────────────────────
-fig <- copy(es)
-fig[, outcome := factor(OUTCOME_LAB[outcome], levels = OUTCOME_LAB)]
-fig[, hour := factor(fifelse(bin == 0, "Hour after sunset (light changed)", "Hour before sunset"),
-                     levels = c("Hour after sunset (light changed)", "Hour before sunset"))]
-dodge <- position_dodge(width = 0.5)
-g <- ggplot(fig, aes(sy, 100 * coef, colour = hour, shape = hour)) +
-  annotate("rect", xmin = LAST_PRE + 0.5, xmax = max(SEASONS) + 0.5, ymin = -Inf, ymax = Inf,
-           fill = "grey93") +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_errorbar(aes(ymin = 100 * (coef - 1.96 * se), ymax = 100 * (coef + 1.96 * se)),
-                width = 0, linewidth = 0.5, position = dodge) +
-  geom_point(size = 1.9, position = dodge) +
-  facet_wrap(~ outcome, ncol = 1, scales = "free_y") +
-  scale_x_continuous(breaks = seq(min(SEASONS), max(SEASONS), 2), labels = season_lab,
-                     expand = expansion(add = 0.4)) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["grey"]]), levels(fig$hour))) +
-  scale_shape_manual(values = setNames(c(16, 1), levels(fig$hour))) +
-  labs(x = "Season (shaded: after abolition; reference 2018/19)",
-       y = "Treated \u00d7 summer window (log points)") +
-  theme_paper()
-save_fig(g, "fig03_switched_hour_event_study", height = 7.2)
+# Figure: drawn by 20_figures.R from the cache saved below.
 
 saveRDS(list(event_study = es, placebo = plac), file.path(path_audit, "switched_hour_event_study.rds"))
 options(width = 150)

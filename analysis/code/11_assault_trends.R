@@ -23,7 +23,6 @@ source(here::here("config", "config.R"))
 source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages({
   library(fixest)
-  library(ggplot2)
 })
 
 SEASONS <- season_range()
@@ -103,27 +102,7 @@ raw[, `:=`(ratio_treated = round(treated_win / treated_off, 3),
            ratio_control = round(control_win / control_off, 3))]
 raw[, ddd_log := round(100 * (log(ratio_treated) - log(ratio_control)), 1)]
 
-# ── Figure: event study by block ────────────────────────────────────────────
-fig <- es[block %in% c("all day", "17-20h")]
-fig[, block := factor(fifelse(block == "all day", "Whole day", "5–8 p.m."),
-                      levels = c("Whole day", "5–8 p.m."))]
-dodge <- position_dodge(width = 0.5)
-g <- ggplot(fig, aes(sy, 100 * coef, colour = block, shape = block)) +
-  annotate("rect", xmin = LAST_PRE + 0.5, xmax = max(SEASONS) + 0.5, ymin = -Inf, ymax = Inf,
-           fill = "grey93") +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_errorbar(aes(ymin = 100 * (coef - 1.96 * se), ymax = 100 * (coef + 1.96 * se)),
-                width = 0, linewidth = 0.5, position = dodge) +
-  geom_point(size = 1.9, position = dodge) +
-  scale_x_continuous(breaks = seq(min(SEASONS), max(SEASONS), 2), labels = season_lab,
-                     expand = expansion(add = 0.4)) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["ink"]], PAL[["blue"]]), levels(fig$block))) +
-  scale_shape_manual(values = setNames(c(15, 16), levels(fig$block))) +
-  labs(x = "Season (shaded: after abolition; reference 2018/19)",
-       y = "Treated × summer window (log points)") +
-  theme_paper()
-save_fig(g, "fig06_assault_event_study", height = 3.8)
+# Figure: drawn by 20_figures.R from the cache saved below.
 
 saveRDS(list(results = res, event_study = es, raw = raw),
         file.path(path_audit, "assault_trends.rds"))

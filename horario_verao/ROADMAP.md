@@ -32,8 +32,11 @@ Feito nesta sessão:
 - ✅ Pedestre × resto (`13_mechanism.R`, VIABILIDADE §11): o escuro age sobre o
   pedestre. SIM hora 0: pedestre +79 lp, resto +18; o pedestre é 12% da base e
   44% do excesso. Resiste à tendência pré (71 lp).
-- ✅ Figura do desenho (`fig07_design`) e Tabela 1 (`analysis/output/tables/table1_descriptives.{csv,tex}`),
-  em `14_design_descriptives.R`.
+- ✅ Figura do desenho e Tabela 1 (`14_design_descriptives.R`).
+- ✅ Revisão editorial das exibições (09/10/2026): todas as figuras em
+  `20_figures.R` e todas as tabelas em `21_tables.R`, lidas dos `.rds`; nomes
+  dos desfechos sem a fonte; sem rótulo de linha à direita; seis tabelas `.tex`;
+  prévia com legendas e notas em `latex/exhibits.tex`.
 - ✅ Inferência do pedestre (`15_inference_pedestrian.R`, VIABILIDADE §11): WCR e
   permutação passam nas três fontes (SIM pedestre: 0,007 e 0,029).
 - ✅ DNIT (VIABILIDADE §12): o portal de dados abertos só tem VMDa anual; o

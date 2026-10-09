@@ -35,7 +35,6 @@ source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages({
   library(fixest)
   library(HonestDiD)
-  library(ggplot2)
 })
 
 # Permutation inference refits the model once per draw (~35 s each here), so
@@ -164,30 +163,7 @@ saveRDS(list(pooled = pooled, event_study = es, event_study_vcov = V_es, honestd
              n_ri = N_RI),
         file.path(path_audit, "within_day.rds"))
 
-# ── Figure: season event study, triple vs quadruple difference ──────────────
-es3 <- readRDS(file.path(path_audit, "switched_hour_event_study.rds"))$event_study[bin == 0L]
-fig <- rbind(es3[, .(outcome, sy, coef, se, design = "Triple difference (bin 0 alone)")],
-             es[, .(outcome, sy, coef, se, design = "Within the day (UF × day fixed effect)")])
-fig[, outcome := factor(OUTCOME_LAB[outcome], levels = OUTCOME_LAB)]
-fig[, design := factor(design, levels = unique(design))]
-dodge <- position_dodge(width = 0.5)
-g <- ggplot(fig, aes(sy, 100 * coef, colour = design, shape = design)) +
-  annotate("rect", xmin = LAST_PRE + 0.5, xmax = max(SEASONS) + 0.5, ymin = -Inf, ymax = Inf,
-           fill = "grey93") +
-  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_errorbar(aes(ymin = 100 * (coef - 1.96 * se), ymax = 100 * (coef + 1.96 * se)),
-                width = 0, linewidth = 0.5, position = dodge) +
-  geom_point(size = 1.9, position = dodge) +
-  facet_wrap(~ outcome, ncol = 1, scales = "free_y") +
-  scale_x_continuous(breaks = seq(min(SEASONS), max(SEASONS), 2), labels = season_lab,
-                     expand = expansion(add = 0.4)) +
-  scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["grey"]], PAL[["red"]]), levels(fig$design))) +
-  scale_shape_manual(values = setNames(c(1, 16), levels(fig$design))) +
-  labs(x = "Season (shaded: after abolition; reference 2018/19)",
-       y = "Hour after sunset, treated × summer (log points)") +
-  theme_paper()
-save_fig(g, "fig05_within_day_event_study", height = 7.2)
+# Figure: drawn by 20_figures.R from the caches of 03 and of this script.
 
 options(width = 170)
 cat("Seasons:", min(SEASONS), "-", max(SEASONS), "\n\nPooled (log points):\n")
