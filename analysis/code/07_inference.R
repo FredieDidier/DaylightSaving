@@ -10,7 +10,7 @@
 #       out first (fixest::demean), clusters = UF. The WCR p-value is invariant
 #       to the scale of the outcome, so this tests the same null as the Poisson
 #       model, in levels.
-#   (b) Randomization inference over treatment assignment: draw 11 of the 23
+#   (b) Permutation inference over treatment assignment: draw 11 of the 23
 #       states as "treated" (999 draws), re-estimate the Poisson triple
 #       difference, and compare |b| with the permutation distribution. A Fisher
 #       test of the sharp null of no effect in any state.
@@ -50,7 +50,7 @@ res <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
   wb <- boottest(lm_fit, param = "twp", clustid = "uf", B = 9999, type = "webb")
   base_mean <- p[tw == 1 & post == 0, mean(y)]
 
-  # (b) randomization inference
+  # (b) permutation inference
   m_real <- fepois(as.formula(paste("y ~ twp", FE)), data = p, notes = FALSE)
   b_real <- coef(m_real)[["twp"]]
   mu <- fitted(m_real)

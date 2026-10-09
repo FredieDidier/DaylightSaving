@@ -1,0 +1,30 @@
+Fonte: DNIT, Nota Tecnica No 001/2020/DE, 'Sintese do desenvolvimento tecnico-cientifico da metodologia para estimativa de VMDa em toda a malha rodoviaria federal pavimentada', UFRJ/COPPE (TED 964/2014-DPP), Rio de Janeiro, 17/11/2020, p. 7.
+Arquivo oficial: portal do PNCT, Downloads > Volume Medio Diario Anual (VMDa) > 2019 > 'NotaTécnica VMDA 2019.pdf'
+  GET https://servicos.dnit.gov.br/dadospnct-api/api/v1/downloads/file?path=Volume Médio Diário Anual (VMDa)/2019/NotaTécnica VMDA 2019.pdf
+Baixado e lido em 09/10/2026 (pdftotext). Trechos:
+----
+                        NOTA TÉCNICA No 001/2020/DE 1
+
+         SÍNTESE DO DESENVOLVIMENTO TÉCNICO-CIENTÍFICO DA
+METODOLOGIA PARA ESTIMATIVA DE VOLUME MÉDIO DIÁRIO ANUAL –
+...
+        Para o ano base de 2019, o método de detecção de outliers e imputação de
+dados passou por aprimoramento e foi complementado com um modelo de estimativa
+de tráfego com base no Multifidelity Gaussian Processes. Tal modelo foi necessário para
+realizar estimativa dos dados para o segundo semestre do ano base, tendo em vista
+que o último edital vigente para realização das contagens contínuas do PNCT se
+encerrou no mês de junho de 2019.
+
+        A aplicação do Multifidelity Gaussian Processes para o período de julho a
+
+
+
+
+2 Tratamento de Dados Anômalos e Cálculo de Parâmetros de Tráfego (DNIT, 2017).
+
+
+                                                7
+dezembro de 2019 considerou dados válidos dos equipamentos do PNCT entre janeiro
+de 2017 a junho de 2019. O histórico de dados consistente desses equipamentos é
+...
+                                               Rio de Janeiro, 17 de novembro de 2020.

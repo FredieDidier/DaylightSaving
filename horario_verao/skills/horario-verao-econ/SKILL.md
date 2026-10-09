@@ -110,7 +110,10 @@ que o campo tem: o efeito tem de aparecer **numa hora** e não nas outras.
 - **Quebras de registro.** Na PRF, a e-DAT (jun/2015, antes disso no S/SE/CE/DF)
   tirou os acidentes sem vítima da base. Nunca use contagem total.
 - **Poucos clusters.** Estados são poucos. Use wild cluster bootstrap e
-  inferência por aleatorização, não só EP agrupado.
+  inferência por permutação dos estados tratados, não só EP agrupado. Chame de
+  "permutation inference", não "randomization inference": o horário de verão
+  não foi sorteado entre estados, e o calendário é fixo, então não há datas a
+  permutar (só placebos de temporada).
 - **Tendência linear no período inteiro** absorve efeitos que crescem com o
   tempo. Prefira estimar a tendência só no pré e extrapolar (imputação, Borusyak,
   Jaravel & Spiess) ou "honest DiD" (Rambachan & Roth).

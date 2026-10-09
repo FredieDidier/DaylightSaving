@@ -167,7 +167,7 @@ corretos.
 - Com tendência linear no período inteiro: SIM 39,9 (20,7); PRF mortes 23,0
   (23,0); PRF com vítima 7,0 (8,2). Sem as temporadas da COVID: 31,7; 49,5; 23,6.
 - Wild cluster bootstrap (Webb, teste com B = 999, análogo linear), SIM bin 0:
-  **p = 0,008**. A rodada completa (B = 9.999, mais a aleatorização dos estados
+  **p = 0,008**. A rodada completa (B = 9.999, mais a permutação dos estados
   tratados e o teste de excesso de zeros) está no `07_inference.R`;
   resultados em `audit/inference.rds`.
 - Hora faltante: diferença tripla de 0,7 p.p., desprezível.
@@ -198,10 +198,15 @@ choque diário de tráfego do estado (chuva, feriado, volume); o tratamento pass
 a ser bin 0 × tratado × janela × pós.
 
 **Inferência sem assintótica de 23 clusters (`07_inference.R`, `audit/inference.rds`).**
-Wild cluster restrito (Webb, B = 9.999) no análogo linear; aleatorização dos 11
+*Nome (decidido em 09/10/2026):* **permutation inference** (permutação dos
+estados tratados), nunca "randomization inference". O horário de verão não foi
+sorteado entre estados, e o calendário é fixo e comum a todos (não há datas a
+permutar, como na Copa; no tempo só cabem os placebos de temporada do `03`). Nos
+scripts e nos `.rds`, os nomes `ri_p`, `N_RI` e `DS_RI` ficaram por compatibilidade.
+Wild cluster restrito (Webb, B = 9.999) no análogo linear; permutação dos 11
 estados tratados (999 sorteios) no Poisson; checagem de excesso de zeros.
 
-| desfecho | hora | Poisson (lp) | WCR p | IC 95% WCR (% da base) | aleatorização p | zeros obs. / Poisson | dispersão |
+| desfecho | hora | Poisson (lp) | WCR p | IC 95% WCR (% da base) | permutação p | zeros obs. / Poisson | dispersão |
 |---|---|--:|--:|---|--:|---|--:|
 | SIM, mortes na via | noite, bin 0 | 29,5 | **0,009** | [12, 82] | **0,015** | 88,2 / 87,6% | 1,16 |
 | SIM, mortes na via | manhã, bin 0 | −3,2 | 0,61 | [−28, 14] | 0,83 | 92,0 / 91,5% | 1,23 |
@@ -211,10 +216,10 @@ estados tratados (999 sorteios) no Poisson; checagem de excesso de zeros.
 | PRF, com vítima | manhã, bin 0 | −15,3 | 0,053 | [−19, 0] | 0,060 | 77,3 / 77,6% | 0,94 |
 
 - **A hora que escureceu passa nos dois testes que não dependem de 23 clusters,
-  nos três desfechos.** A aleatorização é a mais exigente (pergunta se outros 11
+  nos três desfechos.** A permutação é a mais exigente (pergunta se outros 11
   estados quaisquer dariam efeito tão grande): 15, 17 e 1 em 999.
 - A manhã que ganhou luz: sinais negativos nos três; só a PRF chega perto
-  (mortes: WCR p = 0,02, mas aleatorização p = 0,45).
+  (mortes: WCR p = 0,02, mas permutação p = 0,45).
 - **Sem excesso de zeros:** a parcela de zeros observada bate com a implicada
   pelo Poisson em todos os casos (diferença < 1 p.p.), e a dispersão é 0,9–1,6.
   Confirma a decisão de não usar zero-inflated nem binomial negativo.
@@ -311,7 +316,329 @@ O efeito não depende de qual conjunto de horas serve de referência.
   desenho principal. O principal segue a tripla em [0, 60).
 - Figura: `fig05_within_day_event_study` (refeita depois da correção do locale
   em `00_utils.R`; a primeira versão tinha "×" virando "..").
-- Aleatorização da quádrupla: desligada por padrão (`DS_RI`), ~35 s por ajuste.
+- Permutação da quádrupla: desligada por padrão (`DS_RI`), ~35 s por ajuste.
+
+## 9. Agressões do SIM: tendência, não luz (`11_assault_trends.R`, 09/10/2026)
+
+Agressões (X85–Y09), todos os locais, hora do óbito; mesmo modelo da tripla.
+Aqui o "dia todo" inclui os óbitos sem hora (no §3 eles saíam), daí 2,4 em vez de 4,6.
+
+| bloco | tripla (lp) | p | Wald pré (p) | tendência pré | tend. pré extrapolada | sem 2019/20 | DD só na janela | DD só fora |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| dia todo | 2,4 (1,7) | 0,17 | 0,001 | +0,2 | 0,8 | −0,5 | −21,5 | −24,1 |
+| 0–8h | 0,4 (4,4) | 0,93 | 0,11 | +0,1 | −0,5 | −2,2 | −26,5 | −26,8 |
+| 8–17h | 7,0 (2,6) | 0,007 | 0,025 | +0,1 | 6,5 | 2,3 | −6,1 | −12,7 |
+| 17–20h | 15,2 (5,0) | 0,003 | <0,001 | +0,8 | 9,1 (p = 0,07) | 10,4 (6,0) | +1,8 | −14,0 |
+| 20–24h | 1,9 (4,5) | 0,67 | 0,86 | −0,5 | 5,7 | 0,8 | −12,3 | −14,9 |
+
+**Veredito: não há assinatura de luz.**
+- O dia todo some sem a temporada 2019/20 (−0,5). No estudo de eventos, só
+  2019/20 salta (+11,9 lp; +24 às 8–17h, +20 às 17–20h); as outras quatro
+  temporadas pós ficam entre −5 e +1. Na série bruta, 2019/20 é o ano em que a
+  janela de verão do controle (N/NE) despencou (razão janela/fora 0,57, contra
+  0,62–0,71 nos outros anos).
+- Às 8–17h, horas cuja luz não mudou, o "efeito" é parecido com o das 17–20h.
+- Às 17–20h, os coeficientes pré oscilam em torno de −15 a −25 lp contra a
+  referência 2018/19 (Wald p < 0,001): a referência é uma temporada alta, e a
+  tripla compara o pós com um pré baixo, não com 2018/19. Na decomposição, a
+  diferença dupla **dentro da janela** é nula (+1,8); a tripla positiva vem da
+  entressafra dos tratados, que caiu (−14). A luz só age na janela.
+- O desenho afiado do §4 (só óbito na via, hora que trocou de luz) já dava
+  +13,8%, p = 0,39.
+- **Decisão:** agressões ficam fora do paper como desfecho; no máximo um apêndice
+  de "não encontramos", com esta tabela. Figura: `fig06_assault_event_study`.
+
+## 10. A conta da realocação (`12_reallocation.R`, 09/10/2026)
+
+Um modelo Poisson empilhado com as horas −2, −1, 0, +1 da noite e −1, 0, +1 da
+manhã, todos os FE interagidos com a hora (coeficientes idênticos aos do 02,
+conferido no script); a covariância conjunta por UF permite somar. Excesso =
+observado − contrafactual, em eventos **por temporada**, nos tratados, na
+janela de verão (5 temporadas pós). Método delta para o EP.
+
+**Por hora (eventos por temporada):**
+
+| hora | SIM mortes na via | PRF mortes | PRF com vítima |
+|---|--:|--:|--:|
+| noite −2 | −12 (10) | −1 (10) | **−99 (38)** |
+| noite −1 | +8 (11) | **−17 (9)** | **−148 (40)** |
+| noite 0 (escureceu) | **+36 (9)** | **+25 (7)** | **+115 (25)** |
+| noite +1 (crepúsculo → noite) | +22 (13) | +8 (6) | +33 (30) |
+| manhã −1 | +6 (10) | −8 (8) | −15 (30) |
+| manhã 0 (clareou) | −3 (11) | −6 (8) | −57 (34) |
+| manhã +1 | −14 (12) | −1 (9) | +32 (39) |
+
+**Somas:**
+
+| soma | SIM mortes na via | PRF mortes | PRF com vítima |
+|---|--:|--:|--:|
+| noite escura (0, +1) | **+58 (19)**, +26% | **+33 (10)**, +43% | **+147 (38)**, +16% |
+| manhã clara (0) | −3 (11) | −6 (8) | −57 (34), p = 0,10 |
+| líquido: noite 0, +1 e manhã 0 | **+55 (20)**, p = 0,01 | **+28 (14)**, p = 0,04 | **+90 (42)**, p = 0,03 |
+| líquido: as sete horas | +43 (40), p = 0,29 | +1 (23) | −139 (96), p = 0,15 |
+| dia todo (modelo à parte) | −2 (66) | −58 (45) | −70 (216) |
+
+**Leitura:**
+- **A manhã não paga a conta da noite.** Nas horas cuja luz mudou de fato
+  (noite 0 e +1, manhã 0), o saldo é positivo nas três fontes: ~55 mortes na
+  via por verão no SIM, ~28 mortes na PRF. A manhã que clareou ganha pouco
+  (SIM −3; PRF −6 mortes, −57 acidentes com vítima).
+- **"O total do dia não muda" precisa ser reescrito.** O EP do dia todo é de
+  66 mortes por temporada no SIM, maior que o próprio efeito da noite (+58).
+  O dia todo **não distingue** entre zero e o excesso da noite; ele é
+  inconclusivo, não evidência de realocação pura. A frase certa: "o efeito
+  está concentrado nas horas que escureceram; o total do dia é estimado com
+  ruído demais para confirmar ou descartar o saldo".
+- **As duas fontes contam histórias diferentes fora da hora escurecida.** No
+  SIM, as horas vizinhas quase não se movem e o saldo das sete horas continua
+  positivo (+43, n.s.). Na PRF, as duas horas antes do pôr do sol perdem tanto
+  quanto a noite ganha (acidentes com vítima: −247 contra +147), e o saldo das
+  sete horas é zero ou negativo. **A PRF parece realocação; o SIM parece
+  excesso.** Candidatos: o tráfego das rodovias federais mudou de hora (a volta
+  para casa ou a viagem de férias saiu do fim da tarde?), ou o ofuscamento pelo
+  sol baixo saiu das horas −1/−2. As rodovias federais são uma fração
+  pequena das mortes do SIM (que inclui as vias urbanas), então as duas
+  leituras podem ser verdadeiras ao mesmo tempo. O fluxo do DNIT decide.
+- **Ressalva de sempre:** sem tendência. A PRF perde metade do efeito com a
+  tendência pré extrapolada (§7); o SIM não.
+
+## 11. Quem morre na hora que escureceu: pedestres (`13_mechanism.R`, 09/10/2026)
+
+O 02 agora grava no arquivo de eventos também a divisão pedestre × resto
+(SIM: V01–V09 × V10–V89; PRF: "Atropelamento de pessoa/pedestre" × o resto).
+As estimativas antigas do 02 não mudaram (diferença máxima de 6e-16), e as
+partes somam o total. Modelo empilhado como no 12; lp (EP por UF).
+
+| hora | SIM pedestre | SIM resto | dif. (p) | PRF mortes, pedestre | PRF mortes, resto | dif. (p) | PRF com vítima, pedestre | resto | dif. (p) |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| noite 0 | **78,6 (29)** | 18,0 (7,8) | 61 (0,03) | **173 (33)** | 28 (24) | 145 (<0,001) | **99,5 (21)** | 18,8 (5,5) | 81 (<0,001) |
+| noite +1 | **61,1 (23)** | 5,5 (15) | 56 (0,09) | −24 (25) | 34 (18) | −58 (0,07) | −21,6 (14) | 9,9 (6,4) | −31 (0,02) |
+| manhã 0 | −34 (36) | 0,4 (13) | n.s. | −95 (102) | −9,5 (22) | n.s. | −63 (70) | −13,2 (6,5) | n.s. |
+
+- **O escuro age sobre o pedestre**, como manda a literatura (Sullivan &
+  Flannagan; IIHS). No SIM, os pedestres são ~12% das mortes na via na hora 0
+  antes de 2019 (12,8 por verão), mas respondem por ~44% do excesso
+  (+15 de +33 por verão). Na série bruta, o número de pedestres mortos na hora 0,
+  nos tratados e no verão, dobra (12,8 → 26,8 por temporada), enquanto cai no
+  controle e na entressafra (Tabela 1).
+- Ocupantes e motociclistas também sobem (SIM +18 lp, p = 0,02), menos.
+- **Tendência pré, noite 0:** SIM pedestre: Wald pré p = 0,38, tendência
+  +0,8 (4,7), com a tendência extrapolada **71 (29)**; SIM resto 27 (7,9). PRF
+  pedestre: mortes 110 (33), com vítima 75 (21), mas o Wald pré rejeita nos
+  acidentes com vítima (p < 0,001; o mesmo acontece com o resto). O efeito sobre
+  o pedestre não é tendência.
+- Na PRF, os pedestres da hora +1 caem: a hora +1 já era escura em boa parte
+  dos dias com horário de verão nas rodovias (sem iluminação), então o "escuro"
+  ali não é novo. Ler com cuidado.
+
+**Inferência robusta (`15_inference_pedestrian.R`, `audit/inference_pedestrian.rds`).**
+Noite, hora 0. WCR = wild cluster restrito (Webb, B = 9.999) no análogo linear;
+permutação = 999 sorteios de 11 estados tratados, com o mesmo sorteio para os
+dois membros do par, de modo que a diferença tem sua própria distribuição nula.
+
+| desfecho | grupo | lp | EP por UF (p) | WCR p | permutação p |
+|---|---|--:|--:|--:|--:|
+| SIM mortes na via | pedestre | 78,6 | 0,007 | **0,007** | **0,029** |
+| | resto | 18,0 | 0,021 | 0,016 | 0,052 |
+| | diferença | 60,6 | 0,03 | | 0,068 |
+| PRF mortes | pedestre | 173 | <0,001 | **<0,001** | **<0,001** |
+| | resto | 28,3 | 0,24 | 0,07 | 0,22 |
+| | diferença | 145 | <0,001 | | **0,002** |
+| PRF com vítima | pedestre | 99,5 | <0,001 | **<0,001** | **<0,001** |
+| | resto | 18,8 | <0,001 | 0,006 | 0,008 |
+| | diferença | 80,7 | <0,001 | | **0,001** |
+
+- O pedestre passa nos dois testes nas três fontes. A diferença entre pedestre e
+  resto passa na permutação na PRF; no SIM fica em p = 0,07.
+- Sem excesso de zeros nas contagens raras dos pedestres: os zeros observados
+  e os implicados pelo Poisson diferem em menos de 0,3 p.p., e a dispersão
+  fica em 0,9.
+
+## 12. Fluxo de tráfego (DNIT): o dado existe (09/10/2026)
+
+O portal de dados abertos do DNIT (servicos.dnit.gov.br/dadosabertos, API
+CKAN) só tem o **VMDa**, o volume médio diário anual modelado por trecho
+(2020–2022). Ele não serve para ver mudança de horário. O dado horário está no
+**portal do PNCT** (servicos.dnit.gov.br/dadospnct), que tem uma API sem
+documentação. Encontrei as rotas lendo o código da página:
+
+- `GET /dadospnct-api/api/v1/coletaContinua?historico=true|false`: postos de
+  contagem contínua (GeoJSON com UF, BR, km e coordenada). São 319 postos no
+  histórico (2014–2019) e 380 no atual (2021+), em todas as UFs dos dois grupos
+  (por exemplo, MG 58, RS 31, PR 28, SP 9; CE 8, PE 12, PA 9).
+- `GET .../coletaContinua/anos`: os anos são 2014–2019 e 2021–2025. **Falta 2020.**
+- `GET .../coletaContinua/posto/{id}/volume/{mensal|diario|horario}?ano&mes&dia`:
+  JSON por posto, com volume por sentido.
+- `GET .../coletaContinua/postocontagem/vh/csv?uf=&br=&ano=` (Accept:
+  application/zip): **download em massa do volume horário de um ano**, em zip.
+  O servidor não informa o tamanho antes do download.
+
+**Por que falta 2020, e o que mais falta (09/10/2026).** Segundo uma nota do
+DNIT de dez/2020, o último contrato das contagens contínuas terminou em
+**junho de 2019**. O 2º semestre de 2019 foi estimado por modelo, e 2020 não
+foi contado. Fonte: SINDISAN, 14/12/2020, que cita o DNIT; o texto do DNIT e o
+número do novo contrato (2021) ainda não foram localizados. **O dado confirma:**
+no posto DF BR-251 km 17, o 2º semestre de 2019 tem os 24 horários completos
+todo dia, mas o total diário se repete exatamente no mesmo dia da semana poucas
+semanas depois. São 10 a 15 repetições por mês a partir de 18/06/2019, contra
+zero de janeiro a maio, e 87 dias são cópias hora a hora. Contagem real não
+faz isso. **Consequências:**
+- O `07_clean_pnct.R` marca um posto-dia como `imputed` quando o total
+  diário repete o do mesmo dia da semana a 1–4 semanas de distância. O `16`
+  descarta esses dias e todo o intervalo de jun/2019 a dez/2020.
+- **O verão 2019/20, o primeiro sem horário de verão, não existe no PNCT**
+  (nov–dez/2019 é modelado). O pós começa em jan–fev/2021.
+- Para o paper: "DNIT's continuous-count contract lapsed between June 2019
+  and 2021; the published 2019-H2 values are model-based and are excluded."
+
+**Janelas de verão cobertas:** 2014/15–2018/19 (5 pré; a cobertura de 2014 começa no meio do
+ano) e 2021/22–2024/25 (4 pós), mais jan–fev/2021. 2019/20 fica de fora (modelado).
+**Desenho possível:** a mesma tripla no volume, por posto × dia × hora
+relativa ao pôr do sol. Ela diz se o tráfego das horas −2 a +1 mudou de hora
+nos tratados, e permite reescrever o efeito como risco por veículo.
+
+## 13. Por que o SIM e a PRF diferem
+
+Os dois não medem a mesma coisa:
+
+| | SIM, mortes na via | PRF, mortes |
+|---|---|---|
+| onde | **todas as vias**: urbanas, estaduais, municipais e federais | só **rodovias federais**, a maioria fora das cidades |
+| quem | óbito **na via pública** (LOCOCOR = 4); quem morre no hospital sai | **só óbito no local do acidente**: quem morre depois da remoção fica classificado pela lesão de antes do transporte (Anuários PRF 2019–2025, `fontes_dados/prf_definicao_mortos.txt`) |
+| hora | hora do óbito, que para quem morre no local ≈ hora do acidente | hora do acidente, registrada pelo policial |
+| base anual (tratados, verão, pré) | ~2.380 por temporada | ~1.170 por temporada |
+| pedestre | 13,5% do dia (12% na hora 0) | 15% do dia (10% na hora 0) |
+
+- **A sobreposição é parcial.** Uma morte no local numa rodovia federal pode
+  estar nas duas bases. As mortes nas vias urbanas e estaduais, que são a maior
+  parte do SIM, não aparecem na PRF.
+- **No efeito da hora 0, as duas não divergem de fato.** 29,5 (9,0) contra
+  56 (21) lp: a diferença de 27 lp tem EP ~23 (conta grosseira, sem a
+  covariância), longe de significante. Nas duas o efeito se concentra no
+  pedestre.
+- **Elas divergem em três pontos, e nenhum é contradição:**
+  1. *As horas antes do pôr do sol (−1 e −2).* Na PRF caem; no SIM, não. O
+     tráfego das rodovias federais tem outra composição (viagens longas,
+     caminhões, saída de férias e feriados). Se essas viagens mudaram de hora
+     com o relógio, o risco nas rodovias só mudou de lugar. O PNCT (§12) responde.
+  2. *A tendência.* Os acidentes com vítima da PRF têm tendência pré
+     diferencial (Wald p < 0,001); o SIM, não. A e-DAT e a mudança do
+     policiamento rodoviário a partir de 2015 são candidatos.
+  3. *O saldo do dia.* No SIM a noite ganha e o resto quase não se mexe; na PRF
+     a noite ganha o que o fim da tarde perde (§10).
+- **Leitura:** o SIM mede o efeito sobre a população, e ali a luz cria
+  mortes. A PRF mede um tipo específico de via, e ali parte do efeito é o
+  tráfego mudando de hora. Ela corrobora o mecanismo (pedestre, escuro), não o
+  tamanho do excesso.
+
+**Definição de "mortos" na PRF (conferida em 09/10/2026).** Os Anuários da
+PRF (2019, 2021, 2022, 2025) definem morto como a pessoa em óbito **no local do
+acidente**. A de 2019 acrescenta: "A vítima que venha a morrer após a remoção
+do sítio do acidente, será classificada de acordo com as lesões apresentadas
+antes do transporte". Ou seja, **é o mesmo conceito do nosso SIM** (óbito na
+via pública, LOCOCOR = 4). As duas bases medem a morte no local; a diferença
+entre elas é só a rede (todas as vias × rodovias federais). Para 2007–2018 não
+há Anuário com a definição, mas a série não mostra quebra:
+
+| | 2007 | 2010 | 2014 | 2016 | 2018 | 2019 | 2021 | 2025 |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| mortes por acidente fatal | 1,24 | 1,22 | 1,22 | 1,20 | 1,17 | 1,16 | 1,16 | 1,16 |
+| feridos graves por morte | 3,50 | 3,24 | 3,19 | 3,35 | 3,36 | 3,49 | 3,28 | 3,31 |
+
+Uma mudança de definição só ameaçaria o desenho se fosse diferencial entre
+grupos × janela × pós.
+
+## 14. O tráfego mudou de hora (`16_traffic_volume.R`, 09/10/2026)
+
+Dados: PNCT, `build/06–07`, 608 postos de contagem contínua, só posto-dias
+completos e contados (sem jun/2019–dez/2020 e sem os dias marcados como
+modelados). **Fonte primária da lacuna:** Nota Técnica DNIT nº 001/2020/DE,
+17/11/2020, p. 7. Segundo ela, jul–dez/2019 foram estimados por *machine
+learning* porque "o último edital vigente para realização das contagens
+contínuas do PNCT se encerrou no mês de junho de 2019". Trecho em
+`horario_verao/fontes_dados/`. Os contratos novos foram assinados em
+30/12/2020 e 13/01/2021 (Comprasnet), e as contagens voltam em maio de 2021.
+
+**Nenhum posto é contado antes e depois** (263 só antes, 338 só depois). Por
+isso a sazonalidade fica na UF: `station + uf^window + uf^sy + date`. Como
+robustez, 30 pares de postos que só mudaram de km na mesma BR, com FE de par.
+Cobertura nos verões: tratados com 59–146 postos antes e 175–217 depois;
+controle com 18–50 antes e 61–69 depois.
+
+**(a) Relógio.** O perfil do verão dos tratados (líquido da entressafra e do
+controle) casa melhor sem defasagem (distância 0,23) do que com −1 ou +1 hora
+(0,32 e 0,38). O PNCT anota hora legal, como a PRF.
+
+**(b) Volume por hora relativa ao sol, tripla (lp, EP por UF):**
+
+| hora | todos | leves | pesados | pares de postos |
+|---|--:|--:|--:|--:|
+| noite −2 | −1,3 (1,6) | −1,8 | +1,6 | −5,1 (1,3) |
+| noite −1 | **−5,1 (1,3)** | −6,2 | −0,9 | −5,2 (2,2) |
+| noite 0 | **−6,4 (2,2)** | −7,7 | −2,4 | −3,1 (3,1) |
+| noite +1 | −6,4 (3,2) | −8,1 | 0,0 | −4,7 (2,9) |
+| noite +2 | −6,3 (3,2) | −7,8 | −0,8 | −6,4 (2,7) |
+| manhã 0 | **+11,7 (5,0)** | +10,2 | +17,3 | **+18,7 (5,1)** |
+| manhã +1 | +4,5 (2,4) | +3,8 | +8,7 | +7,8 (4,3) |
+| dia todo | +0,5 (2,0) | | | |
+
+- **O tráfego seguiu a luz.** Sem horário de verão, a noite escura perdeu
+  ~5–6% dos veículos, do fim da tarde até duas horas depois do pôr do sol,
+  quase todos leves (carros e motos). A manhã que clareou ganhou ~12%
+  (~19% nos pares), puxada pelos pesados (+17%). O total do dia não muda.
+- **O risco por veículo na hora escura sobe mais que o risco total.**
+  Acidentes com vítima menos volume: hora 0, **+29 lp (6,1)**; mortes, +63 lp
+  (21). Quem ficou na estrada no escuro corre mais risco do que o total sugere.
+- **A manhã fica mais segura por veículo:** acidentes com vítima −27 lp (9,9).
+  Mais carros na hora clara e menos acidentes.
+- **A queda da PRF na hora −1 só em parte é volume:** −22 lp de acidentes
+  contra −5 lp de volume; por veículo, ainda −17 (5,5). O quebra-cabeça do §5
+  encolhe, mas não fecha. O ofuscamento pelo sol baixo segue como candidato.
+- **Limite:** o PNCT cobre só rodovias federais. Não fala do tráfego urbano,
+  onde está boa parte das mortes de pedestres do SIM.
+- **(c) Dentro do dia (corrigido):** a primeira versão não tinha hora de
+  referência. Com o FE de posto × dia, somar uma constante a todos os
+  coeficientes não muda nada, daí os EP de ~4.700 lp. Agora a referência é "o
+  resto do dia" (as 13 horas fora das 11 estudadas), e o coeficiente lê a
+  mudança da hora em relação ao resto do mesmo posto-dia:
+
+  | hora | lp (EP) |
+  |---|--:|
+  | noite −3 | −1,7 (0,7) |
+  | noite −2 | −3,9 (0,8) |
+  | noite −1 | −7,7 (1,7) |
+  | noite 0 | **−9,2 (2,1)** |
+  | noite +1 | −9,4 (2,4) |
+  | noite +2 | −9,5 (2,5) |
+  | manhã −1 | +4,7 (5,0) |
+  | manhã 0 | **+9,1 (4,4)** |
+  | manhã +1 | +1,8 (1,6) |
+
+  Comparando dentro do mesmo posto-dia, o deslocamento é até maior que no (b):
+  a noite perde ~9% da sua parcela do dia, e a manhã que clareou ganha ~9%.
+  A queda começa duas a três horas antes do pôr do sol e cresce até a noite.
+
+**(d) Inferência robusta (`17_inference_volume.R`, `audit/inference_volume.rds`).**
+WCR é o wild cluster restrito (Webb, B = 9.999) no análogo linear do volume.
+A permutação usa 999 sorteios de 11 estados tratados, com o mesmo sorteio no
+modelo de volume e no de acidentes com vítima da PRF, de modo que o risco por
+veículo (acidentes menos volume) tem sua própria distribuição nula.
+
+| hora | volume (lp) | EP por UF p | WCR p | permutação p | acidentes PRF (lp), perm. p | por veículo (lp), perm. p |
+|---|--:|--:|--:|--:|--:|--:|
+| noite −1 | −5,1 | <0,001 | **0,003** | **0,014** | −22,0; <0,001 | **−17,0; 0,002** |
+| noite 0 | −6,4 | 0,004 | 0,072 | 0,058 | +22,9; 0,002 | **+29,4; 0,001** |
+| noite +1 | −6,4 | 0,047 | 0,333 | 0,100 | +6,5; 0,34 | +13,0; 0,054 |
+| manhã 0 | +11,7 | 0,019 | **0,009** | **0,040** | −15,3; 0,062 | **−27,1; 0,001** |
+
+- **O risco por veículo passa com folga na permutação** na hora que escureceu
+  (+29 lp, p = 0,001), na que clareou (−27, p = 0,001) e na hora antes do pôr do
+  sol (−17, p = 0,002).
+- O volume é mais frágil com 23 clusters: na hora 0, o EP por UF dá p = 0,004,
+  mas o WCR (0,07) e a permutação (0,06) ficam na fronteira. A hora −1 e a
+  manhã 0 passam nos dois.
+- A queda de volume na hora 0 é pequena perto da alta de acidentes, então a
+  conclusão sobre o risco não depende de o volume ser significante.
 
 ## Leitura
 

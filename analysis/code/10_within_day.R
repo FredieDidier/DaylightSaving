@@ -27,7 +27,7 @@
 #
 # Also: event study by season for bin 0 (reference 2018/19), HonestDiD on it,
 # robustness to the reference set (day only / night only), and (optional, DS_RI)
-# randomization inference over which 11 states are treated.
+# permutation inference over which 11 states are treated.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -38,7 +38,7 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-# Randomization inference refits the model once per draw (~35 s each here), so
+# Permutation inference refits the model once per draw (~35 s each here), so
 # it is off by default; DS_RI=199 runs it (about two hours per outcome).
 N_RI <- as.integer(Sys.getenv("DS_RI", unset = "0"))
 set.seed(20190425)                       # Decree 9,772
@@ -142,7 +142,7 @@ es <- rbindlist(lapply(es_hd, `[[`, "es"))
 hd <- rbindlist(lapply(es_hd, `[[`, "hd"))
 V_es <- setNames(lapply(es_hd, `[[`, "V"), TRAFFIC)
 
-# ── Randomization inference, evening bin 0, full reference set ──────────────
+# ── Permutation inference, evening bin 0, full reference set ────────────────
 # Real and permuted statistics come from the same model, with the bin-0 term
 # alone (a permuted assignment has no meaning for the other focal bins).
 ALL <- c(TREATED, CONTROL)
@@ -199,6 +199,6 @@ print(hd[restriction == "original" | param %in% c(0, 0.01, 0.02, 0.05, 0.25, 0.5
            avg_post_lp = round(avg_post_lp, 1), pre_sd_lp = round(pre_sd_lp, 1),
            wald_pre_p = round(wald_pre_p, 3), breakdown_M, breakdown_Mbar)])
 if (!is.null(ri)) {
-  cat("\nRandomization inference, evening bin 0:\n")
+  cat("\nPermutation inference, evening bin 0:\n")
   print(ri)
 }

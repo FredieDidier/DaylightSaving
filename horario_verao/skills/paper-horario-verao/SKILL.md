@@ -1,6 +1,6 @@
 ---
 name: paper-horario-verao
-description: Gerencia o projeto DaylightSaving — o fim do horário de verão no Brasil (Decreto 9.772/2019) e seus efeitos sobre mortes no trânsito, acidentes e violência — do Fredie Didier. Use quando ele perguntar sobre o repositório DaylightSaving, horário de verão, a abolição de 2019, a tabela de estados por temporada, os decretos de horário de verão, a hora que trocou de luz, pôr do sol por município, a PRF (acidentes em rodovias federais, fase_dia, e-DAT), o SIM com hora do óbito e local de ocorrência, a diferença tripla tratado × janela × pós, o estimador de imputação, wild bootstrap ou inferência por aleatorização do projeto, status ou próximos passos, quiser rodar ou revisar scripts do build ou da análise, checar um número, ou discutir a estratégia de identificação. Não confundir com o WorldCupHealth (Copa do Mundo e saúde), que também usa o SIM com hora do óbito.
+description: Gerencia o projeto DaylightSaving — o fim do horário de verão no Brasil (Decreto 9.772/2019) e seus efeitos sobre mortes no trânsito, acidentes e violência — do Fredie Didier. Use quando ele perguntar sobre o repositório DaylightSaving, horário de verão, a abolição de 2019, a tabela de estados por temporada, os decretos de horário de verão, a hora que trocou de luz, pôr do sol por município, a PRF (acidentes em rodovias federais, fase_dia, e-DAT), o SIM com hora do óbito e local de ocorrência, a diferença tripla tratado × janela × pós, o estimador de imputação, wild bootstrap ou inferência por permutação (randomization inference) do projeto, status ou próximos passos, quiser rodar ou revisar scripts do build ou da análise, checar um número, ou discutir a estratégia de identificação. Não confundir com o WorldCupHealth (Copa do Mundo e saúde), que também usa o SIM com hora do óbito.
 ---
 
 # Gerenciamento do projeto DaylightSaving — o fim do horário de verão
@@ -31,12 +31,15 @@ quando existir, será em inglês.
   build/03_clean_prf.R      PRF harmonizada, um acidente por linha
   build/04_municipal_geo.R  sede municipal (geobr 2010) + fuso padrão
   build/05_download_sim.R   SIM 2008–2025 do FTP do DATASUS
+  build/06–07               PNCT (volume horário do DNIT): download e limpeza
   analysis/code/00_utils.R  grupos, janelas, sol, painel (fonte única)
-  analysis/code/00…07       primeira olhada → viabilidade → hora que trocou de luz
+  analysis/code/00…17       primeira olhada → viabilidade → hora que trocou de luz
                             → event study → relógio da PRF → tendências
-                            → imputação → inferência
+                            → imputação → inferência → … → agressões (11) → realocação (12)
+                            → pedestre (13) → figura do desenho e Tabela 1 (14)
+                            → inferência do pedestre (15) → volume do PNCT (16) → inferência do volume (17)
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
-                            PRIMEIRA_OLHADA, VIABILIDADE, fontes_legais/, skills/
+                            PRIMEIRA_OLHADA, VIABILIDADE, PAPER, fontes_legais/, skills/
 
 ~/Library/CloudStorage/Dropbox/DaylightSaving/build/   (dado, nunca git)
   calendar/ prf/ geo/ sim/ audit/   (audit/ guarda os .rds com os números)
@@ -56,7 +59,8 @@ quando existir, será em inglês.
   sem. De manhã, o espelho: [nascer padrão, +60 min).
 - **Estimação:** Poisson, `y ~ twp | uf^window + uf^sy + date`, EP por UF.
   Imputação com semana + dia da semana (06). Wild cluster bootstrap no análogo
-  linear e aleatorização dos estados tratados (07).
+  linear e permutação dos estados tratados (07; "permutation inference",
+  nunca "randomization": o tratamento não foi sorteado).
 
 ## Regras que não se renegociam
 
@@ -64,7 +68,9 @@ quando existir, será em inglês.
    em `horario_verao/fontes_legais/`.
 2. **SIM de trânsito por hora: só óbito na via pública (LOCOCOR = "4") e V01–V89.**
    O óbito no hospital tem a hora da morte, não do acidente.
-3. **PRF: só mortes e acidentes com vítima.** A e-DAT (jun/2015, antes no
+3. **PRF: só mortes e acidentes com vítima.** `mortos` = óbito no local do
+   acidente (Anuários PRF), mesmo conceito do SIM na via.
+   A e-DAT (jun/2015, antes no
    S/SE/CE/DF) tirou da base os acidentes sem vítima, de forma diferencial
    entre os grupos.
 4. **A hora da PRF é hora legal** (conferido em `04_prf_clock_check.R`: a curva
@@ -83,22 +89,33 @@ Os números vigentes estão em `horario_verao/VIABILIDADE.md` (§7 é a rodada v
 - **A hora que escureceu ganhou mortes de trânsito.** O SIM é o resultado
   âncora, porque passa nos testes de tendência; a PRF corrobora, mas é sensível
   à tendência.
-- **O total do dia não muda.** O paper é sobre o risco ter mudado de hora para
-  o escuro (bate com Smith 2016: a luz realoca, não cria).
+- **Quem morre é o pedestre** (VIABILIDADE §11): hora 0, SIM +79 lp contra
+  +18 do resto; 12% da base, 44% do excesso; resiste à tendência pré, ao WCR e à
+  permutação (VIABILIDADE §11).
+- **SIM × PRF** (VIABILIDADE §13): bases diferentes (todas as vias × rodovias
+  federais); na hora 0 não divergem de fato; a PRF corrobora o mecanismo, não o
+  tamanho do excesso.
+- **O tráfego seguiu a luz** (PNCT, VIABILIDADE §14): noite −6% de veículos,
+  manhã +12%; por veículo, a hora escura +29 lp nos acidentes com vítima
+  (permutação p = 0,001; `17`). Nenhum
+  posto é contado antes e depois; jul/2019–abr/2021 sem contagem (Nota Técnica
+  DNIT 001/2020/DE).
+- **A manhã não paga a conta da noite** (VIABILIDADE §10): noite escura
+  (horas 0 e +1) +58 mortes na via por verão (EP 19), manhã clara −3 (11),
+  líquido +55 (p = 0,01). O total do dia tem EP 66: é **inconclusivo**, não
+  zero. Na PRF as horas antes do pôr do sol perdem o que a noite ganha.
 
 **O que não se escreve:**
-- que a abolição "aumentou as mortes no trânsito" sem dizer "na hora que
-  escureceu" e sem dizer que o total do dia não se mexe;
+- que a abolição "aumentou as mortes no trânsito" sem dizer "nas horas que
+  escureceram"; nem que o total do dia "não muda" (é só ruidoso demais);
 - que a PRF "confirma" sem a ressalva da tendência;
 - qualquer efeito sobre nascimentos (partos seguem o relógio do hospital) ou
-  sobre agressões (sem padrão).
+  sobre agressões (tendência, não luz: VIABILIDADE §9).
 
 ## Abertos
 
 - A **hora antes do pôr do sol** cai na PRF (e não no SIM). Mecanismo candidato:
   ofuscamento pelo sol baixo, tráfego que muda de hora.
-- A manhã que ganhou luz: sinais negativos e imprecisos; é preciso fechar a
-  conta de quanto o ganho da manhã compensa a perda da tarde.
 - Fluxo de tráfego (sensores do DNIT) para separar exposição de risco por viagem.
 - Conferir no original toda referência marcada (?) no LITERATURE.md.
 - Status do projeto de lei de 2025 que proíbe o horário de verão.

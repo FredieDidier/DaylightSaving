@@ -23,7 +23,8 @@
 #     municipality matched by name within UF. Accidents without victims are
 #     never used (e-DAT break, see horario_verao/VIABILIDADE.md).
 #
-# Writes the event-level file reused by 03, 05, 06 and 07, the bin-by-bin
+# Writes the event-level file reused by 03-13 (with pedestrian / other
+# splits for 13), the bin-by-bin
 # Poisson triple differences, and fig02.
 # =============================================================================
 
@@ -54,6 +55,12 @@ stopifnot(!any(sim$preliminary))
 sim <- sim[LOCOCOR == "4"]
 sim[, outcome := fcase(CAUSABAS >= "V01" & CAUSABAS < "V90", "SIM transport deaths, on road",
                        CAUSABAS >= "X85" & CAUSABAS < "Y10", "SIM assault deaths, on road")]
+# Mechanism split of on-road transport deaths (13_mechanism.R): pedestrians
+# (V01-V09) against everyone else (V10-V89). Extra rows; the pooled outcome
+# above is unchanged.
+sim[, mech := fcase(CAUSABAS >= "V01" & CAUSABAS < "V10", "SIM pedestrian deaths, on road",
+                    CAUSABAS >= "V10" & CAUSABAS < "V90", "SIM non-pedestrian deaths, on road")]
+sim <- rbind(sim[!is.na(outcome)], sim[!is.na(mech)][, outcome := mech])
 ev_sim <- sim[!is.na(outcome), .(code6 = as.integer(CODMUNOCOR),
                                  date = as.IDate(DTOBITO, format = "%d%m%Y"),
                                  cmin = clock_min(HORAOBITO), outcome, w = 1L)]
@@ -67,9 +74,15 @@ prf[, key := paste(uf, norm(municipio))]
 prf <- unique(geo[, .(key, code6)], by = "key")[prf, on = "key"]
 prf_match <- prf[, round(100 * mean(!is.na(code6)), 1)]
 prf[, cmin := 60L * hour + minute]
+prf[, ped := grepl("^Atropelamento de (pessoa|pedestre)", tipo_acidente, ignore.case = TRUE)]
 ev_prf <- rbind(
   prf[mortos > 0, .(code6, date, cmin, outcome = "PRF deaths", w = mortos)],
-  prf[mortos > 0 | feridos > 0, .(code6, date, cmin, outcome = "PRF injury accidents", w = 1L)])
+  prf[mortos > 0 | feridos > 0, .(code6, date, cmin, outcome = "PRF injury accidents", w = 1L)],
+  # Mechanism split (13_mechanism.R): pedestrian struck against the rest.
+  prf[ped & (mortos > 0 | feridos > 0), .(code6, date, cmin, outcome = "PRF pedestrian injury accidents", w = 1L)],
+  prf[!ped & (mortos > 0 | feridos > 0), .(code6, date, cmin, outcome = "PRF non-pedestrian injury accidents", w = 1L)],
+  prf[ped & mortos > 0, .(code6, date, cmin, outcome = "PRF pedestrian deaths", w = mortos)],
+  prf[!ped & mortos > 0, .(code6, date, cmin, outcome = "PRF non-pedestrian deaths", w = mortos)])
 rm(prf); gc()
 
 ev <- rbind(ev_sim, ev_prf)

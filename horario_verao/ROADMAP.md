@@ -15,35 +15,53 @@ nos dados é a da skill de projeto.
 | 2 | **Primeira olhada nos dados.** SIM e SINASC por hora, S/SE/CO contra N/NE, nov–fev, antes e depois de 2019. Baixar PRF 2007–2025 | ✅ 08/10/2026 — `PRIMEIRA_OLHADA.md` e `VIABILIDADE.md`. Hora da PRF conferida (é hora legal) |
 | 3 | **Varredura de literatura.** Abolição e regime permanente; luz e trânsito; luz e crime; hora do parto; sono e saúde. Registrar em `LITERATURE.md` | ✅ 08/10/2026 — janela aberta; vizinho mais próximo: Franco, Toro, Sampaio & Sampaio (PRF, transições, 2007–2013) |
 | 4 | **Skills.** `horario-verao-econ` (campo) e `paper-horario-verao` (projeto), em `horario_verao/skills/` e instaladas em `~/.claude/skills/` | ✅ 08/10/2026 |
-| 5 | **PAPER.md.** Pergunta, desenho, exibições previstas, o que não entra | ⬜ |
+| 5 | **PAPER.md.** Pergunta, desenho, exibições previstas, o que não entra | ✅ 09/10/2026 — `horario_verao/PAPER.md` (rascunho) |
 
-## Retomar daqui (08/10/2026, segunda sessão)
+## Retomar daqui (09/10/2026)
 
 Feito nesta sessão:
-- ✅ `inference.rds` lido e registrado (VIABILIDADE §7): a hora que escureceu passa
-  no wild bootstrap e na aleatorização dos estados nos três desfechos.
-- ✅ Diferença quádrupla dentro do dia (`10_within_day.R`, VIABILIDADE §8): **não
-  reduz o ruído** (é ruído de contagem). Fica como robustez; mostra a hora +1
-  subindo e a manhã da PRF caindo (−20 lp, p = 0,04).
-- ✅ 00 e 01 já rodavam com o SIM próprio; textos atualizados (PRIMEIRA_OLHADA,
-  VIABILIDADE §2–3). Novo: agressões (todos os locais) sobem no nível do dia.
-- ✅ Referências (?) do `LITERATURE.md` conferidas; sobram 4 pequenas.
-- ✅ Figuras: `00_utils.R` força LC_CTYPE UTF-8 (em locale C o "×" saía "..").
-- ✅ 06 reescrito: bootstrap paralelo, 26 min em vez de 7–9 h.
+- ✅ Agressões do SIM (`11_assault_trends.R`, VIABILIDADE §9): **tendência, não
+  luz**. O dia todo some sem 2019/20; 8–17h sobe como 17–20h; dentro da janela a
+  dupla é nula. Saem do paper.
+- ✅ Conta da realocação (`12_reallocation.R`, VIABILIDADE §10): noite escura
+  (0, +1) +58 mortes na via por verão (EP 19); manhã clara −3 (11); líquido +55
+  (p = 0,01). O dia todo tem EP 66: é **inconclusivo**, não "zero". Na PRF, as
+  horas −1/−2 perdem tanto quanto a noite ganha (realocação nas rodovias).
+- ✅ Passo 5: `PAPER.md`.
+
+- ✅ Pedestre × resto (`13_mechanism.R`, VIABILIDADE §11): o escuro age sobre o
+  pedestre. SIM hora 0: pedestre +79 lp, resto +18; o pedestre é 12% da base e
+  44% do excesso. Resiste à tendência pré (71 lp).
+- ✅ Figura do desenho (`fig07_design`) e Tabela 1 (`analysis/output/tables/table1_descriptives.{csv,tex}`),
+  em `14_design_descriptives.R`.
+- ✅ Inferência do pedestre (`15_inference_pedestrian.R`, VIABILIDADE §11): WCR e
+  permutação passam nas três fontes (SIM pedestre: 0,007 e 0,029).
+- ✅ DNIT (VIABILIDADE §12): o portal de dados abertos só tem VMDa anual; o
+  volume **horário** por posto está na API do portal do PNCT, 2014–2019 e
+  2021–2025, cerca de 320 postos. Download em massa por ano, em zip.
+- ✅ SIM × PRF explicado (VIABILIDADE §13).
+- 🗑 `horario_verao/skills/skills_daylightsaving.zip` apagado (cópia velha das pastas versionadas).
+
+- ✅ PNCT baixado, limpo e analisado (`build/06–07`, `16_traffic_volume.R`,
+  VIABILIDADE §14): o tráfego seguiu a luz, com noite −6% e manhã +12%. O risco
+  por veículo na hora escura sobe ainda mais (+29 lp). Brutos apagados.
+- ✅ Lacuna de 2019–2020 provada com fonte primária (Nota Técnica DNIT
+  001/2020/DE) mais edital e contratos; nota de rodapé no PAPER.md.
+
+- ✅ Dentro do dia corrigido (faltava hora de referência; agora "o resto do dia").
+- ✅ Inferência do volume (`17_inference_volume.R`): o risco por veículo passa na
+  permutação (hora escura +29 lp, p = 0,001; manhã −27, p = 0,001).
+
+- ✅ `mortos` da PRF = só óbito no local (Anuários 2019–2025); mesmo conceito do
+  SIM na via. Série sem quebra 2007–2025 (VIABILIDADE §13).
+
+- ✅ Literatura (09/10/2026): SSRN do Franco et al., IIHS (Woods, Weast & Monfort
+  2025, JSR), Sullivan & Flannagan (vol. e págs.), quatro estudos de energia.
+  Toro et al. conferido nos prints do Fredie: infarto +7,4–8,5% no primeiro dia
+  após a entrada. Nenhuma (?) aberta.
 
 Próximos:
-1. ✅ Imputação lida (VIABILIDADE §7): SIM +32%, e +38% com a tendência pré
-   extrapolada (IC largo); PRF cai à metade com a tendência.
-2. ✅ Avisos do 10 conferidos: 2 de convergência (inofensivos, coeficientes
-   iguais com 3× as iterações) e 43 do HonestDiD (limites estáveis ao teste de
-   escala). VIABILIDADE §8.
-3. Agressões do SIM: estudo de eventos por temporada do nível do dia (tendência
-   diferencial S/SE/CO × N/NE?) antes de qualquer leitura.
-4. Fechar a conta da realocação: noite (bins 0 e +1) contra manhã (bin 0), em
-   mortes e acidentes por temporada, com o mesmo modelo.
-5. Passo 5: PAPER.md.
-6. Pendências da literatura: SSRN do Franco et al. (403), números do Toro et al.
-   no artigo, autoria e números do relatório do IIHS, estudos de energia.
+1. Começar o manuscrito (introdução e desenho), em inglês.
 
 ## Decisões tomadas
 
@@ -61,6 +79,11 @@ Próximos:
 | 08/10/2026 | Sem zero-inflated nem binomial negativo | Poisson PML só exige a média certa; zeros vêm de eventos raros, não de zeros estruturais |
 | 08/10/2026 | Diferença quádrupla (FE de UF × dia) fica como robustez | EP não cai; o ruído é de contagem, não de choque diário |
 | 08/10/2026 | Bootstrap do 06 em paralelo (`DS_CORES`), sorteios feitos antes | Serial levaria 7–9 h; o resultado não depende do nº de núcleos |
+| 09/10/2026 | Bruto grande sai do Dropbox depois de limpo e conferido | Pedido do Fredie, para poupar espaço. Os scripts de download (02, 05, 06) baixam de novo. Apagados: `prf/input` (67 MB). A apagar: `pnct/input` (~300 MB), depois do `07_clean_pnct.R` |
+| 09/10/2026 | "Permutation inference", não "randomization inference" | O tratamento (bloco S/SE/CO) não foi sorteado e o calendário é fixo; o teste permuta quais 11 estados são tratados. Mesma decisão do WorldCupHealth (lá, "calendar-permutation") |
+| 09/10/2026 | Pedestre vira o mecanismo central do paper | Efeito 4× maior que no resto, nas duas fontes, robusto à tendência |
+| 09/10/2026 | Agressões saem dos desfechos | Sem assinatura de luz: efeito vem de 2019/20 e aparece em horas cuja luz não mudou (VIABILIDADE §9) |
+| 09/10/2026 | O total do dia é "inconclusivo", não "zero" | EP do dia todo (66 mortes/verão no SIM) maior que o efeito da noite (+58) |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 
 ## Pendências pequenas

@@ -1,0 +1,21 @@
+Fonte: PRF, Anuarios Estatisticos (secao 'Definicoes'), em https://www.gov.br/prf/pt-br/acesso-a-informacao/dados-abertos/ (diest-arquivos).
+Lidos em 09/10/2026 (pdftotext). Mesma definicao de 'Morto' nos anuarios 2019, 2021, 2022 e 2025.
+
+--- Anuario 2019 (copy_of_anuario-2019_final.html/@@display-file/file) ---
+     Ferido grave: pessoa que, por consequência do acidente, não foi classificada como leve ou não tenha como resultado o óbito.
+
+     Morto: pessoa em óbito no local (com sinais evidentes de morte ou com a condição de morto constatada por profissional legalmente habilitado) em
+     consequência de acidente de trânsito. A vítima que venha a morrer após a remoção do sítio do acidente, será classificada de acordo com as lesões
+     apresentadas antes do transporte.
+
+--- Anuario 2022 (anuario-2022_final.html/@@display-file/file) ---
+     Ferido grave: pessoa que, por consequência do acidente, não foi classificada como leve ou não tenha como resultado o óbito.
+
+     Morto: pessoa em óbito no local do acidente (independentemente de ter recebido atendimento pré-hospitalar) com sinais evidentes de morte ou com a
+     condição de morto constatada por profissional legalmente habilitado em consequência da dinâmica do acidentee.
+
+--- Anuario 2025 (anuario-2025_final.html/@@display-file/file) ---
+           Ferido grave: pessoa que, por consequência do sinistro, não foi classificada como leve ou não tenha como resultado o óbito.
+
+           Morto: pessoa em óbito no local do sinistro (independentemente de ter recebido atendimento pré-hospitalar) com sinais evidentes de morte ou com a
+           condição de morto constatada por profissional legalmente habilitado em consequência da dinâmica do sinistroe.
