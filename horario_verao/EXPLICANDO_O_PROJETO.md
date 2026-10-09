@@ -240,9 +240,13 @@ Todos públicos. Nenhum precisou de Lei de Acesso à Informação.
     novos assinados em 30/12/2020 e 13/01/2021). Descartamos esse intervalo e
     marcamos como modelados os dias cujo total se repete exatamente no mesmo dia
     da semana. O verão 2019/20 não existe no PNCT.
-  - **Nenhum posto é contado antes e depois** (263 só antes, 338 só depois). A
-    comparação é entre estados, não dentro do posto. Como robustez, 30 pares de
-    postos que só mudaram de km na mesma BR.
+  - **Nenhum posto é contado antes e depois** (nas 23 UFs do estudo, 247 só
+    antes e 315 só depois): o contrato novo de 2020 trocou todos os
+    equipamentos, com códigos e posições novos. Por isso não há efeito fixo de
+    posto que atravesse a abolição; a comparação antes × depois é entre
+    estados (tratado × controle), como no resto do paper. Como robustez, 30
+    pares: um posto só-depois a até 2 km de um só-antes na mesma BR,
+    provavelmente o mesmo ponto realocado, com efeitos fixos do par.
 
 ### 3.4 Sol e geografia
 
@@ -367,8 +371,29 @@ Em código: `fepois(y ~ twp | uf^window + uf^sy + date, cluster = ~uf)`.
 
 Os efeitos fixos:
 
-- **UF × janela:** cada estado tem seu próprio nível no verão e na entressafra
-  (por exemplo, o litoral de SC enche no verão).
+- **UF × janela.** Aqui "janela" é uma variável de **dois valores**, e só
+  dois: **verão** (15/nov a 14/fev) e **entressafra** (1º/abr a 31/ago). Os
+  dias fora das duas (set a 14/nov, 15/fev a mar) nem entram no painel. Então
+  são dois efeitos fixos por estado (46 no total), **os mesmos nas 16
+  temporadas**: o nível típico de SP no verão, o nível típico de SP na
+  entressafra, e assim por diante.
+
+  O que ele absorve é a **diferença permanente entre verão e entressafra de
+  cada estado**, tudo o que faz o verão de um estado ser sistematicamente
+  diferente do inverno dele, ano após ano:
+  - turismo e férias: o litoral de SC e as estradas para o litoral enchem no
+    verão; as férias escolares caem na janela;
+  - clima: no Sul o verão tem dia longo e seco; no litoral do Nordeste a
+    chuva cai em abr–jul, ou seja, na entressafra;
+  - a própria hora 0: o pôr do sol de verão cai mais tarde no relógio que o de
+    inverno, então a hora 0 do verão é uma hora de outro tráfego (19h contra
+    17h30, por exemplo). Esse nível diferente fica no α, desde que seja o
+    mesmo todo ano.
+
+  O que ele **não** absorve: uma diferença verão − entressafra que **muda com
+  o tempo** e muda diferente nos tratados e no controle. Essa é justamente a
+  hipótese de identificação (tendências paralelas da diferença verão −
+  entressafra), testada no estudo de eventos e na imputação.
 - **UF × temporada:** cada estado-ano tem seu próprio nível, comum à janela e à
   entressafra. Absorve tudo o que muda no estado ao longo do tempo: frota,
   fiscalização, Lei Seca, crise, a COVID num estado específico.

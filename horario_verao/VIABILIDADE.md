@@ -569,6 +569,13 @@ robustez, 30 pares de postos que só mudaram de km na mesma BR, com FE de par.
 Cobertura nos verões: tratados com 59–146 postos antes e 175–217 depois;
 controle com 18–50 antes e 61–69 depois.
 
+> **Correção (09/10/2026):** a contagem "263 só antes, 338 só depois" não se
+> reproduz; o certo é **247 só antes e 315 só depois** nas 23 UFs do estudo
+> (267 e 341 em todas as UFs). E "postos que só mudaram de km" diz mais do que
+> se sabe: o critério dos 30 pares é um posto só-depois a até 2 km de um
+> só-antes na mesma BR, provavelmente o mesmo ponto realocado. Nenhuma
+> estimativa muda. Ver ROADMAP (auditoria de 09/10/2026).
+
 **(a) Relógio.** O perfil do verão dos tratados (líquido da entressafra e do
 controle) casa melhor sem defasagem (distância 0,23) do que com −1 ou +1 hora
 (0,32 e 0,38). O PNCT anota hora legal, como a PRF.
