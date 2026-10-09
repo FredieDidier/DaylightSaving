@@ -26,10 +26,12 @@ quando existir, será em inglês.
   config/config.R           DROPBOX_ROOT é a única edição por máquina
   build/manual/             calendário legal digitado dos decretos (versionado)
     hv_temporadas.csv  hv_excecoes.csv  fusos_mudancas.csv  prf_files.csv
+    prf_municipio_alias.csv   nomes da PRF que diferem do IBGE (auditoria 09/10/2026)
   build/01_dst_calendar.R   → painéis UF × temporada e UF × dia; gera TABELA_ESTADOS.md
   build/02_download_prf.R   PRF 2007–2025 (Google Drive da PRF)
   build/03_clean_prf.R      PRF harmonizada, um acidente por linha
-  build/04_municipal_geo.R  sede municipal (geobr 2010) + fuso padrão
+  build/04_municipal_geo.R  sede municipal (geobr 2010; os 5 municípios de 2013 por
+                            ponto no limite de 2020) + fuso padrão
   build/05_download_sim.R   SIM 2008–2025 do FTP do DATASUS
   build/06–07               PNCT (volume horário do DNIT): download e limpeza
   analysis/code/00_utils.R  grupos, janelas, sol, painel (fonte única)
@@ -38,6 +40,7 @@ quando existir, será em inglês.
                             → imputação → inferência → … → agressões (11) → realocação (12)
                             → pedestre (13) → figura do desenho e Tabela 1 (14)
                             → inferência do pedestre (15) → volume do PNCT (16) → inferência do volume (17)
+                            → Bahia 2011/12, checagem de sinal (18) → placebo das horas longe do crepúsculo (19)
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
                             PRIMEIRA_OLHADA, VIABILIDADE, PAPER, fontes_legais/, skills/
 
@@ -78,10 +81,17 @@ quando existir, será em inglês.
 5. **SIM preliminar nunca entra** (`preliminary == TRUE`).
 6. **A tabela `.rds` em `audit/` vence qualquer número escrito**, inclusive aqui
    e no VIABILIDADE.md.
+7. **Município da PRF: nome + `build/manual/prf_municipio_alias.csv`.** Sem a
+   tabela, ~0,4% dos acidentes caíam (auditoria de 09/10/2026). Nome novo que
+   não casar entra na tabela, conferido contra as coordenadas da própria PRF.
+8. **Contagens de excesso (mortes por verão) só incluem óbitos com hora
+   registrada** (15–20% das mortes na via não têm hora). São limite inferior
+   também por isso; o "dia todo" do 12 e da Tabela 1 é "com hora válida".
 
 ## Onde o resultado está, e como dizer
 
-Os números vigentes estão em `horario_verao/VIABILIDADE.md` (§7 é a rodada vigente) e em
+Os números vigentes estão em `horario_verao/VIABILIDADE.md` (§17 é a rodada vigente,
+depois da auditoria de 09/10/2026; a tabela-resumo está no PAPER.md) e em
 `audit/*.rds`. O que se pode dizer hoje:
 
 - O **primeiro estágio** é enorme e medido por terceiros: a parcela de
@@ -89,21 +99,43 @@ Os números vigentes estão em `horario_verao/VIABILIDADE.md` (§7 é a rodada v
 - **A hora que escureceu ganhou mortes de trânsito.** O SIM é o resultado
   âncora, porque passa nos testes de tendência; a PRF corrobora, mas é sensível
   à tendência.
-- **Quem morre é o pedestre** (VIABILIDADE §11): hora 0, SIM +79 lp contra
-  +18 do resto; 12% da base, 44% do excesso; resiste à tendência pré, ao WCR e à
+- **A hora que escureceu:** SIM 29,2 lp (EP 9,0), PRF mortes 54 (20), com
+  vítima 22,2 (5,6); WCR e permutação passam nas três.
+- **Quem morre é o pedestre** (VIABILIDADE §11, §17): hora 0, SIM +77 lp contra
+  +18 do resto; 12% da base, 43% do excesso; resiste à tendência pré, ao WCR e à
   permutação (VIABILIDADE §11).
 - **SIM × PRF** (VIABILIDADE §13): bases diferentes (todas as vias × rodovias
   federais); na hora 0 não divergem de fato; a PRF corrobora o mecanismo, não o
   tamanho do excesso.
 - **O tráfego seguiu a luz** (PNCT, VIABILIDADE §14): noite −6% de veículos,
-  manhã +12%; por veículo, a hora escura +29 lp nos acidentes com vítima
+  manhã +12%; por veículo, a hora escura +29 lp (28,6) nos acidentes com vítima
   (permutação p = 0,001; `17`). Nenhum
   posto é contado antes e depois; jul/2019–abr/2021 sem contagem (Nota Técnica
   DNIT 001/2020/DE).
 - **A manhã não paga a conta da noite** (VIABILIDADE §10): noite escura
-  (horas 0 e +1) +58 mortes na via por verão (EP 19), manhã clara −3 (11),
-  líquido +55 (p = 0,01). O total do dia tem EP 66: é **inconclusivo**, não
+  (horas 0 e +1) +57 mortes na via por verão (EP 19), manhã clara −3 (11),
+  líquido +54 (p = 0,007). O total do dia tem EP 66: é **inconclusivo**, não
   zero. Na PRF as horas antes do pôr do sol perdem o que a noite ganha.
+
+**Sono (entra no paper; rascunhos em inglês no PAPER.md):** a janela exclui as
+semanas da troca e a abolição não tem noite de sono perdida; o sono crônico se
+descarta pela hora única, pelo FE de UF × dia, pelo pedestre e pelo placebo das
+horas de luz inalterada (`19`, VIABILIDADE §16: nada sobe no meio do dia nem na
+noite fechada).
+
+**Contribuição, dita com cuidado:** medir a hora pelo pôr do sol local **não é
+novo** (Doleac & Sanders; Toro 2016 com homicídios no Brasil; Mitre-Becerril
+2026). O novo é o fim do regime (sem sono, só luz), o trânsito com óbito na via e
+a mesma janela do calendário em 11 temporadas com e 5 sem. Franco et al., Toro e
+Cortes et al. estudam o horário de verão enquanto ele existia; nenhum estuda o fim.
+
+**Apêndice:** Bahia 2011/12 como checagem de sinal (`18`, VIABILIDADE §15):
+primeiro estágio claro (PRF anota escuro em 68% contra 92–100%); na noite, os
+acidentes com vítima têm o menor valor de 16 temporadas; a manhã não aparece.
+Uma temporada só: p ≈ 0,06, nada além disso.
+
+**Fora, decidido:** fronteira estadual (sem poder: ~1 morte por temporada na
+hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
 
 **O que não se escreve:**
 - que a abolição "aumentou as mortes no trânsito" sem dizer "nas horas que
@@ -116,6 +148,9 @@ Os números vigentes estão em `horario_verao/VIABILIDADE.md` (§7 é a rodada v
 
 - A **hora antes do pôr do sol** cai na PRF (e não no SIM). Mecanismo candidato:
   ofuscamento pelo sol baixo, tráfego que muda de hora.
-- Fluxo de tráfego (sensores do DNIT) para separar exposição de risco por viagem.
-- Conferir no original toda referência marcada (?) no LITERATURE.md.
+- Risco por veículo com os mesmos verões nas duas fontes (PNCT 2014/15–2018/19 e
+  2021/22–2024/25): acidentes com vítima na hora 0 dão ~18,5 em vez de ~22, por
+  veículo ~+25 em vez de +29 (auditoria; ainda não é exibição).
+- Ler o texto completo de Gillmore (2025) e Depalo (2023) antes de citar números
+  além do resumo.
 - Status do projeto de lei de 2025 que proíbe o horário de verão.

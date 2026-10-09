@@ -16,14 +16,23 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
 ## Contribuição
 
 1. **A primeira estimativa do custo de abandonar** o horário de verão. A
-   literatura usa as transições (a semana da troca: Smith 2016; Franco et al.
-   no Brasil). O debate de política é sobre o regime permanente (EUA, UE, o
-   PL 397/2007 na Câmara), e um choque permanente não é uma transição: não há
-   perda de sono, só a luz.
-2. **O teste está na hora exata.** O tratamento é a hora do relógio
-   [pôr do sol padrão, +60 min), calculada por município e dia. Blocos fixos
-   de hora diluem o efeito (VIABILIDADE §3). O espelho de manhã serve de teste
-   de sinal.
+   literatura de trânsito estima o efeito das transições (Smith 2016 nos EUA;
+   Laliotis, Moscelli & Monastiriotis 2023 na Grécia) ou o de estar sob o
+   horário de verão enquanto ele vigorava, com DiD entre períodos ou estados
+   (Gillmore 2025 no Chile; Franco et al. no Brasil). Até a pergunta da
+   abolição é respondida com transições (Depalo 2023, acidentes de trabalho na
+   Itália). O debate de política é sobre o regime permanente (EUA, UE, o
+   PL 397/2007 na Câmara), e aqui o regime de fato acabou: um choque
+   permanente, sem a noite de sono perdida da troca, só a luz.
+2. **A luz medida na hora certa, antes e depois do fim do regime.** Medir a
+   hora em relação ao pôr do sol do lugar não é novo. Doleac & Sanders (2015),
+   Toro (2016, homicídios no Brasil) e Mitre-Becerril (2026) fazem isso, nas
+   transições e, no caso de Toro, também num DiD dos meses de horário de verão.
+   O novo é usar essa hora numa comparação que não depende da troca: a hora do
+   relógio [pôr do sol padrão, +60 min), calculada por município e por dia, na
+   mesma janela do calendário em 11 temporadas com horário de verão e 5 sem.
+   Blocos fixos de hora diluem o efeito (VIABILIDADE §3); a hora da manhã que
+   ganhou luz serve de espelho e de teste de sinal.
 3. **Duas fontes independentes** (registro de óbito e polícia rodoviária) e um
    primeiro estágio medido por terceiros (a fase do dia que o policial anota).
 
@@ -84,6 +93,27 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
   A mesma janela vale para todas as temporadas, antes e depois, então nenhum
   dia entra meio tratado e a variação de datas não contamina a estimativa.
   Candidata a uma frase na seção de desenho e a uma nota na Fig. 2. Fora: abr–ago. Temporadas 2008/09–2023/24: 11 pré e 5 pós.
+- **Sono: entra no paper (pedido do Fredie, 09/10/2026).** Rascunhos em inglês:
+  - *Parágrafo na seção de desenho (sono agudo):*
+    > The design does not involve a clock transition. The summer window starts
+    > on 15 November, at least 11 days after the latest DST start in the sample
+    > (4 November 2018), and ends on 14 February, before the earliest DST end
+    > (15 February 2009). The transition weeks, when the literature finds the
+    > acute effects of lost sleep (Smith 2016; Gillmore 2025), are outside the
+    > window, and abolition itself involves no lost night of sleep. What changed
+    > for the rest of the summer was the clock time of sunset.
+  - *Nota de rodapé (sono crônico, "social jetlag", Giuntella & Mazzonna 2019):*
+    > A later clock sunset can also shorten sleep for the whole season. Three
+    > facts rule this channel out as the source of our estimates. First, the
+    > effect sits in the single hour whose light changed; hours far from dawn
+    > and dusk, where a sleep effect would also show, do not move (Table X).
+    > Second, it survives a state-by-day fixed effect, which absorbs any shift
+    > common to all hours of a day. Third, it is concentrated among
+    > pedestrians, the road users who depend most on being seen. Any chronic
+    > sleep effect of abolition would, if anything, run against our estimates:
+    > an earlier clock sunset should lengthen sleep.
+  - Números do placebo e o "Table X": `19_placebo_hours.R`, VIABILIDADE §16.
+    Conferir os 11 dias contra o calendário ao redigir.
 - Poisson PML, `y ~ tratado × janela × pós | UF×janela + UF×temporada + data`,
   painel UF × dia, EP por UF (23 clusters).
 - Inferência que não depende de 23 clusters: wild cluster restrito (Webb) e
@@ -94,21 +124,28 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
 | | SIM, mortes na via | PRF, mortes | PRF, com vítima |
 |---|--:|--:|--:|
 | primeiro estágio: escuro às 18–19h | | +33,7 p.p. (1,5) | |
-| hora que escureceu (lp) | **29,5 (9,0)** | **56 (21)** | **22,9 (5,7)** |
-| WCR p / permutação p | 0,009 / 0,015 | 0,002 / 0,017 | 0,001 / 0,001 |
-| imputação, tendência pré extrapolada | +38% [−11, 103] | +26% [−24, 108] | +10% [−4, 29] |
-| excesso por verão, noite 0 e +1 | **+58 (19)** | **+33 (10)** | **+147 (38)** |
-| manhã que clareou, por verão | −3 (11) | −6 (8) | −57 (34) |
-| dia todo, por verão | −2 (66) | −58 (45) | −70 (216) |
+| hora que escureceu (lp) | **29,2 (9,0)** | **54 (20)** | **22,2 (5,6)** |
+| WCR p / permutação p | 0,010 / 0,018 | 0,002 / 0,019 | 0,001 / 0,001 |
+| imputação, tendência pré extrapolada | +38% [−11, 103] | +22% [−24, 97] | +8% [−5, 26] |
+| excesso por verão, noite 0 e +1 | **+57 (19)** | **+34 (10)** | **+146 (39)** |
+| manhã que clareou, por verão | −3 (11) | −4 (8) | −53 (33) |
+| dia todo, por verão | −5 (66) | −58 (44) | −95 (215) |
+| placebo: meio do dia / noite fechada (lp) | −4,5 (5,8) / −6,6 (5,6) | −17 (11) / −20 (12) | −1,9 (3,9) / −6,1 (2,9) |
 
-**A frase do paper:** a abolição trouxe ~55 mortes na via a mais por verão
+Rodada de 09/10/2026, depois da correção do casamento de municípios da PRF
+(auditoria de código; antes: SIM 29,5, PRF mortes 56, com vítima 22,9). As
+contagens de excesso só incluem óbitos com hora registrada (15–20% das mortes
+na via não têm hora).
+
+**A frase do paper:** a abolição trouxe ~54 mortes na via a mais por verão
 nas horas que escureceram; a manhã que ganhou luz não compensa. O total do dia
 é estimado com ruído demais para dizer se o saldo aparece nele. É um limite
-inferior, porque exclui quem morre no hospital.
+inferior, porque exclui quem morre no hospital e quem não tem hora do óbito
+registrada.
 
 **Mecanismo: o pedestre** (VIABILIDADE §11). Na hora 0, as mortes de
-pedestres sobem +79 lp no SIM e +173 lp na PRF; as dos demais, +18 e +28. O
-pedestre é 12% da base e 44% do excesso no SIM. Resiste à tendência pré.
+pedestres sobem +77 lp no SIM e +170 lp na PRF; as dos demais, +18 e +26. O
+pedestre é 12% da base e 43% do excesso no SIM. Resiste à tendência pré (69 lp).
 
 **A PRF corrobora com duas ressalvas:** (i) perde metade do efeito com a
 tendência pré extrapolada; (ii) as horas antes do pôr do sol perdem tanto
@@ -130,15 +167,17 @@ quanto a noite ganha, o que nas rodovias federais parece realocação de hora
 8. **Tabela 4**: robustez. Tendência pré (imputação), sem COVID, janela mais
    larga, diferença quádrupla, hora faltante. HonestDiD no apêndice.
 9. **Apêndice**: calendário legal (TABELA_ESTADOS), checagem do relógio da PRF,
-   agressões (11) como nulo, quebra da e-DAT.
+   agressões (11) como nulo, quebra da e-DAT, e a Bahia em 2011/12 como
+   checagem de sinal (`fig08_bahia_switch`, 18; VIABILIDADE §15).
 
 ## O que não entra
 
 - Nascimentos (os partos seguem o relógio do hospital) e agressões (sem
   assinatura de luz, VIABILIDADE §9).
 - A contagem total da PRF (e-DAT).
-- Fronteiras GO/MG × BA/TO e os liga-desliga de BA 2011/12 e TO 2012/13:
-  ficam como extensão, se o parecerista pedir mais identificação.
+- Fronteiras GO/MG × BA/TO: sem poder (ROADMAP, 09/10/2026); ficam como
+  extensão, se o parecerista pedir. O liga-desliga do TO (2012/13) também fica
+  fora; o da BA entra no apêndice só como checagem de sinal.
 - Zero-inflated e binomial negativo (sem excesso de zeros, §7).
 - A frase "a abolição aumentou as mortes no trânsito" sem "nas horas que
   escureceram".

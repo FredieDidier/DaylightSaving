@@ -9,7 +9,7 @@ entra no manuscrito sem conferência na fonte.
 **A janela está aberta.** Não achei nenhum trabalho que use a **abolição de
 2019** para estudar trânsito, violência ou saúde. Sobre a abolição só existem
 estudos de energia. Toda a literatura de horário de verão no Brasil usa as
-**transições** (a semana da troca) ou a adoção, com dados que terminam em 2012–2014.
+**transições** (a semana da troca) ou a adoção, com dados que terminam em 2012–2015.
 
 O vizinho mais próximo é **Franco, Toro, Sampaio & Sampaio**: mesma base (PRF),
 mesma pergunta de luz. A diferenciação tem de ser explícita:
@@ -35,7 +35,32 @@ mesma pergunta de luz. A diferenciação tem de ser explícita:
   PRF, por dia e hora, por UF, 2007–2013. RD na entrada do horário de verão e
   DiD entre estados. Acidentes caem ~10–14% nos estados que adotavam; mais
   acidentes perto do nascer do sol e menos perto do pôr do sol. **Não trata da
-  abolição.**
+  abolição.** **Situação em 09/10/2026:** sem versão publicada em periódico
+  (Crossref, busca na web; a página do SciELO continua "Versão 1", sem DOI de
+  publicação). Os autores e as magnitudes diferem entre as versões (SSRN:
+  2007–2012, −14%; SciELO: 2007–2013, −10%). Citar as duas como WP/preprint.
+- **Toro Machado, W. (2016).** *Três ensaios sobre os efeitos econômicos do
+  horário de verão utilizando regressão descontínua.* Tese de doutorado,
+  PPGE/UFPE (orient. B. Sampaio), 26/04/2016,
+  https://repositorio.ufpe.br/handle/123456789/17945 ✔ (li o PDF, 09/10/2026).
+  Três capítulos, todos na **entrada** do horário de verão, RD com dados diários
+  por UF: (1) internações por diabetes (SIH) +6–8%; (2) homicídios por arma de
+  fogo (SIM, 2006–2011; agressão e intenção indeterminada) −14% na RD e ~−3% no
+  DiD, concentrados nas horas do pôr do sol e do crepúsculo (−6,5 a −8,1% no
+  DiD). A hora é medida **em relação ao pôr do sol de cada município**, no dia
+  anterior à transição, e há robustez com óbito no local; (3) infarto +7–8,5%
+  (publicado como Toro, Tigre & Sampaio 2015, abaixo). Versões posteriores:
+  o cap. 2 virou **Toro, W., R. Tigre & B. Sampaio, "Daylight Saving Lives: the
+  effect of daylight saving time on homicides", SSRN WP 2786452,
+  doi 10.2139/ssrn.2786452** ✔ (resumo pelo Crossref): DiD, −9,83% nos meses de
+  horário de verão, concentrado no começo da noite, ~5.035 vítimas evitadas em
+  2006–2015. Sem versão publicada em periódico encontrada (09/10/2026). Cap. 1
+  (diabetes): nenhuma versão publicada encontrada.
+  **Atenção ao posicionamento:** a hora medida em relação ao pôr do sol de cada
+  município já aparece aqui (e em Doleac & Sanders). A nossa novidade não é
+  isso. É a **abolição** (um choque permanente, sem perda de sono), o **trânsito**
+  com óbito na via (SIM) e a hora que trocou de luz calculada **dia a dia, em
+  hora padrão**, ao longo de toda a janela de verão, antes e depois de 2019.
 - **Toro, W., R. Tigre & B. Sampaio (2015).** "Daylight Saving Time and
   incidence of myocardial infarction: Evidence from a regression discontinuity
   design." *Economics Letters* 136: 1–4, doi 10.1016/j.econlet.2015.08.005 ✔
@@ -46,9 +71,15 @@ mesma pergunta de luz. A diferenciação tem de ser explícita:
   tratados**, sem relação nos não tratados. Canal: privação de sono e ritmo
   circadiano. (A imprensa falava em "segunda-feira"; o artigo fala no primeiro
   dia após a transição. Os anos da amostra não aparecem nos trechos lidos.)
-- **Cortes, Fochezatto & Jacinto.** "Daylight saving time and homicides: light
-  effect in crimes of a Brazilian state." *Análise Econômica* (UFRGS). RS,
-  2006–2014, RD: sem efeito em homicídio, nem no início nem no fim ✔ (resumo).
+- **Cortes, R. X., A. Fochezatto & P. de A. Jacinto (2021).** "Daylight saving
+  time and homicides: light effect in crimes of a Brazilian state." *Análise
+  Econômica* (UFRGS) 39(79): 7–33, doi 10.22456/2176-5456.80052 ✔ (li o PDF,
+  09/10/2026; também no repositório da PUCRS, hdl 10923/17922). Só o RS,
+  SIM 2006–2014, taxa diária de homicídios por 100 mil; RD semiparamétrica
+  (GAM com Loess) por ano, na entrada **e na saída** do horário de verão, com
+  clima (temperatura, chuva, vento) e dia da semana; dia todo e horas perto do
+  pôr do sol; só óbitos fora de hospital. Sem efeito em nenhuma das duas
+  transições; efeito forte de fim de semana. Nenhuma versão mais nova.
 - **Lins, J. G. M. G. & T. A. de Menezes (2020).** "Daylight Saving Time is
   causing suicide." IEPS Texto para Discussão nº 2, fev/2020 ✔ (li o PDF). SIM
   2005–2014, Sul do Brasil, RD na entrada (Calonico-Cattaneo-Titiunik): suicídio
@@ -94,6 +125,30 @@ mesma pergunta de luz. A diferenciação tem de ser explícita:
   **realoca** mortes dentro do dia. **Conversa com o nosso achado de efeito
   concentrado nas horas que escureceram; mas aqui o total do dia é inconclusivo,
   não zero, e a manhã não compensa a noite (VIABILIDADE §10).**
+- **Gillmore, R. (2025).** "Daylight Saving Time and Automobile Accidents:
+  Evidence From Chile." *Health Economics* 34(5): 880–931, doi 10.1002/hec.4936
+  ✔ (resumo do editor, via Crossref, 09/10/2026; texto completo fechado).
+  Chile, 2002–2018. RD na entrada e DiD com as datas de início e fim que mudam
+  de ano para ano: −2,7% de acidentes de carro sob o horário de verão. Separa
+  os dois canais: sono (+6% na semana após a entrada, −3,9% na semana após a
+  saída) e luz (que reduz o risco de acidente grave e fatal).
+- **Laliotis, I., G. Moscelli & V. Monastiriotis (2023).** "Summertime and the
+  drivin' is easy? Daylight saving time and vehicle accidents." *Health
+  Economics* 32(10): 2192–2215, doi 10.1002/hec.4715 ✔ (resumo no repositório
+  aberto da City, Univ. of London, 09/10/2026). Grécia, 2006–2016, dados
+  administrativos diários de todos os acidentes, RD nas transições: canal de
+  luz, com efeito nas faixas de hora mais afetadas pela troca; menos acidentes
+  graves na entrada, mais acidentes leves na saída. Discute os custos para o
+  debate da UE.
+- **Depalo, D. (2023).** "Should the Daylight Saving Time be abolished?
+  Evidence from work accidents in Italy." *Economic Modelling* 128: 106520,
+  doi 10.1016/j.econmod.2023.106520 ✔ (resumo no IDEAS/RePEc, 09/10/2026).
+  INAIL 2013–2017, RD nas transições: acidentes de trabalho +2% nos três
+  primeiros dias após a entrada (some depois); −10% ou mais após a saída
+  (some em uma semana); mortes e invalidez sem efeito. Conclui que, se a UE
+  abolir a troca, os ganhos perdidos seriam pequenos e passageiros. **Responde
+  à pergunta da abolição só com as transições**, que é exatamente a lacuna do
+  nosso desenho.
 - **Fritz et al. (2020), *Current Biology*.** FARS 1996–2017: +6% de acidentes
   fatais na semana após a primavera ✔ (resumo). Crítica: **Martín-Olalla, J. M.
   (2020).** "Traffic accident increase attributed to Daylight Saving Time
@@ -144,6 +199,15 @@ mesma pergunta de luz. A diferenciação tem de ser explícita:
 - **Domínguez, P. & K. Asahi (2022).** "Crime time: how ambient light affects
   crime." *Journal of Economic Geography* ✔ (resumo). Chile: roubo −30% quando a
   transição dá uma hora a mais de luz às 19–21h; efeito simétrico.
+- **Mitre-Becerril, D. (2026).** "The role of ambient light in shaping public
+  safety: Evidence from daylight saving time." *Criminology* (online em
+  13/04/2026, sem volume ainda), doi 10.1111/1745-9125.70046 ✔ (resumo do
+  editor via Crossref, 09/10/2026). 11 cidades densas dos EUA, transições do
+  horário de verão. Uma hora a mais de luz reduz os roubos no pôr do sol em
+  28,8% e **aumenta** as agressões graves em 21,4%. A taxa de esclarecimento
+  não muda, o que aponta para dissuasão e não incapacitação. Crimes fora do pôr
+  do sol e em ambiente fechado não mudam. Usa dados de passageiros e de fluxo
+  de pedestres para a rotina.
 - **Tealde, E. (2022).** "The unequal impact of natural light on crime."
   *J. Population Economics* 35(3) ✔ (resumo). Montevidéu: roubo −17%, efeito
   maior onde a iluminação pública é fraca. O Uruguai aboliu o horário de verão
@@ -196,6 +260,13 @@ rodoviária), num país que está agora decidindo se volta atrás.
 ## Fontes consultadas
 
 - https://preprints.scielo.org/index.php/scielo/preprint/view/6458
+- https://repositorio.ufpe.br/handle/123456789/17945 (tese de W. Toro Machado)
+- https://repositorio.pucrs.br/dspace/handle/10923/17922 (Cortes et al. 2021)
+- https://api.crossref.org/works/10.2139/ssrn.2786452
+- https://doi.org/10.1002/hec.4936
+- https://doi.org/10.1111/1745-9125.70046
+- https://ideas.repec.org/a/eee/ecmode/v128y2023ics0264999323003322.html
+- https://openaccess.city.ac.uk/id/eprint/31855/
 - https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3899538
 - https://pmc.ncbi.nlm.nih.gov/articles/PMC12866939/
 - https://seer.ufrgs.br/index.php/AnaliseEconomica/article/view/80052

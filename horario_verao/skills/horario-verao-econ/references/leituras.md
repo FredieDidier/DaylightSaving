@@ -1,6 +1,6 @@
 # Leituras — horário de verão, luz e relógio
 
-Estado de conferência em 08/10/2026. ✔ = resumo ou página lidos;
+Estado de conferência em 09/10/2026. ✔ = resumo ou página lidos;
 (?) = só por resumo de busca. **Nenhuma entra em manuscrito sem conferência no
 original.** A versão viva desta lista é o `LITERATURE.md` do projeto DaylightSaving.
 
@@ -18,23 +18,29 @@ original.** A versão viva desta lista é o `LITERATURE.md` do projeto DaylightS
 ## Brasil
 
 - Toro, Tigre & Sampaio (2015), Economics Letters 136: 1–4, infarto ✔ (registro)
-- Cortes, Fochezatto & Jacinto, Análise Econômica (UFRGS), homicídio RS ✔ (resumo)
-- Lins & Menezes (2020), WP IEPS, suicídio RS (?)
-- Frischtak, Foguel & Canini (2019), nota sobre violência no RJ (?)
+- Cortes, Fochezatto & Jacinto (2021), Análise Econômica 39(79): 7–33, homicídio RS ✔ (PDF)
+- Toro Machado (2016), tese PPGE/UFPE, três ensaios (diabetes, homicídio, infarto) ✔ (PDF)
+- Toro, Tigre & Sampaio, "Daylight Saving Lives", SSRN 2786452 ✔ (resumo)
+- Lins & Menezes (2020), WP IEPS, suicídio RS ✔ (PDF)
+- Frischtak, Foguel & Canini (2019), nota sobre violência no RJ ✔ (PDF)
 - Parro et al. (2026), Braz. J. Med. Biol. Res., hora do dia e acidentes PRF ✔
 - Energia: Estudos Econômicos/USP (2025) (?); UFJF (2023) (?)
 
 ## Outros
 
-- Fritz et al. (2020), Current Biology (?); Martín-Olalla (2020), carta (?)
-- Woods, Weast & Monfort (2024), IIHS, pedestres (?)
+- Fritz et al. (2020), Current Biology ✔ (resumo); Martín-Olalla (2020), carta ✔ (resumo)
+- Woods, Weast & Monfort (2025), J. Safety Research 93, pedestres ✔
+- Laliotis, Moscelli & Monastiriotis (2023), Health Economics 32(10), Grécia ✔ (resumo)
+- Gillmore (2025), Health Economics 34(5), Chile ✔ (resumo)
+- Depalo (2023), Economic Modelling 128, Itália, acidentes de trabalho ✔ (resumo)
+- Mitre-Becerril (2026), Criminology, luz e crime ✔ (resumo)
 - Gibson & Shrader (2018), ReStat ✔ (resumo)
 - Jagnani (2022), ReStat ✔ (resumo)
-- Jin & Ziebarth, DST e saúde (?)
-- Goodwin, Gonzalez & Fontenla (2024), Applied Economics, México (?)
-- Tese Royal Holloway, Cidade do México, abolição de 2022 e crime (?)
-- A conferir e possivelmente incluir: Sullivan & Flannagan (2002); Coate &
-  Markowitz (2004); Sood & Ghosh (2007); Uttley & Fotios (2017).
+- Jin & Ziebarth (2020), JEBO 170 ✔ (resumo)
+- Goodwin, Gonzalez & Fontenla (2024), Applied Economics, México ✔ (resumo)
+- Carreno Najera (2026), tese Royal Holloway, Cidade do México, abolição de 2022 e crime ✔ (página)
+- Sullivan & Flannagan (2002); Coate & Markowitz (2004); Sood & Ghosh (2007);
+  Uttley & Fotios (2017) ✔ (registros e resumos; ver LITERATURE.md)
 
 ## Métodos
 

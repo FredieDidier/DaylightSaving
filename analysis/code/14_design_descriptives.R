@@ -71,7 +71,9 @@ cols <- c("Treated_win_pre", "Treated_win_post", "Treated_off_pre", "Treated_off
           "Control_win_pre", "Control_win_post", "Control_off_pre", "Control_off_post")
 setcolorder(t1, c("outcome", "scope", cols))
 dir.create(path_tables, recursive = TRUE, showWarnings = FALSE)
-fwrite(t1[, c(list(outcome, scope), lapply(.SD, round, 1)), .SDcols = cols],
+# Named list: an unnamed one wrote the first two headers as "V1,V2" (code
+# audit, 09/10/2026; values were right, only the CSV header was lost).
+fwrite(t1[, c(list(outcome = outcome, scope = scope), lapply(.SD, round, 1)), .SDcols = cols],
        file.path(path_tables, "table1_descriptives.csv"))
 
 # LaTeX body (caption and notes live in the manuscript).

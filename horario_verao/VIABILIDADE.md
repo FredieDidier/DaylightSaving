@@ -1,5 +1,9 @@
 # Viabilidade — 08/10/2026
 
+> **Rodada vigente: §17 (09/10/2026, depois da auditoria de código).** As
+> tabelas de §§2–14 são das rodadas anteriores. Os números da PRF ali estão
+> 1–4 lp acima dos atuais; os do SIM, até 0,3 lp acima. Nenhuma conclusão mudou.
+
 Pergunta: o projeto tem futuro? **Resposta provisória: sim, ancorada no SIM.** O alerta de registro
 da hora (item 5) foi descartado; resta um quebra-cabeça de mecanismo.
 
@@ -487,12 +491,12 @@ faz isso. **Consequências:**
   diário repete o do mesmo dia da semana a 1–4 semanas de distância. O `16`
   descarta esses dias e todo o intervalo de jun/2019 a dez/2020.
 - **O verão 2019/20, o primeiro sem horário de verão, não existe no PNCT**
-  (nov–dez/2019 é modelado). O pós começa em jan–fev/2021.
+  (nov–dez/2019 é modelado). O pós começa no verão 2021/22: a primeira contagem nova é de 06/05/2021 (auditoria de 09/10/2026; antes dizia jan–fev/2021).
 - Para o paper: "DNIT's continuous-count contract lapsed between June 2019
   and 2021; the published 2019-H2 values are model-based and are excluded."
 
 **Janelas de verão cobertas:** 2014/15–2018/19 (5 pré; a cobertura de 2014 começa no meio do
-ano) e 2021/22–2024/25 (4 pós), mais jan–fev/2021. 2019/20 fica de fora (modelado).
+ano) e 2021/22–2024/25 (4 pós). Não há contagem em jan–fev/2021 (a primeira é de 06/05/2021). 2019/20 fica de fora (modelado).
 **Desenho possível:** a mesma tripla no volume, por posto × dia × hora
 relativa ao pôr do sol. Ela diz se o tráfego das horas −2 a +1 mudou de hora
 nos tratados, e permite reescrever o efeito como risco por veículo.
@@ -639,6 +643,84 @@ veículo (acidentes menos volume) tem sua própria distribuição nula.
   manhã 0 passam nos dois.
 - A queda de volume na hora 0 é pequena perto da alta de acidentes, então a
   conclusão sobre o risco não depende de o volume ser significante.
+
+## 15. A Bahia em 2011/12: checagem de sinal (`18_bahia_switch.R`, 09/10/2026)
+
+A BA teve horário de verão numa única temporada da amostra (2011/12, Dec.
+7.584/2011). Naquele verão, a hora que escurece com a abolição era clara na BA;
+nas outras 15 temporadas, escura. Como é um estado e uma temporada, não há EP
+que valha: para cada temporada s, `y ~ BA × janela × 1[sy = s]` com os FE da
+tripla, BA mais os 12 controles, e a temporada 2011/12 ordenada entre as 16.
+Os eventos da BA são montados como no 02 (inclusive os aliases da PRF). Figura
+`fig08_bahia_switch`, números em `audit/bahia_switch.rds`.
+
+- **Primeiro estágio claro:** na hora 0 da noite, no verão, a PRF anotou
+  escuro em 67,8% dos acidentes na BA em 2011/12, contra 92–100% em todas as
+  outras temporadas.
+- **Noite, hora 0 (deveria cair em 2011/12):** acidentes com vítima da PRF
+  −21 lp, **o menor das 16 temporadas** (59 acidentes; média das outras, 57);
+  mortes na via do SIM −38 lp, 4ª menor de 16 (18 mortes contra 23,6); mortes
+  da PRF +18, 11ª de 16 (14 mortes: ruído).
+- **Manhã, hora 0 (deveria subir):** não aparece. SIM −58 (3ª menor), PRF
+  mortes −88 (3ª menor), com vítima +12,5 (12ª de 16). Igual ao paper
+  principal, onde a manhã é fraca.
+- **Leitura:** apêndice, como checagem de sinal. O relógio mudou de fato na BA,
+  e a noite clara teve, nas duas séries maiores, o pior ou um dos piores
+  números da série. Com uma temporada só, a posição 1 de 16 equivale a p ≈ 0,06,
+  e não deve ser lida como mais do que isso. TO (2012/13) fica de fora: 3 a 8
+  mortes por verão na hora 0.
+
+## 16. Placebo contra o sono: horas longe do crepúsculo (`19_placebo_hours.R`, 09/10/2026)
+
+Mesma tripla do 02, em blocos cuja luz não mudou: meio do dia (3h ou mais
+depois do nascer e 4h ou mais antes do pôr do sol padrão) e noite fechada (3h
+ou mais depois do pôr do sol ou 3h ou mais antes do nascer). Um efeito de sono
+crônico apareceria aí. lp (EP por UF):
+
+| | hora 0 da noite | meio do dia | noite fechada |
+|---|--:|--:|--:|
+| SIM, mortes na via | **29,2 (9,0)** | −4,5 (5,8) | −6,6 (5,6) |
+| PRF, mortes | **53,9 (20,3)** | −17,3 (11,2) | −19,8 (11,8), p = 0,09 |
+| PRF, com vítima | **22,2 (5,6)** | −1,9 (3,9) | −6,1 (2,9), p = 0,04 |
+
+Nenhum aumento nas horas cuja luz não mudou; os sinais são negativos, o
+contrário do que um sono pior produziria (e, na PRF, em linha com o tráfego que
+saiu da noite, §14). O efeito está só onde a luz mudou.
+
+## 17. Rodada vigente, depois da auditoria de código (09/10/2026)
+
+**Correção:** a PRF casava o município só pelo nome e perdia ~0,4% dos
+acidentes: renomeados (Embu das Artes, Paraty, Serra Caiada…), variantes de
+grafia (Piçarras, São Miguel d'Oeste, Açu, Itapajé…) e os 5 municípios de 2013,
+sem sede em 2010. Agora há `build/manual/prf_municipio_alias.csv`, e o
+`04_municipal_geo.R` inclui os municípios de 2013. Casamento: 99,7% → 100%. O
+SIM ganha os óbitos desses 5 municípios (≤ 13 por ano). Refeitos 02–10 e
+12–17; o volume do PNCT ficou idêntico, como devia.
+
+| | antes | depois |
+|---|--:|--:|
+| SIM, hora 0 (lp) | 29,5 (9,0) | **29,2 (9,0)** |
+| PRF mortes, hora 0 | 56,2 (20,8) | **53,9 (20,3)** |
+| PRF com vítima, hora 0 | 22,9 (5,7) | **22,2 (5,6)** |
+| WCR p / permutação p, SIM | 0,009 / 0,015 | 0,010 / 0,018 |
+| WCR p / permutação p, PRF mortes | 0,002 / 0,017 | 0,002 / 0,019 |
+| imputação com tendência, PRF mortes | +26% [−24, 108] | +22% [−24, 97] |
+| imputação com tendência, com vítima | +10% [−4, 29] | +8% [−5, 26] |
+| imputação sem tendência, PRF mortes | +63% [2, 158] | +59% [1, 149] |
+| excesso noite 0, +1 (SIM / PRF mortes / com vítima) | 58 / 33 / 147 | 57 / 34 / 146 |
+| líquido noite 0, +1 e manhã 0, SIM | 55 (20), p = 0,006 | 54 (20), p = 0,007 |
+| manhã clara, com vítima | −57 (34), p = 0,10 | −53 (33), p = 0,11 |
+| pedestre, hora 0, SIM / PRF mortes | 78,6 / 173 | 76,6 / 170 |
+| pedestre, % do excesso no SIM | 43,7 | 43,4 |
+| pedestre, permutação p, SIM | 0,029 | 0,035 |
+| risco por veículo, hora 0 (com vítima) | +29,4, p = 0,001 | +28,6, p = 0,001 |
+| risco por veículo, hora +1 | +13,0, p = 0,054 | +13,3, p = 0,044 |
+| quádrupla, hora 0 (SIM / PRF mortes / com vítima) | 28,0 / 93 / 31,4 | 27,7 / 90 / 31,1 |
+| HonestDiD, ruptura M | 0,02 / 0,01 / 0,075 | igual |
+
+Duas mudanças de lado de limiar, ambas pequenas: a manhã clara nos acidentes
+com vítima passa de p = 0,096 para 0,11, e o risco por veículo na hora +1 passa
+de 0,054 para 0,044. Nenhuma frase do PAPER.md dependia delas.
 
 ## Leitura
 

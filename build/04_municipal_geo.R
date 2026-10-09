@@ -2,7 +2,8 @@
 # 04_municipal_geo.R
 #
 # One row per municipality: coordinates of the municipal seat (IBGE, via geobr,
-# 2010 seats) and the standard UTC offset of its time zone (no DST).
+# 2010 seats; the five municipalities installed in 2013 get a point inside
+# their 2020 boundary) and the standard UTC offset of its time zone (no DST).
 #
 # Time zone per municipality is borrowed from WorldCupHealth's muni_tz
 # (IANA zone per municipality). Standard offsets: Noronha -2; Sao_Paulo,
@@ -32,7 +33,20 @@ geo   <- data.table(code7 = as.integer(seats$code_muni), name = seats$name_muni,
                     uf = seats$abbrev_state, lon = xy[, 1], lat = xy[, 2])
 geo[, code6 := code7 %/% 10L]
 
-tz <- as.data.table(read_parquet(
+# Municipalities installed after 2010 have no 2010 seat: Pescaria Brava and
+# Balneario Rincao (SC), Paraiso das Aguas (MS), Mojui dos Campos (PA), Pinto
+# Bandeira (RS), all 2013. Without them their deaths and crashes were dropped
+# (code audit, 09/10/2026). Point on the surface of the 2020 boundary stands in
+# for the seat; the sunset error is well under a minute.
+mun20 <- read_municipality(year = 2020, showProgress = FALSE)
+new   <- mun20[!as.integer(mun20$code_muni) %in% geo$code7, ]
+xy_n  <- st_coordinates(suppressWarnings(st_point_on_surface(new)))
+geo <- rbind(geo, data.table(code7 = as.integer(new$code_muni), name = new$name_muni,
+                             uf = new$abbrev_state, lon = xy_n[, 1], lat = xy_n[, 2],
+                             code6 = as.integer(new$code_muni) %/% 10L))
+cat("added after 2010:", paste(new$name_muni, collapse = ", "), "\n")
+
+tz <-as.data.table(read_parquet(
   "/Users/fredie/Library/CloudStorage/Dropbox/WorldCupHealth/build/MATCHES/muni_tz.parquet"))
 geo <- tz[, .(code7 = as.integer(code_muni), tz)][geo, on = "code7"]
 

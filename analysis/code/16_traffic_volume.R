@@ -16,8 +16,8 @@
 #         y[s,d] ~ treated x window x post | station + uf^window + uf^sy + date
 #       Poisson on vehicles, EP clustered by UF. No station is counted both
 #       before and after abolition (the 2020 contract replaced every device),
-#       so seasonality sits at the UF level; robustness on the 32 relocated
-#       stations (a post-only station within 2 km of a pre-only one on the same
+#       so seasonality sits at the UF level; robustness on the 30 relocated
+#       station pairs (a post-only station within 2 km of a pre-only one on the same
 #       BR), with pair^window + pair^sy fixed effects.
 #   (c) Within the day: stacked bins with station x date fixed effects and the
 #       rest of the day as reference, so a coefficient is the change in that
@@ -95,8 +95,8 @@ bin_panel <- function(side, b, var = "v") {
   p[]
 }
 # No station is counted both before and after abolition: the 2020 contract
-# replaced every device and almost always moved the km (263 stations pre-only,
-# 338 post-only, 0 in both). A station x window effect would absorb
+# replaced every device and almost always moved the km (counts of pre-only,
+# post-only and both are printed under Coverage). A station x window effect would absorb
 # treated x window x post, so seasonality is modelled at the UF level and the
 # station effect only absorbs the level of its road.
 FEV <- "| station + uf^window + uf^sy + date"
@@ -170,6 +170,7 @@ options(width = 180)
 cat("(a) Clock check: distance between treated-summer net profiles, pre shifted by lag vs post\n")
 print(clock); print(dcast(peak, hour ~ post, value.var = "share"))
 cat("\nCoverage:\n"); print(dcast(cover, sy ~ group + window, value.var = "stations"))
+print(loc[, .(pre_only = sum(pre & !postp), post_only = sum(postp & !pre), both = sum(pre & postp))])
 cat("\n(b) Triple difference in volume (log points):\n")
 print(dcast(ddd, bin_key ~ vehicles, value.var = "coef_lp")[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
 print(ddd[vehicles == "v", .(bin_key, coef_lp = round(coef_lp, 1), se_lp = round(se_lp, 1), p = round(p, 3))])

@@ -60,8 +60,31 @@ Feito nesta sessão:
   Toro et al. conferido nos prints do Fredie: infarto +7,4–8,5% no primeiro dia
   após a entrada. Nenhuma (?) aberta.
 
+- 🔍 **Auditoria de código (09/10/2026, skill code-audit).** 26 scripts lidos
+  inteiros. Número principal reimplementado do zero a partir do SIM bruto:
+  29,4838 lp (EP 8,9783), idêntico. Todos os números do `PAPER.md` batem com os
+  `.rds`. Achados:
+  1. PRF: ~0,4% dos acidentes caem no casamento por nome de município (Embu
+     das Artes, Paraty, Piçarras, São Miguel d'Oeste, Açu, Itapajé, municípios
+     de 2013…). ✅ **Corrigido e refeito (02–17) em 09/10/2026**, com
+     `build/manual/prf_municipio_alias.csv` e os municípios de 2013 no 04.
+     PRF mortes hora 0: 56,2 → 53,9 lp; com vítima 22,9 → 22,2; SIM 29,5 →
+     29,2. Antes/depois em VIABILIDADE §17.
+  2. As contagens de excesso (+58, +55 por verão) só incluem óbitos com hora
+     registrada (~15–20% das mortes na via não têm hora): limite inferior também
+     por isso. O "dia todo" do 12 e da Tabela 1 é "com hora válida".
+  3. Risco por veículo: com os mesmos verões do PNCT (2014/15–2018/19 e
+     2021/22–2024/25), acidentes com vítima na hora 0 = 18,5 (7,7) em vez de
+     22,9; por veículo ≈ +25 lp em vez de +29. A conclusão fica.
+  4. Tabela 1 CSV: cabeçalho "V1,V2" corrigido e refeito (tex idêntico).
+  5. VIABILIDADE §4 e §6 trazem tabelas de rodadas antigas (36,6%, 31,2…), sem
+     aviso; §12 dizia que havia contagem em jan–fev/2021 (corrigido: começa em
+     06/05/2021). Comentário do 16: "32 relocated stations" (são 30 pares) e
+     "263/338" (não reproduzido: 247/315 nas 23 UFs, 267/341 em todas).
+
 Próximos:
-1. Começar o manuscrito (introdução e desenho), em inglês.
+1. Começar o manuscrito (introdução e desenho), em inglês. Entram: o texto do
+   sono (PAPER.md), o placebo das horas (19) e a Bahia no apêndice (18).
 
 ## Decisões tomadas
 
@@ -84,6 +107,7 @@ Próximos:
 | 09/10/2026 | Pedestre vira o mecanismo central do paper | Efeito 4× maior que no resto, nas duas fontes, robusto à tendência |
 | 09/10/2026 | Agressões saem dos desfechos | Sem assinatura de luz: efeito vem de 2019/20 e aparece em horas cuja luz não mudou (VIABILIDADE §9) |
 | 09/10/2026 | O total do dia é "inconclusivo", não "zero" | EP do dia todo (66 mortes/verão no SIM) maior que o efeito da noite (+58) |
+| 09/10/2026 | Fronteira estadual (GO/MG/MT × BA/TO/RO) fica fora do desenho principal | Sem poder: na hora que escureceu, no verão, há ~1 morte na via por temporada do lado tratado a até 100 km da divisa e ~10 a até 300 km; ~2–27 acidentes com vítima da PRF; 0–4 postos do PNCT a até 100 km. Serve no máximo como robustez de faixa larga com FE de par × dia |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 
 ## Pendências pequenas

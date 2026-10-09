@@ -39,22 +39,44 @@ Uma transição (RD na semana da troca) mistura 1 e 2. Um **regime** (abolição
 adoção permanente, fronteira de fuso) isola 1 e 3. Confundir os dois é a
 objeção número um de parecerista.
 
+**Como a literatura separa sono de luz sem medir o sono.** Nenhum paper de
+trânsito mede o sono; deduzem pelo padrão do efeito:
+- *assimetria:* a entrada tira uma hora de sono e a saída dá uma; efeito só
+  (ou maior) na entrada aponta para sono (Gillmore 2025: +6% na semana da
+  entrada, −3,9% na da saída; Depalo 2023: +2% contra −10%);
+- *duração:* sono se ajusta em dias, luz dura a temporada; o que some em uma
+  semana é sono;
+- *hora:* luz só muda no amanhecer e no anoitecer; efeito espalhado pelo dia
+  ou em horas de luz inalterada é sono (Smith 2016; Laliotis et al. 2023).
+Quem mede sono de fato usa pesquisas de uso do tempo e de saúde (Giuntella &
+Mazzonna 2019; Jin & Ziebarth 2020). Num desenho de regime na janela longe
+das trocas, o sono agudo sai por construção; o crônico se descarta com o efeito
+concentrado numa hora, o FE de lugar × dia e um placebo nas horas de luz
+inalterada.
+
 ## 2. As frentes da literatura
 
 **(a) Luz e trânsito.**
 - **Smith (2016, AEJ: Applied)**: mudança das datas em 2007 nos EUA; a transição
   mata mais de 30 pessoas por ano, pelo **sono**; a luz só realoca mortes dentro
   do dia.
+- **Laliotis, Moscelli & Monastiriotis (2023, Health Economics 32(10))**:
+  Grécia 2006–2016, RD nas transições; canal de luz, nas horas que mudaram.
+- **Gillmore (2025, Health Economics 34(5))**: Chile 2002–2018, RD + DiD com
+  as datas que mudam; −2,7% de acidentes sob o horário de verão; separa sono e
+  luz.
+- **Depalo (2023, Economic Modelling 128)**: Itália, acidentes de trabalho, RD
+  nas transições; pergunta se vale abolir, mas responde só com transições.
 - **Fritz et al. (2020, Current Biology)**: FARS, +6% de acidentes fatais na
-  semana após a primavera; crítica de Martín-Olalla (2020) **(?)**.
-- Pedestres: IIHS (Woods, Weast & Monfort 2024) **(?)**; Sullivan & Flannagan
-  (2002); Coate & Markowitz (2004); Sood & Ghosh (2007) **(?)**. É a frente em
-  que a luz domina.
-- Brasil: **Franco, Toro, Sampaio & Sampaio** (preprint 2023, SSRN 2021), PRF
-  2007–2013, RD na entrada do horário de verão e DiD entre estados: acidentes
-  caem ~10–14%.
-- México: Goodwin, Gonzalez & Fontenla (2024, Applied Economics) **(?)**; Salas
-  Rodríguez & Hancevic **(?)**.
+  semana após a primavera; crítica de Martín-Olalla (2020).
+- Pedestres: Woods, Weast & Monfort (2025, J. Safety Research, IIHS); Sullivan
+  & Flannagan (2002); Coate & Markowitz (2004); Sood & Ghosh (2007); Uttley &
+  Fotios (2017). É a frente em que a luz domina.
+- Brasil: **Franco, Toro, Sampaio & Sampaio** (SciELO Preprints 2023, SSRN
+  3899538), PRF 2007–2013, RD na entrada do horário de verão e DiD entre
+  estados: acidentes caem ~10–14%. Sem versão publicada (09/10/2026).
+- México: Goodwin, Gonzalez & Fontenla (2024, Applied Economics); Salas
+  Rodríguez & Hancevic (2023, EconoQuantum).
 
 **(b) Luz e crime.**
 - **Doleac & Sanders (2015, ReStat)**: roubo −7%, −27% na hora após o pôr do
@@ -63,18 +85,25 @@ objeção número um de parecerista.
   uma hora a mais de luz às 19–21h, efeito simétrico.
 - **Tealde (2022, J. Population Economics)**: Montevidéu, −17% de roubo, maior
   onde a iluminação pública é fraca.
-- Brasil: Cortes, Fochezatto & Jacinto (Análise Econômica), homicídio no RS, sem
-  efeito.
+- **Mitre-Becerril (2026, Criminology)**: 11 cidades dos EUA; mais luz derruba
+  roubo no pôr do sol (−28,8%) e sobe agressão grave (+21,4%).
+- Brasil: Cortes, Fochezatto & Jacinto (2021, Análise Econômica 39(79)),
+  homicídio no RS, entrada e saída, sem efeito. **Toro (tese UFPE 2016; WP
+  "Daylight Saving Lives", SSRN 2786452)**: homicídio por arma de fogo −14% na
+  entrada, ~−10% no DiD, concentrado nas horas do pôr do sol medidas por
+  município. A hora relativa ao pôr do sol local **já foi usada** no Brasil.
 
 **(c) Relógio, sono e capital humano.**
 - **Giuntella & Mazzonna (2019, JHE)**: fronteiras de fuso nos EUA.
 - **Gibson & Shrader (2018, ReStat)**: sono e salário.
 - **Jagnani (2022, ReStat)**: fuso único na Índia, sono infantil e escolaridade.
-- Jin & Ziebarth: transições e internações **(?)**.
+- Jin & Ziebarth (2020, JEBO 170): transições, sono e internações.
 
 **(d) Saúde na transição.**
 - **Toro, Tigre & Sampaio (2015, Economics Letters)**: infarto no Brasil, RD.
-- Lins & Menezes (WP IEPS 2020): suicídio no RS **(?)**.
+- Toro (tese UFPE 2016), cap. 1: internações por diabetes +6–8% na entrada
+  (sem versão publicada).
+- Lins & Menezes (WP IEPS 2020): suicídio +57% no RS na entrada.
 - Metanálises de infarto: Manfredini et al. (2019) **(?)**.
 
 ## 3. Desenhos e quando cada um serve

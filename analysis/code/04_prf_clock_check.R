@@ -40,7 +40,13 @@ dst <- as.data.table(read_parquet(file.path(path_calendar_out, "dst_uf_day.parqu
 norm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
 geo[, key := paste(uf, norm(name))]
 prf[, key := paste(uf, norm(municipio))]
-prf <- unique(geo[, .(key, lat, lon, std_offset_h)], by = "key")[prf, on = "key", nomatch = 0]
+# Name aliases, as in 02_sunset_design.R.
+alias <- fread(file.path(path_manual, "prf_municipio_alias.csv"), encoding = "UTF-8")
+alias <- geo[, .(code6, lat, lon, std_offset_h)][
+  alias[, .(key = paste(uf, norm(municipio_prf)), code6)], on = "code6"]
+keys <- rbind(unique(geo[, .(key, lat, lon, std_offset_h)], by = "key"),
+              alias[!key %in% geo$key, .(key, lat, lon, std_offset_h)])
+prf <- keys[prf, on = "key", nomatch = 0]
 prf <- prf[uf %in% TREATED & fase_dia %in% c("pleno dia", "anoitecer", "plena noite") & !is.na(minute)]
 prf <- dst[, .(uf, date, dst)][prf, on = .(uf, date)]
 
