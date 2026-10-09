@@ -729,6 +729,45 @@ Duas mudanças de lado de limiar, ambas pequenas: a manhã clara nos acidentes
 com vítima passa de p = 0,096 para 0,11, e o risco por veículo na hora +1 passa
 de 0,054 para 0,044. Nenhuma frase do PAPER.md dependia delas.
 
+## 18. HonestDiD com temporadas em pares: testado e descartado (09/10/2026)
+
+Pergunta: o breakdown baixo do HonestDiD (§ do `08_honestdid.R`) vem do ruído
+de cada temporada? Teste: o mesmo Poisson da hora 0 da noite, com o estudo de
+eventos em pares de temporadas. Referência 2017/18 + 2018/19; pré: 2008/09
+sozinha, 09–10, 11–12, 13–14, 15–16; pós: 19–20, 21–22, 2023/24 sozinha; alvo
+= média simples dos três grupos pós. Grades iguais às do 08. Rodado fora do
+repositório (script de rascunho), nada salvo em `audit/`.
+
+| hora 0 | média pós (lp) | IC original | IC, M = 0 | breakdown M | breakdown M̄ | Wald pré p |
+|---|--:|---|---|--:|--:|--:|
+| SIM, mortes na via | 33,4 | [−5, 72] | [4, 86] | 0,01 | 0 | 0,72 |
+| PRF, mortes | 43,0 | [−4, 90] | [−9, 62] | 0 | 0 | 0,74 |
+| PRF, com vítima | 23,4 | [9, 38] | [−9, 18] | 0 | 0,5 | <0,001 |
+
+Coeficientes pré (lp): SIM 29, 1, 6, −7, 13; PRF mortes −22, −22, −30, −2, −2;
+PRF com vítima −18, 0, −8, 1, 13.
+
+Contra a versão anual (breakdown M 0,02 / 0,01 / 0,075; M̄ 0 / 0 / 0,25), **o
+breakdown não melhora.** O que melhora é a média pós do SIM (14,8 → 33,4 lp,
+perto dos 29,2 do modelo principal): parte da estranheza vinha da referência
+numa temporada só.
+
+**Leitura.**
+- **SIM:** não há tendência (Wald 0,72, coeficientes sem inclinação). O IC
+  original já inclui zero, por isso M̄ = 0: nem sem violação nenhuma o
+  intervalo exclui zero. É falta de precisão do estudo de eventos (referência
+  curta, EP da média pós ~20 lp), não violação. O modelo principal compara com
+  a média das 11 temporadas pré e tem EP 9.
+- **PRF:** os pares deixam a subida pré visível (mortes −22 → −2; com vítima
+  Wald p < 0,001). A fragilidade da PRF à tendência é real, como na imputação.
+
+**Decisão:** não adotar os pares (não muda a conclusão e pareceria escolha
+feita depois de ver o resultado). Fica a versão anual no apêndice
+(`fig_honestdid`), com a frase: no SIM o HonestDiD não detecta tendência, mostra
+que o estudo de eventos não tem precisão para descartar violações pequenas; a
+identificação vem do contraste dentro do dia (hora 0 contra as vizinhas, manhã
+como espelho, pedestre). Não refazer este teste.
+
 ## Leitura
 
 - **A favor:** primeiro estágio enorme e medido de forma independente;
