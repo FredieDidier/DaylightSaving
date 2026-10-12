@@ -241,6 +241,16 @@ mesma pergunta de luz. A diferenciação tem de ser explícita:
   horário de verão em 2024 (reservatórios suficientes, contra recomendação do
   ONS), dizendo-se defensor da medida e abrindo a porta para 2025 ✔ (imprensa).
   Até mar/2026 nenhum decreto a restabeleceu ✔ (imprensa).
+- Em 12/09/2024 o ministro Alexandre Silveira (MME) disse que a volta do horário
+  de verão era "uma possibilidade real, mas não é um fato" e pediu ao CMSE e ao
+  ONS um plano de contingência para 2024/25 (Agência Brasil, D. Almeida,
+  12/09/2024,
+  https://agenciabrasil.ebc.com.br/economia/noticia/2024-09/volta-de-horario-de-verao-e-possibilidade-real-diz-ministro)
+  ✔. Onze dias depois saiu a NT-ONS DPL 0093/2024 (23/09/2024; PDF oficial no
+  acervo do ONS, conferido em 12/10/2026; trecho em
+  `horario_verao/fontes_dados/ons_nt_dpl_0093_2024.txt`): até 2,9% de redução da
+  demanda máxima, R$ 244–356 mi de combustível térmico em out/2024–fev/2025 e
+  ~R$ 1,8 bi/ano em reserva de capacidade.
 - Em set/2025 a Comissão de Minas e Energia da Câmara aprovou substitutivo ao
   **PL 397/2007** (e nove apensados) que **proíbe** o horário de verão, com
   exceção temporária e regional em crise energética; relator Otto Alencar Filho
