@@ -9,9 +9,13 @@
 # (build/09_census_lighting.R): Census 2022 (main, the closest to abolition)
 # and Census 2010 (urban tracts; robustness). Municipalities are split
 # WITHIN each state at the median of that share, weighted by the
-# municipality's on-road SIM transport deaths (all hours, all seasons), so
-# every state has a darker and a better-lit half with about the same number of
-# deaths, and the comparison is within state.
+# municipality's on-road SIM transport deaths (all hours, all seasons), and
+# the comparison is within state. The halves are equal only roughly: the
+# municipality that crosses the median goes whole to the darker half, so
+# the Federal District (one municipality) is entirely "dark", and in AP and
+# RR the capital puts 85-100% of deaths there. Code audit 12/10/2026:
+# dropping DF or assigning the crossing municipality by its midpoint moves
+# no estimate by more than 8 log points and no difference to p < 0.15.
 #
 # Panel: UF x day x half. Poisson triple difference of 02 with every fixed
 # effect interacted with the half, and the treatment split by half:

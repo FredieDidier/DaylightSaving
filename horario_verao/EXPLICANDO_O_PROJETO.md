@@ -1,6 +1,6 @@
 # O projeto DaylightSaving, explicado do zero
 
-Texto de estudo, 09/10/2026, atualizado em 12/10/2026 (seções 5.12 e 5.13). Para quem nunca viu o projeto. Todos os números
+Texto de estudo, 09/10/2026, atualizado em 12/10/2026 (seções 3.6–3.9, 5.12 e 5.13). Para quem nunca viu o projeto. Todos os números
 foram conferidos nos `.rds` de `Dropbox/DaylightSaving/build/audit/` (a rodada
 vigente, depois da auditoria de código). Quando este texto e um `.rds`
 divergirem, vale o `.rds`.
@@ -278,6 +278,70 @@ Todos públicos. Nenhum precisou de Lei de Acesso à Informação.
   horário de verão de 1994/95; o Dec. 1.252/1994 o exclui).
 - `build/01_dst_calendar.R` gera os painéis UF × temporada e UF × dia e a
   `TABELA_ESTADOS.md`.
+
+### 3.6 Chuva — Xavier BR-DWGD
+
+- Grade diária de precipitação do Brasil (Xavier et al., BR-DWGD v3.2.4,
+  0,1°, 2001–2025), o mesmo arquivo baixado pelo projeto HealthHeat
+  (`path_xavier_pr` em `config/config.R`).
+- `build/08_xavier_rain.R` lê a célula que contém a sede de cada município, de
+  jul/2008 a jun/2025: 5.569 sedes × 6.209 dias. Sede litorânea que cai numa
+  célula de mar usa a célula com dado mais próxima (até 0,3°); Fernando de
+  Noronha fica fora da grade.
+- Uso (`26_light_dose.R`): para cada estado e dia, a parcela das mortes na via
+  do estado que mora em municípios com ≥ 1 mm de chuva naquele dia (pesos pelas
+  mortes do município em todas as horas e temporadas). Em média, 49% no verão.
+  Num fim de tarde chuvoso a hora já era escura com horário de verão, então a
+  abolição deveria escurecê-la menos.
+
+### 3.7 Iluminação pública — Censos 2022 e 2010 (IBGE)
+
+- **Censo 2022** (principal, o mais próximo da abolição): Pesquisa Urbanística
+  do Entorno dos Domicílios, SIDRA tabela 9839, domicílios particulares
+  permanentes ocupados em setores pesquisados, por existência de iluminação
+  pública na face (existe / não existe / não declarado). Parcela sem luz =
+  não existe / (existe + não existe); o "não declarado" sai do denominador.
+  Consulta salva em `census/input/sidra_9839_iluminacao_2022.json`.
+- **Censo 2010** (robustez): arquivo de setores "Entorno" (censobr 0.2.0, cache
+  do projeto HydroDisaster), só setores urbanos: domicílios com ou sem poste de
+  iluminação na face ou na face oposta, somando próprios, alugados e cedidos.
+- `build/09_census_lighting.R` → `census/output/muni_lighting.parquet`. Todos
+  os 5.570 municípios têm o dado de 2022; 5 não têm o de 2010. Mediana
+  municipal sem luz: 1,5% (2022) e 3,2% (2010); no país, ponderado por
+  domicílio, 2,1% e 3,6%; correlação entre os dois censos 0,40.
+- Uso (`27_street_lighting.R`): divide os municípios de cada estado na mediana
+  ponderada pelas mortes (ver 5.12).
+
+### 3.8 México — ATUS e cabeceiras municipais (INEGI)
+
+- **ATUS** (Estadística de Accidentes de Tránsito Terrestre en Zonas Urbanas y
+  Suburbanas), dados abertos do INEGI, release de 28/08/2026, 1997–2025: um
+  registro por acidente em vias não federais, com município, data, hora e
+  minuto, tipo de acidente e mortos e feridos por tipo de usuário.
+  `build/11_mexico_atus.R` guarda 2013–2025; a análise usa 2016–2025 (3,6
+  milhões de acidentes, 44.745 mortes no local, 9.346 de pedestres).
+- **Mortos no ATUS = morre no local do acidente** (dicionário), o mesmo
+  conceito do SIM na via e da PRF. Hora e dia não especificados (99, 32) viram
+  faltantes; na prática todos os registros de 2016 em diante têm hora.
+- **Sede municipal** pelo serviço web do Marco Geoestadístico do INEGI
+  (wscatgeo v2): a localidade que é a cabecera; nas alcaldías da Cidade do
+  México, a localidade urbana mais populosa. `build/10_mexico_geo.R`; 2.476 de
+  2.478 municípios com coordenada (faltam Mocorito e Sinaloa, em Sinaloa).
+- **Lei:** Ley de los Husos Horarios, DOF 28/10/2022
+  (`fontes_legais/MX_LHHEUM_2022.txt`). Fusos e regimes de cada unidade: 5.13.
+
+### 3.9 Parâmetros do custo
+
+- **Valor estatístico da vida:** regra de referência de Robinson, Hammitt &
+  O'Keeffe (2019), com a renda nacional bruta per capita em PPC de 2025 do
+  Banco Mundial (WDI `NY.GNP.PCAP.PP.CD`: Brasil 22.670, EUA 89.490) e o fator
+  de conversão PPC do Brasil (`PA.NUS.PPP`, 2,55441 R$ por dólar
+  internacional).
+- **Custo social do Ipea:** R$ 433.286,69 por morto em acidente na rodovia
+  federal, preços de dez/2014 (Ipea/PRF 2015, Tabela 6A; repetido na
+  atualização de 2016), trazido a dez/2025 pelo IPCA (SIDRA 1737): R$ 790 mil.
+  Trechos em `fontes_dados/ipea_2015_custo_acidentes.txt` e `..._2016_...`.
+- Todos os valores estão digitados e comentados em `28_total_cost.R`.
 
 ---
 
@@ -849,12 +913,19 @@ sob chuva não muda nada (29,1); a interação aponta na direção certa (menos
 efeito em dia chuvoso) mas sem precisão.
 
 **Iluminação pública** (`27_street_lighting.R`). Municípios divididos dentro de
-cada estado pela mediana da parcela de domicílios em rua sem iluminação. Com o
+cada estado pela mediana (ponderada pelas mortes na via) da parcela de
+domicílios em rua sem iluminação. As metades são iguais só de forma
+aproximada: o município que cruza a mediana vai inteiro para a metade escura,
+o DF (um município só) fica todo na metade escura, e em AP e RR a capital põe
+85–100% das mortes lá. Tirar o DF ou alocar pelo ponto médio move cada
+estimativa em no máximo 8 lp e nenhuma diferença chega a p < 0,15 (auditoria
+de 12/10/2026). Com o
 **Censo 2022** (o mais recente; SIDRA 9839): SIM 40,8 (10,3) nos municípios
 mais escuros contra 14,1 (15,6) nos mais iluminados, diferença p = 0,16. Com o
 Censo 2010: 34,7 contra 26,0, p = 0,76. Direção prevista, sem precisão; e os
-placebos na hora anterior são ruidosos (pedestres p = 0,02 com ~7 mortes por
-verão). Dizer como "consistente com", nunca como achado.
+placebos na hora anterior, cuja luz não mudou, também separam as metades
+(pedestres p = 0,02 com ~7 mortes por verão em cada metade; PRF com vítima
+p = 0,04). Dizer como "consistente com", nunca como achado.
 
 **Custo** (`28_total_cost.R`, reais de 2025; conferido de forma independente):
 
@@ -908,7 +979,9 @@ verões antes, 3 depois. Mortes no local do acidente, como o SIM na via e a
 PRF. Sede municipal pelo serviço web do INEGI (2.476 de 2.478 municípios). **A
 hora do ATUS é hora legal:** o perfil horário dos acidentes no verão com
 horário de verão bate com o de 2023–2025 na mesma hora do relógio (distância
-0,66), não deslocado uma hora (6,9 e 10,0).
+0,68), não deslocado uma hora (6,95 e 10,1). O teste usa só as unidades
+tratadas; até a auditoria de 12/10/2026 incluía os 22 municípios da fronteira
+(controles), o que dava 0,66, 6,9 e 10,0.
 
 **Resultados** (`29_mexico.R`, `30_mexico_within_day.R`; Tabela `tab_mexico`):
 
@@ -1063,8 +1136,9 @@ temporadas pós, maior na primeira.
 Sem poder: ~1 morte por temporada na hora 0 a até 100 km da divisa.
 
 **"Qual o periódico?"**
-AEJ: Applied ou AEJ: Policy (Smith 2016 está na Applied); JHE ou JPubE como
-alternativa.
+AEJ: Applied (Smith 2016 está lá; com o México, "duas abolições, mesma
+assinatura"), depois AEJ: Economic Policy, depois JHE, com o JPubE como
+alternativa ao JHE (ordem do `PARECER.md`).
 
 ---
 
@@ -1089,6 +1163,11 @@ alternativa.
 - **LOCOCOR = 4:** local de ocorrência do óbito na via pública (SIM).
 - **e-DAT:** declaração eletrônica de acidente sem vítima da PRF.
 - **PNCT:** Plano Nacional de Contagem de Tráfego (DNIT).
+- **BR-DWGD:** grade diária de clima do Brasil de Xavier et al. (chuva, 0,1°).
+- **ATUS:** registro de acidentes de trânsito em vias não federais do INEGI
+  (México).
+- **VSL:** valor estatístico da vida; quanto a sociedade paga para evitar uma
+  morte estatística.
 
 ---
 

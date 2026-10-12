@@ -35,8 +35,8 @@
 # Clock: ATUS records legal (clock) time. Test, as for the PNCT in 16: in the
 # treated interior, the hourly profile of accidents in the summer window under
 # DST (2016-2022) matches the profile without DST (2023-2025) at the same clock
-# hour (squared distance 0.66) far better than shifted by one hour (6.86 and
-# 10.03); people follow the clock, and the record follows it too. Recomputed
+# hour (squared distance 0.68) far better than shifted by one hour (6.95 and
+# 10.13); people follow the clock, and the record follows it too. Recomputed
 # below and saved as clock_check.
 # =============================================================================
 
@@ -101,7 +101,11 @@ OUT <- c("Deaths" = "o_deaths", "Pedestrian deaths" = "o_ped_deaths",
          "Accidents with victims" = "o_victim_acc", "Pedestrians struck, with victims" = "o_ped_struck")
 
 # ── Clock check ─────────────────────────────────────────────────────────────
-ck <- acc[!cve_ent %in% c("02", "08", "23", "26") & !is.na(cmin)]
+# Code audit 12/10/2026: the check read every municipality outside 02, 08, 23
+# and 26, so the 22 border municipalities (controls, DST on US dates in the
+# whole window before and after) entered as if treated (130,790 accidents).
+# Restricted to the treated units it gives 0.68 against 6.95 and 10.13.
+ck <- geo[treated == 1L, .(cve_ent, cve_mun)][acc[!is.na(cmin)], on = .(cve_ent, cve_mun), nomatch = 0]
 ck[, `:=`(md = month(date) * 100L + mday(date), h = cmin %/% 60L, y = year(date))]
 ck <- ck[md >= 408L & md <= 1024L & y >= 2016L, .N, by = .(per = fifelse(y <= 2022L, "pre", "post"), h)]
 ck[, s := 100 * N / sum(N), by = per]

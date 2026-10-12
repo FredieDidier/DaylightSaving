@@ -101,6 +101,26 @@ Feito nesta sessão:
   múltiplo de 5; trocar a fórmula solar (diferença < 1 min) move a hora 0 de
   29,2 para 29,8. Pede robustez ao amontoamento (heaping).
 
+- 🔍 **Auditoria de código 22–30 e builds 08–11 (12/10/2026, skill code-audit).**
+  Todos lidos inteiros; conferidos contra os dados: datas do Xavier (UTC, sem
+  deslocamento; 5.569 sedes × 6.209 dias), iluminação 2022/2010 (nacional 2,1% e
+  3,6% sem luz; correlação 0,40), ATUS (100% dos municípios casados, hora em
+  todos os registros), números digitados nos cabeçalhos de 22, 24, 29 e 30.
+  `27` reproduzido por código próprio: idêntico. Nenhum número de exibição mudou.
+  Corrigido: (1) `29`, o teste do relógio incluía os 22 municípios da fronteira
+  (controles, 130.790 acidentes); só tratadas dá 0,68 contra 6,95 e 10,13 (era
+  0,66/6,86/10,03), conclusão igual; (2) `24`, 20 de novembro é feriado nacional
+  desde 2024 (Lei 14.759/2023) e era dia útil; resultados idênticos (nenhuma
+  morte na hora 0 nesse dia que mudasse o painel); (3) `27`, o cabeçalho dizia
+  que todo estado tem duas metades com as mesmas mortes: o DF fica inteiro na
+  metade escura e AP/RR quase; tirar o DF ou usar o ponto médio move ≤ 8 lp e
+  nenhuma diferença chega a p < 0,15. Nota da `tab_street_lighting` agora diz
+  isso. 24 e 29 rodados de novo; `road_users.rds` e `mexico.rds` idênticos
+  exceto `clock_check`; tabelas e PNGs idênticos byte a byte.
+  Decidido pelo Fredie (12/10/2026): a regra do 27 fica como está, com a nota.
+  EXPLICANDO ganhou as seções 3.6–3.9 (chuva Xavier, Censos 2022/2010, ATUS e
+  INEGI, parâmetros do custo), que faltavam.
+
 - ✅ **Parecer de editor (12/10/2026, `PARECER.md`)** e todos os itens essenciais
   feitos: scripts 22–28 (amontoamento, tirar um de fora, quem morre,
   integridade do registro, dose e chuva, iluminação com o Censo 2022, custo em

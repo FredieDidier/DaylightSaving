@@ -64,7 +64,11 @@ easter <- function(y) {
 }
 yrs <- (min(SEASONS)):(max(SEASONS) + 1L)
 fixed <- c("01-01", "04-21", "05-01", "09-07", "10-12", "11-02", "11-15", "12-25")
+# Code audit 12/10/2026: 20 November (Black Consciousness Day) is a national
+# holiday from 2024 on (Law 14,759/2023) and falls in the 2024/25 summer
+# window; it was coded as a working day (1 day x 23 states).
 hol <- c(as.IDate(unlist(lapply(yrs, function(y) sprintf("%d-%s", y, fixed)))),
+         as.IDate(sprintf("%d-11-20", yrs[yrs >= 2024L])),
          do.call(c, lapply(yrs, function(y) easter(y) + c(-48L, -47L, -2L))))
 stopifnot(easter(2019L) == as.IDate("2019-04-21"), easter(2024L) == as.IDate("2024-03-31"))
 days[, daytype := fifelse(wday(date) %in% c(1L, 7L) | date %in% hol, "weekend or holiday", "working day")]
