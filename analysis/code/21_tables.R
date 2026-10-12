@@ -13,6 +13,14 @@
 #   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (16)
 #   tab_robustness      the hour that turned dark under other choices,
 #                       and the hours whose light did not change         (05, 06, 09, 10, 19)
+#   tab_sensitivity     the hour after sunset under other clocks, samples
+#                       and a rain control                               (22, 23, 26)
+#   tab_road_users      who dies: road user, pedestrian age and sex, day (24)
+#   tab_light_dose      darkness as a dose; rain                          (26)
+#   tab_street_lighting darker against better-lit municipalities          (27)
+#   tab_cost            deaths per summer and their value                 (28)
+#   tab_mexico          Mexico, abolition of 2022: evening, hour before, morning,
+#                       and the within-day comparison in treated units  (29, 30)
 #
 # Conventions: outcome names as in OUTCOME_LAB (never the data source);
 # estimates in log points with the standard error below in parentheses;
@@ -84,7 +92,7 @@ main_panel <- function(s) {
     row("", se1(100 * x$se)),
     row("Change (percent)", f1(x$pct)),
     row("p-value, clustered by state", fp(x$p)),
-    row("p-value, permutation of treated states", fp(x$ri_p)),
+    row("p-value, permutation of treated states", fp(x$perm_p)),
     row("Linear model: effect (percent of baseline)", f1(x$linear_effect_pct_of_base)),
     row("Linear model: p-value, wild cluster bootstrap", fp(x$wcr_p)),
     row("Events per summer, treated states before abolition", f0(x$n_treated_win_pre / N_PRE)))
@@ -107,7 +115,7 @@ ped_panel <- function(g) {
     row("", se1(x$se_lp)),
     row("p-value, clustered by state", fp(x$cluster_p)),
     row("p-value, wild cluster bootstrap", fp(x$wcr_p)),
-    row("p-value, permutation of treated states", fp(x$ri_p)),
+    row("p-value, permutation of treated states", fp(x$perm_p)),
     row("Events per summer, treated states before abolition", f0(x$pre_per_season)))
 }
 dx <- pm[group == "ped - other"][match(PAIR, pair)]
@@ -123,7 +131,7 @@ write_tab("tab_pedestrians", c(
   row("Difference (log points)", f1(dx$coef_lp)),
   row("", se1(dx$se_lp)),
   row("p-value, clustered by state", fp(dx$p)),
-  row("p-value, permutation of treated states", fp(dx$ri_p)),
+  row("p-value, permutation of treated states", fp(dx$perm_p)),
   "\\addlinespace",
   panel("Panel D. Pedestrian share (percent)", 4),
   row("Of events before abolition", f1(100 * pp$pre_per_season / (pp$pre_per_season + po$pre_per_season))),
@@ -136,7 +144,11 @@ EX <- c("evening, dark (0, +1)"            = "Two hours after sunset",
         "evening, all (-2 to +1)"          = "Two hours before to two hours after sunset",
         "morning, light (0)"               = "Hour after sunrise",
         "net: evening 0, +1 and morning 0" = "Two hours after sunset and hour after sunrise",
-        "net: all seven hours"             = "All seven hours above",
+        # Code audit 12/10/2026: was "All seven hours above", but only five
+        # of the seven hours of 12_reallocation.R appear above (the hour before
+        # and the second hour after sunrise are summed, not shown). The seven
+        # hours are listed in the table note (latex/exhibits.tex).
+        "net: all seven hours"             = "Seven hours around sunset and sunrise",
         "whole day (separate model)"       = "Whole day, estimated separately")
 ex_rows <- function(keys) unlist(lapply(keys, function(k) {
   x <- ex[sum == k][match(TRAFFIC, outcome)]
@@ -206,4 +218,166 @@ write_tab("tab_robustness", c(
   panel("Panel C. Hours whose light did not change (log points)", 4),
   est_rows("Midday", plc("midday (light unchanged)")$lp, plc("midday (light unchanged)")$se),
   est_rows("Night", plc("night (light unchanged)")$lp, plc("night (light unchanged)")$se),
+  close_))
+
+# ── Table: sensitivity of the hour after sunset ─────────────────────────────
+hp <- rd("heaping.rds")$results
+lo <- rd("leave_out.rds")
+ld <- rd("light_dose.rds")
+sens_row <- function(label, x) c(row(label, f1(x$lp)), row("", se1(x$se)))
+pick_h <- function(v) hp[variant == v & shift_min == 0L][match(TRAFFIC, outcome)]
+pick_l <- function(k, d) lo[kind == k & dropped == d][match(TRAFFIC, outcome)]
+rc <- ld$rain[match(TRAFFIC, outcome)]
+write_tab("tab_sensitivity", c(
+  open3,
+  sens_row("Baseline", pick_h("shift")),
+  "\\addlinespace",
+  panel("Panel A. Clock time and sun", 4),
+  sens_row("Sunset from the full NOAA solar calculator", pick_h("Meeus solar algorithm")),
+  sens_row("Without times recorded at :00 or :30", pick_h("drop :00 and :30")),
+  "\\addlinespace",
+  panel("Panel B. Comparison states and seasons", 4),
+  sens_row("Control states: Northeast only", pick_l("control", "North (control = Northeast only)")),
+  sens_row("Control states: North only", pick_l("control", "Northeast (control = North only)")),
+  sens_row("Without the La Ni\\~na summers, 2020/21 to 2022/23", pick_l("seasons", "La Nina summers 2020/21-2022/23")),
+  sens_row("Without 2019/20, the first summer without DST", pick_l("seasons", "2019/20")),
+  "\\addlinespace",
+  panel("Panel C. Weather", 4),
+  c(row("Controlling for the share of the state under rain", f1(rc$with_rain_control_lp)),
+    row("", se1(rc$with_rain_control_se))),
+  close_))
+
+# ── Table: who dies (road deaths only) ──────────────────────────────────────
+ru <- rd("road_users.rds")$results
+RU <- list(
+  list("Panel A. Road user", "road user",
+       c(pedestrian = "Pedestrians", motorcyclist = "Motorcyclists",
+         `car or light vehicle` = "Car and light-vehicle occupants", other = "Other road users",
+         cyclist = "Cyclists")),
+  list("Panel B. Pedestrians by age and sex", c("pedestrian age", "pedestrian sex"),
+       c(`15-64` = "Aged 15 to 64", `65+` = "Aged 65 or over", `0-14` = "Aged under 15",
+         male = "Men", female = "Women")),
+  list("Panel C. Day", c("day", "day, pedestrians"),
+       c(`working day` = "Working days", `weekend or holiday` = "Weekends and holidays")))
+ru_rows <- function(sp, lab, prefix = "") unlist(lapply(names(lab), function(g) {
+  x <- ru[split %in% sp & group == g]
+  if (nrow(x) == 0) return(NULL)
+  x <- x[1]
+  if (!x$estimable) return(row(paste0(prefix, lab[[g]]), c("--", "--", "--", f1(x$pre_per_season))))
+  row(paste0(prefix, lab[[g]]), c(f1(x$lp), sprintf("(%s)", formatC(x$se, format = "f", digits = 1)),
+                                  fp(x$p), f1(x$pre_per_season)))
+}))
+allr <- ru[split == "all"]
+write_tab("tab_road_users", c(
+  "\\begin{tabular}{@{}l cccc@{}}", "\\toprule",
+  " & Effect & Standard & & Deaths per summer, \\\\",
+  " & (log points) & error & p-value & treated states before \\\\",
+  "\\midrule",
+  row("All road deaths", c(f1(allr$lp), sprintf("(%s)", formatC(allr$se, format = "f", digits = 1)),
+                           fp(allr$p), f1(allr$pre_per_season))),
+  "\\addlinespace", panel(RU[[1]][[1]], 5), ru_rows(RU[[1]][[2]], RU[[1]][[3]]),
+  "\\addlinespace", panel(RU[[2]][[1]], 5), ru_rows(RU[[2]][[2]], RU[[2]][[3]]),
+  "\\addlinespace", panel(RU[[3]][[1]], 5), ru_rows("day", RU[[3]][[3]]),
+  ru_rows("day, pedestrians", setNames(paste("Pedestrians,", tolower(RU[[3]][[3]])), names(RU[[3]][[3]]))),
+  close_))
+
+# ── Table: darkness as a dose, and rain ─────────────────────────────────────
+fs <- ld$first_stage; wd_ <- ld$wald[match(TRAFFIC, outcome)]
+write_tab("tab_light_dose", c(
+  open3,
+  panel("Panel A. Darkness as a dose", 4),
+  row("Crashes recorded dark (percentage points)",
+      c("", "", sprintf("%s (%s)", f1(fs$fs_pp), formatC(fs$fs_se_pp, format = "f", digits = 1)))),
+  row("Effect of a fully dark hour (log points)", f1(wd_$wald_lp_per_full_dark)),
+  row("", ci1(wd_$lo, wd_$hi)),
+  "\\addlinespace",
+  panel("Panel B. Rain (log points)", 4),
+  row("Effect on a dry state-day", f1(rc$effect_dry_lp)),
+  row("", se1(rc$effect_dry_se)),
+  row("Change, dry to fully rainy state-day", f1(rc$rain_change_lp)),
+  row("", se1(rc$rain_change_se)),
+  close_))
+
+# ── Table: street lighting ──────────────────────────────────────────────────
+sl <- rd("street_lighting.rds")$results
+SLO <- c("SIM transport deaths, on road", "SIM pedestrian deaths, on road", "PRF injury accidents")
+sl_rows <- function(b, meas = "unlit_pct_2022") {
+  x <- sl[bin == b & measure == meas][match(SLO, outcome)]
+  c(row("Municipalities with darker streets", f1(x$dark_lp)), row("", se1(x$dark_se)),
+    row("Municipalities with better-lit streets", f1(x$lit_lp)), row("", se1(x$lit_se)),
+    row("Difference, p-value", fp(x$diff_p)))
+}
+write_tab("tab_street_lighting", c(
+  "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
+  " & Road & Pedestrian & Federal highway \\\\",
+  " & deaths & road deaths & injury crashes \\\\",
+  " & (1) & (2) & (3) \\\\",
+  "\\midrule",
+  panel("Panel A. Hour after sunset, Census 2022 (log points)", 4), sl_rows(0L),
+  "\\addlinespace",
+  panel("Panel B. Hour before sunset, light unchanged, Census 2022 (log points)", 4), sl_rows(-1L),
+  "\\addlinespace",
+  panel("Panel C. Hour after sunset, Census 2010 (log points)", 4), sl_rows(0L, "unlit_pct_2010"),
+  close_))
+
+# ── Table: deaths and their value per summer ────────────────────────────────
+tc <- rd("total_cost.rds")
+dn <- tc$deaths[sum == "net: evening 0, +1 and morning 0"]
+vl <- tc$value[sum == "net: evening 0, +1 and morning 0"]
+CNT <- c("A on road, with clock time", "B on road", "C all transport deaths")
+RULE <- c("(a) elasticity 1.5 from the US ratio of 160" = "VSL, income elasticity 1.5 (reference)",
+          "(c) 100 x GNI per capita" = "VSL, 100 $\\times$ income per head",
+          "(b) 160 x GNI per capita" = "VSL, 160 $\\times$ income per head",
+          "(d) IPEA social cost of a death (human capital)" = "Ipea social cost of a death")
+write_tab("tab_cost", c(
+  "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
+  " & Road deaths with & All road & All transport \\\\",
+  " & a clock time & deaths & deaths \\\\",
+  " & (1) & (2) & (3) \\\\",
+  "\\midrule",
+  panel("Panel A. Excess deaths per summer", 4),
+  row("Two hours after sunset and hour after sunrise", f0(dn[match(CNT, count)]$deaths)),
+  row("", se0(dn[match(CNT, count)]$se)),
+  row("Share of summer transport deaths (percent)",
+      f1(dn[match(CNT, count)]$share_of_summer_transport_deaths_pct)),
+  "\\addlinespace",
+  panel("Panel B. Value per summer (millions of 2025 reais)", 4),
+  unlist(lapply(names(RULE), function(r) {
+    x <- vl[rule == r][match(CNT, count)]
+    c(row(RULE[[r]], f0(x$value_brl_million)), row("", se0(x$value_se_brl_million)))
+  })),
+  close_))
+
+# ── Table: Mexico, the 2022 abolition ───────────────────────────────────────
+mx <- rd("mexico.rds")
+MXO <- c("Deaths", "Pedestrian deaths", "Accidents with victims", "Pedestrians struck, with victims")
+mx_rows <- function(s, b, inference = FALSE) {
+  x <- mx$by_hour[side == s & bin == b][match(MXO, outcome)]
+  out <- c(row("Effect of abolition (log points)", f1(x$lp)), row("", se1(x$se)),
+           row("p-value, clustered by unit", fp(x$p)))
+  if (inference) {
+    i <- mx$inference[match(MXO, outcome)]
+    out <- c(out, row("p-value, wild cluster bootstrap", fp(i$wcr_p)),
+             row("p-value, permutation of treated units", fp(i$perm_p)))
+  }
+  c(out, row("Events per year, treated units, before", f1(x$pre_per_year)))
+}
+write_tab("tab_mexico", c(
+  "\\begin{tabular}{@{}l cccc@{}}", "\\toprule",
+  " & & Pedestrian & Accidents & Pedestrians struck, \\\\",
+  " & Deaths & deaths & with victims & with victims \\\\",
+  " & (1) & (2) & (3) & (4) \\\\",
+  "\\midrule",
+  panel("Panel A. Hour after sunset, which turned dark", 5), mx_rows("set", 0L, TRUE),
+  "\\addlinespace",
+  panel("Panel B. Hour before sunset, light unchanged", 5), mx_rows("set", -1L),
+  "\\addlinespace",
+  panel("Panel C. Hour after sunrise, which turned light", 5), mx_rows("rise", 0L),
+  "\\addlinespace",
+  panel("Panel D. Treated units only: hour after sunset against the two before", 5),
+  {
+    w <- rd("mexico_within_day.rds")[match(MXO, outcome)]
+    c(row("Effect of abolition (log points)", f1(w$lp)), row("", se1(w$se)),
+      row("p-value, clustered by unit", fp(w$p)))
+  },
   close_))

@@ -1,0 +1,20 @@
+Ipea (2016), 'Estimativa dos custos dos acidentes de transito no Brasil com base na atualizacao simplificada das pesquisas anteriores do Ipea', Relatorio de Pesquisa.
+PDF: https://www.ipea.gov.br/portal/images/stories/PDFs/relatoriopesquisa/160516_relatorio_estimativas.pdf (lido em 12/10/2026).
+A matriz de custo medio por pessoa e a mesma do relatorio Ipea/PRF 2015 (dezembro de 2014, IPCA). Linha 'Mortos':
+
+                       Pré-hospitalares                   -                    0,00               86,28
+                       Hospitalares                       -                    0,00             143,19
+                       Pós-hospitalares                   -                    0,00                   0,00
+    Mortos
+                       Perda de produção                  -           335.172,20           432.557,99
+                       Remoção                         199,28              -                    499,24
+                        Total                          199,28         335.172,20           433.286,69
+
+Limitacao declarada pelo proprio Ipea (secao 2.1):
+     em função da falta de algumas informações primárias atualizadas. No caso dos valores
+     médios dos componentes de custo, seria indicada a realização de nova pesquisa amostral
+     para se recalcular os valores de referência. Como não foi realizada nova pesquisa amostral,
+     adotou-se a matriz de custo médio calculada no trabalho original, atualizada monetaria-
+     mente pelo IPCA.
+
+Busca de 12/10/2026: nenhum custo por morte do Ipea posterior a este foi encontrado (o estudo Ipea/ANTP de 2020-2021 traz custo por acidente fatal, nao por morte).

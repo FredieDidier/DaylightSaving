@@ -6,7 +6,7 @@
 #   (a) wild cluster restricted bootstrap (Webb, B = 9,999) on the linear
 #       analogue of the volume triple difference (fixed effects
 #       station + uf^window + uf^sy + date partialled out), clusters = UF;
-#   (b) permutation inference: draw 11 of the 23 states as "treated" (DS_RI
+#   (b) permutation inference: draw 11 of the 23 states as "treated" (DS_PERM
 #       draws, default 999; the treatment was not randomized, so this is a
 #       permutation test, not randomization inference), refit the Poisson
 #       volume model, and compare |b| with the permutation distribution;
@@ -28,7 +28,7 @@ suppressPackageStartupMessages({
   library(parallel)
 })
 
-N_RI  <- as.integer(Sys.getenv("DS_RI", unset = "999"))
+N_PERM  <- as.integer(Sys.getenv("DS_PERM", unset = "999"))
 CORES <- as.integer(Sys.getenv("DS_CORES", unset = "5"))
 set.seed(20190425)                       # Decree 9,772
 dqrng::dqset.seed(20190425)
@@ -37,7 +37,7 @@ setFixest_nthreads(1)
 ALL  <- c(TREATED, CONTROL)
 KEYS <- c("eve-1", "eve+0", "eve+1", "morn+0")
 FEV  <- "| station + uf^window + uf^sy + date"
-FAKES <- replicate(N_RI, sample(ALL, length(TREATED)), simplify = FALSE)
+FAKES <- replicate(N_PERM, sample(ALL, length(TREATED)), simplify = FALSE)
 
 vol <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "pnct", "output",
                                             "pnct_station_day_bins.parquet")))
@@ -78,17 +78,17 @@ for (k in KEYS) {
     c(vol = fit_b(a, "fk", FEV), crash = fit_b(b, "fk", FE))
   }, mc.cores = CORES)
   perm <- do.call(rbind, perm)
-  cat(sprintf("%s: %d draws in %.1f min\n", k, N_RI, as.numeric(difftime(Sys.time(), t0, units = "mins"))))
+  cat(sprintf("%s: %d draws in %.1f min\n", k, N_PERM, as.numeric(difftime(Sys.time(), t0, units = "mins"))))
   d_real <- b_cr - b_vol
   d_perm <- perm[, "crash"] - perm[, "vol"]
 
   res[[k]] <- data.table(
     bin_key = k,
     vol_lp = 100 * b_vol, vol_cluster_p = pvalue(m_vol)[["twp"]], vol_wcr_p = pval(wb),
-    vol_perm_p = mean(abs(perm[, "vol"]) >= abs(b_vol)),
-    crash_lp = 100 * b_cr, crash_perm_p = mean(abs(perm[, "crash"]) >= abs(b_cr)),
-    per_vehicle_lp = 100 * d_real, per_vehicle_perm_p = mean(abs(d_perm) >= abs(d_real)),
-    n_perm = N_RI)
+    vol_perm_p = perm_pvalue(perm[, "vol"], b_vol),
+    crash_lp = 100 * b_cr, crash_perm_p = perm_pvalue(perm[, "crash"], b_cr),
+    per_vehicle_lp = 100 * d_real, per_vehicle_perm_p = perm_pvalue(d_perm, d_real),
+    n_perm = N_PERM)
 }
 res <- rbindlist(res)
 

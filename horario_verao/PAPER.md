@@ -125,7 +125,7 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
 |---|--:|--:|--:|
 | primeiro estágio: escuro às 18–19h | | +33,7 p.p. (1,5) | |
 | hora que escureceu (lp) | **29,2 (9,0)** | **54 (20)** | **22,2 (5,6)** |
-| WCR p / permutação p | 0,010 / 0,018 | 0,002 / 0,019 | 0,001 / 0,001 |
+| WCR p / permutação p | 0,010 / 0,019 | 0,002 / 0,020 | 0,001 / 0,002 |
 | imputação, tendência pré extrapolada | +38% [−11, 103] | +22% [−24, 97] | +8% [−5, 26] |
 | excesso por verão, noite 0 e +1 | **+57 (19)** | **+34 (10)** | **+146 (39)** |
 | manhã que clareou, por verão | −3 (11) | −4 (8) | −53 (33) |
@@ -190,6 +190,57 @@ Apêndice
   da PRF por temporada (04), quebra da e-DAT, repetição dos totais do PNCT.
 - Aposentadas (09/10/2026): `fig00` (primeira olhada, com nascimentos) e
   `fig01` (blocos fixos 5–8h); os números seguem nos `.rds`.
+
+## Objeções antecipadas e a resposta (parecer de 12/10/2026, `PARECER.md`)
+
+- **O SIM é o resultado âncora; a PRF corrobora** (decisão de 09/10/2026, mantida).
+  A PRF entra em todas as tabelas, mas o texto nunca se apoia nela sozinha: perde
+  o efeito com a tendência extrapolada (acidentes com vítima 5,6 lp, EP 8,0) e
+  cai na noite fechada (−6,1 lp, p = 0,04). Frase: "nada **sobe** nas horas de
+  luz inalterada", nunca "nada se move".
+- **Radares móveis.** O despacho presidencial de 15/08/2019 suspendeu os radares
+  estáticos, móveis e portáteis nas rodovias federais; a PRF os recolheu em
+  16/08 e retomou em 23/12/2019, depois da liminar da 1ª Vara Federal de
+  Brasília (11/12) mantida pelo TRF-1 (18/12). Cobre metade da janela de
+  2019/20, é nacional (o FE de data absorve) e só toca a PRF. Resposta: sem
+  2019/20, PRF mortes 65,0 (20,7) e com vítima 25,7 (5,9) (`23_leave_out.R`).
+  Fontes: Poder360, Migalhas, Jornal de Brasília (dez/2019); conferir o DOU de
+  16/08/2019 antes de citar.
+- **HonestDiD.** O alvo é a média pós contra 2018/19 (14,8 lp no SIM), não o β
+  (29,2); a nota da figura já diz isso. Frase do VIABILIDADE §18.
+- **Bahia.** As seis comparações aparecem sempre juntas (a figura já as mostra;
+  a nota diz que só uma fica no extremo).
+- **Entregas por moto e horários pós-COVID.** A tripla (janela × fora) absorve o
+  que não é sazonal; a divisão por usuário responde: motociclistas +19,6 lp
+  (10,9), menos que pedestres (+76,6) (`24_road_users.R`).
+- **Amontoamento das horas.** 34,5% das horas do SIM na via são hora cheia. Mover a
+  janela muda o efeito na direção que a física manda (mais tarde, mais escuro,
+  maior); com outra fórmula solar, 29,8; sem :00 e :30, 16,7 (12,9) com menos da
+  metade da amostra (`22_heaping.R`).
+
+## Réplica no México (12/10/2026; EXPLICANDO §5.13)
+
+Abolição de 30/10/2022 (Ley de los Husos Horarios, DOF 28/10/2022), exceto na
+fronteira norte. ATUS (INEGI), 2016–2025. O desenho que se sustenta compara,
+nas unidades que perderam o horário de verão, a hora após o pôr do sol com as
+duas anteriores no mesmo dia: mortes no local +55 lp (17), pedestres +154 (66),
+atropelamentos com vítima +23 (8). A tripla com os 6 controles dá o mesmo sinal
+na hora 0 mas é frágil (hora −1 −126, movida pelos controles). Entra como
+seção própria ou apêndice; muda a contribuição de "Brasil" para "duas
+abolições".
+
+## O lado da energia (para a conta de política; fontes em `fontes_dados/`)
+
+- **MME, NT 5/2019** (a que embasou o Decreto 9.772; fonte primária): o
+  horário de verão 2018/19 **aumentou** a carga em ~0,7% (2017/18: +0,4%, NT
+  10/2017). Ou seja, quando foi abolido, a energia não pagava nada.
+- **ONS, NT DPL 0093/2024** (a mais recente): com a ponta noturna da geração
+  distribuída, a volta economizaria R$ 244–356 mi de combustível num verão e
+  ~R$ 1,8 bi/ano de reserva de capacidade.
+- **Vidas (`28`):** R$ 253–637 mi por verão pelo VSL de referência; R$ 43–108 mi
+  pelo custo do Ipea.
+- Os R$ 159,5 mi de 2016/17 são de imprensa (Agência Brasil; O Globo no
+  clipping do MME de 16/12/2017). Não citar como fonte do MME.
 
 ## O que não entra
 

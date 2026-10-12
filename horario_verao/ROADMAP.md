@@ -85,6 +85,37 @@ Feito nesta sessão:
      06/05/2021). Comentário do 16: "32 relocated stations" (são 30 pares) e
      "263/338" (não reproduzido: 247/315 nas 23 UFs, 267/341 em todas).
 
+- 🔍 **Auditoria de código 18–21 (12/10/2026, skill code-audit).** 18, 19, 20,
+  21 e `00_utils.R` lidos inteiros; rótulos e notas conferidos contra os
+  geradores (02, 04, 05, 06, 07, 08, 10, 11, 12, 13, 15). 18 e 19
+  reimplementados do zero a partir do SIM e da PRF brutos: idênticos (SIM hora 0
+  29,1936 (9,0363); meio do dia −4,5216; noite −6,6258; BA 2011/12 −38,17 /
+  −57,73 / −21,40, posto 1 de 16). 20 e 21 reproduzem byte a byte (tex e png).
+  Corrigido: rótulo "All seven hours above" da tab_excess (só 5 das 7 horas
+  aparecem acima); nota do HonestDiD (alvo é contra 2018/19, não o β da
+  Tabela 2); en dash literal no 20 (agora `–`; PNGs idênticos).
+  Decidido pelo Fredie e feito no mesmo dia: p de permutação = (1 + nº ≥)/(1 +
+  999), colunas `perm_*` (nada de "ri"); primeiro estágio da BA com a
+  definição do 04. Ver VIABILIDADE §19.
+  Achado de pesquisa: 34,5% das horas do SIM na via são hora cheia e 90% são
+  múltiplo de 5; trocar a fórmula solar (diferença < 1 min) move a hora 0 de
+  29,2 para 29,8. Pede robustez ao amontoamento (heaping).
+
+- ✅ **Parecer de editor (12/10/2026, `PARECER.md`)** e todos os itens essenciais
+  feitos: scripts 22–28 (amontoamento, tirar um de fora, quem morre,
+  integridade do registro, dose e chuva, iluminação com o Censo 2022, custo em
+  reais de 2025 com VSL e Ipea), builds 08 (chuva Xavier) e 09 (iluminação).
+  Tabelas novas: `tab_sensitivity`, `tab_road_users`, `tab_light_dose`,
+  `tab_street_lighting`, `tab_cost`; figuras `fig_window_shift`, `fig_leave_out`,
+  `fig_record_integrity`. Periódico-alvo: AEJ Applied → AEJ Policy → JHE (com o México; PARECER.md).
+- ✅ **México (extensão):** ATUS 1997–2025 (INEGI, ago/2026) e lei no DOF;
+  builds 10 (coordenadas das cabeceiras) e 11 (ATUS); `29_mexico.R` (tripla com
+  controles, frágil: só 6 controles) e `30_mexico_within_day.R` (só tratadas,
+  hora 0 contra as duas anteriores: mortes +55, p = 0,001; pedestres +154).
+  Tabela `tab_mexico`, figura `fig_mexico_event_study`. EXPLICANDO §5.13.
+- ✅ EXPLICANDO também em PDF (`horario_verao/EXPLICANDO_O_PROJETO.pdf`, pandoc +
+  xelatex, fonte STIXGeneral).
+
 Próximos:
 1. Começar o manuscrito (introdução e desenho), em inglês. Entram: o texto do
    sono (PAPER.md), o placebo das horas (19) e a Bahia no apêndice (18).

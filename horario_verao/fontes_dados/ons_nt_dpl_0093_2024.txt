@@ -1,0 +1,42 @@
+ONS, NT-ONS DPL 0093/2024, 'Avaliacao dos impactos do horario de verao na carga dos subsistemas Sudeste/Centro-Oeste e Sul', setembro de 2024.
+PDF lido em 12/10/2026 na copia publicada pelo Poder360: https://static.poder360.com.br/2024/09/estudo-ONS-horario-de-verao.pdf
+(nao achado no portal do ONS). Trechos (p. 7-8 e secao de impacto economico):
+
+
+      Com base nos resultados apresentados e nas alterações recentes observadas no
+      comportamento da carga, caracterizada pela mudança de perfil da curva de carga
+      atendida pelo ONS, principalmente pelo aumento expressivo da geração de micro e
+      minigeração distribuída, fazendo com que a demanda máxima do SIN, atendida pelo
+      ONS, passasse a ser registrada no horário noturno, observa-se que há benefícios
+      sistêmicos, do ponto de vista do setor elétrico brasileiro, com a implantação do horário de
+      verão.
+
+      A estimativa dos impactos econômicos no SIN devido à aplicação do horário de verão,
+      resulta em redução de custo de combustível termoelétrico, para o horizonte de
+      outubro/2024 a fevereiro/2025, de R$ 356 milhões no pior cenário hidrológico e
+      R$ 244 milhões no melhor cenário hidrológico. Em termos de contratação de reserva de
+      capacidade, tomando por base os resultados do Leilão de Reserva de Capacidade de
+
+
+      NT-ONS DPL 0093/2024 – AVALIAÇAO DOS IMPACTOS DO HORÁRIO DE VERÃO NA CARGA DOS SUBSISTEMAS
+ONS   SUDESTE/CENTRO-OESTE E SUL
+
+
+
+                                                    8
+      2021, a economia anual, em termos de pagamento de receita fixa aos empreendimentos
+      vencedores do leilão, foi de cerca de R$ 1,8 bilhões por ano.
+
+...
+        Tabela 9.
+
+        Os resultados desta simulação indicaram redução total de custo de combustível
+        termoelétrico de R$ 356 milhões no cenário inferior e R$ 244 milhões no cenário superior.
+
+        Impacto em custo de contratação de reserva de capacidade: Tomando como base as
+        receitas dos empreendimentos vencedores do Leilão de Reserva de Capacidade
+        realizado em 2021 e uma redução estimada em cerca de 2 GW na ponta de carga devido
+        à aplicação do horário de verão, estima-se uma economia anual, em termos de
+        pagamento de receita fixa aos empreendimentos vencedores do leilão, de cerca de R$
+        1,8 bilhões por ano.
+

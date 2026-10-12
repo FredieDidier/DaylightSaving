@@ -38,9 +38,11 @@ quando existir, será em inglês.
   analysis/code/00…17       primeira olhada → viabilidade → hora que trocou de luz
                             → event study → relógio da PRF → tendências
                             → imputação → inferência → … → agressões (11) → realocação (12)
-                            → pedestre (13) → figura do desenho e Tabela 1 (14)
+                            → pedestre (13) → números da Tabela 1 (14)
                             → inferência do pedestre (15) → volume do PNCT (16) → inferência do volume (17)
                             → Bahia 2011/12, checagem de sinal (18) → placebo das horas longe do crepúsculo (19)
+                            → TODAS as figuras (20) e tabelas .tex (21), lidas só dos .rds
+  latex/exhibits.tex        prévia: figuras + tabelas com legendas e notas em rascunho
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
                             PRIMEIRA_OLHADA, VIABILIDADE, PAPER, fontes_legais/, skills/
 
@@ -109,7 +111,7 @@ depois da auditoria de 09/10/2026; a tabela-resumo está no PAPER.md) e em
   tamanho do excesso.
 - **O tráfego seguiu a luz** (PNCT, VIABILIDADE §14): noite −6% de veículos,
   manhã +12%; por veículo, a hora escura +29 lp (28,6) nos acidentes com vítima
-  (permutação p = 0,001; `17`). Nenhum
+  (permutação p = 0,002; `17`). Nenhum
   posto é contado antes e depois; jul/2019–abr/2021 sem contagem (Nota Técnica
   DNIT 001/2020/DE).
 - **A manhã não paga a conta da noite** (VIABILIDADE §10): noite escura
@@ -128,6 +130,18 @@ novo** (Doleac & Sanders; Toro 2016 com homicídios no Brasil; Mitre-Becerril
 2026). O novo é o fim do regime (sem sono, só luz), o trânsito com óbito na via e
 a mesma janela do calendário em 11 temporadas com e 5 sem. Franco et al., Toro e
 Cortes et al. estudam o horário de verão enquanto ele existia; nenhum estuda o fim.
+
+**Rodada do parecer (12/10/2026, VIABILIDADE §19, EXPLICANDO §5.12):**
+amontoamento das horas (34,5% em hora cheia; a estimativa resiste a mover a
+janela e trocar a fórmula solar), tirar um de fora (SIM 24–35), quem morre
+(pedestre 77, moto 20, carro 0; fim de semana > dia útil), registro sem
+mudança, dose (hora toda escura ~124 lp), iluminação (Censo 2022: 41 contra 14,
+p = 0,16, sem precisão), custo em reais de 2025 (54/67/137 mortes por verão;
+VSL R$ 253/311/637 mi; Ipea R$ 43/53/108 mi). Parecer e ranking de periódicos
+em `PARECER.md`: AEJ Applied → AEJ Policy → JHE (depois do México). **México** (`29`, `30`): a réplica
+vale pelo desenho dentro do dia (mortes +55, pedestres +154); a tripla com 6
+controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
+159,5 mi de 2016/17 (imprensa) não se citam.
 
 **Apêndice:** Bahia 2011/12 como checagem de sinal (`18`, VIABILIDADE §15):
 primeiro estágio claro (PRF anota escuro em 68% contra 92–100%); na noite, os

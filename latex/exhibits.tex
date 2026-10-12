@@ -153,7 +153,9 @@ and date. Standard errors are clustered by state.
     \small
     \input{\tabdir/tab_excess.tex}
     \tabnote{Events per summer in the treated states after abolition minus
-    those predicted without it, from one model stacking the seven hours with
+    those predicted without it, from one model stacking seven hours (two
+    before to two after standard-time sunset; one before to two after
+    standard-time sunrise) with
     every fixed effect of equation~(\ref{eq:main}) interacted with the hour.
     Delta-method standard errors in parentheses. The whole day comes from a
     separate model. Only events with a recorded clock time, so the counts
@@ -192,7 +194,71 @@ and date. Standard errors are clustered by state.
     week and day-of-week effects; 95 percent intervals from 299 draws of a
     state bootstrap. Panel C: midday is at least three hours after sunrise
     and more than three hours before sunset; night is at least three hours
-    after sunset or more than two hours before sunrise.}
+    after sunset or more than two hours before sunrise. Nothing rises in
+    these hours; federal highway injury crashes fall at night ($p = 0.04$).}
+  \end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+  \centering
+  \caption{Who dies in the hour that turned dark}
+  \label{tab:road-users}
+  \begin{threeparttable}
+    \small\setlength{\tabcolsep}{5pt}
+    \input{\tabdir/tab_road_users.tex}
+    \tabnote{Road deaths in the hour after standard-time sunset,
+    equation~(\ref{eq:main}) estimated separately for each group, standard
+    errors clustered by state. Road users from the ICD-10 block of the
+    underlying cause: pedestrians V01--V09, cyclists V10--V19, motorcyclists
+    V20--V29, car and light-vehicle occupants V40--V59, other road users
+    V30--V39 and V60--V89. Weekends and holidays: Saturdays, Sundays and
+    national holidays (fixed dates, Carnival Monday and Tuesday, Good
+    Friday). Dashes: fewer than five deaths per summer in the treated states
+    before abolition, too few to estimate.}
+  \end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+  \centering
+  \caption{Deaths per summer and what they are worth}
+  \label{tab:cost}
+  \begin{threeparttable}
+    \small
+    \input{\tabdir/tab_cost.tex}
+    \tabnote{Panel A: excess deaths per summer in the two hours after
+    standard-time sunset and the hour after standard-time sunrise
+    (Table~\ref{tab:excess}). Column 1 is the estimate. Column 2 adds deaths on
+    the road without a clock time, assuming they occur in these hours in the
+    same proportion as deaths with one. Column 3 adds deaths in hospital,
+    assuming the same for them; it is an extrapolation. Shares are of all
+    land-transport deaths in the treated states' summer window before
+    abolition. Panel B: value of a statistical life (VSL) by the reference
+    approach of Robinson, Hammitt and O'Keeffe (2019), from gross national
+    income per head at purchasing-power parity in 2025 (World Bank), converted
+    to reais at the 2025 PPP rate; and the Ipea social cost of a death on a
+    federal highway (Ipea 2015, 2016; December 2014 prices brought to December
+    2025 by the IPCA), a human-capital cost that excludes the value of life
+    itself.
+    Delta-method standard errors in parentheses.}
+  \end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+  \centering
+  \caption{Darkness as a dose}
+  \label{tab:dose}
+  \begin{threeparttable}
+    \small
+    \input{\tabdir/tab_light_dose.tex}
+    \tabnote{Panel A: the first row is equation~(\ref{eq:main}) estimated by
+    least squares on federal highway injury crashes in the hour after sunset,
+    with an indicator for crashes the officer recorded as dusk or night; the
+    second divides each column's estimate in Table~\ref{tab:main} by it (the
+    change if the hour went from light to fully dark), with a 95 percent
+    interval from 499 draws of a state bootstrap. Panel B: the rain share is
+    the share of the state's road deaths that occur in municipalities with at
+    least 1 mm of rain that day (Xavier et al.\ gridded data at the municipal
+    seat), interacted with every term of equation~(\ref{eq:main}).}
   \end{threeparttable}
 \end{table}
 
@@ -215,9 +281,11 @@ and date. Standard errors are clustered by state.
   \includegraphics{fig_honestdid.pdf}
   \caption{Sensitivity to violations of parallel trends}
   \label{fig:honestdid}
-  \fignote{95 percent confidence intervals for the average effect over the
-  five seasons after abolition in the hour after sunset (Rambachan and Roth,
-  2023). Left: the slope of the violation may change by at most $M$ between
+  \fignote{95 percent confidence intervals for the average of the five
+  season coefficients after abolition in Figure~\ref{fig:event-study}, hour
+  after sunset (Rambachan and Roth, 2023). These coefficients are measured
+  against 2018/19, not against the average of the seasons before abolition,
+  so the target differs from $\beta$ in Table~\ref{tab:main}. Left: the slope of the violation may change by at most $M$ between
   seasons. Right: the violation after abolition is at most $\bar M$ times the
   largest one before it.}
 \end{figure}
@@ -241,7 +309,108 @@ and date. Standard errors are clustered by state.
   \fignote{Bahia had DST in 2011/12 only. Each point compares one Bahia season
   with all its other seasons, against the control states, summer window
   against off-season, in the hour after standard-time sunset (left) or
-  sunrise (right).}
+  sunrise (right). Abolition predicts the 2011/12 point to be the lowest on the
+  left and the highest on the right; of the six series, only federal highway
+  injury crashes after sunset come out at the extreme (lowest of 16).}
+\end{figure}
+
+\begin{table}[p]
+  \centering
+  \caption{The hour after sunset under other samples and clocks}
+  \label{tab:sensitivity}
+  \begin{threeparttable}
+    \small\setlength{\tabcolsep}{5pt}
+    \input{\tabdir/tab_sensitivity.tex}
+    \tabnote{Equation~(\ref{eq:main}) for the hour after standard-time
+    sunset, one change per row, standard errors clustered by state. Panel A:
+    sunset from the full NOAA solar calculator instead of the NOAA general
+    equations (at most 1.6 minutes apart); and without the events recorded on
+    the full or half hour (34.5 and 23.0 percent of road deaths). Panel B:
+    control states restricted to one region; summers dropped. Panel C: the
+    rain share of Table~\ref{tab:dose} as a control.}
+  \end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+  \centering
+  \caption{Street lighting}
+  \label{tab:lighting}
+  \begin{threeparttable}
+    \small
+    \input{\tabdir/tab_street_lighting.tex}
+    \tabnote{Municipalities split within each state at the death-weighted
+    median of the share of households on a street face without public
+    lighting: Census 2022 in Panels A and B, urban tracts of Census 2010 in
+    Panel C. Equation~(\ref{eq:main}) on the panel of states by
+    half by day, with every fixed effect interacted with the half; standard
+    errors clustered by state.}
+  \end{threeparttable}
+\end{table}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{fig_window_shift.pdf}
+  \caption{The hour after sunset, moved earlier and later}
+  \label{fig:window-shift}
+  \fignote{Each point is equation~(\ref{eq:main}) for a 60-minute window that
+  starts the stated number of minutes after standard-time sunset; 0 is the
+  hour of Table~\ref{tab:main}. 95 percent confidence intervals.}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{fig_leave_out.pdf}
+  \caption{Leaving one state or one season out}
+  \label{fig:leave-out}
+  \fignote{Equation~(\ref{eq:main}) for the hour after standard-time sunset,
+  dropping the state or season named above each point. 95 percent confidence
+  intervals; the dashed line is the estimate with every state and season.}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{fig_record_integrity.pdf}
+  \caption{How road deaths are recorded}
+  \label{fig:records}
+  \fignote{Land-transport deaths (V01--V89) in the summer window. Top: share
+  that occurred on the road rather than in hospital or elsewhere. Bottom:
+  share of on-road deaths without a valid clock time. A triple difference on
+  either share finds no change with abolition.}
+\end{figure}
+
+\begin{table}[p]
+  \centering
+  \caption{Mexico, which abolished daylight saving time in October 2022}
+  \label{tab:mexico}
+  \begin{threeparttable}
+    \small\setlength{\tabcolsep}{4pt}
+    \input{\tabdir/tab_mexico.tex}
+    \tabnote{Accidents on non-federal roads (INEGI, ATUS), 2016 to 2025;
+    deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a
+    panel of units by day, where a unit is the part of a state that lost DST
+    (treated) or the part that kept its clock: Sonora and Quintana Roo, which
+    had no DST, and Baja California and 22 border municipalities of Coahuila,
+    Nuevo Le\'on and Tamaulipas, which kept DST on US dates (Ley de los Husos
+    Horarios, 2022). Chihuahua, which changed time zone in the same law, is
+    left out. Summer window: 8 April to 24 October; off-season: 8 November to
+    7 March. Standard errors clustered by unit; wild cluster bootstrap on the
+    linear analogue; permutation of which units are treated (999 draws). The
+    comparison units are few and small, which makes Panels A to C noisy.
+    Panel D drops them: within each treated unit and day, the hour after
+    standard-time sunset against the two hours before it, summer against
+    off-season, after 2023 against before, with unit-by-day fixed effects.}
+  \end{threeparttable}
+\end{table}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{fig_mexico_event_study.pdf}
+  \caption{Mexico: the hour after sunset, year by year}
+  \label{fig:mexico}
+  \fignote{Panels A to C of Table~\ref{tab:mexico} with the treated $\times$
+  window term interacted with each year instead of with the period after
+  abolition; 2022, the last year with DST, is the reference. 95 percent
+  confidence intervals.}
 \end{figure}
 
 \end{document}

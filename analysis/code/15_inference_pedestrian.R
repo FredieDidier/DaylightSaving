@@ -6,7 +6,7 @@
 #   (a) wild cluster restricted bootstrap (Webb, B = 9,999) on the demeaned
 #       linear analogue, for pedestrian and non-pedestrian outcomes;
 #   (b) permutation inference over which 11 of the 23 states are treated
-#       (DS_RI draws, default 999), for each coefficient and for the
+#       (DS_PERM draws, default 999), for each coefficient and for the
 #       pedestrian - other difference (same fake assignment for both members of
 #       a pair in each draw, so the difference has its own null distribution);
 #   (c) excess zeros, as in 07. Pedestrian counts are rare (~1 per UF-season
@@ -23,7 +23,7 @@ suppressPackageStartupMessages({
   library(parallel)
 })
 
-N_RI  <- as.integer(Sys.getenv("DS_RI", unset = "999"))
+N_PERM  <- as.integer(Sys.getenv("DS_PERM", unset = "999"))
 CORES <- as.integer(Sys.getenv("DS_CORES", unset = "5"))
 set.seed(20190425)                       # Decree 9,772
 dqrng::dqset.seed(20190425)
@@ -40,7 +40,7 @@ PAIRS <- list(
   "PRF deaths"           = c(ped = "PRF pedestrian deaths", other = "PRF non-pedestrian deaths"),
   "PRF injury accidents" = c(ped = "PRF pedestrian injury accidents",
                              other = "PRF non-pedestrian injury accidents"))
-FAKES <- replicate(N_RI, sample(ALL, length(TREATED)), simplify = FALSE)
+FAKES <- replicate(N_PERM, sample(ALL, length(TREATED)), simplify = FALSE)
 
 fit_b <- function(p, v) coef(fepois(as.formula(paste("y ~", v, FE)), data = p, notes = FALSE))[[v]]
 
@@ -69,18 +69,17 @@ for (nm in names(PAIRS)) {
     })
   }, mc.cores = CORES)
   perm <- do.call(rbind, perm)
-  cat(sprintf("%s: %d draws in %.1f min\n", nm, N_RI, as.numeric(difftime(Sys.time(), t0, units = "mins"))))
+  cat(sprintf("%s: %d draws in %.1f min\n", nm, N_PERM, as.numeric(difftime(Sys.time(), t0, units = "mins"))))
   b <- setNames(out$poisson_lp / 100, out$group)
   d_real <- b[["ped"]] - b[["other"]]
   d_perm <- perm[, "ped"] - perm[, "other"]
-  out[, ri_p := c(mean(abs(perm[, "ped"]) >= abs(b[["ped"]])),
-                  mean(abs(perm[, "other"]) >= abs(b[["other"]])))]
+  out[, perm_p := c(perm_pvalue(perm[, "ped"], b[["ped"]]), perm_pvalue(perm[, "other"], b[["other"]]))]
   out <- rbind(out, data.table(pair = nm, group = "ped - other", poisson_lp = 100 * d_real,
-                               ri_p = mean(abs(d_perm) >= abs(d_real))), fill = TRUE)
+                               perm_p = perm_pvalue(d_perm, d_real)), fill = TRUE)
   res[[nm]] <- out
 }
 res <- rbindlist(res)
-res[, n_ri := N_RI]
+res[, n_perm := N_PERM]
 
 saveRDS(res, file.path(path_audit, "inference_pedestrian.rds"))
 options(width = 180)

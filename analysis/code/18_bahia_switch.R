@@ -100,10 +100,15 @@ rank_tab <- res[, .(coef_2011_lp = 100 * coef[sy == BA_SEASON],
 
 # ── First stage: PRF dark share in BA's evening hour 0, summer window ───────
 # fase_dia travels with each accident, so no join by time is needed.
-fs <- ev_ba[outcome == "PRF injury accidents" & bin_set == 0L & !is.na(fase_dia)]
+# Same definition as the treated-state first stage of 04_prf_clock_check.R:
+# share dark among accidents recorded as full day, dusk or night. Code audit
+# 12/10/2026: the denominator used to keep every non-missing phase, so the 3
+# evening accidents recorded as "amanhecer" (dawn, a coding slip at this hour;
+# 2012/13, 2015/16, 2017/18) counted as not dark, by up to 1.7 p.p.
+fs <- ev_ba[outcome == "PRF injury accidents" & bin_set == 0L &
+              fase_dia %in% c("pleno dia", "anoitecer", "plena noite")]
 fs <- days[uf == "BA", .(date, window, sy)][fs, on = "date", nomatch = 0][window == "win"]
-fs_tab <- fs[, .(dark_pct = round(100 * mean(fase_dia %in% c("anoitecer", "plena noite")), 1),
-                                 n = .N), keyby = sy]
+fs_tab <- fs[, .(dark_pct = round(100 * mean(fase_dia != "pleno dia"), 1), n = .N), keyby = sy]
 
 # Figure: drawn by 20_figures.R from the cache saved below.
 

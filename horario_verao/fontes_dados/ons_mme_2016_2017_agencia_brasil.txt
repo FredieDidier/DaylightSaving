@@ -1,0 +1,9 @@
+Economia do horario de verao 2016/2017: R$ 159,5 milhoes (reducao do despacho de termicas), segundo o MME, em reportagem da Agencia Brasil (EBC), marco de 2017:
+https://agenciabrasil.ebc.com.br/economia/noticia/2017-03/horario-de-verao-gerou-economia-de-r-159-milhoes-com-reducao-de-uso-de
+A nota original do MME nao foi localizada (busca de 12/10/2026). Citar como imprensa, ou nao citar.
+
+Atualizacao 12/10/2026: o clipping da Assessoria de Comunicacao do MME de 16/12/2017
+(https://www.gov.br/mme/pt-br/arquivos/clipping-16-12-2017-sabado.pdf, p. 3) traz o mesmo
+numero, mas e reproducao de O Globo ("Segundo dados do governo..."), nao documento do MME.
+A fonte primaria mais recente do MME e a NT 5/2019 (mme_nt_5_2019.txt): sem valor em reais;
+a temporada 2018/19 aumentou a carga em ~0,7%.

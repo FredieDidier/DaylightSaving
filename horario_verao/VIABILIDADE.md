@@ -206,7 +206,9 @@ a ser bin 0 × tratado × janela × pós.
 estados tratados), nunca "randomization inference". O horário de verão não foi
 sorteado entre estados, e o calendário é fixo e comum a todos (não há datas a
 permutar, como na Copa; no tempo só cabem os placebos de temporada do `03`). Nos
-scripts e nos `.rds`, os nomes `ri_p`, `N_RI` e `DS_RI` ficaram por compatibilidade.
+scripts e nos `.rds`, os nomes eram `ri_p`, `N_RI` e `DS_RI` até 12/10/2026; desde
+então são `perm_p`, `perm_rank`, `n_perm`, `N_PERM` e `DS_PERM` (pedido do Fredie: "RI"
+leria como randomization inference), e o p passou a ser (1 + nº)/(1 + N) (§19).
 Wild cluster restrito (Webb, B = 9.999) no análogo linear; permutação dos 11
 estados tratados (999 sorteios) no Poisson; checagem de excesso de zeros.
 
@@ -768,6 +770,67 @@ que o estudo de eventos não tem precisão para descartar violações pequenas; 
 identificação vem do contraste dentro do dia (hora 0 contra as vizinhas, manhã
 como espelho, pedestre). Não refazer este teste.
 
+## 19. Rodada do parecer (12/10/2026): auditoria 18–21, permutação, itens essenciais
+
+**Auditoria (skill code-audit, scripts 18–21).** 18 e 19 reimplementados do zero
+a partir do SIM e da PRF brutos: idênticos. 20 e 21 reproduzem byte a byte.
+Corrigidos: rótulo "All seven hours above" (só 5 das 7 horas apareciam), nota do
+HonestDiD (o alvo é a média pós contra 2018/19, não o β), en dash literal no 20.
+
+**Permutação.** O p passou a (1 + nº de sorteios ≥ |b|)/(1 + 999), em uma função
+única (`perm_pvalue`, `00_utils.R`); colunas renomeadas para `perm_p`, `perm_rank`,
+`n_perm`, variável `DS_PERM` (antes `ri_*`). 07, 15, 17 e 10 rodados de novo: as
+posições reproduziram exatamente; cada p subiu 0,001.
+
+| | antes | depois |
+|---|--:|--:|
+| permutação p, hora 0: SIM / PRF mortes / com vítima | 0,018 / 0,019 / 0,001 | 0,019 / 0,020 / 0,002 |
+| pedestre, permutação p: SIM / PRF mortes / com vítima | 0,035 / 0,001 / 0,000 | 0,036 / 0,002 / 0,001 |
+| por veículo, permutação p, hora 0 / manhã 0 | 0,001 / 0,002 | 0,002 / 0,003 |
+
+**Bahia.** Primeiro estágio com a definição do 04 (escuro entre pleno dia,
+anoitecer e noite): 2012/13 91,8 → 93,3%; 2015/16 96,6 → 98,3%; 2017/18 96,7 →
+98,3%; 2011/12 igual (67,8%).
+
+**Itens essenciais (scripts 22–28; números em EXPLICANDO §5.12):**
+- amontoamento e relógio solar (`22`): algoritmo completo da NOAA 29,8 (9,1);
+  sem :00 e :30 16,7 (12,9); janela −15 / +15 min: 14,6 / 41,2;
+- tirar um de fora (`23`): SIM entre 24,3 e 34,1 (estados), 22,7 e 35,2
+  (temporadas); controle só NE 32,9; só N 15,7 (8,8); sem La Niña 43,5;
+- quem morre (`24`): pedestre 76,6; motociclista 19,6 (p = 0,07); carro −0,2;
+  fim de semana 41,3 contra dia útil 16,1;
+- integridade (`25`): parcela na via +0,4 p.p. (0,75), parcela sem hora +0,4
+  p.p. (0,65);
+- dose (`26`): primeiro estágio na hora 0 +23,6 p.p. (2,0); hora toda escura
+  ~124 lp [42, 197]; com chuva como controle 29,1;
+- iluminação (`27`): Censo 2022 40,8 contra 14,1 (p = 0,16); Censo 2010 34,7
+  contra 26,0 (p = 0,76);
+- custo (`28`, reais de 2025): 54 / 67 / 137 mortes por verão; VSL de
+  referência R$ 253 / 311 / 637 mi; Ipea R$ 43 / 53 / 108 mi. Conferido por
+  código independente (`scratchpad/verify_cost.R` da sessão): idêntico.
+
+**Fontes novas, lidas no original (trechos em `fontes_dados/`):** Ipea/PRF
+2015 e Ipea 2016 (R$ 433.286,69 por morto, dez/2014); ONS NT DPL 0093/2024 e
+0107/2021; IPCA (SIDRA 1737); Banco Mundial WDI (2025, atualização de
+08/10/2026); Censo 2022 (SIDRA 9839); Lei mexicana de husos horarios (DOF
+28/10/2022, `fontes_legais/MX_LHHEUM_2022.txt`).
+
+**México (`29`, `30`; EXPLICANDO §5.13).** Lei de 2022 (DOF), ATUS 2016–2025
+(INEGI, hora legal conferida pelo perfil horário), 34 unidades (28 tratadas, 6
+controles; Chihuahua fora). Tripla com controles, hora 0: mortes +81 (20), WCR
+p = 0,012, permutação p = 0,021; pedestres +237 (62), 0,048 / 0,024; acidentes
+com vítima −1 (4). Mas a hora −1 dá −126 (41): o controle é fino (1–3 mortes
+por ano na hora −1 fora do verão depois de 2023), e nas tratadas a hora −1
+ficou parada (88 → 98 mortes por ano). Dentro do dia, só tratadas (hora 0
+contra as duas anteriores, FE de unidade × dia): mortes +55 (17), p = 0,001;
+pedestres +154 (66), p = 0,02; acidentes com vítima +12 (3); atropelamentos +23
+(8). **A réplica vale pelo desenho dentro do dia.** Uruguai descartado.
+
+**Energia, fontes primárias (12/10/2026):** MME NT 5/2019 (+0,7% de carga em
+2018/19; recomendou suspender); ONS NT 0107/2021 (sem economia); ONS NT
+0093/2024 (R$ 244–356 mi de combustível por verão; ~R$ 1,8 bi/ano de
+capacidade). Os R$ 159,5 mi de 2016/17 são de imprensa e não serão citados.
+
 ## Leitura
 
 - **A favor:** primeiro estágio enorme e medido de forma independente;
@@ -776,8 +839,10 @@ como espelho, pedestre). Não refazer este teste.
   permanente); dados todos públicos.
 - **Contra / a resolver:** a queda na hora anterior ao pôr do sol (item 5, mecanismo em aberto); só 23 clusters, o que pede
   wild bootstrap ou permutação; COVID nas temporadas 2020/21–2021/22; o efeito
-  no total do dia é zero, então o paper é sobre **realocação de risco para o
-  escuro**, e a manhã precisa ser estimada com cuidado para fechar a conta.
+  no total do dia é **inconclusivo** (EP 66 mortes por verão no SIM; antes
+  esta linha dizia "zero", corrigido em 12/10/2026), então o paper é sobre o
+  risco que foi para o escuro, e a manhã precisa ser estimada com cuidado para
+  fechar a conta.
 - **Literatura:** varredura feita (passo 3) e referências (?) conferidas na
   fonte em 08/10/2026; ver `LITERATURE.md`. Nenhum trabalho usa a abolição de
   2019 para trânsito.

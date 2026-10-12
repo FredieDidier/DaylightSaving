@@ -37,6 +37,17 @@ for (p in c(path_calendar_out, path_audit))
 # SIM now comes from build/05_download_sim.R.
 path_wch_sinasc <- "/Users/fredie/Library/CloudStorage/Dropbox/WorldCupHealth/build/SINASC/output"
 
+# ── Input borrowed from HealthHeat (rain, 26_light_dose.R) ──────────────────
+# Xavier BR-DWGD v3.2.4 daily precipitation, 0.1 degree grid, 2001-2025, as
+# downloaded by HealthHeat. Read once by build/08_xavier_rain.R.
+path_xavier_pr <- "/Users/fredie/Library/CloudStorage/Dropbox/HealthHeat/build/XAVIER/input/pr_20010101_20251231_BR-DWGD_UFES_UTEXAS_v_3.2.4.nc"
+
+# ── Input borrowed from HydroDisaster (street lighting, 27_street_lighting.R)
+# Census 2010 tract file "Entorno" as cached by censobr 0.2.0
+# (censobr::read_tracts(2010, "Entorno")). Read once by
+# build/09_census_lighting.R, which falls back to censobr when it is missing.
+path_census_entorno <- "/Users/fredie/Library/CloudStorage/Dropbox/HydroDisaster/build/censo2010/input/2010_tracts_Entorno_v0.2.0.parquet"
+
 # ── Repository paths (GitHub — versioned) ───────────────────────────────────
 # build/manual/ holds the hand-coded legal calendar. It is small, typed from
 # the decrees themselves, and versioned on purpose: it is the source of truth

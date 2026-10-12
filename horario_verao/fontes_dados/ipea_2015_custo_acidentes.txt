@@ -1,0 +1,33 @@
+Ipea e PRF (2015), 'Acidentes de transito nas rodovias federais brasileiras: caracterizacao, tendencias e custos para a sociedade', Relatorio de Pesquisa.
+PDF: https://www.ipea.gov.br/portal/images/stories/PDFs/relatoriopesquisa/150922_relatorio_acidentes_transito.pdf (lido em 12/10/2026).
+Tabela 6A (valores de dezembro de 2014, IPCA), linha 'Mortos', coluna 'Com fatalidade':
+
+                         Remoção                                            -           218,64            649,12
+
+                         Total                                  22.421,06           125.133,91        141.155,96
+
+                         Pré-hospitalares                                   -             0,00             86,28
+
+                         Hospitalares                                       -             0,00            143,19
+
+                         Pós-hospitalares                                   -             0,00              0,00
+      Mortos
+                         Perda de produção                                  -       335.172,20        432.557,99
+
+                         Remoção                                      199,28                     -        499,24
+
+
+Tabela 8:
+        Custo total e médio por gravidade de acidente – rodovias federais brasileiras (2014)
+
+                                                                                                                 Custo médio
+Gravidade do acidente                      Quantidade de acidentes                   Custo total (R$)¹
+                                                                                                                    (R$)¹
+
+Com fatalidade                                          6.742                            4.360.475.739           646.762,94
+
+Com vítimas                                          62.458                              5.632.631.496            90.182,71
+
+Sem vítimas                                          99.953                              2.305.213.306            23.062,97
+
+Total                                              169.153                             12.298.320.541             72.705,31

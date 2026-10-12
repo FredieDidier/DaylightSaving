@@ -18,6 +18,10 @@
 #   fig_honestdid         Rambachan-Roth sensitivity               (08)
 #   fig_assault           assault deaths, whole day and 5-8 p.m.   (11)
 #   fig_bahia             Bahia's single DST season, 2011/12       (18)
+#   fig_window_shift      the hour moved earlier and later         (22)
+#   fig_leave_out         one state or one season left out         (23)
+#   fig_record_integrity  share on the road, share without a time  (25)
+#   fig_mexico_event_study Mexico, hour after sunset by year       (29)
 #
 # House style (00_utils.R): no titles inside the figure (the caption lives in
 # LaTeX); outcome names as in OUTCOME_LAB, never with the data source; one y
@@ -101,7 +105,7 @@ save_fig(g, "fig_design", height = 3.3)
 # night, by 10-minute bin of clock time minus standard-time sunset (plotted at
 # the bin midpoint).
 fs <- rd("prf_clock_check.rds")$window_curve
-FS <- c("With DST, 2009/10–2018/19", "Without DST, 2019/20–2024/25")
+FS <- c("With DST, 2009/10\u20132018/19", "Without DST, 2019/20\u20132024/25")
 fs <- rbind(fs[, .(m = rbin + 5, share = 100 * `pre (DST)`,     regime = FS[1])],
             fs[, .(m = rbin + 5, share = 100 * `post (no DST)`, regime = FS[2])])
 fs[, regime := factor(regime, levels = FS)]
@@ -208,7 +212,7 @@ rows <- lapply(TRAFFIC, function(o)
 save_fig(stack_rows(rows), "fig_honestdid", height = 6.6)
 
 # ── Appendix: assault deaths ────────────────────────────────────────────────
-BL <- c("Whole day", "5–8 p.m.")
+BL <- c("Whole day", "5\u20138 p.m.")
 as_ <- rd("assault_trends.rds")$event_study[block %in% c("all day", "17-20h")]
 as_[, block := factor(fifelse(block == "all day", BL[1], BL[2]), levels = BL)]
 as_[, c("lo", "hi") := ci(coef, se)]
@@ -243,3 +247,87 @@ rows <- lapply(TRAFFIC, function(o)
          y = "That season against the other Bahia seasons (log points)") +
     theme_paper())
 save_fig(stack_rows(rows), "fig_bahia", height = 6.2)
+
+# ── Appendix: the hour moved earlier and later ──────────────────────────────
+# Each point: the 60-minute window starting s minutes after standard-time
+# sunset (22_heaping.R). s = 0 is the paper's hour.
+sh <- rd("heaping.rds")$results[variant == "shift"]
+sh[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
+          base = factor(fifelse(shift_min == 0L, "The paper's hour", "Window moved"),
+                        levels = c("The paper's hour", "Window moved")))]
+sh[, c("lo", "hi") := ci(lp / 100, se / 100)]
+g <- ggplot(sh, aes(shift_min, lp, colour = base, shape = base)) +
+  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
+  geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.6) +
+  geom_point(size = 2) +
+  facet_wrap(~ outcome, ncol = 1, scales = "free_y") +
+  scale_x_continuous(breaks = seq(-15, 15, 5), labels = signed_lab) +
+  scale_y_continuous(labels = num_lab) +
+  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["grey"]]), levels(sh$base))) +
+  scale_shape_manual(values = setNames(c(16, 1), levels(sh$base))) +
+  labs(x = "Start of the 60-minute window, minutes after standard-time sunset",
+       y = "Effect of abolition (log points)") +
+  theme_paper() + theme_outcome_strip()
+save_fig(g, "fig_window_shift", height = 6.4)
+
+# ── Appendix: leave one state or one season out ─────────────────────────────
+lo_ <- rd("leave_out.rds")
+base_ <- lo_[kind == "baseline", .(outcome, base_lp = lp)]
+lv <- lo_[kind %in% c("state", "season")][base_, on = "outcome"]
+LV <- c(state = "One state left out", season = "One season left out")
+lv[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
+          kind = factor(LV[kind], levels = LV))]
+lv[, c("lo", "hi") := ci(lp / 100, se / 100)]
+lv[, ord := frank(lp, ties.method = "first"), by = .(outcome, kind)]
+rows <- lapply(TRAFFIC_LAB, function(o)
+  ggplot(lv[outcome == o], aes(ord, lp)) +
+    geom_hline(aes(yintercept = base_lp), colour = PAL[["red"]], linewidth = 0.5, linetype = "22") +
+    geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
+    geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.4, colour = PAL[["grey"]]) +
+    geom_point(size = 1.4, colour = PAL[["ink"]]) +
+    geom_text(aes(y = hi, label = dropped), angle = 90, hjust = -0.15, size = 2.1, colour = "grey30") +
+    facet_wrap(~ kind, nrow = 1, scales = "free_x") +
+    scale_x_continuous(breaks = NULL) +
+    scale_y_continuous(labels = num_lab, expand = expansion(mult = c(0.05, 0.3))) +
+    labs(title = o, x = "Estimates ordered from smallest to largest; dashed line: all states and seasons",
+         y = "Effect of abolition (log points)") +
+    theme_paper())
+save_fig(stack_rows(rows), "fig_leave_out", height = 7.6)
+
+# ── Appendix: how deaths are recorded ───────────────────────────────────────
+ri_ <- rd("record_integrity.rds")$series[window == "win"]
+MS <- c(on_road = "Transport deaths that occurred on the road",
+        no_time = "On-road deaths without a clock time")
+GR <- c(treated = "States with DST until 2018/19", control = "Control states")
+ri_[, `:=`(measure = factor(MS[measure], levels = MS), group = factor(GR[group], levels = GR))]
+g <- ggplot(ri_, aes(sy, share, colour = group, shape = group, linetype = group)) +
+  event_frame(ri_$sy) +
+  geom_line(linewidth = 0.6) + geom_point(size = 1.6) +
+  facet_wrap(~ measure, ncol = 1, scales = "free_y") +
+  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["blue"]]), GR)) +
+  scale_shape_manual(values = setNames(c(16, 17), GR)) +
+  scale_linetype_manual(values = setNames(c("solid", "22"), GR)) +
+  labs(x = "Season", y = "Percent, summer window") +
+  theme_paper() + theme_outcome_strip()
+save_fig(g, "fig_record_integrity", height = 5.2)
+
+# ── Mexico: the hour after sunset, year by year ─────────────────────────────
+MXO <- c("Deaths", "Pedestrian deaths", "Accidents with victims", "Pedestrians struck, with victims")
+mxe <- rd("mexico.rds")$event_study[outcome %in% MXO]
+mxe[, outcome := factor(outcome, levels = MXO)]
+mxe[, c("lo", "hi") := ci(coef, se)]
+mxlab <- data.frame(x = (2022.5 + 2025.5) / 2, y = Inf, label = POST_LABEL,
+                    outcome = factor(MXO[1], levels = MXO))
+g <- ggplot(mxe, aes(sy, 100 * coef)) +
+  annotate("rect", xmin = 2022.5, xmax = 2025.5, ymin = -Inf, ymax = Inf, fill = "grey94") +
+  geom_text(data = mxlab, aes(x, y, label = label), inherit.aes = FALSE, vjust = 1.6,
+            size = 3, colour = "grey35") +
+  geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
+  geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.5, colour = PAL[["red"]]) +
+  geom_point(size = 1.8, colour = PAL[["red"]]) +
+  facet_wrap(~ outcome, ncol = 2, scales = "free_y") +
+  scale_x_continuous(breaks = seq(2016, 2025, 2), expand = expansion(add = 0.4)) +
+  scale_y_continuous(labels = num_lab, expand = expansion(mult = c(0.05, 0.15))) +
+  labs(x = "Year", y = "Relative to 2022 (log points)") +
+  theme_paper() + theme_outcome_strip()
+save_fig(g, "fig_mexico_event_study", height = 5.4)

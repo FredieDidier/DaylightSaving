@@ -26,7 +26,7 @@
 # instead of serving as reference.
 #
 # Also: event study by season for bin 0 (reference 2018/19), HonestDiD on it,
-# robustness to the reference set (day only / night only), and (optional, DS_RI)
+# robustness to the reference set (day only / night only), and (optional, DS_PERM)
 # permutation inference over which 11 states are treated.
 # =============================================================================
 
@@ -38,8 +38,8 @@ suppressPackageStartupMessages({
 })
 
 # Permutation inference refits the model once per draw (~35 s each here), so
-# it is off by default; DS_RI=199 runs it (about two hours per outcome).
-N_RI <- as.integer(Sys.getenv("DS_RI", unset = "0"))
+# it is off by default; DS_PERM=199 runs it (about two hours per outcome).
+N_PERM <- as.integer(Sys.getenv("DS_PERM", unset = "0"))
 set.seed(20190425)                       # Decree 9,772
 
 SEASONS <- season_range()
@@ -145,22 +145,22 @@ V_es <- setNames(lapply(es_hd, `[[`, "V"), TRAFFIC)
 # Real and permuted statistics come from the same model, with the bin-0 term
 # alone (a permuted assignment has no meaning for the other focal bins).
 ALL <- c(TREATED, CONTROL)
-ri <- if (N_RI > 0) rbindlist(lapply(TRAFFIC, function(o) {
+perm <- if (N_PERM > 0) rbindlist(lapply(TRAFFIC, function(o) {
   s <- SIDES$set
   p <- make_panel4(o, "set", sort(c(s$focal, s$ref)))
   b_real <- coef(fepois(as.formula(paste("y ~ bp0", FE4)), data = p, notes = FALSE))[["bp0"]]
-  perm <- replicate(N_RI, {
+  perm <- replicate(N_PERM, {
     fake <- sample(ALL, length(TREATED))
     p[, fk := as.integer(bin == 0L & uf %in% fake) * win * post]
     coef(fepois(as.formula(paste("y ~ fk", FE4)), data = p, notes = FALSE))[["fk"]]
   })
-  data.table(outcome = o, coef_bin0_alone = b_real, ri_p = mean(abs(perm) >= abs(b_real)),
-             ri_rank = sprintf("%d of %d", sum(abs(perm) >= abs(b_real)), N_RI))
+  data.table(outcome = o, coef_bin0_alone = b_real, perm_p = perm_pvalue(perm, b_real),
+             perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(b_real)), N_PERM))
 })) else NULL
 
-saveRDS(list(pooled = pooled, event_study = es, event_study_vcov = V_es, honestdid = hd, ri = ri,
+saveRDS(list(pooled = pooled, event_study = es, event_study_vcov = V_es, honestdid = hd, perm = perm,
              seasons = SEASONS,
-             n_ri = N_RI),
+             n_perm = N_PERM),
         file.path(path_audit, "within_day.rds"))
 
 # Figure: drawn by 20_figures.R from the caches of 03 and of this script.
@@ -174,7 +174,7 @@ print(hd[restriction == "original" | param %in% c(0, 0.01, 0.02, 0.05, 0.25, 0.5
          .(outcome, restriction, param, lb = round(100 * lb, 1), ub = round(100 * ub, 1),
            avg_post_lp = round(avg_post_lp, 1), pre_sd_lp = round(pre_sd_lp, 1),
            wald_pre_p = round(wald_pre_p, 3), breakdown_M, breakdown_Mbar)])
-if (!is.null(ri)) {
+if (!is.null(perm)) {
   cat("\nPermutation inference, evening bin 0:\n")
-  print(ri)
+  print(perm)
 }

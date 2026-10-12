@@ -27,7 +27,7 @@ suppressPackageStartupMessages({
   library(fwildclusterboot)
 })
 
-N_RI <- as.integer(Sys.getenv("DS_RI", unset = "999"))
+N_PERM <- as.integer(Sys.getenv("DS_PERM", unset = "999"))
 set.seed(20190425)                       # Decree 9,772
 dqrng::dqset.seed(20190425)
 
@@ -57,7 +57,7 @@ res <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
   y_used <- p$y[obs(m_real)]
   zeros_obs  <- mean(y_used == 0)
   zeros_pois <- mean(exp(-mu))
-  perm <- replicate(N_RI, {
+  perm <- replicate(N_PERM, {
     fake <- sample(ALL, length(TREATED))
     p[, fk := as.integer(uf %in% fake) * win * post]
     coef(fepois(as.formula(paste("y ~ fk", FE)), data = p, notes = FALSE))[["fk"]]
@@ -68,8 +68,8 @@ res <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
              wcr_p = pval(wb), wcr_ci_pct = sprintf("[%.1f, %.1f]",
                                                     100 * confint(wb)[1] / base_mean,
                                                     100 * confint(wb)[2] / base_mean),
-             ri_p = mean(abs(perm) >= abs(b_real)),
-             ri_rank = sprintf("%d of %d", sum(abs(perm) >= abs(b_real)), N_RI),
+             perm_p = perm_pvalue(perm, b_real),
+             perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(b_real)), N_PERM),
              zeros_obs_pct = 100 * zeros_obs, zeros_poisson_pct = 100 * zeros_pois,
              dispersion = var(y_used - mu) / mean(mu))
 }))
@@ -79,6 +79,6 @@ options(width = 170)
 print(res[, .(outcome, hour = fifelse(side == "set", "evening bin 0", "morning bin 0"),
               poisson_lp = round(poisson_lp, 1),
               linear_pct = round(linear_effect_pct_of_base, 1), wcr_p = round(wcr_p, 4),
-              wcr_ci_pct, ri_p = round(ri_p, 3), ri_rank,
+              wcr_ci_pct, perm_p = round(perm_p, 3), perm_rank,
               zeros_obs_pct = round(zeros_obs_pct, 1), zeros_poisson_pct = round(zeros_poisson_pct, 1),
               dispersion = round(dispersion, 2))])

@@ -1,6 +1,6 @@
 # O projeto DaylightSaving, explicado do zero
 
-Texto de estudo, 09/10/2026. Para quem nunca viu o projeto. Todos os números
+Texto de estudo, 09/10/2026, atualizado em 12/10/2026 (seções 5.12 e 5.13). Para quem nunca viu o projeto. Todos os números
 foram conferidos nos `.rds` de `Dropbox/DaylightSaving/build/audit/` (a rodada
 vigente, depois da auditoria de código). Quando este texto e um `.rds`
 divergirem, vale o `.rds`.
@@ -27,6 +27,18 @@ de óbito do SIM e acidentes da Polícia Rodoviária Federal), se concentra nos
 luz, não compensa: o saldo é de mais ou menos **54 mortes a mais por verão**,
 um limite inferior. O efeito sobre o total do dia é ruidoso demais para
 concluir qualquer coisa.
+
+**Em dinheiro:** 54 a 137 mortes por verão (da estimativa à extrapolação que
+inclui quem morre no hospital) valem R$ 253 a 637 milhões por verão pelo valor
+estatístico da vida, em reais de 2025. Quando o horário de verão acabou, o MME
+dizia que ele já não economizava energia (+0,7% de carga em 2018/19); hoje o
+ONS estima economia de R$ 244–356 milhões de combustível por verão se ele
+voltasse.
+
+**Réplica:** o México aboliu o horário de verão em outubro de 2022, exceto na
+fronteira norte. Lá, na hora que escureceu, as mortes no local do acidente
+subiram ~55 log points e as de pedestres ~154, comparando a hora com as duas
+anteriores no mesmo dia (seção 5.13).
 
 ---
 
@@ -435,7 +447,11 @@ assintótica confiar. Por isso há dois testes que não dependem dela:
    diferença (tirando um por vez: linear −20 a −28%, Poisson −5 a −18 lp).
 2. **Inferência por permutação:** sorteamos 999 vezes quais 11 dos 23 estados
    são "tratados", reestimamos, e vemos em que posição o efeito verdadeiro cai.
-   O p-valor é a fração de sorteios com efeito tão grande quanto o real.
+   O p-valor é (1 + nº de sorteios com efeito, em módulo, pelo menos tão
+   grande quanto o real) / (1 + 999): o sorteio verdadeiro conta como um dos
+   possíveis, então o menor p possível é 0,001, nunca zero. (Até 12/10/2026 a
+   conta era a fração simples, que podia dar zero; mudou na auditoria e cada p
+   subiu 0,001. Nas tabelas e nos `.rds` a coluna se chama `perm_p`.)
 
 **Nome:** "permutation inference", **nunca** "randomization inference". O
 horário de verão não foi sorteado entre estados, e o calendário é fixo; o teste
@@ -484,7 +500,7 @@ relógio. O mesmo vale para o PNCT (o perfil horário casa sem defasagem).
 | hora 0 da noite, lp (EP por UF) | **29,2 (9,0)** | **53,9 (20,3)** | **22,2 (5,6)** |
 | em % | +34% | +71% | +25% |
 | p (EP por UF) | 0,001 | 0,008 | <0,001 |
-| permutação p | 0,018 (18 de 999) | 0,019 | 0,001 |
+| permutação p | 0,019 (18 de 999 maiores) | 0,020 | 0,002 |
 | modelo linear, % da base | +46% | +88% | +30% |
 | modelo linear, WCR p | 0,010 | 0,002 | 0,001 |
 | base: tratados, janela, pré, por temporada | 110 | 47 | 571 |
@@ -519,8 +535,10 @@ Coeficiente da tripla em cada hora relativa ao pôr (e ao nascer) do sol, lp:
 | PRF, mortes | **53,9 (20,3)** | −17,3 (11,2) | −19,8 (11,8) |
 | PRF, com vítima | **22,2 (5,6)** | −1,9 (3,9) | −6,1 (2,9) |
 
-Nada sobe onde a luz não mudou. Os sinais são até negativos (na PRF, em linha
-com o tráfego que saiu da noite, seção 5.7).
+Nada **sobe** onde a luz não mudou. Os sinais são até negativos (na PRF, em
+linha com o tráfego que saiu da noite, seção 5.7), e um deles é significante:
+acidentes com vítima da PRF na noite fechada, −6,1 lp (p = 0,04). Por isso a
+frase é "nada sobe", nunca "nada se move".
 
 ### 5.4 Robustez: tendência, COVID, ruído
 
@@ -650,11 +668,11 @@ robustez, não como desenho principal.
 | | pedestre | resto | diferença |
 |---|--:|--:|--:|
 | SIM, mortes na via | **76,6** (≈ +115%) | 17,9 | 58,7 |
-| WCR p / permutação p | 0,008 / 0,035 | 0,017 / 0,058 | — / 0,079 |
+| WCR p / permutação p | 0,008 / 0,036 | 0,017 / 0,059 | — / 0,080 |
 | PRF, mortes | **170** | 25,7 | 144 |
-| permutação p | 0,001 | 0,26 | 0,002 |
+| permutação p | 0,002 | 0,26 | 0,003 |
 | PRF, com vítima | **98,6** | 18,1 | 80,6 |
-| permutação p | <0,001 | 0,009 | 0,001 |
+| permutação p | 0,001 | 0,010 | 0,002 |
 
 - No SIM, o pedestre é **12% das mortes na hora 0 antes de 2019, mas 43% do
   excesso.** Na série bruta, o número de pedestres mortos na via na hora 0, nos
@@ -700,10 +718,10 @@ por hora relativa ao sol, lp:
 
 | hora | volume | por veículo (acidentes com vítima − volume) | permutação p (por veículo) |
 |---|--:|--:|--:|
-| noite −1 | −5,1 | −17,2 | 0,001 |
-| **noite 0** | **−6,4** | **+28,6** | **0,001** |
-| noite +1 | −6,4 | +13,3 | 0,044 |
-| **manhã 0** | **+11,7** | **−26,0** | **0,002** |
+| noite −1 | −5,1 | −17,2 | 0,002 |
+| **noite 0** | **−6,4** | **+28,6** | **0,002** |
+| noite +1 | −6,4 | +13,3 | 0,045 |
+| **manhã 0** | **+11,7** | **−26,0** | **0,003** |
 | dia todo | +0,5 (2,0) | | |
 
 - **As pessoas responderam à luz:** sem horário de verão, a noite escura perdeu
@@ -752,10 +770,17 @@ hora que depois escureceu nos tratados era **clara** na BA. Ou seja, o efeito
 deveria aparecer com o sinal invertido.
 
 - Primeiro estágio claro: a PRF anotou escuro em 68% dos acidentes na hora 0 da
-  BA em 2011/12, contra 92–100% em todas as outras temporadas.
-- Acidentes com vítima na hora 0: **o menor valor das 16 temporadas** (−21 lp).
-  Mortes na via do SIM: 4º menor de 16.
-- A manhã não aparece (igual ao resultado principal).
+  BA em 2011/12, contra 92–100% em todas as outras temporadas (mesma definição
+  do primeiro estágio dos tratados: escuro entre pleno dia, anoitecer e noite;
+  harmonizada na auditoria de 12/10/2026, o que mexeu ≤ 1,7 p.p. em 2012/13,
+  2015/16 e 2017/18 e nada em 2011/12).
+- Noite, hora 0 (deveria cair em 2011/12): acidentes com vítima **o menor valor
+  das 16 temporadas** (−21 lp); mortes na via do SIM, 4º menor de 16; mortes da
+  PRF, 11º de 16 (14 mortes: ruído).
+- Manhã, hora 0 (deveria subir): não aparece. SIM e mortes da PRF ficam em 3º
+  de 16 de baixo para cima, o lado contrário; acidentes com vítima, 12º de 16.
+- **As seis comparações aparecem sempre juntas** (a figura já mostra as seis).
+  Mostrar só a dos acidentes com vítima pareceria escolha a dedo.
 - Com uma temporada e um estado, a posição 1 de 16 equivale a p ≈ 0,06. É
   checagem de sinal, nada além disso.
 
@@ -770,6 +795,153 @@ deveria aparecer com o sinal invertido.
   verão, há ~1 morte por temporada do lado tratado a até 100 km da divisa.
 - **Liga-desliga do TO (2012/13):** 3 a 8 mortes por verão na hora 0. Sem poder.
 - **Contagem total da PRF:** contaminada pela e-DAT.
+
+### 5.12 A rodada do parecer (12/10/2026)
+
+O `PARECER.md` listou o que um parecerista pediria. Tudo foi estimado
+(scripts 22 a 29); os números vêm de `audit/*.rds`.
+
+**Amontoamento das horas e relógio solar** (`22_heaping.R`). 34,5% das horas
+de óbito na via são hora cheia e 23% são :30; 90% são múltiplos de 5 minutos.
+Como a faixa é medida contra o pôr do sol de cada município e dia, um óbito
+anotado às 19:00 cai dentro ou fora da hora 0 conforme a data. Três testes:
+
+| | SIM, mortes na via | PRF, mortes | PRF, com vítima |
+|---|--:|--:|--:|
+| base | 29,2 (9,0) | 53,9 (20,3) | 22,2 (5,6) |
+| algoritmo solar completo da NOAA (até 1,6 min de diferença) | 29,8 (9,1) | 54,7 (20,2) | 22,5 (5,7) |
+| sem os registros em :00 e :30 | 16,7 (12,9) | 56,1 (26,8) | 16,7 (6,4) |
+| janela começando 15 min antes / 15 min depois | 14,6 / 41,2 | 20,9 / 76,3 | 4,1 / 32,9 |
+
+Mover a janela muda o efeito na direção que a física manda: mais tarde, mais
+escuro, maior. Sem :00 e :30 o SIM perde mais da metade da amostra e fica
+ruidoso, mas dentro do intervalo da base.
+
+**Tirar um de fora** (`23_leave_out.R`). SIM entre 24,3 (sem SP) e 34,1 (sem
+MG) tirando qualquer estado; entre 22,7 (sem 2019/20) e 35,2 (sem 2022/23)
+tirando qualquer temporada. Controle só Nordeste: 32,9 (9,2); só Norte (4
+estados): 15,7 (8,8). Sem os verões de La Niña: 43,5 (9,5).
+
+**Quem morre** (`24_road_users.R`, SIM, hora 0):
+
+| grupo | lp (EP) | mortes por verão, tratados, antes |
+|---|--:|--:|
+| pedestres | 76,6 (29,8), p = 0,01 | 12,8 |
+| motociclistas | 19,6 (10,9), p = 0,07 | 25,5 |
+| ocupantes de carro | −0,2 (35,2) | 41,8 |
+| outros | 55,8 (26,4), p = 0,03 | 26,9 |
+| pedestres de 15 a 64 anos | 91,1 (30,9), p = 0,003 | 8,5 |
+| dias úteis / fins de semana e feriados | 16,1 (10,0) / 41,3 (15,8) | 60,2 / 49,7 |
+
+Ciclistas, pedestres crianças e idosos, mulheres pedestres: menos de 5 mortes
+por verão, não estimável (a tabela mostra "--"). O efeito é maior no fim de
+semana que no dia útil: o canal não é só a volta do trabalho.
+
+**Integridade do registro** (`25_record_integrity.R`). A parcela das mortes de
+trânsito que ocorrem na via (50%) e a parcela sem hora (18%) não mudam com a
+abolição: tripla de +0,4 p.p. (0,75) e +0,4 p.p. (0,65).
+
+**Escuridão como dose** (`26_light_dose.R`). Na própria hora 0, a parcela de
+acidentes da PRF anotada como escura subiu 23,6 p.p. (2,0). Dividindo a forma
+reduzida por isso, uma hora que passasse de clara a toda escura teria ~124 lp
+a mais de mortes na via [42, 197]. **Chuva:** controlar pela parcela do estado
+sob chuva não muda nada (29,1); a interação aponta na direção certa (menos
+efeito em dia chuvoso) mas sem precisão.
+
+**Iluminação pública** (`27_street_lighting.R`). Municípios divididos dentro de
+cada estado pela mediana da parcela de domicílios em rua sem iluminação. Com o
+**Censo 2022** (o mais recente; SIDRA 9839): SIM 40,8 (10,3) nos municípios
+mais escuros contra 14,1 (15,6) nos mais iluminados, diferença p = 0,16. Com o
+Censo 2010: 34,7 contra 26,0, p = 0,76. Direção prevista, sem precisão; e os
+placebos na hora anterior são ruidosos (pedestres p = 0,02 com ~7 mortes por
+verão). Dizer como "consistente com", nunca como achado.
+
+**Custo** (`28_total_cost.R`, reais de 2025; conferido de forma independente):
+
+| | mortes na via com hora | todas as mortes na via | todas as mortes de transporte |
+|---|--:|--:|--:|
+| mortes a mais por verão | 54 (20) | 67 (25) | 137 (51) |
+| VSL de referência (R$ 4,66 mi por vida) | R$ 253 mi | R$ 311 mi | R$ 637 mi |
+| custo social do Ipea (R$ 790 mil por morte) | R$ 43 mi | R$ 53 mi | R$ 108 mi |
+
+- A primeira coluna é a estimativa; a segunda supõe que os óbitos sem hora
+  caem nessas horas na mesma proporção; a terceira estende aos que morrem no
+  hospital (é extrapolação, não estimativa).
+- VSL: regra de referência de Robinson, Hammitt & O'Keeffe (2019), com a renda
+  nacional per capita em PPC de 2025 (Banco Mundial, atualização de
+  08/10/2026). Ipea: custo por morto de 2015 e 2016 (dez/2014), atualizado pelo
+  IPCA até dez/2025. O Ipea mede só capital humano, por isso é ~6 vezes menor.
+- **Para comparar, o lado da energia (fontes primárias):**
+  - MME, Nota Técnica nº 5/2019 (a que embasou o Decreto 9.772): o horário de
+    verão 2018/19 **aumentou** a carga em ~0,7% (economia à noite, consumo a
+    mais de madrugada, ar-condicionado); recomendou suspender a partir de
+    2019/20. A NT 10/2017 achou +0,4% para 2017/18. Sem valor em reais.
+  - ONS, NT DPL 0107/2021: a medida "já não gerava economia de energia".
+  - ONS, NT DPL 0093/2024 (a mais recente): com a geração solar distribuída, a
+    ponta passou para a noite, e a volta economizaria R$ 244–356 milhões em
+    combustível térmico num verão e ~R$ 1,8 bilhão por ano em reserva de
+    capacidade.
+  - Os R$ 159,5 milhões de 2016/17 só existem em imprensa (Agência Brasil;
+    O Globo no clipping do MME). Não citar como fonte primária.
+  - Leitura: em 2019 o lado da energia era nulo ou negativo, e a abolição
+    custou vidas; hoje o ONS vê ganho de energia da mesma ordem do custo em
+    vidas pelo VSL, e bem acima dele pelo custo do Ipea.
+
+**México** (`29`, `30`): ver 5.13.
+
+### 5.13 México: a mesma pergunta, outra abolição (12/10/2026)
+
+**O que aconteceu.** A Ley de los Husos Horarios (DOF 28/10/2022, texto em
+`fontes_legais/MX_LHHEUM_2022.txt`) acabou com o horário de verão em
+30/10/2022, exceto na fronteira norte. Antes, o país adiantava o relógio do
+1º domingo de abril ao último de outubro.
+- **Tratados (perderam o horário de verão):** o resto do país.
+- **Controles (o relógio não mudou):** Sonora (sem horário de verão desde
+  1999), Quintana Roo (UTC−5 fixo desde 2015), Baja California e 22 municípios
+  da fronteira de Coahuila, Nuevo León e Tamaulipas (mantiveram o horário de
+  verão nas datas dos EUA).
+- **Fora:** Chihuahua, que mudou de fuso na mesma lei.
+
+**Dados.** ATUS do INEGI (acidentes em vias não federais, um registro por
+acidente, com hora e minuto; release de ago/2026, 1997–2025), 2016–2025: 7
+verões antes, 3 depois. Mortes no local do acidente, como o SIM na via e a
+PRF. Sede municipal pelo serviço web do INEGI (2.476 de 2.478 municípios). **A
+hora do ATUS é hora legal:** o perfil horário dos acidentes no verão com
+horário de verão bate com o de 2023–2025 na mesma hora do relógio (distância
+0,66), não deslocado uma hora (6,9 e 10,0).
+
+**Resultados** (`29_mexico.R`, `30_mexico_within_day.R`; Tabela `tab_mexico`):
+
+| | mortes | mortes de pedestres | acidentes com vítima | atropelamentos com vítima |
+|---|--:|--:|--:|--:|
+| **A. hora 0, tripla com os controles** | **+81 (20)** | **+237 (62)** | −1 (4) | +20 (9) |
+| WCR p / permutação p | 0,012 / 0,021 | 0,048 / 0,024 | 0,84 / 0,91 | 0,43 / 0,23 |
+| B. hora −1 (luz inalterada) | −126 (41) | −81 (90) | −21 (9) | −28 (13) |
+| C. manhã, hora 0 | −5 (24) | −43 (73) | −4 (11) | −42 (18) |
+| **D. só tratados: hora 0 contra as duas anteriores, no mesmo dia** | **+55 (17)**, p = 0,001 | **+154 (66)**, p = 0,02 | **+12 (3)**, p < 0,001 | **+23 (8)**, p = 0,003 |
+
+**Como ler.**
+- **O controle é fino.** As 6 unidades que não mudaram somam ~20 mortes por
+  verão na hora 0 e, fora do verão, 1 a 3 mortes por ano na hora −1 depois
+  de 2023. Por isso a hora −1 dá −126: nas unidades tratadas, a hora −1 ficou
+  parada (88 mortes por ano antes, 98 depois), e quem se moveu foi o controle.
+  O painel A sozinho não convence.
+- **O painel D não usa os controles.** Dentro de cada unidade tratada e de
+  cada dia, a hora 0 contra as duas horas anteriores, verão contra o resto do
+  ano, depois contra antes. O efeito fixo de unidade × dia absorve clima,
+  feriados e tráfego do dia. Os quatro desfechos sobem, e o pedestre de novo é
+  quem mais sobe.
+- **Na série bruta das unidades tratadas, no verão:** mortes na hora 0, de 89
+  por ano (2016–2022) para 123 (2023–2025); na hora −1, de 88 para 98.
+- **A manhã que clareou:** atropelamentos com vítima −42 (p = 0,02), o espelho
+  que no Brasil é fraco.
+
+**Para o paper:** o México é a réplica numa segunda abolição, com outros
+dados, outro país e a mesma assinatura (a hora que escureceu, o pedestre). O
+desenho que vale lá é o do painel D; o painel A entra mostrando a fragilidade
+do grupo de controle. Uruguai (2015) descartado: sem região de controle e
+~430 mortes por ano.
+
 
 ---
 
@@ -808,6 +980,16 @@ A literatura de transição acha efeitos de sono (Smith 2016). Por que aqui é l
 - **A manhã é fraca:** o efeito espelho aparece com sinal certo, mas pequeno e
   não significante no SIM.
 - **A hora −1 da PRF é um quebra-cabeça aberto.**
+- **Amontoamento das horas:** um terço dos óbitos na via está anotado em hora
+  cheia; a estimativa resiste a mover a janela e a trocar a fórmula solar, mas
+  sem :00 e :30 fica ruidosa (16,7, EP 12,9).
+- **A iluminação pública não separa os grupos:** a direção é a prevista, a
+  precisão não basta.
+- **O custo total é uma faixa:** só a primeira coluna (54 mortes) é estimada;
+  as outras dependem de hipóteses ditas na tabela.
+- **No México, o grupo de controle é fino** (6 unidades, ~20 mortes por verão
+  na hora 0): a tripla com controles é frágil; a réplica se apoia na
+  comparação dentro do dia, só com as unidades tratadas.
 
 ---
 
@@ -928,6 +1110,11 @@ alternativa.
 | legendas e notas em rascunho | `latex/exhibits.tex` |
 | volume do PNCT | `16`, `17` |
 | Bahia / placebo de horas | `18` / `19` |
+| amontoamento / tirar um de fora / quem morre | `22` / `23` / `24` |
+| integridade do registro / dose e chuva / iluminação / custo | `25` / `26` / `27` / `28` |
+| México | `29` (tripla), `30` (dentro do dia, só tratados); build `10` (coordenadas) e `11` (ATUS) |
+| chuva (Xavier) / iluminação (Censo 2022 e 2010) | build `08` / `09` |
+| parecer de editor e ranking de periódicos | `horario_verao/PARECER.md` |
 | números | `Dropbox/DaylightSaving/build/audit/*.rds` |
-| histórico das rodadas | `horario_verao/VIABILIDADE.md` (§17 é a vigente) |
+| histórico das rodadas | `horario_verao/VIABILIDADE.md` (§19 é a vigente) |
 | plano do paper | `horario_verao/PAPER.md` |
