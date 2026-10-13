@@ -1,17 +1,17 @@
 # =============================================================================
-# 26_light_dose.R
+# 22_light_dose.R
 #
 # How much darkness, and does the effect scale with it?
 #
 # (a) First stage in the evening hour 0 itself. Federal highway crashes in
 #     clock [sunset_std, + 60 min) in the 23 states; dark = 1 when the officer
-#     recorded dusk or night (among full day, dusk, night; as in 04). Linear
+#     recorded dusk or night (among full day, dusk, night; as in 03). Linear
 #     triple difference at the crash level,
 #       dark ~ treated x window x post | uf^window + uf^sy + date,
 #     clustered by state. The share is among crashes that happened, so it mixes
 #     the change in light with the change in which crashes happen; it is a
 #     scale, not a structural first stage.
-# (b) Wald ratio: the reduced form of 02 (log points) divided by (a)
+# (b) Wald ratio: the reduced form of 01 (log points) divided by (a)
 #     (percentage points), times 100: the change in events when the hour goes
 #     from light to fully dark. The PRF first stage scales the SIM estimate too
 #     (same hour, same places; federal highways only). 95% interval from a
@@ -44,7 +44,7 @@ geo  <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "geo", "outp
                                              "muni_geo.parquet")))
 ev   <- as.data.table(read_parquet(EVENTS_FILE))
 
-# ── PRF crashes in evening hour 0 with the recorded light phase (as in 02) ──
+# ── PRF crashes in evening hour 0 with the recorded light phase (as in 01) ──
 prf <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "prf", "output",
                                             "prf_accidents.parquet")))[mortos > 0 | feridos > 0]
 norm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
@@ -60,7 +60,7 @@ prf[, bin_set := floor((60L * hour + minute - sun_times(date, lat, lon, std_offs
 fs_dat <- prf[bin_set == 0L & fase_dia %in% c("pleno dia", "anoitecer", "plena noite"),
               .(uf = uf_geo, date = as.IDate(date), dark = as.integer(fase_dia != "pleno dia"))]
 fs_dat <- days[, .(uf, date, window, sy, twp, tw, post)][fs_dat, on = .(uf, date), nomatch = 0]
-# Guard: the hour-0 injury crashes here are the 02 event file's.
+# Guard: the hour-0 injury crashes here are the 01 event file's.
 stopifnot(abs(nrow(fs_dat) - ev[outcome == "PRF injury accidents" & bin_set == 0L &
                                   date %in% days$date, .N]) / nrow(fs_dat) < 0.01)
 
@@ -114,8 +114,7 @@ rain_res <- rbindlist(lapply(TRAFFIC, function(o) {
   # coefficient on twp:rain_share is the change in the effect from a dry to a
   # fully rainy state-day. Interacting the fixed effects themselves with a
   # rainy indicator (date x rainy cells) drops ~22% of the panel as all-zero
-  # groups and changes the sample; that version was tried and discarded
-  # (12/10/2026).
+  # groups and changes the sample, so it is not used.
   m1 <- fepois(as.formula(paste("y ~ twp + twp:rain_share + rain_share + rain_share:treated +",
                                 "rain_share:win + rain_share:post + rain_share:tw +",
                                 "rain_share:treated:post + rain_share:win:post", FE)),

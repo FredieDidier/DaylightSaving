@@ -1,9 +1,9 @@
 # =============================================================================
-# 03_switched_hour_event_study.R
+# 02_switched_hour_event_study.R
 #
 # Event study for the light-switched evening hour (bin 0 relative to standard
 # sunset) and the hour before it (bin -1). Same Poisson triple difference as
-# 02_sunset_design.R, with treated x window interacted with each season
+# 01_sunset_design.R, with treated x window interacted with each season
 # (reference 2018/19, the last DST season).
 #
 # Also a placebo in time: the pooled estimate is compared with the estimates
@@ -43,7 +43,7 @@ plac <- rbindlist(lapply(TRAFFIC, function(o) {
              n_fake = length(fake), n_fake_larger = sum(abs(fake) >= abs(real)))
 }))
 
-# Figure: drawn by 20_figures.R from the cache saved below.
+# Figure: drawn by 27_figures.R from the cache saved below.
 
 saveRDS(list(event_study = es, placebo = plac), file.path(path_audit, "switched_hour_event_study.rds"))
 options(width = 150)

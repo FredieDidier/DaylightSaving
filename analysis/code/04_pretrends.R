@@ -1,5 +1,5 @@
 # =============================================================================
-# 05_pretrends.R
+# 04_pretrends.R
 #
 # Parallel-trends diagnostics for the light-switched evening hour (bin 0) and
 # the hour before it (bin -1), traffic outcomes.
@@ -11,7 +11,7 @@
 #       (reference 2018/19);
 #   (b) linear trend in that gap estimated on pre-period data only;
 #   (c) pooled estimate with and without a linear treated x window trend
-#       fitted on the whole sample (06_imputation.R does the cleaner version:
+#       fitted on the whole sample (05_imputation.R does the cleaner version:
 #       trend fitted on untreated observations only, then extrapolated);
 #   (d) pooled estimate without the COVID seasons (2020/21, 2021/22).
 # Also: share of on-road SIM transport deaths with missing clock time, by

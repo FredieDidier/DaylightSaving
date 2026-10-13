@@ -1,5 +1,5 @@
 # =============================================================================
-# 02_sunset_design.R
+# 01_sunset_design.R
 #
 # The sharp test. Abolition changes light at exactly one clock hour at each end
 # of the day, and that hour differs by municipality and date:
@@ -23,9 +23,9 @@
 #     municipality matched by name within UF. Accidents without victims are
 #     never used (e-DAT break, see horario_verao/VIABILIDADE.md).
 #
-# Writes the event-level file reused by 03-13 (with pedestrian / other
-# splits for 13), the bin-by-bin
-# Poisson triple differences (figure: 20_figures.R).
+# Writes the event-level file that the later scripts read (with the
+# pedestrian / other split used by 12_mechanism.R) and the bin-by-bin Poisson
+# triple differences (figure: 27_figures.R).
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -54,7 +54,7 @@ stopifnot(!any(sim$preliminary))
 sim <- sim[LOCOCOR == "4"]
 sim[, outcome := fcase(CAUSABAS >= "V01" & CAUSABAS < "V90", "SIM transport deaths, on road",
                        CAUSABAS >= "X85" & CAUSABAS < "Y10", "SIM assault deaths, on road")]
-# Mechanism split of on-road transport deaths (13_mechanism.R): pedestrians
+# Mechanism split of on-road transport deaths (12_mechanism.R): pedestrians
 # (V01-V09) against everyone else (V10-V89). Extra rows; the pooled outcome
 # above is unchanged.
 sim[, mech := fcase(CAUSABAS >= "V01" & CAUSABAS < "V10", "SIM pedestrian deaths, on road",
@@ -72,7 +72,7 @@ geo[, key := paste(uf, norm(name))]
 prf[, key := paste(uf, norm(municipio))]
 # PRF names that differ from the IBGE seat name (renamed municipalities,
 # spelling variants), typed in build/manual/prf_municipio_alias.csv. Without
-# them ~0.4% of PRF accidents were dropped (code audit, 09/10/2026).
+# them ~0.4% of PRF accidents would go unmatched.
 alias <- fread(file.path(path_manual, "prf_municipio_alias.csv"), encoding = "UTF-8")
 alias <- alias[, .(key = paste(uf, norm(municipio_prf)), code6)]
 keys <- rbind(unique(geo[, .(key, code6)], by = "key"), alias[!key %in% geo$key])
@@ -84,7 +84,7 @@ prf[, ped := grepl("^Atropelamento de (pessoa|pedestre)", tipo_acidente, ignore.
 ev_prf <- rbind(
   prf[mortos > 0, .(code6, date, cmin, outcome = "PRF deaths", w = mortos)],
   prf[mortos > 0 | feridos > 0, .(code6, date, cmin, outcome = "PRF injury accidents", w = 1L)],
-  # Mechanism split (13_mechanism.R): pedestrian struck against the rest.
+  # Mechanism split (12_mechanism.R): pedestrian struck against the rest.
   prf[ped & (mortos > 0 | feridos > 0), .(code6, date, cmin, outcome = "PRF pedestrian injury accidents", w = 1L)],
   prf[!ped & (mortos > 0 | feridos > 0), .(code6, date, cmin, outcome = "PRF non-pedestrian injury accidents", w = 1L)],
   prf[ped & mortos > 0, .(code6, date, cmin, outcome = "PRF pedestrian deaths", w = mortos)],
@@ -114,7 +114,7 @@ res <- grid[, {
 res[, `:=`(pct = 100 * (exp(coef) - 1), p = 2 * pnorm(-abs(coef / se)))]
 res[, side := fifelse(side == "set", "evening (rel. to sunset)", "morning (rel. to sunrise)")]
 
-# Figure: drawn by 20_figures.R from the cache saved below.
+# Figure: drawn by 27_figures.R from the cache saved below.
 
 saveRDS(list(results = res, prf_match_pct = prf_match, seasons = SEASONS),
         file.path(path_audit, "sunset_design.rds"))

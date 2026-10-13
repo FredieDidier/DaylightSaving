@@ -1,5 +1,5 @@
 # =============================================================================
-# 04_prf_clock_check.R
+# 03_prf_clock_check.R
 #
 # Is the PRF clock time legal time (DST included) in every year?
 #
@@ -40,7 +40,7 @@ dst <- as.data.table(read_parquet(file.path(path_calendar_out, "dst_uf_day.parqu
 norm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
 geo[, key := paste(uf, norm(name))]
 prf[, key := paste(uf, norm(municipio))]
-# Name aliases, as in 02_sunset_design.R.
+# Name aliases, as in 01_sunset_design.R.
 alias <- fread(file.path(path_manual, "prf_municipio_alias.csv"), encoding = "UTF-8")
 alias <- geo[, .(code6, lat, lon, std_offset_h)][
   alias[, .(key = paste(uf, norm(municipio_prf)), code6)], on = "code6"]

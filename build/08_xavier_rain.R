@@ -3,11 +3,14 @@
 #
 # Daily precipitation at each municipal seat, July 2008 - June 2025, from the
 # Xavier BR-DWGD v3.2.4 grid (0.1 degree; the cell that contains the seat).
-# Used by analysis/code/26_light_dose.R: on a rainy, overcast evening the
+# Used by analysis/code/22_light_dose.R: on a rainy, overcast evening the
 # clock hour after standard sunset was already dim under DST, so abolition
 # should darken it less.
 #
-# Input:  path_xavier_pr (config.R; downloaded by HealthHeat)
+# Input:  path_xavier_pr (config.R): weather/input/pr_20010101_20251231_
+#         BR-DWGD_UFES_UTEXAS_v_3.2.4.nc, the raw NetCDF as distributed at
+#         https://sites.google.com/site/alexandrecandidoxavierufes/brazilian-daily-weather-gridded-data
+#         (manual download, no script; kept in Dropbox for that reason)
 #         geo/output/muni_geo.parquet (04_municipal_geo.R)
 # Output: weather/output/pr_seat_day.parquet (code6, date, pr_mm)
 # =============================================================================

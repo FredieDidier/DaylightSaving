@@ -1,5 +1,5 @@
 # =============================================================================
-# 07_inference.R
+# 06_inference.R
 #
 # Inference that does not lean on 23-cluster asymptotics, for the evening
 # light-switched hour (bin 0) and the morning one.

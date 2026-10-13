@@ -3,7 +3,7 @@
 #
 # Mexico: one row per municipality with the coordinates of its seat
 # (cabecera municipal), for the sunset of the Mexican replication
-# (analysis/code/29_mexico.R).
+# (analysis/code/25_mexico.R).
 #
 # Source: INEGI web service of the Marco Geoestadistico (wscatgeo v2, Censo
 # 2020 attributes):

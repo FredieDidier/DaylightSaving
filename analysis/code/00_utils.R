@@ -103,14 +103,13 @@ FE <- "| uf^window + uf^sy + date"
 
 # Permutation p-value, two-sided: the observed assignment counts as one of the
 # possible draws, so p = (1 + #{|b_perm| >= |b|}) / (1 + N) and the smallest
-# attainable value is 1 / (N + 1). Code audit 12/10/2026: 07, 15, 17 and 10
-# used mean(abs(perm) >= abs(b)), which can return 0 and was printed as
-# "<0.001" although 999 draws cannot support it.
+# attainable value is 1 / (N + 1); mean(abs(perm) >= abs(b)) could return 0,
+# which 999 draws cannot support.
 perm_pvalue <- function(perm, b) (1 + sum(abs(perm) >= abs(b))) / (1 + length(perm))
 TRAFFIC <- c("SIM transport deaths, on road", "PRF deaths", "PRF injury accidents")
 
 # ── Figures: house style ────────────────────────────────────────────────────
-# Same contract as WorldCupHealth, HeatCrime and HealthHeat. No title, subtitle
+# No title, subtitle
 # or caption (the caption lives in LaTeX); legend at the bottom with no title;
 # saved at the size it is PRINTED at, so type is never scaled: a 12pt article
 # with 1in margins has a 6.5in text block and every figure goes in at

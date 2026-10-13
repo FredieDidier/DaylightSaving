@@ -1,8 +1,8 @@
 # CLAUDE.md — o build, os dados e as armadilhas
 
 Manual operacional do repositório **DaylightSaving**: o fim do horário de verão
-no Brasil (Decreto 9.772/2019) e seus efeitos sobre trânsito, violência, saúde e
-horário dos nascimentos. A pergunta e o desenho estão em
+no Brasil (Decreto 9.772/2019) e seu efeito sobre as mortes no trânsito, com
+réplica no México (2022). A pergunta e o desenho estão em
 `horario_verao/CONTEXTO_PESQUISA.md`; a ordem do trabalho, em
 `horario_verao/ROADMAP.md`.
 
@@ -18,11 +18,16 @@ DaylightSaving/                      (git — código, nunca dado)
   config/config.R                    DROPBOX_ROOT é a única edição por máquina
   build/manual/                      calendário legal digitado dos decretos (versionado)
   build/01_dst_calendar.R            manual/ → painéis UF × temporada e UF × dia
-  analysis/{code,output}
+  build/02–11                        um passo por fonte (config/00_master_build.R roda tudo)
+  analysis/code/01–26                estimam e guardam audit/*.rds
+  analysis/code/27, 28               figuras e tabelas, lidas só dos .rds
+                                     (00_master_analysis.R roda 01–28)
+  analysis/output/
   latex/
   horario_verao/                     gestão: contexto, roadmap, tabela, fontes legais, skills
 
 Dropbox/DaylightSaving/build/        (dado, nunca git)
+  <fonte>/{input,output}/            prf sim pnct geo weather census mexico
   calendar/output/                   dst_uf_season.parquet, dst_uf_day.parquet
   audit/
 ```
@@ -41,6 +46,12 @@ Dropbox/DaylightSaving/build/        (dado, nunca git)
 5. **Hora local, hora solar e UTC são coisas diferentes.** AC e o oeste do AM
    mudaram de fuso em 2008 e voltaram em 2013; o oeste do PA mudou em 2008 e
    ficou. Toda análise por hora precisa dizer em qual das três está.
+6. **Só fica código que gera exibição.** Um script da análise existe porque uma
+   figura ou tabela do paper lê o `.rds` dele. Comentários dizem o que o código
+   faz e por quê, sem datas de mudança nem histórico (isso vai no ROADMAP).
+7. **Nenhum caminho para outro projeto.** Todo dado é lido de `DROPBOX_ROOT`
+   ou baixado para lá por um script do `build/`. Bruto sem download por
+   script (hoje só o NetCDF do Xavier) fica no `input/` da fonte.
 
 ## 3. Período
 

@@ -1,7 +1,7 @@
 # =============================================================================
-# 15_inference_pedestrian.R
+# 14_inference_pedestrian.R
 #
-# The inference of 07_inference.R for the pedestrian split of 13_mechanism.R,
+# The inference of 06_inference.R for the pedestrian split of 12_mechanism.R,
 # evening light-switched hour (bin 0):
 #   (a) wild cluster restricted bootstrap (Webb, B = 9,999) on the demeaned
 #       linear analogue, for pedestrian and non-pedestrian outcomes;
@@ -9,7 +9,7 @@
 #       (DS_PERM draws, default 999), for each coefficient and for the
 #       pedestrian - other difference (same fake assignment for both members of
 #       a pair in each draw, so the difference has its own null distribution);
-#   (c) excess zeros, as in 07. Pedestrian counts are rare (~1 per UF-season
+#   (c) excess zeros, as in 06. Pedestrian counts are rare (~1 per UF-season
 #       in the switched hour), so this matters more here.
 # Draws run in parallel (DS_CORES, default 5); fake assignments are drawn up
 # front, so the result does not depend on the number of cores.

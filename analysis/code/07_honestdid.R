@@ -1,5 +1,5 @@
 # =============================================================================
-# 08_honestdid.R
+# 07_honestdid.R
 #
 # Rambachan & Roth (2023) sensitivity analysis for the light-switched evening
 # hour. Input: the Poisson event study by season (reference 2018/19, the last
@@ -69,7 +69,7 @@ out <- rbindlist(lapply(TRAFFIC, function(o) {
 
 saveRDS(out, file.path(path_audit, "honestdid.rds"))
 
-# Figure: drawn by 20_figures.R from the cache saved above.
+# Figure: drawn by 27_figures.R from the cache saved above.
 
 options(width = 160)
 print(out[, .(outcome, restriction, param, lb_lp = round(100 * lb, 1), ub_lp = round(100 * ub, 1),

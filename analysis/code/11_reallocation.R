@@ -1,12 +1,12 @@
 # =============================================================================
-# 12_reallocation.R
+# 11_reallocation.R
 #
 # Closing the account of the reallocation. Abolition darkened one evening hour
 # and lightened one morning hour; the whole-day total does not move. How many
 # deaths and crashes per season did the evening gain, how many did the morning
 # lose, and what is the net?
 #
-# Hours (60-minute bins relative to STANDARD-time sunset / sunrise, as in 02):
+# Hours (60-minute bins relative to STANDARD-time sunset / sunrise, as in 01):
 #   evening -2, -1, 0, +1   (0 turned dark; +1 went from twilight to night;
 #                            -1 and -2 lost some late-afternoon light)
 #   morning -1, 0, +1       (0 turned light)
@@ -16,7 +16,7 @@
 #              | uf^window^k + uf^sy^k + date^k
 #
 # The likelihood separates by hour, so each beta_k equals the separate triple
-# difference of 02; stacking gives their joint UF-clustered covariance, which
+# difference of 01; stacking gives their joint UF-clustered covariance, which
 # the sums below need.
 #
 # Excess events in hour k over the post seasons, treated states, summer window:
@@ -92,7 +92,7 @@ out <- rbindlist(out); sums <- rbindlist(sums)
 sums[, `:=`(pct_of_cf = 100 * excess_per_season / counterfactual_per_season,
             p = 2 * pnorm(-abs(excess_per_season / se)))]
 
-# Check: stacked coefficients equal the separate fits of 02 for bin 0.
+# Check: stacked coefficients equal the separate fits of 01 for bin 0.
 chk <- readRDS(file.path(path_audit, "sunset_design.rds"))$results
 chk <- chk[bin == 0 & grepl("^evening", side) & outcome %in% TRAFFIC, .(outcome, lp02 = 100 * coef)]
 chk <- out[hour == "eve+0", .(outcome, lp12 = coef_lp)][chk, on = "outcome"]

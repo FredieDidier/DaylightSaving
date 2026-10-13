@@ -112,7 +112,7 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
     > pedestrians, the road users who depend most on being seen. Any chronic
     > sleep effect of abolition would, if anything, run against our estimates:
     > an earlier clock sunset should lengthen sleep.
-  - Números do placebo e o "Table X": `19_placebo_hours.R`, VIABILIDADE §16.
+  - Números do placebo e o "Table X": `17_placebo_hours.R`, VIABILIDADE §16.
     Conferir os 11 dias contra o calendário ao redigir.
 - Poisson PML, `y ~ tratado × janela × pós | UF×janela + UF×temporada + data`,
   painel UF × dia, EP por UF (23 clusters).
@@ -155,8 +155,8 @@ quanto a noite ganha, o que nas rodovias federais parece realocação de hora
 ## Exibições
 
 Todas geradas a partir dos `audit/*.rds`, sem reestimar: figuras por
-`analysis/code/20_figures.R` (`analysis/output/graphs/fig_*.pdf`), tabelas por
-`analysis/code/21_tables.R` (`analysis/output/tables/tab_*.tex`, só o
+`analysis/code/27_figures.R` (`analysis/output/graphs/fig_*.pdf`), tabelas por
+`analysis/code/28_tables.R` (`analysis/output/tables/tab_*.tex`, só o
 `tabular`). Legendas e notas em rascunho, com a equação (1), em
 `latex/exhibits.tex` (compila com `latexmk -pdf`). Nomes dos desfechos, em
 toda figura, tabela e frase: *Road deaths* (SIM, óbito na via),
@@ -167,27 +167,27 @@ Texto principal
 1. **Fig. 1** `fig_design`: pôr e nascer do sol no relógio, São Paulo 2018/19,
    com e sem horário de verão; a hora que trocou de luz sombreada.
 2. **Fig. 2** `fig_first_stage`: parcela dos acidentes da PRF anotada como
-   anoitecer ou noite, por minuto desde o pôr do sol padrão (04).
+   anoitecer ou noite, por minuto desde o pôr do sol padrão (03).
 3. **Fig. 3** `fig_hours_from_sunset`: efeito por hora relativa ao pôr e ao
-   nascer do sol (02). O pico na hora 0, e nada longe dela.
+   nascer do sol (01). O pico na hora 0, e nada longe dela.
 4. **Fig. 4** `fig_event_study`: hora depois × hora antes do pôr do sol, por
-   temporada (03).
+   temporada (02).
 5. **Tabela 1** `tab_descriptives`: eventos por verão, grupo × janela × período.
 6. **Tabela 2** `tab_main`: hora que escureceu e hora que clareou; EP por UF,
    WCR, permutação, base por verão.
-7. **Tabela 3** `tab_pedestrians`: pedestre × resto, diferença e parcelas (13, 15).
-8. **Tabela 4** `tab_excess`: excesso por verão, noite, manhã e saldo (12).
+7. **Tabela 3** `tab_pedestrians`: pedestre × resto, diferença e parcelas (12, 14).
+8. **Tabela 4** `tab_excess`: excesso por verão, noite, manhã e saldo (11).
 9. **Tabela 5** `tab_traffic_volume`: volume do PNCT, acidentes e risco por
-   veículo, hora a hora (16).
+   veículo, hora a hora (15).
 10. **Tabela 6** `tab_robustness`: hora 0 com tendência, sem 2020–21, FE de
     UF × dia, duas horas, teste conjunto pré; imputação; placebo das horas
-    sem mudança de luz (05, 06, 09, 10, 19).
+    sem mudança de luz (04, 05, 08, 09, 17).
 
 Apêndice
-- `fig_within_day` (10), `fig_honestdid` (08), `fig_assault` (11, nulo),
-  `fig_bahia` (18, checagem de sinal; VIABILIDADE §15).
+- `fig_within_day` (09), `fig_honestdid` (07), `fig_assault` (10, nulo),
+  `fig_bahia` (16, checagem de sinal; VIABILIDADE §15).
 - Ainda sem exibição: calendário legal (TABELA_ESTADOS), checagem do relógio
-  da PRF por temporada (04), quebra da e-DAT, repetição dos totais do PNCT.
+  da PRF por temporada (03), quebra da e-DAT, repetição dos totais do PNCT.
 - Aposentadas (09/10/2026): `fig00` (primeira olhada, com nascimentos) e
   `fig01` (blocos fixos 5–8h); os números seguem nos `.rds`.
 
@@ -203,7 +203,7 @@ Apêndice
   16/08 e retomou em 23/12/2019, depois da liminar da 1ª Vara Federal de
   Brasília (11/12) mantida pelo TRF-1 (18/12). Cobre metade da janela de
   2019/20, é nacional (o FE de data absorve) e só toca a PRF. Resposta: sem
-  2019/20, PRF mortes 65,0 (20,7) e com vítima 25,7 (5,9) (`23_leave_out.R`).
+  2019/20, PRF mortes 65,0 (20,7) e com vítima 25,7 (5,9) (`19_leave_out.R`).
   Fontes: Poder360, Migalhas, Jornal de Brasília (dez/2019); conferir o DOU de
   16/08/2019 antes de citar.
 - **HonestDiD.** O alvo é a média pós contra 2018/19 (14,8 lp no SIM), não o β
@@ -212,11 +212,11 @@ Apêndice
   a nota diz que só uma fica no extremo).
 - **Entregas por moto e horários pós-COVID.** A tripla (janela × fora) absorve o
   que não é sazonal; a divisão por usuário responde: motociclistas +19,6 lp
-  (10,9), menos que pedestres (+76,6) (`24_road_users.R`).
+  (10,9), menos que pedestres (+76,6) (`20_road_users.R`).
 - **Amontoamento das horas.** 34,5% das horas do SIM na via são hora cheia. Mover a
   janela muda o efeito na direção que a física manda (mais tarde, mais escuro,
   maior); com outra fórmula solar, 29,8; sem :00 e :30, 16,7 (12,9) com menos da
-  metade da amostra (`22_heaping.R`).
+  metade da amostra (`18_heaping.R`).
 
 ## Réplica no México (12/10/2026; EXPLICANDO §5.13)
 
@@ -256,10 +256,10 @@ abolições".
 
 ## Abertos antes de escrever
 
-0. ~~Pedestre contra ocupante~~ feito (13): é o pedestre.
+0. ~~Pedestre contra ocupante~~ feito (12): é o pedestre.
 1. **Fluxo de tráfego (PNCT/DNIT, volume horário 2014–19 e 2021–25; VIABILIDADE §12)**: separar exposição de risco por viagem e
    explicar a queda nas horas −1/−2 da PRF.
-2. ~~WCR e permutação para o pedestre~~ feito (15): passa nas três fontes.
+2. ~~WCR e permutação para o pedestre~~ feito (14): passa nas três fontes.
 3. Bootstrap da imputação para as somas da realocação (hoje por método delta,
    sem tendência).
 4. Periódico-alvo: AEJ Applied ou AEJ Policy (Smith 2016 está na Applied);

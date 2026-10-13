@@ -1,9 +1,9 @@
 # =============================================================================
-# 11_assault_trends.R
+# 10_assault_trends.R
 #
-# Is the day-level rise in SIM assault deaths (01_viability.R: +4.6% all day,
-# +16% at 17-20h, every place of death) an effect of light, or a differential
-# trend in violence between the treated block (S/SE/CO) and the control
+# Is the rise in SIM assault deaths in treated states after abolition, spread
+# over the day and over every place of death, an effect of light, or a
+# differential trend in violence between the treated block (S/SE/CO) and the control
 # (N/NE)? Light predicts an effect concentrated at the hour that turned dark;
 # a trend predicts a level shift spread over the day, visible before 2019.
 #
@@ -102,7 +102,7 @@ raw[, `:=`(ratio_treated = round(treated_win / treated_off, 3),
            ratio_control = round(control_win / control_off, 3))]
 raw[, ddd_log := round(100 * (log(ratio_treated) - log(ratio_control)), 1)]
 
-# Figure: drawn by 20_figures.R from the cache saved below.
+# Figure: drawn by 27_figures.R from the cache saved below.
 
 saveRDS(list(results = res, event_study = es, raw = raw),
         file.path(path_audit, "assault_trends.rds"))

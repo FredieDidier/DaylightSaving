@@ -20,24 +20,24 @@ nos dados é a da skill de projeto.
 ## Retomar daqui (09/10/2026)
 
 Feito nesta sessão:
-- ✅ Agressões do SIM (`11_assault_trends.R`, VIABILIDADE §9): **tendência, não
+- ✅ Agressões do SIM (`10_assault_trends.R`, VIABILIDADE §9): **tendência, não
   luz**. O dia todo some sem 2019/20; 8–17h sobe como 17–20h; dentro da janela a
   dupla é nula. Saem do paper.
-- ✅ Conta da realocação (`12_reallocation.R`, VIABILIDADE §10): noite escura
+- ✅ Conta da realocação (`11_reallocation.R`, VIABILIDADE §10): noite escura
   (0, +1) +58 mortes na via por verão (EP 19); manhã clara −3 (11); líquido +55
   (p = 0,01). O dia todo tem EP 66: é **inconclusivo**, não "zero". Na PRF, as
   horas −1/−2 perdem tanto quanto a noite ganha (realocação nas rodovias).
 - ✅ Passo 5: `PAPER.md`.
 
-- ✅ Pedestre × resto (`13_mechanism.R`, VIABILIDADE §11): o escuro age sobre o
+- ✅ Pedestre × resto (`12_mechanism.R`, VIABILIDADE §11): o escuro age sobre o
   pedestre. SIM hora 0: pedestre +79 lp, resto +18; o pedestre é 12% da base e
   44% do excesso. Resiste à tendência pré (71 lp).
-- ✅ Figura do desenho e Tabela 1 (`14_design_descriptives.R`).
+- ✅ Figura do desenho e Tabela 1 (`13_design_descriptives.R`).
 - ✅ Revisão editorial das exibições (09/10/2026): todas as figuras em
-  `20_figures.R` e todas as tabelas em `21_tables.R`, lidas dos `.rds`; nomes
+  `27_figures.R` e todas as tabelas em `28_tables.R`, lidas dos `.rds`; nomes
   dos desfechos sem a fonte; sem rótulo de linha à direita; seis tabelas `.tex`;
   prévia com legendas e notas em `latex/exhibits.tex`.
-- ✅ Inferência do pedestre (`15_inference_pedestrian.R`, VIABILIDADE §11): WCR e
+- ✅ Inferência do pedestre (`14_inference_pedestrian.R`, VIABILIDADE §11): WCR e
   permutação passam nas três fontes (SIM pedestre: 0,007 e 0,029).
 - ✅ DNIT (VIABILIDADE §12): o portal de dados abertos só tem VMDa anual; o
   volume **horário** por posto está na API do portal do PNCT, 2014–2019 e
@@ -45,7 +45,7 @@ Feito nesta sessão:
 - ✅ SIM × PRF explicado (VIABILIDADE §13).
 - 🗑 `horario_verao/skills/skills_daylightsaving.zip` apagado (cópia velha das pastas versionadas).
 
-- ✅ PNCT baixado, limpo e analisado (`build/06–07`, `16_traffic_volume.R`,
+- ✅ PNCT baixado, limpo e analisado (`build/06–07`, `15_traffic_volume.R`,
   VIABILIDADE §14): o tráfego seguiu a luz, com noite −6% e manhã +12%. O risco
   por veículo na hora escura sobe ainda mais (+29 lp). Brutos apagados.
 - ✅ Lacuna de 2019–2020 provada com fonte primária (Nota Técnica DNIT
@@ -129,8 +129,8 @@ Feito nesta sessão:
   `tab_street_lighting`, `tab_cost`; figuras `fig_window_shift`, `fig_leave_out`,
   `fig_record_integrity`. Periódico-alvo: AEJ Applied → AEJ Policy → JHE (com o México; PARECER.md).
 - ✅ **México (extensão):** ATUS 1997–2025 (INEGI, ago/2026) e lei no DOF;
-  builds 10 (coordenadas das cabeceiras) e 11 (ATUS); `29_mexico.R` (tripla com
-  controles, frágil: só 6 controles) e `30_mexico_within_day.R` (só tratadas,
+  builds 10 (coordenadas das cabeceiras) e 11 (ATUS); `25_mexico.R` (tripla com
+  controles, frágil: só 6 controles) e `26_mexico_within_day.R` (só tratadas,
   hora 0 contra as duas anteriores: mortes +55, p = 0,001; pedestres +154).
   Tabela `tab_mexico`, figura `fig_mexico_event_study`. EXPLICANDO §5.13.
 - ✅ EXPLICANDO também em PDF (`horario_verao/EXPLICANDO_O_PROJETO.pdf`, pandoc +
@@ -138,7 +138,7 @@ Feito nesta sessão:
 
 Próximos:
 1. Começar o manuscrito (introdução e desenho), em inglês. Entram: o texto do
-   sono (PAPER.md), o placebo das horas (19) e a Bahia no apêndice (18).
+   sono (PAPER.md), o placebo das horas (17) e a Bahia no apêndice (16).
 
 ## Decisões tomadas
 
@@ -162,6 +162,8 @@ Próximos:
 | 09/10/2026 | Agressões saem dos desfechos | Sem assinatura de luz: efeito vem de 2019/20 e aparece em horas cuja luz não mudou (VIABILIDADE §9) |
 | 09/10/2026 | O total do dia é "inconclusivo", não "zero" | EP do dia todo (66 mortes/verão no SIM) maior que o efeito da noite (+58) |
 | 09/10/2026 | Fronteira estadual (GO/MG/MT × BA/TO/RO) fica fora do desenho principal | Sem poder: na hora que escureceu, no verão, há ~1 morte na via por temporada do lado tratado a até 100 km da divisa e ~10 a até 300 km; ~2–27 acidentes com vítima da PRF; 0–4 postos do PNCT a até 100 km. Serve no máximo como robustez de faixa larga com FE de par × dia |
+| 13/10/2026 | Só fica o código que gera exibição; análise renumerada | Saíram `00_first_look` (nascimentos, SINASC), `01_viability` (blocos fixos de hora) e `17_inference_volume` (nenhuma exibição usava); SINASC apagado do Dropbox. Antigo → novo: 02–16 → 01–15, 18 → 16, 19 → 17, 22–30 → 18–26, 20 → 27 (figuras), 21 → 28 (tabelas). Entradas antigas deste arquivo usam a numeração antiga. Scripts mestres: `config/00_master_build.R`, `analysis/code/00_master_analysis.R` |
+| 13/10/2026 | Nenhum dado lido de outro projeto | Reprodutível em qualquer máquina só com o Dropbox do DaylightSaving. Fuso por município virou regra no `04` (saída idêntica); Censo 2010 guarda só as 8 colunas usadas; o NetCDF do Xavier (sem download por script) fica em `weather/input/` |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 
 ## Pendências pequenas
@@ -169,4 +171,3 @@ Próximos:
 - Achar o texto do Dec. 91.698/1985 (início da temporada 1985/86; hoje vem do
   tzdata). Irrelevante para a janela dos dados, mas fecha a tabela.
 - `renv` ainda não foi iniciado.
-- Ver se o `muni_tz` do WorldCupHealth serve para dar o fuso por município.

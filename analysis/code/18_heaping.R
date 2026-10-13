@@ -1,15 +1,15 @@
 # =============================================================================
-# 22_heaping.R
+# 18_heaping.R
 #
 # Robustness of the evening light-switched hour to heaping of recorded clock
-# times. Code audit 12/10/2026: 34.5% of on-road SIM death times are on the
+# times. 34.5% of on-road SIM death times are on the
 # full hour and 23% on the half hour (PRF: 21% and 19%); 90-95% are multiples
 # of 5 minutes. The hour bins are fixed relative to the computed standard-time
 # sunset, so a heap at 19:00 falls inside or outside bin 0 depending on the
-# date and place, and a solar formula that moves sunset by at most 1.6 minutes
-# moved the SIM estimate from 29.2 to 29.8 log points.
+# date and place: a solar formula that moves sunset by at most 1.6 minutes
+# moves the SIM estimate from 29.2 to 29.8 log points.
 #
-# Same Poisson triple difference as 02 for clock [sunset_std + s, + 60 min):
+# Same Poisson triple difference as 01 for clock [sunset_std + s, + 60 min):
 #   shift  s = -15, -10, -5, 0, +5, +10, +15 minutes
 #   drop   s = 0, events recorded at :00 or :30 removed (in every cell, so the
 #          comparison stays like for like)

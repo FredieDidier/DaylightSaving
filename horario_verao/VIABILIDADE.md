@@ -9,7 +9,7 @@ da hora (item 5) foi descartado; resta um quebra-cabeça de mecanismo.
 
 Scripts, na ordem: `build/02_download_prf.R`, `build/03_clean_prf.R`,
 `build/04_municipal_geo.R`, `analysis/code/01_viability.R`,
-`02_sunset_design.R`, `03_switched_hour_event_study.R`.
+`01_sunset_design.R`, `02_switched_hour_event_study.R`.
 Figuras: `analysis/output/graphs/fig01…fig03`. Números: `Dropbox/.../build/audit/*.rds`.
 
 ## 1. PRF baixada e limpa
@@ -92,7 +92,7 @@ Na PRF, a hora **anterior** à que escureceu cai quase tanto quanto a hora
 escurecida sobe (−20% e +24% nos acidentes com vítima). Isso parecia um
 deslocamento de uma hora por artefato de registro (hora anotada em hora padrão).
 
-**Teste (`analysis/code/04_prf_clock_check.R`):** nos estados tratados, na
+**Teste (`analysis/code/03_prf_clock_check.R`):** nos estados tratados, na
 mesma janela de verão, tomei a parcela de acidentes que o policial anotou como
 anoitecer ou noite, por minuto em relação ao pôr do sol padrão. Se a hora for
 legal, a curva do período com horário de verão tem de estar uns 60 minutos à
@@ -115,7 +115,7 @@ casos), teve **menos** acidentes com vítima? Candidatos: o ofuscamento pelo sol
 baixo, que antes caía nessa hora do relógio, saiu dela; ou o tráfego da volta
 para casa se rearranjou. É algo para investigar, não para esconder.
 
-## 6. Tendências paralelas (`analysis/code/05_pretrends.R`)
+## 6. Tendências paralelas (`analysis/code/04_pretrends.R`)
 
 Correção feita antes: as mortes de transporte do SIM passaram a ser V01–V89
 (antes eram V01–V99, com aquático e aéreo, 2,6% dos casos). Hora faltante entre
@@ -172,11 +172,11 @@ corretos.
   (23,0); PRF com vítima 7,0 (8,2). Sem as temporadas da COVID: 31,7; 49,5; 23,6.
 - Wild cluster bootstrap (Webb, teste com B = 999, análogo linear), SIM bin 0:
   **p = 0,008**. A rodada completa (B = 9.999, mais a permutação dos estados
-  tratados e o teste de excesso de zeros) está no `07_inference.R`;
+  tratados e o teste de excesso de zeros) está no `06_inference.R`;
   resultados em `audit/inference.rds`.
 - Hora faltante: diferença tripla de 0,7 p.p., desprezível.
 
-**HonestDiD (`08_honestdid.R`), efeito médio pós, referência 2018/19:**
+**HonestDiD (`07_honestdid.R`), efeito médio pós, referência 2018/19:**
 
 | desfecho | IC convencional | M = 0 (tendência linear extrapolada) | ruptura M | ruptura Mbar |
 |---|---|---|--:|--:|
@@ -191,7 +191,7 @@ hora por dia, cada coeficiente anual oscila ±15–30 lp. A referência numa ún
 temporada (2018/19, alta no SIM) também torna o efeito médio do event study
 (14,8) menor que o agrupado (29,5).
 
-**Janela mais larga (`09_wider_window.R`): não ajuda.** SIM: 29,5 → 21,4 → 16,1
+**Janela mais larga (`08_wider_window.R`): não ajuda.** SIM: 29,5 → 21,4 → 16,1
 lp de [0,60) a [0,120) e a [−60,120); o Wald pré piora (0,18 → 0,008 → <0,001);
 o ruído pré cai pouco (16,5 → 13,6); a ruptura M continua em 0,01–0,02. Na PRF o
 efeito se dilui (com vítima: 23 → 2). **O sinal está na hora exata; fica a janela [0,60).**
@@ -201,7 +201,7 @@ UF × dia × hora relativa ao sol, com efeito fixo de UF × dia, que absorve tod
 choque diário de tráfego do estado (chuva, feriado, volume); o tratamento passa
 a ser bin 0 × tratado × janela × pós.
 
-**Inferência sem assintótica de 23 clusters (`07_inference.R`, `audit/inference.rds`).**
+**Inferência sem assintótica de 23 clusters (`06_inference.R`, `audit/inference.rds`).**
 *Nome (decidido em 09/10/2026):* **permutation inference** (permutação dos
 estados tratados), nunca "randomization inference". O horário de verão não foi
 sorteado entre estados, e o calendário é fixo e comum a todos (não há datas a
@@ -230,7 +230,7 @@ estados tratados (999 sorteios) no Poisson; checagem de excesso de zeros.
   pelo Poisson em todos os casos (diferença < 1 p.p.), e a dispersão é 0,9–1,6.
   Confirma a decisão de não usar zero-inflated nem binomial negativo.
 
-**Imputação (`06_imputation.R`, `audit/imputation.rds`).** Modelo ajustado só
+**Imputação (`05_imputation.R`, `audit/imputation.rds`).** Modelo ajustado só
 nas observações não tratadas (FE de UF × janela, UF × temporada, semana,
 dia da semana); contrafactual previsto para os dias de verão dos tratados após
 2019. Bootstrap estratificado de estados, B = 299 (IC percentil).
@@ -262,7 +262,7 @@ dia da semana); contrafactual previsto para os dias de verão dos tratados após
   tolerância do demeaning de 1e-4 nos sorteios (a estimativa pontual usa a
   padrão; a diferença no ATT é de 1e-5).
 
-## 8. Diferença quádrupla dentro do dia (`10_within_day.R`): não reduz o ruído
+## 8. Diferença quádrupla dentro do dia (`09_within_day.R`): não reduz o ruído
 
 **Desenho.** Painel UF × dia × hora relativa ao pôr (ou nascer) do sol padrão,
 com FE de UF × dia, que absorve todo choque diário do estado, mais as versões
@@ -316,7 +316,7 @@ O efeito não depende de qual conjunto de horas serve de referência.
     e um aviso de descontinuação do R. Teste de escala (o FLCI é equivariante:
     resolver com b × 100, V × 100², M × 100 e dividir por 100): limites iguais
     até 0,1 lp. Os limites e as rupturas são confiáveis; só o IC em Mbar = 2
-    é mais largo que o reportado (bateu na grade). O `08_honestdid.R` deve
+    é mais largo que o reportado (bateu na grade). O `07_honestdid.R` deve
     emitir os mesmos avisos; não conferido, mas o teste de escala vale lá também.
 - **Decisão:** a quádrupla vira robustez (e fonte da hora +1 e da manhã), não o
   desenho principal. O principal segue a tripla em [0, 60).
@@ -324,7 +324,7 @@ O efeito não depende de qual conjunto de horas serve de referência.
   em `00_utils.R`; a primeira versão tinha "×" virando "..").
 - Permutação da quádrupla: desligada por padrão (`DS_RI`), ~35 s por ajuste.
 
-## 9. Agressões do SIM: tendência, não luz (`11_assault_trends.R`, 09/10/2026)
+## 9. Agressões do SIM: tendência, não luz (`10_assault_trends.R`, 09/10/2026)
 
 Agressões (X85–Y09), todos os locais, hora do óbito; mesmo modelo da tripla.
 Aqui o "dia todo" inclui os óbitos sem hora (no §3 eles saíam), daí 2,4 em vez de 4,6.
@@ -354,7 +354,7 @@ Aqui o "dia todo" inclui os óbitos sem hora (no §3 eles saíam), daí 2,4 em v
 - **Decisão:** agressões ficam fora do paper como desfecho; no máximo um apêndice
   de "não encontramos", com esta tabela. Figura: `fig06_assault_event_study`.
 
-## 10. A conta da realocação (`12_reallocation.R`, 09/10/2026)
+## 10. A conta da realocação (`11_reallocation.R`, 09/10/2026)
 
 Um modelo Poisson empilhado com as horas −2, −1, 0, +1 da noite e −1, 0, +1 da
 manhã, todos os FE interagidos com a hora (coeficientes idênticos aos do 02,
@@ -408,7 +408,7 @@ janela de verão (5 temporadas pós). Método delta para o EP.
 - **Ressalva de sempre:** sem tendência. A PRF perde metade do efeito com a
   tendência pré extrapolada (§7); o SIM não.
 
-## 11. Quem morre na hora que escureceu: pedestres (`13_mechanism.R`, 09/10/2026)
+## 11. Quem morre na hora que escureceu: pedestres (`12_mechanism.R`, 09/10/2026)
 
 O 02 agora grava no arquivo de eventos também a divisão pedestre × resto
 (SIM: V01–V09 × V10–V89; PRF: "Atropelamento de pessoa/pedestre" × o resto).
@@ -437,7 +437,7 @@ partes somam o total. Modelo empilhado como no 12; lp (EP por UF).
   dos dias com horário de verão nas rodovias (sem iluminação), então o "escuro"
   ali não é novo. Ler com cuidado.
 
-**Inferência robusta (`15_inference_pedestrian.R`, `audit/inference_pedestrian.rds`).**
+**Inferência robusta (`14_inference_pedestrian.R`, `audit/inference_pedestrian.rds`).**
 Noite, hora 0. WCR = wild cluster restrito (Webb, B = 9.999) no análogo linear;
 permutação = 999 sorteios de 11 estados tratados, com o mesmo sorteio para os
 dois membros do par, de modo que a diferença tem sua própria distribuição nula.
@@ -554,7 +554,7 @@ há Anuário com a definição, mas a série não mostra quebra:
 Uma mudança de definição só ameaçaria o desenho se fosse diferencial entre
 grupos × janela × pós.
 
-## 14. O tráfego mudou de hora (`16_traffic_volume.R`, 09/10/2026)
+## 14. O tráfego mudou de hora (`15_traffic_volume.R`, 09/10/2026)
 
 Dados: PNCT, `build/06–07`, 608 postos de contagem contínua, só posto-dias
 completos e contados (sem jun/2019–dez/2020 e sem os dias marcados como
@@ -653,7 +653,7 @@ veículo (acidentes menos volume) tem sua própria distribuição nula.
 - A queda de volume na hora 0 é pequena perto da alta de acidentes, então a
   conclusão sobre o risco não depende de o volume ser significante.
 
-## 15. A Bahia em 2011/12: checagem de sinal (`18_bahia_switch.R`, 09/10/2026)
+## 15. A Bahia em 2011/12: checagem de sinal (`16_bahia_switch.R`, 09/10/2026)
 
 A BA teve horário de verão numa única temporada da amostra (2011/12, Dec.
 7.584/2011). Naquele verão, a hora que escurece com a abolição era clara na BA;
@@ -679,7 +679,7 @@ Os eventos da BA são montados como no 02 (inclusive os aliases da PRF). Figura
   e não deve ser lida como mais do que isso. TO (2012/13) fica de fora: 3 a 8
   mortes por verão na hora 0.
 
-## 16. Placebo contra o sono: horas longe do crepúsculo (`19_placebo_hours.R`, 09/10/2026)
+## 16. Placebo contra o sono: horas longe do crepúsculo (`17_placebo_hours.R`, 09/10/2026)
 
 Mesma tripla do 02, em blocos cuja luz não mudou: meio do dia (3h ou mais
 depois do nascer e 4h ou mais antes do pôr do sol padrão) e noite fechada (3h
@@ -733,7 +733,7 @@ de 0,054 para 0,044. Nenhuma frase do PAPER.md dependia delas.
 
 ## 18. HonestDiD com temporadas em pares: testado e descartado (09/10/2026)
 
-Pergunta: o breakdown baixo do HonestDiD (§ do `08_honestdid.R`) vem do ruído
+Pergunta: o breakdown baixo do HonestDiD (§ do `07_honestdid.R`) vem do ruído
 de cada temporada? Teste: o mesmo Poisson da hora 0 da noite, com o estudo de
 eventos em pares de temporadas. Referência 2017/18 + 2018/19; pré: 2008/09
 sozinha, 09–10, 11–12, 13–14, 15–16; pós: 19–20, 21–22, 2023/24 sozinha; alvo

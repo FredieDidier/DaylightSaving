@@ -1,13 +1,12 @@
 # =============================================================================
 # 05_download_sim.R
 #
-# The project's own death-register build (SIM), 2008-2025, straight from the
-# DATASUS FTP, so that the analysis no longer borrows WorldCupHealth files and
-# the 2008/09 season enters the sample.
+# Death register (SIM), 2008-2025, straight from the DATASUS FTP. 2008 is
+# needed for the first season, 2008/09.
 #
 # Output   sim/output/sim_<year>.parquet under DROPBOX_ROOT, lean columns only.
 #
-# File layout (same rule as WorldCupHealth's 09_download_sim_lean.R): most
+# File layout: most
 # years carry 27 state files DO<UF><YYYY>.dbc plus a national DOBR<YYYY>.dbc;
 # some years carry only the national one. State files are used where they
 # exist and the national file otherwise, so no death is counted twice.

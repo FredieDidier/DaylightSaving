@@ -1,7 +1,7 @@
 # =============================================================================
-# 10_within_day.R
+# 09_within_day.R
 #
-# Quadruple difference within the day. The triple difference in 02-08 uses one
+# Quadruple difference within the day. The triple difference in 01-08 uses one
 # clock hour per UF-day, so every daily shock to a state's traffic (rain, a
 # holiday, volume) lands in the residual, and season-by-season coefficients
 # swing by +-15-30 log points. Here the panel is UF x day x hour relative to the
@@ -16,7 +16,7 @@
 # uf^date on top, a coefficient is the change in the share of the state-day's
 # events that falls in hour k, relative to the reference hours.
 #
-# Hours (60-minute bins relative to STANDARD-time sunset / sunrise, as in 02):
+# Hours (60-minute bins relative to STANDARD-time sunset / sunrise, as in 01):
 #   evening  focal -2, -1, 0, +1   reference -5..-3 (daylight under both
 #            regimes) and +2..+4 (dark under both)
 #   morning  focal -1, 0, +1       reference -4..-2 (dark under both) and
@@ -163,7 +163,7 @@ saveRDS(list(pooled = pooled, event_study = es, event_study_vcov = V_es, honestd
              n_perm = N_PERM),
         file.path(path_audit, "within_day.rds"))
 
-# Figure: drawn by 20_figures.R from the caches of 03 and of this script.
+# Figure: drawn by 27_figures.R from the caches of 02 and of this script.
 
 options(width = 170)
 cat("Seasons:", min(SEASONS), "-", max(SEASONS), "\n\nPooled (log points):\n")
