@@ -1,17 +1,17 @@
 # =============================================================================
-# 24_road_users.R
+# 20_road_users.R
 #
 # Who dies in the evening hour that turned dark: on-road SIM transport deaths
-# (V01-V89, LOCOCOR = 4, as in 02) split by
+# (V01-V89, LOCOCOR = 4, as in 01) split by
 #   (a) road user, from the ICD-10 block of the underlying cause:
 #       pedestrian V01-V09, cyclist V10-V19, motorcyclist V20-V29,
 #       car or light-vehicle occupant V40-V59, other V30-V39 and V60-V89;
 #   (b) pedestrians by age (0-14, 15-64, 65+) and sex;
 #   (c) the day: working days against weekends and national holidays.
-# Same Poisson triple difference as 02 for clock [sunset_std, + 60 min).
+# Same Poisson triple difference as 01 for clock [sunset_std, + 60 min).
 #
-# Events are rebuilt from the raw SIM files because the event file of 02 does
-# not carry age or sex. The rebuild must give back the 02 counts exactly.
+# Events are rebuilt from the raw SIM files because the event file of 01 does
+# not carry age or sex. The rebuild must give back the 01 counts exactly.
 #
 # SIM IDADE: first digit is the unit (4 = years, 5 = 100 + the two digits;
 # 0-3 = minutes, hours, days, months, i.e. under one year); 999 / missing is
@@ -39,7 +39,7 @@ sim <- geo[, .(code6, uf, lat, lon, std_offset_h)][sim, on = "code6", nomatch = 
 sim <- sim[uf %in% c(TREATED, CONTROL) & !is.na(cmin) & !is.na(date)]
 sim[, bin_set := floor((cmin - sun_times(date, lat, lon, std_offset_h)$sunset) / 60)]
 
-# Guard: same events as the 02 event file.
+# Guard: same events as the 01 event file.
 ev02 <- as.data.table(read_parquet(EVENTS_FILE))[outcome == "SIM transport deaths, on road"]
 stopifnot(nrow(ev02) == nrow(sim), sum(ev02$bin_set == 0) == sum(sim$bin_set == 0))
 
@@ -64,9 +64,8 @@ easter <- function(y) {
 }
 yrs <- (min(SEASONS)):(max(SEASONS) + 1L)
 fixed <- c("01-01", "04-21", "05-01", "09-07", "10-12", "11-02", "11-15", "12-25")
-# Code audit 12/10/2026: 20 November (Black Consciousness Day) is a national
-# holiday from 2024 on (Law 14,759/2023) and falls in the 2024/25 summer
-# window; it was coded as a working day (1 day x 23 states).
+# 20 November (Black Consciousness Day) is a national holiday from 2024 on
+# (Law 14,759/2023) and falls in the 2024/25 summer window.
 hol <- c(as.IDate(unlist(lapply(yrs, function(y) sprintf("%d-%s", y, fixed)))),
          as.IDate(sprintf("%d-11-20", yrs[yrs >= 2024L])),
          do.call(c, lapply(yrs, function(y) easter(y) + c(-48L, -47L, -2L))))

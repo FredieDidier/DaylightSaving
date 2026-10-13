@@ -1,9 +1,9 @@
 # =============================================================================
-# 28_total_cost.R
+# 24_total_cost.R
 #
 # How many deaths per summer, and what are they worth?
 #
-# (1) Deaths. The excess of 12_reallocation.R counts only on-road deaths with
+# (1) Deaths. The excess of 11_reallocation.R counts only on-road deaths with
 #     a recorded clock time. Two scale factors, from SIM land-transport deaths
 #     (V01-V89) in the treated states, summer window, seasons before abolition:
 #       f_time   on-road deaths / on-road deaths with a valid clock time

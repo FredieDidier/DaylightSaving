@@ -1,10 +1,10 @@
 # =============================================================================
-# 09_wider_window.R
+# 08_wider_window.R
 #
 # Does widening the evening window buy precision without losing the signal?
 # The single light-switched hour is noisy season by season (~110 on-road SIM
 # deaths per season in treated states), which is what drives the HonestDiD
-# breakdown values in 08. Abolition also changed light in the neighbouring
+# breakdown values in 07_honestdid.R. Abolition also changed light in the neighbouring
 # hours, only less sharply:
 #   bin -1  [-60, 0)    mid-afternoon sun under DST -> last, low-sun hour
 #   bin  0  [0, 60)     daylight -> dark (the sharp switch)

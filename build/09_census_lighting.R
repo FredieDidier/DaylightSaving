@@ -20,6 +20,9 @@
 #   2.7.9). Urban tracts only (situation 1-3). Entorno01:
 #     V008 / V009 owned, V010 / V011 rented, V012 / V013 ceded: exists / not.
 #   unlit_pct_2010 = 100 * (V009 + V011 + V013) / (V008 + ... + V013).
+#   The eight columns used are kept as census/input/
+#   censo2010_entorno_lighting.parquet; when it is missing they are fetched
+#   with censobr::read_tracts(2010, "Entorno") and saved there.
 #
 # Output: census/output/muni_lighting.parquet (code6, code7, unlit_pct_2022,
 #         households_2022, unlit_pct_2010, households_urban_2010)
@@ -54,12 +57,12 @@ stopifnot(!anyDuplicated(w22$code7), w22[!is.na(unlit_pct_2022), all(unlit_pct_2
 
 # ── 2010 ────────────────────────────────────────────────────────────────────
 cols <- c("code_muni", "entorno01_V1005", sprintf("entorno01_V%03d", 8:13))
-e <- if (file.exists(path_census_entorno)) {
-  as.data.table(read_parquet(path_census_entorno, col_select = dplyr::all_of(cols)))
-} else {
-  as.data.table(dplyr::collect(dplyr::select(
-    censobr::read_tracts(year = 2010, dataset = "Entorno", showProgress = FALSE), dplyr::all_of(cols))))
-}
+f10 <- file.path(path_census_in, "censo2010_entorno_lighting.parquet")
+if (!file.exists(f10))
+  write_parquet(dplyr::collect(dplyr::select(
+    censobr::read_tracts(year = 2010, dataset = "Entorno", showProgress = FALSE),
+    dplyr::all_of(cols))), f10, compression = "zstd")
+e <- as.data.table(read_parquet(f10, col_select = dplyr::all_of(cols)))
 setnames(e, sub("entorno01_", "", names(e)))
 e <- e[V1005 %in% 1:3]
 for (x in sprintf("V%03d", 8:13)) set(e, j = x, value = fcoalesce(as.numeric(e[[x]]), 0))

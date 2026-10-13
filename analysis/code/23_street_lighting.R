@@ -1,5 +1,5 @@
 # =============================================================================
-# 27_street_lighting.R
+# 23_street_lighting.R
 #
 # Does street lighting substitute for daylight? If abolition kills by taking
 # daylight from the evening hour, the effect should be larger where streets
@@ -13,11 +13,11 @@
 # the comparison is within state. The halves are equal only roughly: the
 # municipality that crosses the median goes whole to the darker half, so
 # the Federal District (one municipality) is entirely "dark", and in AP and
-# RR the capital puts 85-100% of deaths there. Code audit 12/10/2026:
-# dropping DF or assigning the crossing municipality by its midpoint moves
-# no estimate by more than 8 log points and no difference to p < 0.15.
+# RR the capital puts 85-100% of deaths there. Dropping DF or assigning the
+# crossing municipality by its midpoint moves no estimate by more than 8 log
+# points and no difference to p < 0.15.
 #
-# Panel: UF x day x half. Poisson triple difference of 02 with every fixed
+# Panel: UF x day x half. Poisson triple difference of 01 with every fixed
 # effect interacted with the half, and the treatment split by half:
 #   y ~ twp:dark + twp:lit | uf^window^half + uf^sy^half + date^half
 # Outcomes: SIM on-road transport deaths and pedestrian deaths in evening

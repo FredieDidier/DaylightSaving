@@ -1,5 +1,5 @@
 # =============================================================================
-# 18_bahia_switch.R
+# 16_bahia_switch.R
 #
 # Appendix check of sign: Bahia had DST in one season only inside the sample,
 # 2011/12 (Decree 7,584/2011). That summer the evening light-switched hour
@@ -19,11 +19,11 @@
 # First stage: share of PRF accidents in BA's evening hour 0 recorded by the
 # officer as dusk or night, by season.
 #
-# BA is outside the analysis groups, so the event file of 02 has no BA rows;
-# BA events are built here exactly as 02 builds the others (on-road SIM
+# BA is outside the analysis groups, so the event file of 01 has no BA rows;
+# BA events are built here exactly as 01 builds the others (on-road SIM
 # deaths V01-V89 with LOCOCOR = 4; PRF accidents with victims and deaths,
 # municipality matched by name plus build/manual/prf_municipio_alias.csv).
-# Control-state events come from the 02 event file.
+# Control-state events come from the 01 event file.
 # TO (DST in 2012/13 only) is left out: 3-8 on-road deaths per summer in hour 0.
 # =============================================================================
 
@@ -38,7 +38,7 @@ BA_SEASON <- 2011L
 geo <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "geo", "output",
                                             "muni_geo.parquet")))
 
-# ── BA events, as in 02_sunset_design.R ─────────────────────────────────────
+# ── BA events, as in 01_sunset_design.R ─────────────────────────────────────
 sim <- rbindlist(lapply((min(SEASONS)):(max(SEASONS) + 1L), function(y) {
   s <- as.data.table(read_parquet(file.path(path_sim_out, sprintf("sim_%d.parquet", y)),
                                   col_select = c("DTOBITO", "HORAOBITO", "CODMUNOCOR",
@@ -100,17 +100,16 @@ rank_tab <- res[, .(coef_2011_lp = 100 * coef[sy == BA_SEASON],
 
 # ── First stage: PRF dark share in BA's evening hour 0, summer window ───────
 # fase_dia travels with each accident, so no join by time is needed.
-# Same definition as the treated-state first stage of 04_prf_clock_check.R:
-# share dark among accidents recorded as full day, dusk or night. Code audit
-# 12/10/2026: the denominator used to keep every non-missing phase, so the 3
+# Same definition as the treated-state first stage of 03_prf_clock_check.R:
+# share dark among accidents recorded as full day, dusk or night. The 3
 # evening accidents recorded as "amanhecer" (dawn, a coding slip at this hour;
-# 2012/13, 2015/16, 2017/18) counted as not dark, by up to 1.7 p.p.
+# 2012/13, 2015/16, 2017/18) are left out of the denominator.
 fs <- ev_ba[outcome == "PRF injury accidents" & bin_set == 0L &
               fase_dia %in% c("pleno dia", "anoitecer", "plena noite")]
 fs <- days[uf == "BA", .(date, window, sy)][fs, on = "date", nomatch = 0][window == "win"]
 fs_tab <- fs[, .(dark_pct = round(100 * mean(fase_dia != "pleno dia"), 1), n = .N), keyby = sy]
 
-# Figure: drawn by 20_figures.R from the cache saved below.
+# Figure: drawn by 27_figures.R from the cache saved below.
 
 saveRDS(list(by_season = res, rank = rank_tab, first_stage = fs_tab, seasons = SEASONS),
         file.path(path_audit, "bahia_switch.rds"))

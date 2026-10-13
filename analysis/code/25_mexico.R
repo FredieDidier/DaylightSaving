@@ -1,5 +1,5 @@
 # =============================================================================
-# 29_mexico.R
+# 25_mexico.R
 #
 # Replication in Mexico. The Ley de los Husos Horarios (DOF 28/10/2022, text in
 # horario_verao/fontes_legais/MX_LHHEUM_2022.txt) ended DST on 30/10/2022
@@ -14,7 +14,7 @@
 # Before 2023, the rest of the country had DST from the first Sunday of April
 # to the last Sunday of October (Decree of 1 March 2002).
 #
-# Design, as in 02 for Brazil:
+# Design, as in 01 for Brazil:
 #   unit     state x regime: the interior of each state (treated: lost DST),
 #            and the control units Sonora, Quintana Roo, Baja California, and
 #            the border municipalities of Coahuila, Nuevo Leon, Tamaulipas.
@@ -32,7 +32,7 @@
 # scene): deaths, pedestrian deaths, accidents with victims, pedestrians
 # struck with victims.
 #
-# Clock: ATUS records legal (clock) time. Test, as for the PNCT in 16: in the
+# Clock: ATUS records legal (clock) time. Test, as for the PNCT in 15: in the
 # treated interior, the hourly profile of accidents in the summer window under
 # DST (2016-2022) matches the profile without DST (2023-2025) at the same clock
 # hour (squared distance 0.68) far better than shifted by one hour (6.95 and
@@ -101,10 +101,8 @@ OUT <- c("Deaths" = "o_deaths", "Pedestrian deaths" = "o_ped_deaths",
          "Accidents with victims" = "o_victim_acc", "Pedestrians struck, with victims" = "o_ped_struck")
 
 # ── Clock check ─────────────────────────────────────────────────────────────
-# Code audit 12/10/2026: the check read every municipality outside 02, 08, 23
-# and 26, so the 22 border municipalities (controls, DST on US dates in the
-# whole window before and after) entered as if treated (130,790 accidents).
-# Restricted to the treated units it gives 0.68 against 6.95 and 10.13.
+# Treated units only: the 22 border municipalities (controls, DST on US dates
+# before and after) are left out, as are the control states.
 ck <- geo[treated == 1L, .(cve_ent, cve_mun)][acc[!is.na(cmin)], on = .(cve_ent, cve_mun), nomatch = 0]
 ck[, `:=`(md = month(date) * 100L + mday(date), h = cmin %/% 60L, y = year(date))]
 ck <- ck[md >= 408L & md <= 1024L & y >= 2016L, .N, by = .(per = fifelse(y <= 2022L, "pre", "post"), h)]

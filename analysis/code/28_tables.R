@@ -1,26 +1,26 @@
 # =============================================================================
-# 21_tables.R
+# 28_tables.R
 #
 # Every table of the paper, written as a LaTeX tabular from the estimates
 # cached in audit/*.rds. Nothing is estimated here. Captions and notes live in
 # the manuscript (latex/exhibits.tex holds the current drafts).
 #
-#   tab_descriptives    events per summer, group x window x period       (14)
+#   tab_descriptives    events per summer, group x window x period       (13)
 #   tab_main            the hour that turned dark and the hour that turned
-#                       light: estimate, three p-values, baseline        (02, 07)
-#   tab_pedestrians     pedestrians against other road users            (13, 15)
-#   tab_excess          excess events per summer, evening, morning, day  (12)
-#   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (16)
+#                       light: estimate, three p-values, baseline        (01, 06)
+#   tab_pedestrians     pedestrians against other road users            (12, 14)
+#   tab_excess          excess events per summer, evening, morning, day  (11)
+#   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (15)
 #   tab_robustness      the hour that turned dark under other choices,
-#                       and the hours whose light did not change         (05, 06, 09, 10, 19)
+#                       and the hours whose light did not change         (04, 05, 08, 09, 17)
 #   tab_sensitivity     the hour after sunset under other clocks, samples
-#                       and a rain control                               (22, 23, 26)
-#   tab_road_users      who dies: road user, pedestrian age and sex, day (24)
-#   tab_light_dose      darkness as a dose; rain                          (26)
-#   tab_street_lighting darker against better-lit municipalities          (27)
-#   tab_cost            deaths per summer and their value                 (28)
+#                       and a rain control                               (18, 19, 22)
+#   tab_road_users      who dies: road user, pedestrian age and sex, day (20)
+#   tab_light_dose      darkness as a dose; rain                          (22)
+#   tab_street_lighting darker against better-lit municipalities          (23)
+#   tab_cost            deaths per summer and their value                 (24)
 #   tab_mexico          Mexico, abolition of 2022: evening, hour before, morning,
-#                       and the within-day comparison in treated units  (29, 30)
+#                       and the within-day comparison in treated units  (25, 26)
 #
 # Conventions: outcome names as in OUTCOME_LAB (never the data source);
 # estimates in log points with the standard error below in parentheses;
@@ -144,10 +144,10 @@ EX <- c("evening, dark (0, +1)"            = "Two hours after sunset",
         "evening, all (-2 to +1)"          = "Two hours before to two hours after sunset",
         "morning, light (0)"               = "Hour after sunrise",
         "net: evening 0, +1 and morning 0" = "Two hours after sunset and hour after sunrise",
-        # Code audit 12/10/2026: was "All seven hours above", but only five
-        # of the seven hours of 12_reallocation.R appear above (the hour before
-        # and the second hour after sunrise are summed, not shown). The seven
-        # hours are listed in the table note (latex/exhibits.tex).
+        # Only five of the seven hours of 11_reallocation.R appear above (the
+        # hour before and the second hour after sunrise are summed, not
+        # shown). The seven hours are listed in the table note
+        # (latex/exhibits.tex).
         "net: all seven hours"             = "Seven hours around sunset and sunrise",
         "whole day (separate model)"       = "Whole day, estimated separately")
 ex_rows <- function(keys) unlist(lapply(keys, function(k) {

@@ -1,5 +1,5 @@
 # =============================================================================
-# 13_mechanism.R
+# 12_mechanism.R
 #
 # Who dies in the hour that turned dark? Light should matter most for people
 # outside a vehicle: the literature (Sullivan & Flannagan 2002; IIHS 2024)
@@ -8,12 +8,12 @@
 #   SIM on-road transport deaths: pedestrians (V01-V09) vs everyone else
 #   PRF: "atropelamento de pessoa / pedestre" vs every other accident type,
 #        deaths and injury accidents
-# Hours: evening 0 and +1, morning 0 (the hours whose light changed; see 12).
+# Hours: evening 0 and +1, morning 0 (the hours whose light changed; see 11).
 #
 # One stacked Poisson per pair, fixed effects interacted with group x hour, so
 # each coefficient equals its separate triple difference and the pedestrian -
 # other difference gets a UF-clustered standard error. Excess per season as in
-# 12_reallocation.R.
+# 11_reallocation.R.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -71,7 +71,7 @@ print(res[order(pair, hour, group), lapply(.SD, function(x) if (is.numeric(x)) r
 
 # ── Pre-trend check, evening hour 0, each split outcome ─────────────────────
 # Linear treated x window trend fitted on pre seasons only, then extrapolated
-# as an offset (as in 11_assault_trends.R); joint Wald test on the pre-season
+# as an offset (as in 10_assault_trends.R); joint Wald test on the pre-season
 # event-study coefficients (ref. 2018/19).
 pre_terms <- sprintf("sy::(%s):tw", paste(SEASONS[SEASONS < LAST_PRE], collapse = "|"))
 trend <- rbindlist(lapply(unlist(PAIRS), function(o) {

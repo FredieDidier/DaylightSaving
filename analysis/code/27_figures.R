@@ -1,27 +1,27 @@
 # =============================================================================
-# 20_figures.R
+# 27_figures.R
 #
 # Every figure of the paper, drawn from the estimates cached in audit/*.rds.
 # Nothing is estimated here, so a label, a colour or a size changes in seconds
-# and never requires a refit. Run after the scripts that write the caches.
+# and never requires a refit. Run after 01-26, which write the caches.
 #
 # Main text
 #   fig_design            clock time of sunset and sunrise, Sao Paulo 2018/19,
 #                         with and without DST                     (no cache)
 #   fig_first_stage       share of PRF crashes recorded dark, by minute from
-#                         standard sunset, summer window          (04)
+#                         standard sunset, summer window          (03)
 #   fig_hours_from_sunset effect by clock hour relative to standard sunset and
-#                         sunrise                                  (02)
-#   fig_event_study       hour after sunset vs hour before, by season (03)
+#                         sunrise                                  (01)
+#   fig_event_study       hour after sunset vs hour before, by season (02)
 # Appendix
-#   fig_within_day        event study with state-by-day fixed effects (10, 03)
-#   fig_honestdid         Rambachan-Roth sensitivity               (08)
-#   fig_assault           assault deaths, whole day and 5-8 p.m.   (11)
-#   fig_bahia             Bahia's single DST season, 2011/12       (18)
-#   fig_window_shift      the hour moved earlier and later         (22)
-#   fig_leave_out         one state or one season left out         (23)
-#   fig_record_integrity  share on the road, share without a time  (25)
-#   fig_mexico_event_study Mexico, hour after sunset by year       (29)
+#   fig_within_day        event study with state-by-day fixed effects (09, 02)
+#   fig_honestdid         Rambachan-Roth sensitivity               (07)
+#   fig_assault           assault deaths, whole day and 5-8 p.m.   (10)
+#   fig_bahia             Bahia's single DST season, 2011/12       (16)
+#   fig_window_shift      the hour moved earlier and later         (18)
+#   fig_leave_out         one state or one season left out         (19)
+#   fig_record_integrity  share on the road, share without a time  (21)
+#   fig_mexico_event_study Mexico, hour after sunset by year       (25)
 #
 # House style (00_utils.R): no titles inside the figure (the caption lives in
 # LaTeX); outcome names as in OUTCOME_LAB, never with the data source; one y
@@ -250,7 +250,7 @@ save_fig(stack_rows(rows), "fig_bahia", height = 6.2)
 
 # ── Appendix: the hour moved earlier and later ──────────────────────────────
 # Each point: the 60-minute window starting s minutes after standard-time
-# sunset (22_heaping.R). s = 0 is the paper's hour.
+# sunset (18_heaping.R). s = 0 is the paper's hour.
 sh <- rd("heaping.rds")$results[variant == "shift"]
 sh[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
           base = factor(fifelse(shift_min == 0L, "The paper's hour", "Window moved"),

@@ -1,5 +1,5 @@
 # =============================================================================
-# 16_traffic_volume.R
+# 15_traffic_volume.R
 #
 # Did traffic move in time when the clock stopped changing? PNCT continuous
 # count stations on federal highways (build/06-07), hourly volume, 2014-2019
@@ -11,7 +11,7 @@
 #       summer profile sits one hour earlier. Compare the treated-summer
 #       profile pre vs post (each net of the control's) at lags -1, 0, +1.
 #   (b) Triple difference in volume, hour by hour relative to STANDARD-time
-#       sunset and sunrise at the station (same bins as 02/12; an hourly
+#       sunset and sunrise at the station (same bins as 01/11; an hourly
 #       count goes to the bin that contains the midpoint of its clock hour):
 #         y[s,d] ~ treated x window x post | station + uf^window + uf^sy + date
 #       Poisson on vehicles, EP clustered by UF. No station is counted both
@@ -22,7 +22,7 @@
 #   (c) Within the day: stacked bins with station x date fixed effects and the
 #       rest of the day as reference, so a coefficient is the change in that
 #       hour's traffic relative to the rest of the same station-day.
-#   (d) Risk per vehicle: crash effect (12_reallocation.R, PRF) minus volume
+#   (d) Risk per vehicle: crash effect (11_reallocation.R, PRF) minus volume
 #       effect, hour by hour, in log points.
 #
 # Groups as everywhere: treated RS SC PR SP RJ ES MG GO MT MS DF; control the
@@ -135,17 +135,14 @@ day <- {
 # The 11 sun hours plus the reference "rest" (the other 13 clock hours of the
 # station-day). Without a reference the model is not identified: under the
 # station x date effect, adding a constant to every hour's coefficient changes
-# nothing (the first version had no reference and standard errors of ~4,700
-# lp). Each coefficient now reads as the change in that hour's traffic
-# relative to the rest of the same station-day.
+# nothing, and the standard errors explode. Each coefficient reads as the
+# change in that hour's traffic relative to the rest of the same station-day.
 stack <- rbindlist(lapply(seq_len(nrow(HOURS)), function(i)
   bin_panel(HOURS$side[i], HOURS$bin[i])[, key := HOURS$key[i]]))
 rest <- stack[, .(y = sum(y)), by = .(station, date)][full[, .(station, date, v_day)], on = .(station, date), nomatch = 0]
 rest <- sd[rest[, .(station, date, y = v_day - y)], on = .(station, date)][, key := "rest"]
 stopifnot(rest[, all(y >= 0)])
 stack <- rbind(stack, rest, use.names = TRUE)
-# The panel is saved for 17_inference_volume.R (the build above takes minutes).
-write_parquet(stack, file.path(DROPBOX_ROOT, "build", "pnct", "output", "pnct_station_day_bins.parquet"))
 # Station x hour absorbs each road's own daily profile; the window and season
 # contrasts of the profile sit at the UF level (see FEV).
 wd <- fepois(y ~ i(key, twp, ref = "rest") | station^date + station^key + uf^key^window + uf^key^sy + key^date,

@@ -34,20 +34,26 @@ quando existir, será em inglês.
                             ponto no limite de 2020) + fuso padrão
   build/05_download_sim.R   SIM 2008–2025 do FTP do DATASUS
   build/06–07               PNCT (volume horário do DNIT): download e limpeza
+  build/08–11               chuva (Xavier), iluminação (Censo), México (INEGI geo e ATUS)
   analysis/code/00_utils.R  grupos, janelas, sol, painel (fonte única)
-  analysis/code/00…17       primeira olhada → viabilidade → hora que trocou de luz
-                            → event study → relógio da PRF → tendências
-                            → imputação → inferência → … → agressões (11) → realocação (12)
-                            → pedestre (13) → números da Tabela 1 (14)
-                            → inferência do pedestre (15) → volume do PNCT (16) → inferência do volume (17)
-                            → Bahia 2011/12, checagem de sinal (18) → placebo das horas longe do crepúsculo (19)
-                            → TODAS as figuras (20) e tabelas .tex (21), lidas só dos .rds
+  analysis/code/00_master_analysis.R  roda 01–28 em ordem (config/00_master_build.R faz o build)
+  analysis/code/01…26       hora que trocou de luz (01, grava o arquivo de eventos)
+                            → event study (02) → relógio da PRF (03) → tendências (04)
+                            → imputação (05) → inferência (06) → HonestDiD (07)
+                            → janela larga (08) → dentro do dia (09) → agressões (10)
+                            → realocação (11) → pedestre (12) → números da Tabela 1 (13)
+                            → inferência do pedestre (14) → volume do PNCT (15)
+                            → Bahia 2011/12, checagem de sinal (16) → placebo das horas (17)
+                            → amontoamento (18) → deixar um de fora (19) → usuários da via (20)
+                            → integridade do registro (21) → dose de luz e chuva (22)
+                            → iluminação pública (23) → custo (24) → México (25, 26)
+  analysis/code/27, 28      TODAS as figuras (27) e tabelas .tex (28), lidas só dos .rds
   latex/exhibits.tex        prévia: figuras + tabelas com legendas e notas em rascunho
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
-                            PRIMEIRA_OLHADA, VIABILIDADE, PAPER, fontes_legais/, skills/
+                            VIABILIDADE, PAPER, fontes_legais/, skills/
 
 ~/Library/CloudStorage/Dropbox/DaylightSaving/build/   (dado, nunca git)
-  calendar/ prf/ geo/ sim/ audit/   (audit/ guarda os .rds com os números)
+  calendar/ prf/ geo/ sim/ pnct/ weather/ census/ mexico/ audit/   (audit/ guarda os .rds)
 ```
 
 ## O desenho, em uma tela
@@ -63,8 +69,8 @@ quando existir, será em inglês.
   município e dia (NOAA, sede municipal). Clara com horário de verão, escura
   sem. De manhã, o espelho: [nascer padrão, +60 min).
 - **Estimação:** Poisson, `y ~ twp | uf^window + uf^sy + date`, EP por UF.
-  Imputação com semana + dia da semana (06). Wild cluster bootstrap no análogo
-  linear e permutação dos estados tratados (07; "permutation inference",
+  Imputação com semana + dia da semana (05). Wild cluster bootstrap no análogo
+  linear e permutação dos estados tratados (06; "permutation inference",
   nunca "randomization": o tratamento não foi sorteado).
 
 ## Regras que não se renegociam
@@ -78,7 +84,7 @@ quando existir, será em inglês.
    A e-DAT (jun/2015, antes no
    S/SE/CE/DF) tirou da base os acidentes sem vítima, de forma diferencial
    entre os grupos.
-4. **A hora da PRF é hora legal** (conferido em `04_prf_clock_check.R`: a curva
+4. **A hora da PRF é hora legal** (conferido em `03_prf_clock_check.R`: a curva
    de "escuro" se desloca ~55 min entre os regimes).
 5. **SIM preliminar nunca entra** (`preliminary == TRUE`).
 6. **A tabela `.rds` em `audit/` vence qualquer número escrito**, inclusive aqui

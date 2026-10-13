@@ -9,7 +9,7 @@
 # Ano, Latitude, Longitude) and whose third line is the header
 #   Data;Hora;Sentido;(A) ... ;(J) Motocicleta;(L) Indefinido
 # Hora is the clock hour 0-23 (which clock is tested in
-# analysis/code/16_traffic_volume.R, as 04_prf_clock_check.R did for PRF);
+# analysis/code/15_traffic_volume.R, as 03_prf_clock_check.R did for PRF);
 # Sentido is C (increasing km) or D (decreasing). The _vmdm and _vtd summaries
 # are not used.
 #

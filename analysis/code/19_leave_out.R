@@ -1,8 +1,8 @@
 # =============================================================================
-# 23_leave_out.R
+# 19_leave_out.R
 #
 # The evening light-switched hour (bin 0) under other samples, same Poisson
-# triple difference as 02:
+# triple difference as 01:
 #   (a) leave one state out (23 fits per outcome);
 #   (b) leave one season out (16 fits per outcome);
 #   (c) other control groups: Northeast only, North only;
