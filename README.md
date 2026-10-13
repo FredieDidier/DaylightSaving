@@ -12,8 +12,8 @@ config/config.R           the only file to edit (set DROPBOX_ROOT)
 config/00_master_build.R  runs build/01-11 in order
 build/manual/             legal DST calendar, typed from the decrees (versioned)
 build/01-11               treatment calendar, then one step per data source
-analysis/code/            00_master_analysis.R runs 01-28: 01-26 estimate and
-                          cache audit/*.rds, 27 draws the figures, 28 the tables
+analysis/code/            00_master_analysis.R runs 01-29: 01-27 estimate and
+                          cache audit/*.rds, 28 draws the figures, 29 the tables
 analysis/output/          committed outputs (tables .tex, figures .pdf/.png)
 latex/                    manuscript (later)
 horario_verao/            project notes (Portuguese), legal texts, skills

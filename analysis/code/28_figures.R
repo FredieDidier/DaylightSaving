@@ -1,9 +1,9 @@
 # =============================================================================
-# 27_figures.R
+# 28_figures.R
 #
 # Every figure of the paper, drawn from the estimates cached in audit/*.rds.
 # Nothing is estimated here, so a label, a colour or a size changes in seconds
-# and never requires a refit. Run after 01-26, which write the caches.
+# and never requires a refit. Run after 01-27, which write the caches.
 #
 # Main text
 #   fig_design            clock time of sunset and sunrise, Sao Paulo 2018/19,
@@ -17,11 +17,11 @@
 #   fig_within_day        event study with state-by-day fixed effects (09, 02)
 #   fig_honestdid         Rambachan-Roth sensitivity               (07)
 #   fig_assault           assault deaths, whole day and 5-8 p.m.   (10)
-#   fig_bahia             Bahia's single DST season, 2011/12       (16)
-#   fig_window_shift      the hour moved earlier and later         (18)
-#   fig_leave_out         one state or one season left out         (19)
-#   fig_record_integrity  share on the road, share without a time  (21)
-#   fig_mexico_event_study Mexico, hour after sunset by year       (25)
+#   fig_bahia             Bahia's single DST season, 2011/12       (17)
+#   fig_window_shift      the hour moved earlier and later         (19)
+#   fig_leave_out         one state or one season left out         (20)
+#   fig_record_integrity  share on the road, share without a time  (22)
+#   fig_mexico_event_study Mexico, hour after sunset by year       (26)
 #
 # House style (00_utils.R): no titles inside the figure (the caption lives in
 # LaTeX); outcome names as in OUTCOME_LAB, never with the data source; one y
@@ -250,7 +250,7 @@ save_fig(stack_rows(rows), "fig_bahia", height = 6.2)
 
 # ── Appendix: the hour moved earlier and later ──────────────────────────────
 # Each point: the 60-minute window starting s minutes after standard-time
-# sunset (18_heaping.R). s = 0 is the paper's hour.
+# sunset (19_heaping.R). s = 0 is the paper's hour.
 sh <- rd("heaping.rds")$results[variant == "shift"]
 sh[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
           base = factor(fifelse(shift_min == 0L, "The paper's hour", "Window moved"),
@@ -285,14 +285,14 @@ rows <- lapply(TRAFFIC_LAB, function(o)
     geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
     geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.4, colour = PAL[["grey"]]) +
     geom_point(size = 1.4, colour = PAL[["ink"]]) +
-    geom_text(aes(y = hi, label = dropped), angle = 90, hjust = -0.15, size = 2.1, colour = "grey30") +
+    geom_text(aes(y = hi, label = dropped), angle = 90, hjust = -0.12, size = 2.8, colour = "grey20") +
     facet_wrap(~ kind, nrow = 1, scales = "free_x") +
     scale_x_continuous(breaks = NULL) +
-    scale_y_continuous(labels = num_lab, expand = expansion(mult = c(0.05, 0.3))) +
+    scale_y_continuous(labels = num_lab, expand = expansion(mult = c(0.05, 0.42))) +
     labs(title = o, x = "Estimates ordered from smallest to largest; dashed line: all states and seasons",
          y = "Effect of abolition (log points)") +
     theme_paper())
-save_fig(stack_rows(rows), "fig_leave_out", height = 7.6)
+save_fig(stack_rows(rows), "fig_leave_out", height = 8.2)
 
 # ── Appendix: how deaths are recorded ───────────────────────────────────────
 ri_ <- rd("record_integrity.rds")$series[window == "win"]

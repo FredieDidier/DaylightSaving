@@ -102,7 +102,7 @@ raw[, `:=`(ratio_treated = round(treated_win / treated_off, 3),
            ratio_control = round(control_win / control_off, 3))]
 raw[, ddd_log := round(100 * (log(ratio_treated) - log(ratio_control)), 1)]
 
-# Figure: drawn by 27_figures.R from the cache saved below.
+# Figure: drawn by 28_figures.R from the cache saved below.
 
 saveRDS(list(results = res, event_study = es, raw = raw),
         file.path(path_audit, "assault_trends.rds"))

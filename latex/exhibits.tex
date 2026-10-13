@@ -3,8 +3,8 @@
 %
 % Every figure and table of the paper, with draft captions and notes, in the
 % order planned in horario_verao/PAPER.md. The bodies are generated:
-%   figures  analysis/code/27_figures.R  -> analysis/output/graphs/*.pdf
-%   tables   analysis/code/28_tables.R   -> analysis/output/tables/*.tex
+%   figures  analysis/code/28_figures.R  -> analysis/output/graphs/*.pdf
+%   tables   analysis/code/29_tables.R   -> analysis/output/tables/*.tex
 % Captions and notes live here (and later in the manuscript), never in the
 % generated files. Figures are saved at the size they print at: \textwidth of
 % a 12pt article with 1in margins (6.5in), so nothing is rescaled.
@@ -174,7 +174,11 @@ and date. Standard errors are clustered by state.
     Column 1: equation~(\ref{eq:main}) on hourly vehicle counts at continuous
     counting stations, with station fixed effects; no station is counted both
     before and after abolition. Columns 2 and 4: as in Table~\ref{tab:main}.
-    Per vehicle: crash or death estimate minus the volume estimate.}
+    Per vehicle: crash or death estimate minus the volume estimate.
+    Permutation p-values in brackets, from 999 random sets of 11 treated
+    states as in Table~\ref{tab:main}; every column is re-estimated with the
+    same set, so the per-vehicle columns have their own reference
+    distribution.}
   \end{threeparttable}
 \end{table}
 

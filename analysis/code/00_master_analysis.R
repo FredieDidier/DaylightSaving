@@ -9,17 +9,18 @@
 #   Rscript analysis/code/00_master_analysis.R --from 15    # 15 onwards
 #   Rscript analysis/code/00_master_analysis.R --list       # print the order
 #
-# 01-26 estimate and cache their results in audit/*.rds under DROPBOX_ROOT;
-# 27 draws every figure and 28 writes every table from those caches, so a
+# 01-27 estimate and cache their results in audit/*.rds under DROPBOX_ROOT;
+# 28 draws every figure and 29 writes every table from those caches, so a
 # change of label or layout reruns only the last two. The order matters in
-# three places: 01 writes the event file that most later scripts read, 11
-# must run before 15 and 24 (they read its excess counts), and 27-28 run last.
+# four places: 01 writes the event file that most later scripts read, 11
+# must run before 15 and 25 (they read its excess counts), 15 writes the
+# station panel that 16 reads, and 28-29 run last.
 # Any script can still be run on its own once its inputs exist.
 #
 # Each script gets its own process because several fork a worker pool over a
 # large panel, and one session would keep every earlier script's memory alive.
 # The slow ones (permutation and bootstrap draws) read their draw counts from
-# the environment: DS_PERM (06, 09, 14, 25), DS_BOOT (05, 22) and DS_CORES for
+# the environment: DS_PERM (06, 09, 14, 16, 26), DS_BOOT (05, 23) and DS_CORES for
 # the number of workers. 09 runs its permutation test only when DS_PERM is set.
 #
 # The first failure stops the run and its exit status is propagated.
@@ -30,11 +31,12 @@ STEPS <- c(
   "04_pretrends.R", "05_imputation.R", "06_inference.R", "07_honestdid.R",
   "08_wider_window.R", "09_within_day.R", "10_assault_trends.R",
   "11_reallocation.R", "12_mechanism.R", "13_design_descriptives.R",
-  "14_inference_pedestrian.R", "15_traffic_volume.R", "16_bahia_switch.R",
-  "17_placebo_hours.R", "18_heaping.R", "19_leave_out.R", "20_road_users.R",
-  "21_record_integrity.R", "22_light_dose.R", "23_street_lighting.R",
-  "24_total_cost.R", "25_mexico.R", "26_mexico_within_day.R",
-  "27_figures.R", "28_tables.R")
+  "14_inference_pedestrian.R", "15_traffic_volume.R", "16_inference_volume.R",
+  "17_bahia_switch.R",
+  "18_placebo_hours.R", "19_heaping.R", "20_leave_out.R", "21_road_users.R",
+  "22_record_integrity.R", "23_light_dose.R", "24_street_lighting.R",
+  "25_total_cost.R", "26_mexico.R", "27_mexico_within_day.R",
+  "28_figures.R", "29_tables.R")
 num <- sub("_.*", "", STEPS)
 
 args <- commandArgs(trailingOnly = TRUE)

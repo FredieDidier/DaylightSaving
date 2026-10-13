@@ -143,6 +143,8 @@ rest <- stack[, .(y = sum(y)), by = .(station, date)][full[, .(station, date, v_
 rest <- sd[rest[, .(station, date, y = v_day - y)], on = .(station, date)][, key := "rest"]
 stopifnot(rest[, all(y >= 0)])
 stack <- rbind(stack, rest, use.names = TRUE)
+# The panel is saved for 16_inference_volume.R (the build above takes minutes).
+write_parquet(stack, file.path(DROPBOX_ROOT, "build", "pnct", "output", "pnct_station_day_bins.parquet"))
 # Station x hour absorbs each road's own daily profile; the window and season
 # contrasts of the profile sit at the UF level (see FEV).
 wd <- fepois(y ~ i(key, twp, ref = "rest") | station^date + station^key + uf^key^window + uf^key^sy + key^date,

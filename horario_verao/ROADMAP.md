@@ -34,7 +34,7 @@ Feito nesta sessão:
   44% do excesso. Resiste à tendência pré (71 lp).
 - ✅ Figura do desenho e Tabela 1 (`13_design_descriptives.R`).
 - ✅ Revisão editorial das exibições (09/10/2026): todas as figuras em
-  `27_figures.R` e todas as tabelas em `28_tables.R`, lidas dos `.rds`; nomes
+  `28_figures.R` e todas as tabelas em `29_tables.R`, lidas dos `.rds`; nomes
   dos desfechos sem a fonte; sem rótulo de linha à direita; seis tabelas `.tex`;
   prévia com legendas e notas em `latex/exhibits.tex`.
 - ✅ Inferência do pedestre (`14_inference_pedestrian.R`, VIABILIDADE §11): WCR e
@@ -129,8 +129,8 @@ Feito nesta sessão:
   `tab_street_lighting`, `tab_cost`; figuras `fig_window_shift`, `fig_leave_out`,
   `fig_record_integrity`. Periódico-alvo: AEJ Applied → AEJ Policy → JHE (com o México; PARECER.md).
 - ✅ **México (extensão):** ATUS 1997–2025 (INEGI, ago/2026) e lei no DOF;
-  builds 10 (coordenadas das cabeceiras) e 11 (ATUS); `25_mexico.R` (tripla com
-  controles, frágil: só 6 controles) e `26_mexico_within_day.R` (só tratadas,
+  builds 10 (coordenadas das cabeceiras) e 11 (ATUS); `26_mexico.R` (tripla com
+  controles, frágil: só 6 controles) e `27_mexico_within_day.R` (só tratadas,
   hora 0 contra as duas anteriores: mortes +55, p = 0,001; pedestres +154).
   Tabela `tab_mexico`, figura `fig_mexico_event_study`. EXPLICANDO §5.13.
 - ✅ EXPLICANDO também em PDF (`horario_verao/EXPLICANDO_O_PROJETO.pdf`, pandoc +
@@ -138,7 +138,7 @@ Feito nesta sessão:
 
 Próximos:
 1. Começar o manuscrito (introdução e desenho), em inglês. Entram: o texto do
-   sono (PAPER.md), o placebo das horas (17) e a Bahia no apêndice (16).
+   sono (PAPER.md), o placebo das horas (18) e a Bahia no apêndice (17).
 
 ## Decisões tomadas
 
@@ -163,6 +163,8 @@ Próximos:
 | 09/10/2026 | O total do dia é "inconclusivo", não "zero" | EP do dia todo (66 mortes/verão no SIM) maior que o efeito da noite (+58) |
 | 09/10/2026 | Fronteira estadual (GO/MG/MT × BA/TO/RO) fica fora do desenho principal | Sem poder: na hora que escureceu, no verão, há ~1 morte na via por temporada do lado tratado a até 100 km da divisa e ~10 a até 300 km; ~2–27 acidentes com vítima da PRF; 0–4 postos do PNCT a até 100 km. Serve no máximo como robustez de faixa larga com FE de par × dia |
 | 13/10/2026 | Só fica o código que gera exibição; análise renumerada | Saíram `00_first_look` (nascimentos, SINASC), `01_viability` (blocos fixos de hora) e `17_inference_volume` (nenhuma exibição usava); SINASC apagado do Dropbox. Antigo → novo: 02–16 → 01–15, 18 → 16, 19 → 17, 22–30 → 18–26, 20 → 27 (figuras), 21 → 28 (tabelas). Entradas antigas deste arquivo usam a numeração antiga. Scripts mestres: `config/00_master_build.R`, `analysis/code/00_master_analysis.R` |
+| 13/10/2026 | Inferência do volume volta, agora na Tabela 5 | `16_inference_volume.R`: p de permutação (999) nas 5 colunas e nas 7 horas da `tab_traffic_volume`, entre colchetes; mesma atribuição falsa para volume, acidentes e mortes, então o "por veículo" tem distribuição própria. Saiu o bootstrap selvagem (nenhuma tabela usava). Renumeração: 16–28 → 17–29 (figuras 28, tabelas 29) |
+| 13/10/2026 | Rótulos internos da `fig_leave_out` maiores | Estados e temporadas de ~6 pt para ~8 pt, mais escuros; altura da figura 7,6 → 8,2 pol. Pedido do Fredie |
 | 13/10/2026 | Nenhum dado lido de outro projeto | Reprodutível em qualquer máquina só com o Dropbox do DaylightSaving. Fuso por município virou regra no `04` (saída idêntica); Censo 2010 guarda só as 8 colunas usadas; o NetCDF do Xavier (sem download por script) fica em `weather/input/` |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 

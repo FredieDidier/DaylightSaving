@@ -112,7 +112,7 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
     > pedestrians, the road users who depend most on being seen. Any chronic
     > sleep effect of abolition would, if anything, run against our estimates:
     > an earlier clock sunset should lengthen sleep.
-  - Números do placebo e o "Table X": `17_placebo_hours.R`, VIABILIDADE §16.
+  - Números do placebo e o "Table X": `18_placebo_hours.R`, VIABILIDADE §16.
     Conferir os 11 dias contra o calendário ao redigir.
 - Poisson PML, `y ~ tratado × janela × pós | UF×janela + UF×temporada + data`,
   painel UF × dia, EP por UF (23 clusters).
@@ -155,8 +155,8 @@ quanto a noite ganha, o que nas rodovias federais parece realocação de hora
 ## Exibições
 
 Todas geradas a partir dos `audit/*.rds`, sem reestimar: figuras por
-`analysis/code/27_figures.R` (`analysis/output/graphs/fig_*.pdf`), tabelas por
-`analysis/code/28_tables.R` (`analysis/output/tables/tab_*.tex`, só o
+`analysis/code/28_figures.R` (`analysis/output/graphs/fig_*.pdf`), tabelas por
+`analysis/code/29_tables.R` (`analysis/output/tables/tab_*.tex`, só o
 `tabular`). Legendas e notas em rascunho, com a equação (1), em
 `latex/exhibits.tex` (compila com `latexmk -pdf`). Nomes dos desfechos, em
 toda figura, tabela e frase: *Road deaths* (SIM, óbito na via),
@@ -178,18 +178,18 @@ Texto principal
 7. **Tabela 3** `tab_pedestrians`: pedestre × resto, diferença e parcelas (12, 14).
 8. **Tabela 4** `tab_excess`: excesso por verão, noite, manhã e saldo (11).
 9. **Tabela 5** `tab_traffic_volume`: volume do PNCT, acidentes e risco por
-   veículo, hora a hora (15).
+   veículo, hora a hora; p de permutação (15, 16).
 10. **Tabela 6** `tab_robustness`: hora 0 com tendência, sem 2020–21, FE de
     UF × dia, duas horas, teste conjunto pré; imputação; placebo das horas
-    sem mudança de luz (04, 05, 08, 09, 17).
+    sem mudança de luz (04, 05, 08, 09, 18).
 
 Apêndice
 - `fig_within_day` (09), `fig_honestdid` (07), `fig_assault` (10, nulo),
-  `fig_bahia` (16, checagem de sinal; VIABILIDADE §15).
+  `fig_bahia` (17, checagem de sinal; VIABILIDADE §15).
 - Ainda sem exibição: calendário legal (TABELA_ESTADOS), checagem do relógio
   da PRF por temporada (03), quebra da e-DAT, repetição dos totais do PNCT.
 - Aposentadas (09/10/2026): `fig00` (primeira olhada, com nascimentos) e
-  `fig01` (blocos fixos 5–8h); os números seguem nos `.rds`.
+  `fig01` (blocos fixos 5–8h); os scripts saíram do repositório (estão no git).
 
 ## Objeções antecipadas e a resposta (parecer de 12/10/2026, `PARECER.md`)
 
@@ -203,7 +203,7 @@ Apêndice
   16/08 e retomou em 23/12/2019, depois da liminar da 1ª Vara Federal de
   Brasília (11/12) mantida pelo TRF-1 (18/12). Cobre metade da janela de
   2019/20, é nacional (o FE de data absorve) e só toca a PRF. Resposta: sem
-  2019/20, PRF mortes 65,0 (20,7) e com vítima 25,7 (5,9) (`19_leave_out.R`).
+  2019/20, PRF mortes 65,0 (20,7) e com vítima 25,7 (5,9) (`20_leave_out.R`).
   Fontes: Poder360, Migalhas, Jornal de Brasília (dez/2019); conferir o DOU de
   16/08/2019 antes de citar.
 - **HonestDiD.** O alvo é a média pós contra 2018/19 (14,8 lp no SIM), não o β
@@ -212,11 +212,11 @@ Apêndice
   a nota diz que só uma fica no extremo).
 - **Entregas por moto e horários pós-COVID.** A tripla (janela × fora) absorve o
   que não é sazonal; a divisão por usuário responde: motociclistas +19,6 lp
-  (10,9), menos que pedestres (+76,6) (`20_road_users.R`).
+  (10,9), menos que pedestres (+76,6) (`21_road_users.R`).
 - **Amontoamento das horas.** 34,5% das horas do SIM na via são hora cheia. Mover a
   janela muda o efeito na direção que a física manda (mais tarde, mais escuro,
   maior); com outra fórmula solar, 29,8; sem :00 e :30, 16,7 (12,9) com menos da
-  metade da amostra (`18_heaping.R`).
+  metade da amostra (`19_heaping.R`).
 
 ## Réplica no México (12/10/2026; EXPLICANDO §5.13)
 

@@ -3,7 +3,7 @@
 #
 # Daily precipitation at each municipal seat, July 2008 - June 2025, from the
 # Xavier BR-DWGD v3.2.4 grid (0.1 degree; the cell that contains the seat).
-# Used by analysis/code/22_light_dose.R: on a rainy, overcast evening the
+# Used by analysis/code/23_light_dose.R: on a rainy, overcast evening the
 # clock hour after standard sunset was already dim under DST, so abolition
 # should darken it less.
 #

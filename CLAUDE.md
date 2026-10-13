@@ -19,9 +19,9 @@ DaylightSaving/                      (git — código, nunca dado)
   build/manual/                      calendário legal digitado dos decretos (versionado)
   build/01_dst_calendar.R            manual/ → painéis UF × temporada e UF × dia
   build/02–11                        um passo por fonte (config/00_master_build.R roda tudo)
-  analysis/code/01–26                estimam e guardam audit/*.rds
-  analysis/code/27, 28               figuras e tabelas, lidas só dos .rds
-                                     (00_master_analysis.R roda 01–28)
+  analysis/code/01–27                estimam e guardam audit/*.rds
+  analysis/code/28, 29               figuras e tabelas, lidas só dos .rds
+                                     (00_master_analysis.R roda 01–29)
   analysis/output/
   latex/
   horario_verao/                     gestão: contexto, roadmap, tabela, fontes legais, skills
