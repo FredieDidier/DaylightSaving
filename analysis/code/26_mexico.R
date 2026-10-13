@@ -1,5 +1,5 @@
 # =============================================================================
-# 25_mexico.R
+# 26_mexico.R
 #
 # Replication in Mexico. The Ley de los Husos Horarios (DOF 28/10/2022, text in
 # horario_verao/fontes_legais/MX_LHHEUM_2022.txt) ended DST on 30/10/2022

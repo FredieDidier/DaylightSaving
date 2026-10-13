@@ -1,5 +1,5 @@
 # =============================================================================
-# 28_tables.R
+# 29_tables.R
 #
 # Every table of the paper, written as a LaTeX tabular from the estimates
 # cached in audit/*.rds. Nothing is estimated here. Captions and notes live in
@@ -10,17 +10,17 @@
 #                       light: estimate, three p-values, baseline        (01, 06)
 #   tab_pedestrians     pedestrians against other road users            (12, 14)
 #   tab_excess          excess events per summer, evening, morning, day  (11)
-#   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (15)
+#   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (15, 16)
 #   tab_robustness      the hour that turned dark under other choices,
-#                       and the hours whose light did not change         (04, 05, 08, 09, 17)
+#                       and the hours whose light did not change         (04, 05, 08, 09, 18)
 #   tab_sensitivity     the hour after sunset under other clocks, samples
-#                       and a rain control                               (18, 19, 22)
-#   tab_road_users      who dies: road user, pedestrian age and sex, day (20)
-#   tab_light_dose      darkness as a dose; rain                          (22)
-#   tab_street_lighting darker against better-lit municipalities          (23)
-#   tab_cost            deaths per summer and their value                 (24)
+#                       and a rain control                               (19, 20, 23)
+#   tab_road_users      who dies: road user, pedestrian age and sex, day (21)
+#   tab_light_dose      darkness as a dose; rain                          (23)
+#   tab_street_lighting darker against better-lit municipalities          (24)
+#   tab_cost            deaths per summer and their value                 (25)
 #   tab_mexico          Mexico, abolition of 2022: evening, hour before, morning,
-#                       and the within-day comparison in treated units  (25, 26)
+#                       and the within-day comparison in treated units  (26, 27)
 #
 # Conventions: outcome names as in OUTCOME_LAB (never the data source);
 # estimates in log points with the standard error below in parentheses;
@@ -165,6 +165,8 @@ write_tab("tab_excess", c(
 
 # ── Table: traffic volume and risk per vehicle ──────────────────────────────
 rk <- rd("traffic_volume.rds")$risk
+iv <- rd("inference_volume.rds")
+pb <- function(p) sprintf("[%s]", fp(p))
 BINS <- c("eve-2" = "Two hours before sunset", "eve-1" = "Hour before sunset",
           "eve+0" = "Hour after sunset", "eve+1" = "Second hour after sunset",
           "morn-1" = "Hour before sunrise", "morn+0" = "Hour after sunrise",
@@ -175,7 +177,10 @@ vol_rows <- function(b) {
   c(row(BINS[[b]], c(f1(ic$vol_lp), f1(ic$crash_lp), f1(ic$per_vehicle_lp),
                      f1(de$crash_lp), f1(de$per_vehicle_lp))),
     row("", c(se1(ic$vol_se), se1(ic$crash_se), se1(ic$per_vehicle_se),
-              se1(de$crash_se), se1(de$per_vehicle_se))))
+              se1(de$crash_se), se1(de$per_vehicle_se))),
+    with(iv[bin_key == b],
+         row("", c(pb(vehicles_perm_p), pb(injury_perm_p), pb(injury_per_vehicle_perm_p),
+                   pb(deaths_perm_p), pb(deaths_per_vehicle_perm_p)))))
 }
 write_tab("tab_traffic_volume", c(
   "\\begin{tabular}{@{}l ccc cc@{}}", "\\toprule",

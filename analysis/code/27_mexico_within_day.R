@@ -1,7 +1,7 @@
 # =============================================================================
-# 26_mexico_within_day.R
+# 27_mexico_within_day.R
 #
-# Mexico without the control units. In 25_mexico.R the comparison group is
+# Mexico without the control units. In 26_mexico.R the comparison group is
 # thin: the six units that kept their clock (Sonora, Quintana Roo, Baja
 # California and the border municipalities) have ~20 deaths per summer in
 # evening hour 0 and as few as 1-3 per year in the hour before sunset off

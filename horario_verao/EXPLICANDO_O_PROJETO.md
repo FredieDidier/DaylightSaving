@@ -1,6 +1,6 @@
 # O projeto DaylightSaving, explicado do zero
 
-Texto de estudo, 09/10/2026, atualizado em 12/10/2026 (seções 3.6–3.9, 5.12 e 5.13). Para quem nunca viu o projeto. Todos os números
+Texto de estudo, 09/10/2026, atualizado em 13/10/2026 (seções 3.6–3.9, 5.7, 5.12 e 5.13). Para quem nunca viu o projeto. Todos os números
 foram conferidos nos `.rds` de `Dropbox/DaylightSaving/build/audit/` (a rodada
 vigente, depois da auditoria de código). Quando este texto e um `.rds`
 divergirem, vale o `.rds`.
@@ -289,7 +289,7 @@ Todos públicos. Nenhum precisou de Lei de Acesso à Informação.
   jul/2008 a jun/2025: 5.569 sedes × 6.209 dias. Sede litorânea que cai numa
   célula de mar usa a célula com dado mais próxima (até 0,3°); Fernando de
   Noronha fica fora da grade.
-- Uso (`22_light_dose.R`): para cada estado e dia, a parcela das mortes na via
+- Uso (`23_light_dose.R`): para cada estado e dia, a parcela das mortes na via
   do estado que mora em municípios com ≥ 1 mm de chuva naquele dia (pesos pelas
   mortes do município em todas as horas e temporadas). Em média, 49% no verão.
   Num fim de tarde chuvoso a hora já era escura com horário de verão, então a
@@ -311,7 +311,7 @@ Todos públicos. Nenhum precisou de Lei de Acesso à Informação.
   os 5.570 municípios têm o dado de 2022; 5 não têm o de 2010. Mediana
   municipal sem luz: 1,5% (2022) e 3,2% (2010); no país, ponderado por
   domicílio, 2,1% e 3,6%; correlação entre os dois censos 0,40.
-- Uso (`23_street_lighting.R`): divide os municípios de cada estado na mediana
+- Uso (`24_street_lighting.R`): divide os municípios de cada estado na mediana
   ponderada pelas mortes (ver 5.12).
 
 ### 3.8 México — ATUS e cabeceiras municipais (INEGI)
@@ -343,7 +343,7 @@ Todos públicos. Nenhum precisou de Lei de Acesso à Informação.
   federal, preços de dez/2014 (Ipea/PRF 2015, Tabela 6A; repetido na
   atualização de 2016), trazido a dez/2025 pelo IPCA (SIDRA 1737): R$ 790 mil.
   Trechos em `fontes_dados/ipea_2015_custo_acidentes.txt` e `..._2016_...`.
-- Todos os valores estão digitados e comentados em `24_total_cost.R`.
+- Todos os valores estão digitados e comentados em `25_total_cost.R`.
 
 ---
 
@@ -593,7 +593,7 @@ Coeficiente da tripla em cada hora relativa ao pôr (e ao nascer) do sol, lp:
   hora 0 sobe. Esse é o principal quebra-cabeça aberto (seção 5.9).
 - A manhã que clareou tem sinais negativos, mas pequenos e não significantes.
 
-**Placebo nas horas cuja luz não mudou** (`17_placebo_hours.R`):
+**Placebo nas horas cuja luz não mudou** (`18_placebo_hours.R`):
 
 | | hora 0 da noite | meio do dia | noite fechada |
 |---|--:|--:|--:|
@@ -779,16 +779,21 @@ tratados, na janela, depois de 2019:
 
 ### 5.7 O tráfego seguiu a luz (PNCT)
 
-(`15_traffic_volume.R`), tripla no volume de veículos
+(`15_traffic_volume.R`, `16_inference_volume.R`), tripla no volume de veículos
 por hora relativa ao sol, lp:
 
-| hora | volume | por veículo (acidentes com vítima − volume) |
-|---|--:|--:|
-| noite −1 | −5,1 | −17,2 |
-| **noite 0** | **−6,4** | **+28,6** |
-| noite +1 | −6,4 | +13,3 |
-| **manhã 0** | **+11,7** | **−26,0** |
-| dia todo | +0,5 (2,0) | |
+| hora | volume | por veículo (acidentes com vítima − volume) | permutação p (por veículo) |
+|---|--:|--:|--:|
+| noite −1 | −5,1 | −17,2 | 0,002 |
+| **noite 0** | **−6,4** | **+28,6** | **0,002** |
+| noite +1 | −6,4 | +13,3 | 0,045 |
+| **manhã 0** | **+11,7** | **−26,0** | **0,003** |
+| dia todo | +0,5 (2,0) | | |
+
+Os p de permutação das 7 horas e das 5 colunas (volume, acidentes, mortes e
+os dois "por veículo") estão na Tabela 5, entre colchetes. Na hora que
+escureceu: volume p = 0,059; acidentes com vítima 0,004; mortes 0,017; mortes
+por veículo 0,012.
 
 - **As pessoas responderam à luz:** sem horário de verão, a noite escura perdeu
   ~5–6% dos veículos (quase todos leves: carros e motos), e a manhã que clareou
@@ -867,7 +872,7 @@ deveria aparecer com o sinal invertido.
 O `PARECER.md` listou o que um parecerista pediria. Tudo foi estimado
 (scripts 22 a 29); os números vêm de `audit/*.rds`.
 
-**Amontoamento das horas e relógio solar** (`18_heaping.R`). 34,5% das horas
+**Amontoamento das horas e relógio solar** (`19_heaping.R`). 34,5% das horas
 de óbito na via são hora cheia e 23% são :30; 90% são múltiplos de 5 minutos.
 Como a faixa é medida contra o pôr do sol de cada município e dia, um óbito
 anotado às 19:00 cai dentro ou fora da hora 0 conforme a data. Três testes:
@@ -883,12 +888,12 @@ Mover a janela muda o efeito na direção que a física manda: mais tarde, mais
 escuro, maior. Sem :00 e :30 o SIM perde mais da metade da amostra e fica
 ruidoso, mas dentro do intervalo da base.
 
-**Tirar um de fora** (`19_leave_out.R`). SIM entre 24,3 (sem SP) e 34,1 (sem
+**Tirar um de fora** (`20_leave_out.R`). SIM entre 24,3 (sem SP) e 34,1 (sem
 MG) tirando qualquer estado; entre 22,7 (sem 2019/20) e 35,2 (sem 2022/23)
 tirando qualquer temporada. Controle só Nordeste: 32,9 (9,2); só Norte (4
 estados): 15,7 (8,8). Sem os verões de La Niña: 43,5 (9,5).
 
-**Quem morre** (`20_road_users.R`, SIM, hora 0):
+**Quem morre** (`21_road_users.R`, SIM, hora 0):
 
 | grupo | lp (EP) | mortes por verão, tratados, antes |
 |---|--:|--:|
@@ -903,18 +908,18 @@ Ciclistas, pedestres crianças e idosos, mulheres pedestres: menos de 5 mortes
 por verão, não estimável (a tabela mostra "--"). O efeito é maior no fim de
 semana que no dia útil: o canal não é só a volta do trabalho.
 
-**Integridade do registro** (`21_record_integrity.R`). A parcela das mortes de
+**Integridade do registro** (`22_record_integrity.R`). A parcela das mortes de
 trânsito que ocorrem na via (50%) e a parcela sem hora (18%) não mudam com a
 abolição: tripla de +0,4 p.p. (0,75) e +0,4 p.p. (0,65).
 
-**Escuridão como dose** (`22_light_dose.R`). Na própria hora 0, a parcela de
+**Escuridão como dose** (`23_light_dose.R`). Na própria hora 0, a parcela de
 acidentes da PRF anotada como escura subiu 23,6 p.p. (2,0). Dividindo a forma
 reduzida por isso, uma hora que passasse de clara a toda escura teria ~124 lp
 a mais de mortes na via [42, 197]. **Chuva:** controlar pela parcela do estado
 sob chuva não muda nada (29,1); a interação aponta na direção certa (menos
 efeito em dia chuvoso) mas sem precisão.
 
-**Iluminação pública** (`23_street_lighting.R`). Municípios divididos dentro de
+**Iluminação pública** (`24_street_lighting.R`). Municípios divididos dentro de
 cada estado pela mediana (ponderada pelas mortes na via) da parcela de
 domicílios em rua sem iluminação. As metades são iguais só de forma
 aproximada: o município que cruza a mediana vai inteiro para a metade escura,
@@ -929,7 +934,7 @@ placebos na hora anterior, cuja luz não mudou, também separam as metades
 (pedestres p = 0,02 com ~7 mortes por verão em cada metade; PRF com vítima
 p = 0,04). Dizer como "consistente com", nunca como achado.
 
-**Custo** (`24_total_cost.R`, reais de 2025; conferido de forma independente):
+**Custo** (`25_total_cost.R`, reais de 2025; conferido de forma independente):
 
 | | mortes na via com hora | todas as mortes na via | todas as mortes de transporte |
 |---|--:|--:|--:|
@@ -985,7 +990,7 @@ horário de verão bate com o de 2023–2025 na mesma hora do relógio (distânc
 tratadas; até a auditoria de 12/10/2026 incluía os 22 municípios da fronteira
 (controles), o que dava 0,66, 6,9 e 10,0.
 
-**Resultados** (`25_mexico.R`, `26_mexico_within_day.R`; Tabela `tab_mexico`):
+**Resultados** (`26_mexico.R`, `27_mexico_within_day.R`; Tabela `tab_mexico`):
 
 | | mortes | mortes de pedestres | acidentes com vítima | atropelamentos com vítima |
 |---|--:|--:|--:|--:|
@@ -1187,7 +1192,7 @@ alternativa ao JHE (ordem do `PARECER.md`).
 | agressões (nulo) | `11` |
 | realocação / pedestre | `12` / `13`, `15` |
 | números da Tabela 1 | `14` → `audit/table1.rds` |
-| todas as figuras / todas as tabelas | `27_figures.R` → `graphs/fig_*` / `28_tables.R` → `tables/tab_*.tex` (leem só os `.rds`) |
+| todas as figuras / todas as tabelas | `28_figures.R` → `graphs/fig_*` / `29_tables.R` → `tables/tab_*.tex` (leem só os `.rds`) |
 | legendas e notas em rascunho | `latex/exhibits.tex` |
 | volume do PNCT | `16`, `17` |
 | Bahia / placebo de horas | `18` / `19` |

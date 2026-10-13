@@ -163,7 +163,7 @@ saveRDS(list(pooled = pooled, event_study = es, event_study_vcov = V_es, honestd
              n_perm = N_PERM),
         file.path(path_audit, "within_day.rds"))
 
-# Figure: drawn by 27_figures.R from the caches of 02 and of this script.
+# Figure: drawn by 28_figures.R from the caches of 02 and of this script.
 
 options(width = 170)
 cat("Seasons:", min(SEASONS), "-", max(SEASONS), "\n\nPooled (log points):\n")

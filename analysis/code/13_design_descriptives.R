@@ -3,8 +3,8 @@
 #
 # Table 1 numbers: events per season by group x window x period, whole day and
 # evening hour 0, for the traffic outcomes and the pedestrian split. Cached in
-# audit/table1.rds; the LaTeX is written by 28_tables.R and the design figure
-# (Sao Paulo, 2018/19) is drawn by 27_figures.R.
+# audit/table1.rds; the LaTeX is written by 29_tables.R and the design figure
+# (Sao Paulo, 2018/19) is drawn by 28_figures.R.
 # =============================================================================
 
 source(here::here("config", "config.R"))

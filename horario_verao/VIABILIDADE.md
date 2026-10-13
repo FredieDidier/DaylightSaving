@@ -653,7 +653,7 @@ veículo (acidentes menos volume) tem sua própria distribuição nula.
 - A queda de volume na hora 0 é pequena perto da alta de acidentes, então a
   conclusão sobre o risco não depende de o volume ser significante.
 
-## 15. A Bahia em 2011/12: checagem de sinal (`16_bahia_switch.R`, 09/10/2026)
+## 15. A Bahia em 2011/12: checagem de sinal (`17_bahia_switch.R`, 09/10/2026)
 
 A BA teve horário de verão numa única temporada da amostra (2011/12, Dec.
 7.584/2011). Naquele verão, a hora que escurece com a abolição era clara na BA;
@@ -679,7 +679,7 @@ Os eventos da BA são montados como no 02 (inclusive os aliases da PRF). Figura
   e não deve ser lida como mais do que isso. TO (2012/13) fica de fora: 3 a 8
   mortes por verão na hora 0.
 
-## 16. Placebo contra o sono: horas longe do crepúsculo (`17_placebo_hours.R`, 09/10/2026)
+## 16. Placebo contra o sono: horas longe do crepúsculo (`18_placebo_hours.R`, 09/10/2026)
 
 Mesma tripla do 02, em blocos cuja luz não mudou: meio do dia (3h ou mais
 depois do nascer e 4h ou mais antes do pôr do sol padrão) e noite fechada (3h
