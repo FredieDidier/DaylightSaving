@@ -14,10 +14,12 @@ build/manual/             legal DST calendar, typed from the decrees (versioned)
 build/01-12               treatment calendar, then one step per data source
 analysis/code/            00_master_analysis.R runs 01-29: 01-27 estimate and
                           cache audit/*.rds, 28 draws the figures, 29 the tables
-analysis/output/          committed outputs (tables .tex, figures and maps .pdf/.png)
-latex/                    paper.tex (submission), appendix.tex, title_page.tex,
-                          paper_wp.tex (working paper); text in latex/sections/;
-                          build with latex/build.sh
+analysis/output/          committed outputs: graphs/ (figures, .pdf and .png),
+                          tables/ (.tex), maps/ (Brazil and Mexico, .pdf and .png)
+latex/                    paper.tex (AEJ: Economic Policy submission, anonymized),
+                          appendix.tex (Online Appendix), title_page.tex,
+                          paper_wp.tex (working paper); the text lives in
+                          latex/sections/ and is shared by all of them
 horario_verao/            project notes (Portuguese), legal texts, skills
 ```
 
@@ -37,6 +39,15 @@ nothing is read from another project's folder.
 | Mexico road crashes (ATUS) | `11_mexico_atus.R` | INEGI open data (raw zip in `build/mexico/input/`) |
 | Boundaries for the maps | `12_map_boundaries.R` | `geobr` (IBGE, Brazil); GADM 4.1 via `geodata` (Mexico) |
 
+## Requirements
+
+- R 4.4 or later, with `data.table`, `arrow`, `fixest`, `fwildclusterboot`,
+  `dqrng`, `HonestDiD`, `ggplot2`, `patchwork`, `ragg`, `sf`, `terra`,
+  `geobr`, `geodata`, `rnaturalearth` (with `rnaturalearthdata`), `censobr`,
+  `read.dbc`, `RCurl`, `curl`, `jsonlite`, `dplyr` and `here`.
+- A TeX distribution with `pdflatex` and `bibtex` (TeX Live 2024 was used). The
+  AEA template (`AEA.cls`, `aea.bst`) is in `latex/`.
+
 ## Reproducing
 
 Open `DaylightSaving.Rproj` (so that `here::here()` resolves), set
@@ -45,12 +56,19 @@ Open `DaylightSaving.Rproj` (so that `here::here()` resolves), set
 ```
 Rscript config/00_master_build.R
 Rscript analysis/code/00_master_analysis.R
+latex/build.sh
 ```
 
+The first line builds the data, the second estimates everything and writes
+the figures, maps and tables (`28_figures.R`, `29_tables.R`), and the third
+compiles the paper, the Online Appendix, the title page and the working
+paper. The compiled PDFs in `latex/` are not committed.
+
 The Dropbox folder already holds every build output, so the analysis can run
-on its own. `build/01_dst_calendar.R` checks the 2008–2018 dates against the rule in Decree 6,558/2008, writes
-`calendar/output/dst_uf_season.parquet` and `dst_uf_day.parquet` under
-`DROPBOX_ROOT/build/`, and regenerates `horario_verao/TABELA_ESTADOS.md`.
+on its own. `build/01_dst_calendar.R` checks the 2008–2018 dates against the
+rule in Decree 6,558/2008, writes `calendar/output/dst_uf_season.parquet` and
+`dst_uf_day.parquet` under `DROPBOX_ROOT/build/`, and regenerates
+`horario_verao/TABELA_ESTADOS.md`.
 
 ## Sources
 

@@ -1193,7 +1193,7 @@ alternativa ao JHE (ordem do `PARECER.md`).
 | realocação / pedestre | `12` / `13`, `15` |
 | números da Tabela 1 | `14` → `audit/table1.rds` |
 | todas as figuras / todas as tabelas | `28_figures.R` → `graphs/fig_*` / `29_tables.R` → `tables/tab_*.tex` (leem só os `.rds`) |
-| legendas e notas em rascunho | `latex/exhibits.tex` |
+| manuscrito (legendas e notas incluídas) | `latex/sections/` (compila com `latex/build.sh`) |
 | volume do PNCT | `16`, `17` |
 | Bahia / placebo de horas | `18` / `19` |
 | amontoamento / tirar um de fora / quem morre | `22` / `23` / `24` |

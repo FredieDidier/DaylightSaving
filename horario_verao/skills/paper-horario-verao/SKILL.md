@@ -52,7 +52,7 @@ quando existir, será em inglês.
   analysis/code/28, 29      TODAS as figuras (28) e tabelas .tex (29), lidas só dos .rds
   latex/                    paper.tex (submissão, anônima, AEA.cls), appendix.tex,
                             title_page.tex, paper_wp.tex; texto em sections/;
-                            ./build.sh compila tudo. exhibits.tex é a prévia antiga
+                            ./build.sh compila tudo
   analysis/output/maps/     mapas (28_figures.R; fronteiras do build/12)
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
                             VIABILIDADE, PAPER, fontes_legais/, skills/

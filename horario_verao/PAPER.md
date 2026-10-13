@@ -51,29 +51,33 @@ Statement)** por autor, em PDF separado; **declarar o uso de IA** na redação n
 formulário de submissão; taxa de submissão; pacote de replicação só antes do
 aceite (o repositório já está pronto para isso).
 
-**Exibições, divididas como editor da AEJ: Policy leria** (13/10/2026). Corpo:
-13 exibições, o que o argumento precisa para ser lido sem o apêndice.
+**Exibições, divididas como editor da AEJ: Policy leria** (13/10/2026; revisto
+no mesmo dia). Corpo: **10 exibições** (4 figuras, 6 tabelas). Calibrado em
+quatro artigos publicados na AEJ: Policy 2022–2025 (manuscritos aceitos no
+PubMed Central; o PDF da AEA exige login): 8, 9, 9 e 12 exibições no corpo
+(mediana 9); todos com mapa no início e tabela descritiva no corpo; texto
+corrido de 8,4 a 13 mil palavras (o nosso, ~6,5 mil) e introdução de 1,8 a
+2,1 mil (a nossa, ~1,5 mil); notas com mediana de 90 a 105 palavras.
 
 | corpo | por quê |
 |---|---|
 | Fig. 1 mapa do Brasil (`analysis/output/maps/fig_map_brazil`) | o leitor de fora precisa ver o bloco regional e as exclusões (BA, TO, AC, AM); mostra também a diferença de latitude, que é a objeção óbvia |
-| Fig. 2 relógio do pôr e do nascer do sol (SP) | define a hora que trocou de luz |
-| Fig. 3 primeiro estágio (PRF, por minuto) | o tratamento existe e a hora registrada é a legal |
-| Fig. 4 efeito por hora | a assinatura: pico na hora 0, nada longe |
-| Fig. 5 estudo de eventos | tendências |
+| Fig. 2 a hora que mudou de luz (`fig_light`): A, relógio do pôr e do nascer do sol em SP; B, primeiro estágio da PRF por minuto | define a hora e mostra que o tratamento existe e que a hora registrada é a legal (juntas desde 13/10/2026; antes `fig_design` e `fig_first_stage`) |
+| Fig. 3 efeito por hora | a assinatura: pico na hora 0, nada longe |
+| Fig. 4 estudo de eventos | tendências |
 | Tab. 1 descritivas | a tripla "na mão" (dá 29 lp) |
 | Tab. 2 principal | |
-| Tab. 3 pedestres | o mecanismo |
-| Tab. 4 volume e risco por veículo | exposição contra risco (pergunta nº 5 de parecerista) |
+| Tab. 3 robustez e horas sem mudança de luz | tendência, imputação, sono |
+| Tab. 4 pedestres | o mecanismo |
 | Tab. 5 excesso por verão | a quantidade de política (líquido 54) |
-| Tab. 6 robustez e horas sem mudança de luz | tendência, imputação, sono |
-| Tab. 7 custo | a conta de política |
-| Tab. 8 México | a réplica do resumo |
+| Tab. 6 custo | a conta de política |
 
-Apêndice online (13 exibições): A1 integridade do registro; B1 janela
+Apêndice online (15 exibições): A1 integridade do registro; B1 janela
 deslocada; B2 deixar um de fora; Tab. B1 sensibilidade; B3 FE de UF × dia;
-B4 HonestDiD; Tab. B2 quem morre; Tab. B3 dose e chuva; Tab. B4 iluminação;
-B5 Bahia; B6 agressões; C1 mapa do México; C2 estudo de eventos do México.
+B4 HonestDiD; Tab. B2 quem morre; **Tab. B3 volume e risco por veículo**
+(números no texto do corpo); Tab. B4 dose e chuva; Tab. B5 iluminação; B5
+Bahia; B6 agressões; C1 mapa do México; **Tab. C1 México** (Seção VI do corpo
+cita o painel D); C2 estudo de eventos do México.
 
 **Não reintroduzir (navalha de Occam, 13/10/2026).** Cortes por mérito, não
 por resultado incômodo.
@@ -86,12 +90,16 @@ por resultado incômodo.
 | números sem exibição: placebos no tempo do `02`, risco por veículo com os mesmos verões (≈ 25 lp), efeito por temporada da imputação | órfãos: nenhum quadro os imprime. O texto diz qualitativamente que volume e acidentes vêm de verões diferentes |
 | Woods et al. (2025), Mitre-Becerril (2026), Fritz et al. (2020), Toro et al. (2015), Jagnani (2024), Sexton & Beatty (2014), Goodwin et al. em mais de um lugar | outros campos ou redundantes: Sullivan & Flannagan (2002) e Tyndall (2025, econ) bastam para pedestre e luz; Giuntella & Mazzonna e Gibson & Shrader bastam para o sono |
 | "a manhã tem menos gente na rua" como razão da assimetria | falso nos dados: a hora 0 da manhã tinha 107 mortes por verão antes, a da noite 110 |
+| Becker (1965) no parágrafo teórico | decisão do Fredie (13/10/2026): "Não citaria Becker". A frase sobre reotimizar o dia em torno do sol fica sem citação; a coordenação vem de Hamermesh, Myers & Pocock (2008) |
+| Peltzman (1975) | resultado contestado; trocado por Crandall & Graham (1984, *AER P&P*) e White (2004, *JLE*) para "o risco recai sobre pedestres e ciclistas". Decisão do Fredie, 14/10/2026 |
+| "If people could re-time their activities freely, each household would re-optimize its day around the sun" | nenhum paper sustenta a frase (era raciocínio, e "each household" generaliza demais); Hamermesh et al. sustentam só a coordenação e o peso maior das pistas artificiais. Pedido do Fredie, 14/10/2026 |
+| "economics says why a clock rule matters at all" | o texto não comenta a disciplina; o parágrafo abre pela coordenação dos horários. Pedido do Fredie, 14/10/2026 |
+| tabelas de volume (PNCT) e do México no corpo | 13 exibições era muito para a revista (mediana 9 nos artigos medidos); os números ficam no texto do corpo, as tabelas no apêndice. Decisão do Fredie, 13/10/2026 |
 
 **Pendências do manuscrito (para o Fredie):**
 1. Afiliação e agradecimentos em `title_page.tex` e `paper_wp.tex`.
 2. Primeira pessoa: o texto usa "I" (autor único). Se entrar coautor, trocar por "we".
-3. `latex/exhibits.tex` (prévia antiga) duplica legendas e notas, que agora
-   vivem no manuscrito. Proposta: apagar.
+3. ~~`latex/exhibits.tex`~~ apagado (13/10/2026): legendas e notas vivem no manuscrito.
 4. Comparação de energia: a frase "fuel savings alone are close to the
    reference value of the deaths" compara a NT-ONS 0093/2024 (outro método)
    com a nossa conta. Conferir se o Fredie quer essa frase.

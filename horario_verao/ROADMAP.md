@@ -151,6 +151,21 @@ Feito nesta sessão:
   fronteira mexicana passou do `26` para o `00_utils.R` (`MX_BORDER`,
   `MX_CONTROL_STATES`); unidades conferidas idênticas às do `mexico.rds`.
 
+- ✅ **Revisão do rascunho com o Fredie (13/10/2026):** resumo reescrito (uma
+  comparação só: a mudança na hora que escureceu contra a mesma mudança nos
+  estados sem horário de verão); citação do Censo 2022 nos 131 milhões; 2º
+  parágrafo da introdução com o argumento econômico (coordenação, evitação,
+  externalidade; sem Becker); parágrafo de magnitude no fim da Seção IV;
+  corpo com 10 exibições (`fig_light` junta relógio e primeiro estágio; volume
+  e México no apêndice), calibrado em quatro artigos publicados da AEJ: Policy;
+  README com requisitos e o passo do LaTeX; `latex/exhibits.tex` apagado.
+- ✅ **14/10/2026:** frase de escala no fim do 1º parágrafo (37.150 mortes no
+  trânsito no Brasil em 2024, 15% pedestres, do SIM via
+  `audit/national_road_deaths.rds`; 1,19 milhão no mundo, OMS); 2º parágrafo
+  reescrito sem "economics says" e sem a frase do "re-time freely"; Peltzman
+  trocado por Crandall & Graham (1984) e White (2004); 1º parágrafo corrigido
+  para "work and sleep" (o que Hamermesh et al. estudam).
+
 Próximos:
 1. Fredie: afiliação e agradecimentos (`title_page.tex`, `paper_wp.tex`);
    ler o rascunho; decidir as pendências do `PAPER.md` (seção "Manuscrito").

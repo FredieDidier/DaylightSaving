@@ -8,10 +8,10 @@
 #
 # Main text
 #   fig_map_brazil        treated, control and excluded states   (maps/, no cache)
-#   fig_design            clock time of sunset and sunrise, Sao Paulo 2018/19,
-#                         with and without DST                     (no cache)
-#   fig_first_stage       share of PRF crashes recorded dark, by minute from
-#                         standard sunset, summer window          (03)
+#   fig_light             A: clock time of sunset and sunrise, Sao Paulo
+#                         2018/19, with and without DST (no cache); B: share of
+#                         PRF crashes recorded dark, by minute from standard
+#                         sunset, summer window                    (03)
 #   fig_hours_from_sunset effect by clock hour relative to standard sunset and
 #                         sunrise                                  (01)
 #   fig_event_study       hour after sunset vs hour before, by season (02)
@@ -102,7 +102,7 @@ g <- ggplot(long, aes(date, h)) +
   theme_paper() + theme(legend.box = "vertical", legend.spacing.y = unit(2, "pt")) +
   guides(colour = guide_legend(order = 1), linetype = guide_legend(order = 1),
          fill = guide_legend(order = 2))
-save_fig(g, "fig_design", height = 3.3)
+g_design <- g
 
 # ── First stage: what the police officer saw ────────────────────────────────
 # Share of PRF crashes in treated states, summer window, recorded at dusk or
@@ -127,7 +127,19 @@ g <- ggplot(fs, aes(m, share)) +
   labs(x = "Clock minutes from standard-time sunset",
        y = "Crashes recorded at dusk or night (%)") +
   theme_paper()
-save_fig(g, "fig_first_stage", height = 3.2)
+g_first <- g
+
+# ── The hour whose light changed: clock and first stage, one figure ────────
+# Panel A is the clock in Sao Paulo; Panel B what the police recorded in
+# that hour. Panel titles sit above each panel, flush left, as in stack_rows().
+ptitle <- function(g, txt) g + labs(title = txt) +
+  theme(plot.title = element_text(size = 10, face = "bold", hjust = 0, margin = margin(2, 0, 4, 0)),
+        plot.title.position = "plot")
+g <- patchwork::wrap_plots(
+  ptitle(g_design, "A. Clock time of sunset and sunrise, S\u00e3o Paulo, 2018/19"),
+  ptitle(g_first, "B. Federal highway crashes recorded at dusk or night, treated states, summer window"),
+  ncol = 1, heights = c(1, 1))
+save_fig(g, "fig_light", height = 7)
 
 # ── Effect by hour from sunset and sunrise ──────────────────────────────────
 SIDE <- c("Evening: hours from sunset", "Morning: hours from sunrise")

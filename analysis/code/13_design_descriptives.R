@@ -5,6 +5,11 @@
 # evening hour 0, for the traffic outcomes and the pedestrian split. Cached in
 # audit/table1.rds; the LaTeX is written by 29_tables.R and the design figure
 # (Sao Paulo, 2018/19) is drawn by 28_figures.R.
+#
+# Also the national count that opens the paper: land-transport deaths
+# (V01-V89, any place of occurrence, the whole country) and the pedestrian
+# share, by calendar year of the consolidated death register. Cached in
+# audit/national_road_deaths.rds.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -37,3 +42,15 @@ setcolorder(t1, c("outcome", "scope", cols))
 saveRDS(t1, file.path(path_audit, "table1.rds"))
 options(width = 200)
 print(t1[, c(list(outcome = outcome, scope = scope), lapply(.SD, round, 1)), .SDcols = cols])
+
+# ── National land-transport deaths, by year ─────────────────────────────────
+nat <- rbindlist(lapply(sim_years(), function(y) {
+  s <- as.data.table(read_parquet(file.path(path_sim_out, sprintf("sim_%d.parquet", y)),
+                                  col_select = c("CAUSABAS", "preliminary")))
+  stopifnot(!any(s$preliminary))
+  s <- s[CAUSABAS >= "V01" & CAUSABAS < "V90"]
+  data.table(year = y, land_transport_deaths = nrow(s), pedestrian_deaths = s[CAUSABAS < "V10", .N])
+}))
+nat[, pedestrian_pct := 100 * pedestrian_deaths / land_transport_deaths]
+saveRDS(nat, file.path(path_audit, "national_road_deaths.rds"))
+print(nat[, .(year, land_transport_deaths, pedestrian_deaths, pedestrian_pct = round(pedestrian_pct, 1))])

@@ -31,7 +31,7 @@ Road deaths are deaths whose underlying cause is a land-transport accident (ICD-
 
 \subsection{Federal highway crashes}
 
-The PRF files have one row per crash from 2007 to 2025. Date formats, text encodings and the case of the light-phase labels change across years and are harmonized; a crash that appears on several rows differing only in a descriptive field is kept once. The municipality is given by name and is matched to the IBGE code within the state, with a table of alternative spellings and renamed municipalities typed by hand and checked against the coordinates that the PRF reports from 2017; every crash is matched. The light phase recorded by the officer is one of full daylight, dawn, dusk and night; in Figure~\ref{fig:first-stage} and in the first stage, dusk and night count as dark, and dawn crashes are left out.
+The PRF files have one row per crash from 2007 to 2025. Date formats, text encodings and the case of the light-phase labels change across years and are harmonized; a crash that appears on several rows differing only in a descriptive field is kept once. The municipality is given by name and is matched to the IBGE code within the state, with a table of alternative spellings and renamed municipalities typed by hand and checked against the coordinates that the PRF reports from 2017; every crash is matched. The light phase recorded by the officer is one of full daylight, dawn, dusk and night; in Panel B of Figure~\ref{fig:light} and in the first stage, dusk and night count as dark, and dawn crashes are left out.
 
 \subsection{Traffic counts}
 
@@ -122,6 +122,23 @@ The event study therefore cannot rule out departures from parallel trends of the
 
 Table~\ref{tab:road-users} splits road deaths in hour 0 by road user, by the age and sex of pedestrians, and by type of day. Pedestrians aged 15 to 64 drive the pedestrian estimate (91.1 log points, standard error 30.9). Motorcyclists rise by 19.6 (10.9); car occupants do not change. The estimate on weekends and holidays (41.3, 15.8) is larger than on working days (16.1, 10.0).
 
+\subsection{Traffic volume and risk per vehicle}
+
+\begin{table}[tbp]
+  \caption{Traffic Volume and Risk per Vehicle on Federal Highways}
+  \label{tab:volume}
+  \centering\footnotesize
+  \input{\tabdir/tab_traffic_volume.tex}
+  \begin{tablenotes}[Notes]
+  Log points, standard errors clustered by state in parentheses, permutation p-values in brackets. Column 1: equation~(\ref{eq:main}) on hourly vehicle counts at continuous counting stations, with station fixed effects; summers 2014/15 to 2018/19 and 2021/22 to 2024/25. Columns 2 and 4: as in Table~\ref{tab:main}. Per vehicle: crash or death estimate minus the volume estimate. Every column is re-estimated with the same random set of 11 treated states in each of 999 draws, so the per-vehicle columns have their own reference distribution.
+  \end{tablenotes}
+  \begin{tablenotes}[Sources]
+  \citet{dnit2025pnct}; \citet{prf2025dados}.
+  \end{tablenotes}
+\end{table}
+
+Table~\ref{tab:volume} reports, for the seven hours around sunset and sunrise, the triple difference on hourly vehicle counts at federal highway stations (column 1), on federal highway injury crashes and deaths (columns 2 and 4), and their difference, the change per vehicle (columns 3 and 5). Because no station is counted both before and after abolition, the volume model has station fixed effects and the seasonal comparison runs at the level of the state, as in equation~(\ref{eq:main}). The paper discusses hour 0, the hour before sunset and the hour after sunrise.
+
 \subsection{Darkness as a dose, rain and street lighting}
 
 \begin{table}[tbp]
@@ -200,6 +217,21 @@ A change in violence specific to one season and spread across the day is a trend
 The accident records cover accidents on non-federal roads, urban and suburban, from 1997; the analysis uses 2016 to 2025. The dead are counted at the scene of the accident, the concept used for Brazil. Day or time not specified is coded as missing, which in practice affects no accident from 2016 on. The seat of each municipality comes from INEGI's geostatistical framework \citep{inegi2026marco}; for the boroughs of Mexico City, which have no seat, the most populous urban locality stands in, and two municipalities of Sinaloa without coordinates are dropped. Standard offsets follow the zones of the law: UTC$-$6 for the Central zone, $-$7 for the Pacific zone, $-$8 for Baja California and $-$5 for Quintana Roo.
 
 The records use legal clock time. In the areas that lost DST, the hourly profile of accidents in the summer window under DST (2016 to 2022) matches the profile without DST (2023 to 2025) at the same clock hour far better (squared distance 0.68) than shifted by one hour in either direction (6.95 and 10.13). % mexico.rds, clock_check.
+
+\begin{table}[tbp]
+  \caption{Mexico, Which Abolished Daylight Saving Time in October 2022}
+  \label{tab:mexico}
+  \centering\footnotesize\setlength{\tabcolsep}{4pt}
+  \input{\tabdir/tab_mexico.tex}
+  \begin{tablenotes}[Notes]
+  Accidents on non-federal roads, 2016 to 2025; deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a panel of units by day, where a unit is the part of a state that lost DST (treated) or one of six that kept their clock; summer window 8 April to 24 October, off-season 8 November to 7 March; standard errors clustered by unit, wild cluster bootstrap on the linear analogue, and permutation of the treated units (999 draws). Panel D drops the comparison units: within each treated unit and day, hour 0 against the two hours before it, summer window against off-season, after 2023 against before, with unit-by-day fixed effects.
+  \end{tablenotes}
+  \begin{tablenotes}[Source]
+  \citet{inegi2026atus}.
+  \end{tablenotes}
+\end{table}
+
+Table~\ref{tab:mexico} reports the Mexican estimates discussed in the paper: the triple difference against the six units that kept their clocks for hour 0, the hour before it and the hour after sunrise (Panels A to C), and the comparison within each treated unit and day (Panel D).
 
 \begin{figure}[tbp]
   \centering

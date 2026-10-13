@@ -321,6 +321,43 @@ está anotada acima da entrada no `.bib`. Correções e acréscimos:
   Censo 2022: 131,1 mi de 203,1 mi (SIDRA 4709).
 - **Não conferido na fonte:** o despacho presidencial dos radares (DOU de
   15/08/2019); por isso não está no manuscrito.
+- **Teoria no 2º parágrafo da introdução (13/10/2026)** ✔ (Crossref e resumo):
+  Hamermesh, Myers & Pocock (2008) desenvolvem uma teoria de quando a sincronia
+  das atividades muda (luz, TV, fusos) e mostram que, onde o relógio não
+  acompanha o horário de verão, as pessoas reajustam o trabalho para continuar
+  coordenadas; Neidell (2009, *JHR* 44(2): 450–478), evitação: alertas de smog
+  reduzem a ida a locais abertos, e estimativas que ignoram a evitação
+  subestimam o dano; Edlin & Karaca-Mandic (2006, *JPE* 114(5): 931–955), um
+  motorista a mais impõe custo de acidente aos outros (maior onde o tráfego é
+  denso); Peltzman (1975, *JPE* 83(4): 677–725), motoristas compensam a
+  regulação de segurança e, na série temporal, vidas de ocupantes salvas vêm
+  com mais mortes de pedestres (resumo no TRID; resultado contestado na
+  literatura posterior). Becker (1965) conferido, mas **não citado** (decisão do
+  Fredie). **Peltzman (1975) saiu (14/10/2026, decisão do Fredie)**: resultado
+  contestado (Crandall & Graham 1984; Chirinko & Harper 1993; Cohen & Einav 2003
+  não acham compensação para cinto). No lugar, para "o risco que o motorista
+  impõe recai também sobre pedestres e ciclistas": **Crandall & Graham (1984)**,
+  *AER P&P* 74(2): 328–331 (JSTOR 1816379, sem DOI) ✔ — p. 328, lida na prévia
+  pública do JSTOR: se houver comportamento compensatório, o risco a mais pode
+  recair sobre ciclistas, motociclistas e pedestres, externalidade que pode ser
+  grande. As estimativas deles (pp. 329–331) **não foram lidas** (texto completo
+  exige login institucional); a citação usa só o argumento da p. 328. E **White
+  (2004)**, *J. Law & Economics* 47(2): 333–355 ✔ (resumo no IDEAS): cada milhão
+  de caminhonetes no lugar de carros, 34 a 93 mortes a mais por ano entre
+  ocupantes de carro, pedestres, ciclistas e motociclistas. A literatura sobre a
+  *magnitude* da compensação segue em debate (a maioria dos testes agregados
+  acha alguma; Winston, Maheshri & Mannering 2006, WP Brookings); a
+  externalidade em si não é contestada.
+- **Fatos da introdução (14/10/2026):** OMS, *Global Status Report on Road
+  Safety 2023* ✔ (página da OMS: 1,19 milhão de mortes no trânsito por ano);
+  Brasil, 37.150 mortes por acidente de transporte terrestre em 2024, 15,3% de
+  pedestres (SIM definitivo; `audit/national_road_deaths.rds`, gerado pelo
+  `13_design_descriptives.R`). Hamermesh, Myers & Pocock (2008) relidos no WP
+  NBER 12350: o horário de trabalho e de sono responde mais às pistas
+  artificiais (fusos, TV) que ao nascer e pôr do sol; o paper estuda trabalho,
+  sono e TV, não estudo nem deslocamento (o 1º parágrafo foi corrigido para
+  "work and sleep"). Wolff & Makino (IZA DP 6787, tempo em blocos e horário de verão):
+  sem versão publicada, não citado.
 
 ## Fontes consultadas
 

@@ -3,7 +3,7 @@
 #
 # Every table of the paper, written as a LaTeX tabular from the estimates
 # cached in audit/*.rds. Nothing is estimated here. Captions and notes live in
-# the manuscript (latex/exhibits.tex holds the current drafts).
+# the manuscript (latex/sections/body.tex and appendix_body.tex).
 #
 #   tab_descriptives    events per summer, group x window x period       (13)
 #   tab_main            the hour that turned dark and the hour that turned
@@ -147,7 +147,7 @@ EX <- c("evening, dark (0, +1)"            = "Two hours after sunset",
         # Only five of the seven hours of 11_reallocation.R appear above (the
         # hour before and the second hour after sunrise are summed, not
         # shown). The seven hours are listed in the table note
-        # (latex/exhibits.tex).
+        # (latex/sections/body.tex).
         "net: all seven hours"             = "Seven hours around sunset and sunrise",
         "whole day (separate model)"       = "Whole day, estimated separately")
 ex_rows <- function(keys) unlist(lapply(keys, function(k) {
