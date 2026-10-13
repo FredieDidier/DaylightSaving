@@ -59,16 +59,11 @@ acc[, date := as.IDate(date)]
 # ── Regimes ─────────────────────────────────────────────────────────────────
 # State codes (INEGI): 02 Baja California, 03 BCS, 05 Coahuila, 08 Chihuahua,
 # 18 Nayarit, 19 Nuevo Leon, 23 Quintana Roo, 25 Sinaloa, 26 Sonora,
-# 28 Tamaulipas. Border municipalities as listed in Art. 5, fraction I.
+# 28 Tamaulipas. Border municipalities (MX_BORDER, 00_utils.R) as listed in
+# Art. 5, fraction I.
 norm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
-BORDER <- list(
-  "05" = c("Acuna", "Allende", "Guerrero", "Hidalgo", "Jimenez", "Morelos", "Nava", "Ocampo",
-           "Piedras Negras", "Villa Union", "Zaragoza"),
-  "19" = c("Anahuac"),
-  "28" = c("Nuevo Laredo", "Guerrero", "Mier", "Miguel Aleman", "Camargo", "Gustavo Diaz Ordaz",
-           "Reynosa", "Rio Bravo", "Valle Hermoso", "Matamoros"))
 geo[, nm := norm(name)]
-border <- rbindlist(lapply(names(BORDER), function(e) data.table(cve_ent = e, nm = norm(BORDER[[e]]))))
+border <- rbindlist(lapply(names(MX_BORDER), function(e) data.table(cve_ent = e, nm = norm(MX_BORDER[[e]]))))
 geo[, border := FALSE][border, border := TRUE, on = .(cve_ent, nm)]
 stopifnot(geo[border == TRUE, .N] == 22L)
 
@@ -77,9 +72,9 @@ geo[, std_offset_h := fcase(cve_ent == "02", -8, cve_ent == "23", -5,
                             cve_ent %in% c("03", "25", "26"), -7,
                             cve_ent == "18" & nm != norm("Bahia de Banderas"), -7,
                             default = -6)]
-geo[, unit := fcase(cve_ent %in% c("02", "23", "26"), cve_ent,
+geo[, unit := fcase(cve_ent %in% MX_CONTROL_STATES, cve_ent,
                     border, paste0(cve_ent, "b"), default = cve_ent)]
-geo[, treated := as.integer(!(cve_ent %in% c("02", "23", "26") | border))]
+geo[, treated := as.integer(!(cve_ent %in% MX_CONTROL_STATES | border))]
 # Two seats have no coordinates in the INEGI service (Mocorito and Sinaloa,
 # both in Sinaloa, treated); their accidents are dropped and counted.
 no_xy <- geo[is.na(lat)]

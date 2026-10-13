@@ -1,0 +1,35 @@
+% =============================================================================
+% paper.tex: the manuscript submitted to American Economic Journal: Economic
+% Policy. Anonymized (double-blind review): no author, affiliation or
+% acknowledgment here; they are in title_page.tex. Main text only; the Online
+% Appendix is appendix.tex, a separate file. The text itself lives in
+% sections/ and is shared with the working paper (paper_wp.tex).
+%
+% Build (from latex/): ./build.sh   (cross-references between the paper and
+% the appendix need both files compiled twice)
+% =============================================================================
+\documentclass[AEJ,reviewmode]{AEA}
+\input{preamble_aea}
+\externaldocument{appendix}
+
+\begin{document}
+
+\title{Darker Evenings: Road Deaths after Brazil Abolished Daylight Saving Time}
+\shortTitle{Darker Evenings}
+\author{}
+\date{}
+\JEL{I18, R41, O54}
+\Keywords{daylight saving time, ambient light, road deaths, pedestrians, Brazil}
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\maketitle
+
+\input{sections/body}
+
+\bibliographystyle{aea}
+\bibliography{references}
+
+\end{document}

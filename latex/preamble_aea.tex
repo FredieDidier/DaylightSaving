@@ -1,0 +1,65 @@
+% =============================================================================
+% preamble_aea.tex: shared by the two files submitted to AEJ: Economic Policy
+% (paper.tex and appendix.tex), both set with the AEA template, AEA.cls, in
+% review mode. The journal's length guidance assumes 12-point type, 1.5 line
+% spacing and 1-inch margins; review mode gives the first two and the margins
+% are set here. Figures are drawn at the width they print at, 6.5 inches.
+% =============================================================================
+\usepackage{lmodern}               % before fontenc: AEA.cls declares dcr fonts, absent from TeX Live
+\usepackage[T1]{fontenc}
+\usepackage[leqno]{amsmath}          % AEA style: equation numbers on the left
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage{xr}
+% xr imports the other file's bibliography entries along with its labels,
+% which natbib reports as multiply defined citations; import labels only.
+\makeatletter
+\long\def\XR@test#1#2#3#4\XR@{%
+  \let\XR@tempa\@gobbletwo
+  \ifx#1\newlabel\let\XR@tempa\@firstoftwo
+  \else\ifx#1\@input\let\XR@tempa\@secondoftwo\fi\fi
+  \XR@tempa{#1{\XR@prefix#2}{#3}}{\edef\XR@list{\XR@list#2\relax}}%
+  \ifeof\@inputcheck\expandafter\XR@aux\else\expandafter\XR@read\fi}
+\makeatother
+
+% 1-inch margins on US letter.
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-\headheight}
+\addtolength{\topmargin}{-\headsep}
+\setlength{\abstractWidth}{\textwidth}       % the template sized it for its own text width
+\addtolength{\abstractWidth}{-2\abstractIndent}
+
+% Running head: short title and page number only (the template's review mode
+% prints volume and issue placeholders).
+\makeatletter
+\def\ps@headings{%
+  \let\@oddfoot\@empty\let\@evenfoot\@empty
+  \def\@oddhead{\hfil{\small\textit{\MakeUppercase{\@shortTitle}}}\hfil{\small\thepage}}%
+  \let\@evenhead\@oddhead}
+\pagestyle{headings}   % \maketitle sets it inside a group, so set it here
+% Anonymous title block: the template prints "By" and the authors; the
+% submission carries no author (they go on the separate title page).
+\renewcommand\@maketitle{%
+  \pagestyle{headings}\thispagestyle{titlepage}%
+  \begin{center}\null\vskip\abovetitleskip
+    {\titlesize\sffamily\textbf{\@title}\par}\vskip 24pt
+  \end{center}%
+  \gdef\@JELKey{\ifx\@JEL\@blank\else\par JEL: \@JEL\par\fi
+    \ifx\@Keywords\@blank\else Keywords: \@Keywords\par\fi}%
+  \noindent{\abstractbodysize\itshape\hspace{\abstractIndent}%
+    \parbox{\abstractWidth}{\noindent\@abstract\@JELKey\par}}\vskip 24pt\par}
+\makeatother
+
+% Floats: relax the placement fractions rather than forcing positions.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+
+\graphicspath{{../analysis/output/graphs/}}
+\newcommand{\tabdir}{../analysis/output/tables}

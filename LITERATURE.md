@@ -267,6 +267,61 @@ mesma pergunta de luz. A diferenciação tem de ser explícita:
 tirou a luz, em duas fontes independentes (registro de óbito e polícia
 rodoviária), num país que está agora decidindo se volta atrás.
 
+## Conferência de 13/10/2026 (para o manuscrito)
+
+Toda referência do `latex/references.bib` foi conferida de novo: metadados no
+Crossref (DOI, volume, páginas) e conteúdo no resumo ou no texto (IDEAS/RePEc,
+Europe PMC, página do editor). A afirmação que o manuscrito atribui a cada obra
+está anotada acima da entrada no `.bib`. Correções e acréscimos:
+
+- **Novo e essencial: Bünnings, C. & V. Schiele (2021).** "Spring Forward,
+  Don't Fall Back: The Effect of Daylight Saving Time on Road Safety."
+  *ReStat* 103(1): 165–176, doi 10.1162/rest_a_00873 ✔ (resumo no Crossref).
+  Grã-Bretanha; luz pela variação do nascer e do pôr do sol no espaço e no
+  tempo; o escuro custa mais de £500 mi por ano; horário de verão o ano todo
+  pouparia 8%. **É o vizinho mais próximo em periódico top:** simula regimes,
+  nós observamos uma mudança de regime. (A versão Ruhr Economic Papers 768
+  traz outros números: £790 mi e 10%; citar a publicada.)
+- **Novo: Tyndall, J. (2025).** "Road Illumination and Nighttime Pedestrian
+  Deaths: Evidence from Moonlight." *Economics of Transportation* 42: 100411
+  ✔ (resumo). EUA 1975–2022: mortes de pedestres à noite 5% menores nas noites
+  de lua mais clara, 17% sem nuvens, 39% em área rural.
+- **Novos (energia, relógio, dados):** Kotchen & Grant (2011, *ReStat* 93(4):
+  1172–1185; horário de verão aumenta a demanda residencial de eletricidade em
+  Indiana) ✔; Kellogg & Wolff (2008, *JEEM* 56(3): 207–220) ✔ (metadados);
+  Hamermesh, Myers & Pocock (2008, *JOLE* 26(2): 223–246; grade de TV e fusos
+  afetam a hora do trabalho e do sono) ✔; Dix-Carneiro, Soares & Ulyssea
+  (2018, *AEJ: Applied* 10(4): 158–195; homicídio medido com os registros de
+  mortalidade do DATASUS, lido no WP NBER 23400) ✔.
+- **Métodos** ✔ (metadados no Crossref): Santos Silva & Tenreyro (2006,
+  *ReStat* 88(4)); Borusyak, Jaravel & Spiess (2024, *ReStud* 91(6):
+  3253–3285); Rambachan & Roth (2023, *ReStud* 90(5): 2555–2591); Cameron,
+  Gelbach & Miller (2008, *ReStat* 90(3)); Webb (2023, *Canadian J. Econ.*
+  56(3): 839–858); MacKinnon & Webb (2020, *J. Econometrics* 218(2):
+  435–450); Robinson, Hammitt & O'Keeffe (2019, *J. Benefit-Cost Analysis*
+  10(S1): 15–50; regra de referência: razão VSL/RNB per capita dos EUA de 160,
+  elasticidade 1,5, piso de 20 × RNB per capita, lida no PMC7473065).
+- **Correções de metadados:** Domínguez & Asahi é **2023**, *JEG* 23(2):
+  299–317 (online em 2022); Tealde (2022) tem pp. 893–934; Jagnani é **2024**,
+  *ReStat* 106(4): 983–996; Franco et al. no SSRN tem data de 2023 no
+  Crossref; Gillmore (2025) pp. 880–931.
+- **Sem versão publicada (busca de 13/10/2026):** Franco et al. (SSRN
+  3899538) e Toro, Tigre & Sampaio ("Daylight Saving Lives", SSRN 2786452).
+- **Varreduras de 13/10/2026:** nenhum estudo sobre a abolição brasileira de
+  2019 e trânsito; nenhum sobre a abolição mexicana de 2022 e trânsito.
+  Rússia (horário de verão permanente em 2011, hora padrão permanente em 2014):
+  trabalhos de P. Jelnov sobre o relógio e saúde/PIB, sem versão em periódico
+  encontrada; não citados.
+- **Fatos de política conferidos na fonte:** Sunshine Protection Act (S. 623,
+  117º Congresso) aprovado no Senado por consentimento unânime em 15/03/2022 e
+  parado na Câmara (API do congress.gov); resolução do Parlamento Europeu de
+  26/03/2019 (T8-0225/2019), procedimento 2018/0332(COD) "aguardando a posição
+  do Conselho" (Legislative Observatory); Lei 6.015/1973, art. 77 (nenhum
+  sepultamento sem certidão de óbito; Planalto); população dos 11 tratados no
+  Censo 2022: 131,1 mi de 203,1 mi (SIDRA 4709).
+- **Não conferido na fonte:** o despacho presidencial dos radares (DOU de
+  15/08/2019); por isso não está no manuscrito.
+
 ## Fontes consultadas
 
 - https://preprints.scielo.org/index.php/scielo/preprint/view/6458

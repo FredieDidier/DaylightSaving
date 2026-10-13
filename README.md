@@ -3,19 +3,21 @@
 The end of daylight saving time in Brazil (Decree 9,772 of 25 April 2019) and
 its effect on road deaths, with a replication on Mexico's abolition of 2022.
 
-**Author:** Fredie Didier. Work in progress — no paper yet.
+**Author:** Fredie Didier. First draft of the paper in `latex/` (target: AEJ: Economic Policy).
 
 ## Layout
 
 ```
 config/config.R           the only file to edit (set DROPBOX_ROOT)
-config/00_master_build.R  runs build/01-11 in order
+config/00_master_build.R  runs build/01-12 in order
 build/manual/             legal DST calendar, typed from the decrees (versioned)
-build/01-11               treatment calendar, then one step per data source
+build/01-12               treatment calendar, then one step per data source
 analysis/code/            00_master_analysis.R runs 01-29: 01-27 estimate and
                           cache audit/*.rds, 28 draws the figures, 29 the tables
-analysis/output/          committed outputs (tables .tex, figures .pdf/.png)
-latex/                    manuscript (later)
+analysis/output/          committed outputs (tables .tex, figures and maps .pdf/.png)
+latex/                    paper.tex (submission), appendix.tex, title_page.tex,
+                          paper_wp.tex (working paper); text in latex/sections/;
+                          build with latex/build.sh
 horario_verao/            project notes (Portuguese), legal texts, skills
 ```
 
@@ -33,6 +35,7 @@ nothing is read from another project's folder.
 | Census street lighting 2022 / 2010 | `09_census_lighting.R` | SIDRA API / `censobr` (columns kept in `build/census/input/`) |
 | Mexico municipalities | `10_mexico_geo.R` | INEGI geo API |
 | Mexico road crashes (ATUS) | `11_mexico_atus.R` | INEGI open data (raw zip in `build/mexico/input/`) |
+| Boundaries for the maps | `12_map_boundaries.R` | `geobr` (IBGE, Brazil); GADM 4.1 via `geodata` (Mexico) |
 
 ## Reproducing
 

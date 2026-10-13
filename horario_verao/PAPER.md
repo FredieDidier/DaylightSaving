@@ -3,6 +3,100 @@
 Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
 (§7–§10). Quando os dois divergirem, vale o `.rds`.
 
+## Manuscrito (primeiro rascunho, 13/10/2026)
+
+**Arquivos (`latex/`)**, um texto só para as duas versões:
+- `sections/abstract.tex`, `sections/body.tex` (introdução a conclusão, com as
+  exibições do corpo), `sections/appendix_body.tex` (apêndice online);
+  `references.bib` (toda entrada conferida, com a afirmação atribuída a cada
+  obra anotada acima dela).
+- `paper.tex`: submissão à AEJ: Economic Policy, **anônima** (revisão
+  duplo-cega), template oficial da AEA (`AEA.cls`, `aea.bst`) em `reviewmode`,
+  12 pt, espaçamento 1,5, margens de 1 polegada. 27 páginas.
+- `appendix.tex`: Online Appendix, anônimo, arquivo separado (16 páginas).
+- `title_page.tex`: página de título exigida pela revista (autor, afiliação,
+  agradecimentos). **Preencher os campos entre colchetes.**
+- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 45 páginas).
+- Compilar: `latex/build.sh` (o artigo e o apêndice citam rótulos um do outro
+  pelo pacote `xr`, então cada um compila depois do outro).
+
+**Periódico: AEJ: Economic Policy** (decidido com o Fredie, 13/10/2026).
+Avaliação crítica, como editor:
+- *Por que a Policy:* o objeto é a avaliação de uma reversão real de política
+  (abolição), com conta de custo (VSL) contra o lado da energia, num debate
+  vivo (Senado dos EUA 2022, Parlamento Europeu 2019, México 2022, PL 397/2007).
+  É o que essa revista publica. Na Applied pesariam mais duas fraquezas: medir a
+  hora pelo pôr do sol local não é novo (Doleac & Sanders; Bünnings & Schiele
+  2021, ReStat) e o efeito no dia todo é inconclusivo.
+- *Riscos que o editor vai ver:* (i) efeito pequeno em nível (54 mortes por
+  verão, 0,9% das mortes de transporte no verão dos tratados); (ii) dia todo
+  inconclusivo (EP 66); (iii) 23 clusters e 5 verões pós, dois na pandemia;
+  (iv) PRF sensível à tendência; (v) o vizinho mais próximo em periódico top é
+  Bünnings & Schiele (2021), que **simula** regimes a partir da variação de
+  luz: a nossa diferença é observar a mudança de regime. O texto responde a
+  cada um, mas nenhum desaparece.
+- *Ordem, se não der:* JPubE ou JHE (como no `PARECER.md`).
+
+**Normas da revista seguidas** (página de submissão e style guide da AEA,
+lidas em 13/10/2026): PDF; resumo ≤ 100 palavras (98); JEL e palavras-chave;
+título e resumo no topo da 1ª página; manuscrito e apêndice anônimos, autor só
+na página de título; ≤ 45 páginas em 12 pt (27); seções em algarismos romanos,
+introdução sem título; equações numeradas à esquerda; tabelas só com linhas
+horizontais, sem asteriscos, EP entre parênteses, zero antes da vírgula
+decimal, ≤ 9 colunas, painéis "Panel A"; notas de fonte depois das notas;
+figuras vetoriais (PDF); referências Chicago autor-data (`aea.bst`), fontes de
+dados na lista de referências; apêndice suplementar não editado pela revista.
+Exigências que não estão no PDF: uma **declaração de conflitos (Disclosure
+Statement)** por autor, em PDF separado; **declarar o uso de IA** na redação no
+formulário de submissão; taxa de submissão; pacote de replicação só antes do
+aceite (o repositório já está pronto para isso).
+
+**Exibições, divididas como editor da AEJ: Policy leria** (13/10/2026). Corpo:
+13 exibições, o que o argumento precisa para ser lido sem o apêndice.
+
+| corpo | por quê |
+|---|---|
+| Fig. 1 mapa do Brasil (`analysis/output/maps/fig_map_brazil`) | o leitor de fora precisa ver o bloco regional e as exclusões (BA, TO, AC, AM); mostra também a diferença de latitude, que é a objeção óbvia |
+| Fig. 2 relógio do pôr e do nascer do sol (SP) | define a hora que trocou de luz |
+| Fig. 3 primeiro estágio (PRF, por minuto) | o tratamento existe e a hora registrada é a legal |
+| Fig. 4 efeito por hora | a assinatura: pico na hora 0, nada longe |
+| Fig. 5 estudo de eventos | tendências |
+| Tab. 1 descritivas | a tripla "na mão" (dá 29 lp) |
+| Tab. 2 principal | |
+| Tab. 3 pedestres | o mecanismo |
+| Tab. 4 volume e risco por veículo | exposição contra risco (pergunta nº 5 de parecerista) |
+| Tab. 5 excesso por verão | a quantidade de política (líquido 54) |
+| Tab. 6 robustez e horas sem mudança de luz | tendência, imputação, sono |
+| Tab. 7 custo | a conta de política |
+| Tab. 8 México | a réplica do resumo |
+
+Apêndice online (13 exibições): A1 integridade do registro; B1 janela
+deslocada; B2 deixar um de fora; Tab. B1 sensibilidade; B3 FE de UF × dia;
+B4 HonestDiD; Tab. B2 quem morre; Tab. B3 dose e chuva; Tab. B4 iluminação;
+B5 Bahia; B6 agressões; C1 mapa do México; C2 estudo de eventos do México.
+
+**Não reintroduzir (navalha de Occam, 13/10/2026).** Cortes por mérito, não
+por resultado incômodo.
+
+| elemento | por quê |
+|---|---|
+| "ofuscamento pelo sol baixo" como explicação da queda da PRF na hora −1 | a física vai contra: sem horário de verão o sol baixo cai *na* hora −1, que deveria ter mais acidentes, não menos. E o estudo de eventos mostra a queda já em 2018/19, ainda com horário de verão (coeficientes da hora −1, acidentes com vítima, entre 25 e 55 lp nas temporadas 2008/09–2017/18 contra 2018/19; pós entre −5 e 15). O texto diz que a queda é anterior à abolição |
+| 33,7 p.p. (primeiro estágio às 18–19h do relógio) | vinha do `01_viability`, apagado; o primeiro estágio do paper é o da hora 0 (+23,6 p.p., `light_dose.rds`) e a curva da Fig. 3 |
+| radares móveis suspensos em ago/2019 | não citado: o DOU de 15/08/2019 não foi lido na fonte (só imprensa). A linha "sem 2019/20" (Tab. B1) já responde. Entra quando o DOU for conferido |
+| números sem exibição: placebos no tempo do `02`, risco por veículo com os mesmos verões (≈ 25 lp), efeito por temporada da imputação | órfãos: nenhum quadro os imprime. O texto diz qualitativamente que volume e acidentes vêm de verões diferentes |
+| Woods et al. (2025), Mitre-Becerril (2026), Fritz et al. (2020), Toro et al. (2015), Jagnani (2024), Sexton & Beatty (2014), Goodwin et al. em mais de um lugar | outros campos ou redundantes: Sullivan & Flannagan (2002) e Tyndall (2025, econ) bastam para pedestre e luz; Giuntella & Mazzonna e Gibson & Shrader bastam para o sono |
+| "a manhã tem menos gente na rua" como razão da assimetria | falso nos dados: a hora 0 da manhã tinha 107 mortes por verão antes, a da noite 110 |
+
+**Pendências do manuscrito (para o Fredie):**
+1. Afiliação e agradecimentos em `title_page.tex` e `paper_wp.tex`.
+2. Primeira pessoa: o texto usa "I" (autor único). Se entrar coautor, trocar por "we".
+3. `latex/exhibits.tex` (prévia antiga) duplica legendas e notas, que agora
+   vivem no manuscrito. Proposta: apagar.
+4. Comparação de energia: a frase "fuel savings alone are close to the
+   reference value of the deaths" compara a NT-ONS 0093/2024 (outro método)
+   com a nossa conta. Conferir se o Fredie quer essa frase.
+5. Rodar a skill `manuscript-audit` antes de mandar a alguém.
+
 ## Título de trabalho
 
 *Darker Evenings: Road Deaths after Brazil Abolished Daylight Saving Time*
@@ -262,5 +356,4 @@ abolições".
 2. ~~WCR e permutação para o pedestre~~ feito (14): passa nas três fontes.
 3. Bootstrap da imputação para as somas da realocação (hoje por método delta,
    sem tendência).
-4. Periódico-alvo: AEJ Applied ou AEJ Policy (Smith 2016 está na Applied);
-   JHE ou JPubE como alternativa.
+4. ~~Periódico-alvo~~ decidido em 13/10/2026: AEJ: Economic Policy (seção "Manuscrito").

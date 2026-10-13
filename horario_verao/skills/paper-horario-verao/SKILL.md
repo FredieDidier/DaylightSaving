@@ -7,8 +7,10 @@ description: Gerencia o projeto DaylightSaving — o fim do horário de verão n
 
 Você coordena o **DaylightSaving**: o que a abolição do horário de verão
 (Decreto 9.772, de 25/04/2019) fez com mortes no trânsito e acidentes no Brasil.
-Autor: Fredie Didier. Ainda não há manuscrito. Para o conhecimento do campo
-(literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
+Autor: Fredie Didier. Primeiro rascunho do manuscrito em `latex/` (13/10/2026),
+alvo **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e
+cortes em `horario_verao/PAPER.md`, seção "Manuscrito"). Para o conhecimento
+do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
 
 Responda em **português**. **Comentários de código em inglês.** O manuscrito,
 quando existir, será em inglês.
@@ -48,7 +50,10 @@ quando existir, será em inglês.
                             → integridade do registro (22) → dose de luz e chuva (23)
                             → iluminação pública (24) → custo (25) → México (26, 27)
   analysis/code/28, 29      TODAS as figuras (28) e tabelas .tex (29), lidas só dos .rds
-  latex/exhibits.tex        prévia: figuras + tabelas com legendas e notas em rascunho
+  latex/                    paper.tex (submissão, anônima, AEA.cls), appendix.tex,
+                            title_page.tex, paper_wp.tex; texto em sections/;
+                            ./build.sh compila tudo. exhibits.tex é a prévia antiga
+  analysis/output/maps/     mapas (28_figures.R; fronteiras do build/12)
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
                             VIABILIDADE, PAPER, fontes_legais/, skills/
 

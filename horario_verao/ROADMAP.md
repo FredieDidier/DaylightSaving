@@ -136,9 +136,26 @@ Feito nesta sessão:
 - ✅ EXPLICANDO também em PDF (`horario_verao/EXPLICANDO_O_PROJETO.pdf`, pandoc +
   xelatex, fonte STIXGeneral).
 
+- ✅ **Primeiro rascunho do manuscrito (13/10/2026)**, em inglês, para a AEJ:
+  Economic Policy: `latex/paper.tex` (submissão anônima, template da AEA),
+  `appendix.tex`, `title_page.tex` e `paper_wp.tex` (working paper), texto
+  único em `latex/sections/`; compila com `latex/build.sh`. Escolha do
+  periódico, normas, divisão corpo/apêndice e cortes em `PAPER.md` (seção
+  "Manuscrito"). Literatura reconferida no Crossref e no resumo ou texto de
+  cada obra (`LITERATURE.md`, "Conferência de 13/10/2026").
+- ✅ **Mapas (13/10/2026)**, pedido do Fredie: `build/12_map_boundaries.R`
+  (IBGE via geobr; GADM 4.1 para o México) e a seção de mapas do
+  `28_figures.R`, que grava em `analysis/output/maps/` (`fig_map_brazil` no
+  corpo, `fig_map_mexico` no apêndice). Paleta de 3 cores (o validador da
+  skill dataviz reprova 4 cores num coroplético). A lista dos municípios da
+  fronteira mexicana passou do `26` para o `00_utils.R` (`MX_BORDER`,
+  `MX_CONTROL_STATES`); unidades conferidas idênticas às do `mexico.rds`.
+
 Próximos:
-1. Começar o manuscrito (introdução e desenho), em inglês. Entram: o texto do
-   sono (PAPER.md), o placebo das horas (18) e a Bahia no apêndice (17).
+1. Fredie: afiliação e agradecimentos (`title_page.tex`, `paper_wp.tex`);
+   ler o rascunho; decidir as pendências do `PAPER.md` (seção "Manuscrito").
+2. Rodar a skill `manuscript-audit` no rascunho.
+3. Conferir no DOU de 15/08/2019 o despacho dos radares antes de citá-lo.
 
 ## Decisões tomadas
 
@@ -166,6 +183,9 @@ Próximos:
 | 13/10/2026 | Inferência do volume volta, agora na Tabela 5 | `16_inference_volume.R`: p de permutação (999) nas 5 colunas e nas 7 horas da `tab_traffic_volume`, entre colchetes; mesma atribuição falsa para volume, acidentes e mortes, então o "por veículo" tem distribuição própria. Saiu o bootstrap selvagem (nenhuma tabela usava). Renumeração: 16–28 → 17–29 (figuras 28, tabelas 29) |
 | 13/10/2026 | Rótulos internos da `fig_leave_out` maiores | Estados e temporadas de ~6 pt para ~8 pt, mais escuros; altura da figura 7,6 → 8,2 pol. Pedido do Fredie |
 | 13/10/2026 | Nenhum dado lido de outro projeto | Reprodutível em qualquer máquina só com o Dropbox do DaylightSaving. Fuso por município virou regra no `04` (saída idêntica); Censo 2010 guarda só as 8 colunas usadas; o NetCDF do Xavier (sem download por script) fica em `weather/input/` |
+| 13/10/2026 | Periódico-alvo: AEJ: Economic Policy | Pedido do Fredie, conferido criticamente (PAPER.md, "Manuscrito"): avaliação de reversão de política com conta de custo; na Applied pesariam o instrumento já usado e o dia todo inconclusivo |
+| 13/10/2026 | A queda da PRF na hora −1 é anterior à abolição; "ofuscamento" sai | O estudo de eventos mostra a queda já em 2018/19; e sem horário de verão o sol baixo cai *na* hora −1, o contrário do que o ofuscamento explicaria |
+| 13/10/2026 | Mapas em `analysis/output/maps/`, desenhados no `28_figures.R` | Pedido do Fredie; fronteiras baixadas pelo `build/12_map_boundaries.R` |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 
 ## Pendências pequenas

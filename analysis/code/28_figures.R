@@ -1,11 +1,13 @@
 # =============================================================================
 # 28_figures.R
 #
-# Every figure of the paper, drawn from the estimates cached in audit/*.rds.
+# Every figure of the paper, drawn from the estimates cached in audit/*.rds
+# (and, for the two maps, from the boundaries of build/12_map_boundaries.R).
 # Nothing is estimated here, so a label, a colour or a size changes in seconds
 # and never requires a refit. Run after 01-27, which write the caches.
 #
 # Main text
+#   fig_map_brazil        treated, control and excluded states   (maps/, no cache)
 #   fig_design            clock time of sunset and sunrise, Sao Paulo 2018/19,
 #                         with and without DST                     (no cache)
 #   fig_first_stage       share of PRF crashes recorded dark, by minute from
@@ -22,6 +24,8 @@
 #   fig_leave_out         one state or one season left out         (20)
 #   fig_record_integrity  share on the road, share without a time  (22)
 #   fig_mexico_event_study Mexico, hour after sunset by year       (26)
+#   fig_map_mexico        units that lost DST, kept their clock, or left out
+#                                                                  (maps/, no cache)
 #
 # House style (00_utils.R): no titles inside the figure (the caption lives in
 # LaTeX); outcome names as in OUTCOME_LAB, never with the data source; one y
@@ -331,3 +335,118 @@ g <- ggplot(mxe, aes(sy, 100 * coef)) +
   labs(x = "Year", y = "Relative to 2022 (log points)") +
   theme_paper() + theme_outcome_strip()
 save_fig(g, "fig_mexico_event_study", height = 5.4)
+
+# ── Maps (analysis/output/maps) ─────────────────────────────────────────────
+# Boundaries from build/12_map_boundaries.R (IBGE 2020 for Brazil, GADM 4.1
+# for Mexico); neighbouring countries from Natural Earth (medium scale) as grey
+# context. Three fills only (treated, comparison, excluded): a choropleth puts
+# every pair of colours side by side, and red and blue are the pair the palette
+# check passes; the excluded units are told apart by their labels and the
+# legend, not by a fourth colour.
+suppressPackageStartupMessages(library(sf))
+dir.create(path_maps, recursive = TRUE, showWarnings = FALSE)
+MAP_FILL <- c(PAL[["red"]], PAL[["blue"]], "#D5D8DC")
+map_theme <- function() theme_void(base_size = 10) +
+  theme(legend.position = "bottom", legend.direction = "vertical", legend.title = element_blank(),
+        legend.text = element_text(size = 9), legend.key.size = unit(0.45, "cm"),
+        legend.margin = margin(t = 0), plot.margin = margin(2, 2, 2, 2))
+# Natural Earth polygons are cropped in longitude-latitude before projection:
+# a whole-world layer leaves slivers across the ocean once projected.
+sf_use_s2(FALSE)
+world <- suppressMessages(suppressWarnings(
+  rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")[, "admin"]))
+context <- function(xmin, xmax, ymin, ymax, crs)
+  st_transform(suppressMessages(suppressWarnings(
+    st_crop(world, c(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax)))), crs)
+
+# Brazil: treatment groups of 00_utils.R, Equator and Tropic of Capricorn.
+BR_GRP <- c("Treated: DST every summer from 2008/09 to 2018/19",
+            "Control: no DST",
+            "Excluded: DST in one summer only (BA 2011/12, TO 2012/13) or a time-zone change (AC, AM)")
+br <- st_transform(st_read(file.path(DROPBOX_ROOT, "build", "geo", "output", "br_states.gpkg"),
+                           quiet = TRUE), 5880)
+br$grp <- factor(ifelse(br$abbrev_state %in% TREATED, BR_GRP[1],
+                        ifelse(br$abbrev_state %in% CONTROL, BR_GRP[2], BR_GRP[3])), levels = BR_GRP)
+stopifnot(sum(br$grp == BR_GRP[1]) == 11L, sum(br$grp == BR_GRP[2]) == 12L)
+lab <- suppressWarnings(st_point_on_surface(br))
+lab <- cbind(as.data.frame(st_coordinates(lab)), uf = br$abbrev_state, grp = br$grp)
+lab$ink <- ifelse(lab$grp == BR_GRP[3], "grey20", "white")
+# Units too small to hold their label: the label goes off the unit, in the
+# sea or on a grey (excluded) neighbour, with a leader line (lon, lat).
+OFF <- list(DF = c(-45.6, -12.9), RN = c(-34.2, -4.9), PB = c(-33.4, -6.9), AL = c(-34.2, -10.2),
+            SE = c(-35.6, -11.9), ES = c(-38.4, -20.3), RJ = c(-39.8, -24.6))
+off <- do.call(rbind, lapply(names(OFF), function(u)
+  data.frame(uf = u, st_coordinates(st_transform(st_sfc(st_point(OFF[[u]]), crs = 4326), 5880)))))
+names(off)[2:3] <- c("Xl", "Yl")
+seg <- merge(lab[, c("uf", "X", "Y")], off, by = "uf")
+lab <- merge(lab, off, by = "uf", all.x = TRUE)
+moved <- !is.na(lab$Xl)
+lab$X[moved] <- lab$Xl[moved]; lab$Y[moved] <- lab$Yl[moved]; lab$ink[moved] <- "grey15"
+parallels <- st_transform(st_sfc(st_linestring(cbind(c(-76, -31), c(0, 0))),
+                                 st_linestring(cbind(c(-76, -31), c(-23.44, -23.44))), crs = 4326), 5880)
+par_lab <- data.frame(label = c("Equator", "Tropic of Capricorn"),
+                      st_coordinates(st_transform(st_sfc(st_point(c(-31.5, 0.9)),
+                                                         st_point(c(-31.5, -22.5)), crs = 4326), 5880)))
+bb <- st_bbox(br)
+g <- ggplot() +
+  geom_sf(data = context(-90, -20, -45, 15, 5880), fill = "grey96", colour = "white", linewidth = 0.3) +
+  geom_sf(data = parallels, colour = "grey55", linewidth = 0.3, linetype = "22") +
+  geom_text(data = par_lab, aes(X, Y, label = label), size = 2.7, colour = "grey35", hjust = 1) +
+  geom_sf(data = br, aes(fill = grp), colour = "white", linewidth = 0.35) +
+  geom_segment(data = seg, aes(x = X, y = Y, xend = Xl, yend = Yl), colour = "grey35", linewidth = 0.25) +
+  geom_label(data = lab[moved, ], aes(X, Y, label = uf), size = 2.6, fontface = "bold", colour = "grey15",
+             fill = "white", linewidth = 0, label.padding = unit(0.06, "lines")) +
+  geom_text(data = lab[!moved, ], aes(X, Y, label = uf, colour = ink), size = 2.6, fontface = "bold") +
+  scale_colour_identity() +
+  scale_fill_manual(values = setNames(MAP_FILL, BR_GRP), drop = FALSE) +
+  coord_sf(xlim = c(bb[["xmin"]] - 1e5, bb[["xmax"]] + 3.2e5), ylim = c(bb[["ymin"]] - 1e5, bb[["ymax"]] + 1e5),
+           expand = FALSE, datum = NA) +
+  map_theme()
+save_fig(g, "fig_map_brazil", height = 6, dir = path_maps)
+
+# Mexico: units of 26_mexico.R. The border municipalities that kept DST on US
+# dates are drawn over their states.
+MX_GRP <- c("Treated: lost DST in October 2022",
+            "Comparison: clock unchanged (no DST in Sonora and Quintana Roo; DST on US dates in Baja California and 22 border municipalities)",
+            "Excluded: Chihuahua, which also changed time zone")
+mx <- st_read(file.path(DROPBOX_ROOT, "build", "mexico", "output", "mx_states.gpkg"), quiet = TRUE)
+mx$grp <- factor(ifelse(mx$cve_ent %in% MX_CONTROL_STATES, MX_GRP[2],
+                        ifelse(mx$cve_ent == "08", MX_GRP[3], MX_GRP[1])), levels = MX_GRP)
+mun <- st_read(file.path(DROPBOX_ROOT, "build", "mexico", "output", "mx_border_states_munis.gpkg"), quiet = TRUE)
+mnorm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
+bm <- do.call(rbind, lapply(names(MX_BORDER), function(e) data.frame(cve_ent = e, nm = mnorm(MX_BORDER[[e]]))))
+mun <- mun[paste(mun$cve_ent, mnorm(mun$name)) %in% paste(bm$cve_ent, bm$nm), ]
+stopifnot(nrow(mun) == 22L)
+mun$grp <- factor(MX_GRP[2], levels = MX_GRP)
+mlab <- suppressWarnings(st_point_on_surface(mx[mx$cve_ent %in% c(MX_CONTROL_STATES, "08"), ]))
+mlab <- cbind(as.data.frame(st_coordinates(mlab)), cve = mlab$cve_ent,
+              label = c("02" = "Baja\nCalifornia", "08" = "Chihuahua", "23" = "Quintana\nRoo",
+                        "26" = "Sonora")[mlab$cve_ent])
+mlab$ink <- ifelse(mlab$cve == "08", "grey20", "white")
+# Baja California and Quintana Roo are too narrow for their names: the label
+# goes in the sea with a leader line (lon, lat).
+MOFF <- list("02" = c(-117.2, 26.4), "23" = c(-85.0, 20.4))
+moff <- do.call(rbind, lapply(names(MOFF), function(e)
+  data.frame(cve = e, st_coordinates(st_transform(st_sfc(st_point(MOFF[[e]]), crs = 4326), 6372)))))
+names(moff)[2:3] <- c("Xl", "Yl")
+mseg <- merge(mlab[, c("cve", "X", "Y")], moff, by = "cve")
+mlab <- merge(mlab, moff, by = "cve", all.x = TRUE)
+mmoved <- !is.na(mlab$Xl)
+mlab$X[mmoved] <- mlab$Xl[mmoved]; mlab$Y[mmoved] <- mlab$Yl[mmoved]
+mbb <- st_bbox(mx)
+g <- ggplot() +
+  geom_sf(data = context(-140, -65, 0, 52, 6372), fill = "grey96", colour = "white", linewidth = 0.3) +
+  geom_sf(data = mx, aes(fill = grp), colour = "white", linewidth = 0.35) +
+  geom_sf(data = mun, aes(fill = grp), colour = "white", linewidth = 0.15) +
+  geom_segment(data = mseg, aes(x = X, y = Y, xend = Xl, yend = Yl), colour = "grey35", linewidth = 0.25) +
+  geom_label(data = mlab[mmoved, ], aes(X, Y, label = label), size = 2.6, fontface = "bold",
+             colour = "grey15", lineheight = 0.9, fill = "white", linewidth = 0,
+             label.padding = unit(0.08, "lines")) +
+  geom_text(data = mlab[!mmoved, ], aes(X, Y, label = label, colour = ink), size = 2.6, fontface = "bold") +
+  scale_colour_identity() +
+  scale_fill_manual(values = setNames(MAP_FILL, MX_GRP), drop = FALSE,
+                    labels = function(x) gsub("; ", ";\n", x)) +
+  coord_sf(xlim = c(mbb[["xmin"]] - 3.5e5, mbb[["xmax"]] + 3.5e5), ylim = c(mbb[["ymin"]] - 1e5, mbb[["ymax"]] + 5e4),
+           expand = FALSE, datum = NA) +
+  map_theme()
+save_fig(g, "fig_map_mexico", height = 4.9, dir = path_maps)

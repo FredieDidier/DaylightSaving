@@ -33,7 +33,8 @@ STEPS <- c(
   "08_xavier_rain.R",       # Xavier NetCDF          -> rain at each seat
   "09_census_lighting.R",   # SIDRA, censobr         -> street lighting
   "10_mexico_geo.R",        # INEGI geo API          -> Mexican seats
-  "11_mexico_atus.R")       # INEGI ATUS zip         -> Mexican crashes
+  "11_mexico_atus.R",       # INEGI ATUS zip         -> Mexican crashes
+  "12_map_boundaries.R")    # geobr, GADM            -> boundaries for the maps
 num <- sub("_.*", "", STEPS)
 
 args <- commandArgs(trailingOnly = TRUE)

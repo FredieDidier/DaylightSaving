@@ -29,6 +29,7 @@
 # NOT ignored: analysis outputs are committed — tables as .tex, figures as
 # PDF and PNG
 !analysis/output/graphs/*.pdf
+!analysis/output/maps/*.pdf
 
 # LaTeX build artifacts
 latex/*.aux

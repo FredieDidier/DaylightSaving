@@ -44,6 +44,7 @@ path_xavier_pr <- file.path(DROPBOX_ROOT, "build", "weather", "input",
 path_manual <- here::here("build", "manual")
 path_tables <- here::here("analysis", "output", "tables")
 path_graphs <- here::here("analysis", "output", "graphs")
+path_maps   <- here::here("analysis", "output", "maps")
 
 # ── Constants ───────────────────────────────────────────────────────────────
 # The 27 federative units, in IBGE code order.
