@@ -359,6 +359,63 @@ está anotada acima da entrada no `.bib`. Correções e acréscimos:
   "work and sleep"). Wolff & Makino (IZA DP 6787, tempo em blocos e horário de verão):
   sem versão publicada, não citado.
 
+## Auditoria por ponto de citação (14/10/2026)
+
+Depois do erro achado em Hamermesh et al. ("work, study and travel"), cada um
+dos 92 pontos de citação do manuscrito (59 obras; `latex/sections/*.tex`) foi
+lido com a frase em volta e conferido contra a fonte: **T** = texto completo
+ou trecho do texto, **R** = resumo, **P** = primeira página (prévia), **L** =
+texto legal ou documento oficial guardado em `fontes_legais/` ou
+`fontes_dados/`, **D** = o próprio dado. Toda entrada existe (Crossref,
+editora ou documento oficial); a tabela é sobre o **conteúdo**.
+
+| obra | o que o texto afirma | fonte | veredito |
+|---|---|---|---|
+| Hamermesh, Myers & Pocock 2008 | relógio pesa mais que o sol nas horas de trabalho e sono; atividades valem mais sincronizadas | T (WP NBER 12350) | corrigido: era "work, study and travel" |
+| Neidell 2009 | as pessoas reduzem a exposição a riscos conhecidos; o dano observado é líquido dessa evitação | R | corrigido: era "hazards they can anticipate ... net of the travel it displaces" (aplicação nossa apresentada como do paper) |
+| Edlin & Karaca-Mandic 2006 | o motorista não arca com todo o risco que impõe aos outros | R | ok |
+| Crandall & Graham 1984 | o risco pode recair sobre pedestres e ciclistas | P (p. 328) | ok (citado só pelo argumento da p. 328) |
+| White 2004 | idem, com evidência (pedestres, ciclistas, motociclistas) | R | ok |
+| Smith 2016 | transição de primavera: >30 mortes/ano nos EUA, sono; a luz da noite realoca mortes no dia | R | ok |
+| Laliotis et al. 2023 | luz do horário de verão reduz acidentes graves (Grécia, transições) | R | ok |
+| Gillmore 2025 | Chile: sono na semana da troca; luz reduz acidentes graves e fatais | R | corrigido: tirado o "mainly" na atribuição ao sono |
+| Sood & Ghosh 2007 | estimativas a partir das mudanças de data (EUA) | R | ok |
+| Franco et al. 2023 (SSRN) | Brasil, transição | R | ok |
+| Goodwin et al. 2024 | México, transições | R | ok |
+| Depalo 2023 | pergunta sobre abolir respondida com transições | R | ok |
+| Bünnings & Schiele 2021 | luz pelo nascer/pôr do sol no espaço e no tempo; DST o ano todo pouparia 8% | R | ok |
+| Coate & Markowitz 2004 | DST o ano todo: −171 pedestres/ano, −13% pedestres e −3% ocupantes nos períodos afetados | R | ok |
+| Sullivan & Flannagan 2002 | pedestre é o mais sensível à luz; até 7× o risco no escuro | R | ok |
+| Tyndall 2025 | mortes de pedestres à noite caem com a luz da lua | R | corrigido: o texto o punha junto de "most sensitive", que ele não compara |
+| Doleac & Sanders 2015; Domínguez & Asahi 2023; Tealde 2022 | luz e crime, nas horas que o relógio desloca | R | ok |
+| Toro, Tigre & Sampaio 2016 (SSRN) | homicídio por arma de fogo cai nos meses de DST, no início da noite | R | ok |
+| Kellogg & Wolff 2008 | energia (a extensão do DST não reduziu o consumo) | R | ok |
+| Kotchen & Grant 2011 | energia (DST aumenta a demanda residencial) | R | ok |
+| Gibson & Shrader 2018; Giuntella & Mazzonna 2019 | sono, saúde, produtividade; mais luz à noite, menos sono | R | ok |
+| Dix-Carneiro, Soares & Ulyssea 2018 | usam os registros de mortalidade do DATASUS (homicídio) | T (WP NBER) | ok |
+| Santos Silva & Tenreyro 2006 | PPML só exige a média condicional correta; lida com zeros | T (CEP DP 701) | ok |
+| Cameron, Gelbach & Miller 2008 | poucos clusters: testes assintóticos sobre-rejeitam | R | ok |
+| Webb 2023 | pesos de seis pontos no wild cluster bootstrap | R | ok |
+| MacKinnon & Webb 2020 | inferência por permutação em DiD com poucos tratados | R | **citação ok, mas o método diverge**: eles recomendam a versão pela estatística t; a nossa usa o coeficiente, que eles dizem poder falhar com clusters heterogêneos. Decisão pendente do Fredie |
+| Borusyak, Jaravel & Spiess 2024 | estimador de imputação ajustado só em observações não tratadas | R | corrigido: "a Poisson version of" (a nossa é uma adaptação Poisson) |
+| Rambachan & Roth 2023 | sensibilidade a violações de tendência paralela | R | ok |
+| Robinson, Hammitt & O'Keeffe 2019 | regra de referência 160 / elasticidade 1,5; alternativas maiores | T (PMC) | ok |
+| Meeus 1998; NOAA | algoritmo solar completo; equações gerais | T (NOAA) | ok |
+| Xavier et al. 2022 | grade diária de chuva | R | ok |
+| MME 2019 | DST deixou de economizar energia; +0,7% de carga | L | corrigido: "rested on energy alone" era falso (a nota também cita pesquisa de opinião, 53,7% a favor do fim) |
+| ONS 2024 | volta do DST: ponta noturna, R$ 244–356 mi de combustível, ~2 GW, R$ 1,8 bi/ano | L | ok |
+| Câmara 2025 | comissão aprovou PL que proíbe o DST | L | corrigido: "altogether" era falso (há exceção temporária e regional em crise energética) |
+| ONS 2024 + Câmara 2025, no 1º parágrafo | "o governo e o Congresso consideraram" | L | corrigido: o ONS não é "o governo"; agora "have since been studied or proposed" |
+| Decretos 6.558, 9.242, 9.772; Lei 6.015 art. 77 | datas, estados, fim do DST; sepultamento exige certidão | L | ok |
+| Ley de los Husos Horarios 2022 | vigência em 30/10/2022; exceções da fronteira | L | ok |
+| EUA S.623; Parlamento Europeu 2019 | Senado aprovou; Conselho sem posição | L | ok |
+| IBGE (Censo 2022, IPCA, malha), DATASUS, PRF, DNIT, INEGI, Banco Mundial, OMS, Ipea | fontes de dado | D/L | ok; acrescentadas as fontes dos mapas (IBGE malha 2020, GADM 4.1, Natural Earth), que faltavam na bibliografia |
+
+**Lição para as próximas rodadas:** conferir o resumo não basta quando a frase
+atribui à obra algo além do resumo (o caso de Hamermesh, Neidell, Tyndall e da
+nota do MME). Toda frase nova que cita uma obra é conferida contra o trecho da
+obra que a sustenta, no mesmo passo em que é escrita.
+
 ## Fontes consultadas
 
 - https://preprints.scielo.org/index.php/scielo/preprint/view/6458
