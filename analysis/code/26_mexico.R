@@ -147,11 +147,13 @@ inf <- rbindlist(lapply(names(OUT), function(o) {
                                                        us = paste(unit, sy), date)]))
   dm[, unit := p$unit]
   wb <- boottest(lm(y ~ twp, data = dm), param = "twp", clustid = "unit", B = 9999, type = "webb")
+  # Permutation on the t-statistic (fit_bs, 00_utils.R), clustered by unit.
+  t_real <- t_stat(fit_bs(as.formula(paste("y ~ twp", FEm)), p, "twp", cl = ~unit))
   perm <- vapply(FAKES, function(f) {
     p[, fk := as.integer(unit %in% f) * win * post]
-    coef(fepois(as.formula(paste("y ~ fk", FEm)), data = p, notes = FALSE))[["fk"]]
+    t_stat(fit_bs(as.formula(paste("y ~ fk", FEm)), p, "fk", cl = ~unit))
   }, numeric(1))
-  data.table(outcome = o, lp = 100 * b, wcr_p = pval(wb), perm_p = perm_pvalue(perm, b))
+  data.table(outcome = o, lp = 100 * b, wcr_p = pval(wb), perm_p = perm_pvalue(perm, t_real))
 }))
 
 # ── Event study, evening hour 0 (reference 2022) ────────────────────────────

@@ -42,7 +42,7 @@ PAIRS <- list(
                              other = "PRF non-pedestrian injury accidents"))
 FAKES <- replicate(N_PERM, sample(ALL, length(TREATED)), simplify = FALSE)
 
-fit_b <- function(p, v) coef(fepois(as.formula(paste("y ~", v, FE)), data = p, notes = FALSE))[[v]]
+fit_p <- function(p, v) fit_bs(as.formula(paste("y ~", v, FE)), p, v)
 
 res <- list()
 for (nm in names(PAIRS)) {
@@ -63,19 +63,18 @@ for (nm in names(PAIRS)) {
   }))
   t0 <- Sys.time()
   perm <- mclapply(FAKES, function(fake) {
-    sapply(P, function(p) {
-      p <- copy(p)[, fk := as.integer(uf %in% fake) * win * post]
-      fit_b(p, "fk")
-    })
+    bs <- lapply(P, function(p) fit_p(copy(p)[, fk := as.integer(uf %in% fake) * win * post], "fk"))
+    c(ped = t_stat(bs$ped), other = t_stat(bs$other), diff = t_diff(bs$ped, bs$other))
   }, mc.cores = CORES)
   perm <- do.call(rbind, perm)
   cat(sprintf("%s: %d draws in %.1f min\n", nm, N_PERM, as.numeric(difftime(Sys.time(), t0, units = "mins"))))
-  b <- setNames(out$poisson_lp / 100, out$group)
-  d_real <- b[["ped"]] - b[["other"]]
-  d_perm <- perm[, "ped"] - perm[, "other"]
-  out[, perm_p := c(perm_pvalue(perm[, "ped"], b[["ped"]]), perm_pvalue(perm[, "other"], b[["other"]]))]
+  bs <- lapply(P, fit_p, v = "twp")
+  d_real <- bs$ped[["b"]] - bs$other[["b"]]
+  out[, perm_p := c(perm_pvalue(perm[, "ped"], t_stat(bs$ped)),
+                    perm_pvalue(perm[, "other"], t_stat(bs$other)))]
   out <- rbind(out, data.table(pair = nm, group = "ped - other", poisson_lp = 100 * d_real,
-                               perm_p = perm_pvalue(d_perm, d_real)), fill = TRUE)
+                               perm_p = perm_pvalue(perm[, "diff"], t_diff(bs$ped, bs$other))),
+               fill = TRUE)
   res[[nm]] <- out
 }
 res <- rbindlist(res)

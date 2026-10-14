@@ -201,6 +201,7 @@ Próximos:
 | 13/10/2026 | Periódico-alvo: AEJ: Economic Policy | Pedido do Fredie, conferido criticamente (PAPER.md, "Manuscrito"): avaliação de reversão de política com conta de custo; na Applied pesariam o instrumento já usado e o dia todo inconclusivo |
 | 13/10/2026 | A queda da PRF na hora −1 é anterior à abolição; "ofuscamento" sai | O estudo de eventos mostra a queda já em 2018/19; e sem horário de verão o sol baixo cai *na* hora −1, o contrário do que o ofuscamento explicaria |
 | 13/10/2026 | Mapas em `analysis/output/maps/`, desenhados no `28_figures.R` | Pedido do Fredie; fronteiras baixadas pelo `build/12_map_boundaries.R` |
+| 13/10/2026 | Permutação compara a estatística t, não o coeficiente | Pedido do Fredie; MacKinnon e Webb (2020): com clusters heterogêneos o teste no coeficiente pode falhar. Diferenças divididas por √(EP1² + EP2²). Números em VIABILIDADE §20 |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 
 ## Pendências pequenas

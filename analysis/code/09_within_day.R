@@ -142,20 +142,22 @@ hd <- rbindlist(lapply(es_hd, `[[`, "hd"))
 V_es <- setNames(lapply(es_hd, `[[`, "V"), TRAFFIC)
 
 # ── Permutation inference, evening bin 0, full reference set ────────────────
-# Real and permuted statistics come from the same model, with the bin-0 term
-# alone (a permuted assignment has no meaning for the other focal bins).
+# Real and permuted t-statistics (fit_bs, 00_utils.R) come from the same model,
+# with the bin-0 term alone (a permuted assignment has no meaning for the other
+# focal bins).
 ALL <- c(TREATED, CONTROL)
 perm <- if (N_PERM > 0) rbindlist(lapply(TRAFFIC, function(o) {
   s <- SIDES$set
   p <- make_panel4(o, "set", sort(c(s$focal, s$ref)))
-  b_real <- coef(fepois(as.formula(paste("y ~ bp0", FE4)), data = p, notes = FALSE))[["bp0"]]
+  bs_real <- fit_bs(as.formula(paste("y ~ bp0", FE4)), p, "bp0")
+  t_real <- t_stat(bs_real)
   perm <- replicate(N_PERM, {
     fake <- sample(ALL, length(TREATED))
     p[, fk := as.integer(bin == 0L & uf %in% fake) * win * post]
-    coef(fepois(as.formula(paste("y ~ fk", FE4)), data = p, notes = FALSE))[["fk"]]
+    t_stat(fit_bs(as.formula(paste("y ~ fk", FE4)), p, "fk"))
   })
-  data.table(outcome = o, coef_bin0_alone = b_real, perm_p = perm_pvalue(perm, b_real),
-             perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(b_real)), N_PERM))
+  data.table(outcome = o, coef_bin0_alone = bs_real[["b"]], perm_p = perm_pvalue(perm, t_real),
+             perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(t_real)), N_PERM))
 })) else NULL
 
 saveRDS(list(pooled = pooled, event_study = es, event_study_vcov = V_es, honestdid = hd, perm = perm,

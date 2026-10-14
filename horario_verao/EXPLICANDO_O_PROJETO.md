@@ -512,12 +512,15 @@ assintótica confiar. Por isso há dois testes que não dependem dela:
    os estados grandes (MG) dominam. Nenhum estado sozinho explica a
    diferença (tirando um por vez: linear −20 a −28%, Poisson −5 a −18 lp).
 2. **Inferência por permutação:** sorteamos 999 vezes quais 11 dos 23 estados
-   são "tratados", reestimamos, e vemos em que posição o efeito verdadeiro cai.
-   O p-valor é (1 + nº de sorteios com efeito, em módulo, pelo menos tão
-   grande quanto o real) / (1 + 999): o sorteio verdadeiro conta como um dos
+   são "tratados", reestimamos, e vemos em que posição a estatística t
+   verdadeira (coeficiente sobre o EP por UF) cai. O p-valor é (1 + nº de
+   sorteios com |t| pelo menos tão grande quanto o real) / (1 + 999): o sorteio verdadeiro conta como um dos
    possíveis, então o menor p possível é 0,001, nunca zero. (Até 12/10/2026 a
    conta era a fração simples, que podia dar zero; mudou na auditoria e cada p
-   subiu 0,001. Nas tabelas e nos `.rds` a coluna se chama `perm_p`.)
+   subiu 0,001. Desde 13/10/2026 o teste compara t, não o coeficiente, como
+   recomendam MacKinnon e Webb (2020) com clusters heterogêneos; diferenças
+   são divididas pela raiz da soma dos EPs ao quadrado. Nas tabelas e nos
+   `.rds` a coluna se chama `perm_p`.)
 
 **Nome:** "permutation inference", **nunca** "randomization inference". O
 horário de verão não foi sorteado entre estados, e o calendário é fixo; o teste
@@ -566,7 +569,7 @@ relógio. O mesmo vale para o PNCT (o perfil horário casa sem defasagem).
 | hora 0 da noite, lp (EP por UF) | **29,2 (9,0)** | **53,9 (20,3)** | **22,2 (5,6)** |
 | em % | +34% | +71% | +25% |
 | p (EP por UF) | 0,001 | 0,008 | <0,001 |
-| permutação p | 0,019 (18 de 999 maiores) | 0,020 | 0,002 |
+| permutação p (t) | 0,018 (17 de 999 maiores) | 0,014 | 0,007 |
 | modelo linear, % da base | +46% | +88% | +30% |
 | modelo linear, WCR p | 0,010 | 0,002 | 0,001 |
 | base: tratados, janela, pré, por temporada | 110 | 47 | 571 |
@@ -734,11 +737,11 @@ robustez, não como desenho principal.
 | | pedestre | resto | diferença |
 |---|--:|--:|--:|
 | SIM, mortes na via | **76,6** (≈ +115%) | 17,9 | 58,7 |
-| WCR p / permutação p | 0,008 / 0,036 | 0,017 / 0,059 | — / 0,080 |
+| WCR p / permutação p | 0,008 / 0,041 | 0,017 / 0,042 | — / 0,075 |
 | PRF, mortes | **170** | 25,7 | 144 |
-| permutação p | 0,002 | 0,26 | 0,003 |
+| permutação p | 0,002 | 0,29 | 0,001 |
 | PRF, com vítima | **98,6** | 18,1 | 80,6 |
-| permutação p | 0,001 | 0,010 | 0,002 |
+| permutação p | 0,001 | 0,024 | 0,001 |
 
 - No SIM, o pedestre é **12% das mortes na hora 0 antes de 2019, mas 43% do
   excesso.** Na série bruta, o número de pedestres mortos na via na hora 0, nos
@@ -786,14 +789,14 @@ por hora relativa ao sol, lp:
 |---|--:|--:|--:|
 | noite −1 | −5,1 | −17,2 | 0,002 |
 | **noite 0** | **−6,4** | **+28,6** | **0,002** |
-| noite +1 | −6,4 | +13,3 | 0,045 |
-| **manhã 0** | **+11,7** | **−26,0** | **0,003** |
+| noite +1 | −6,4 | +13,3 | 0,062 |
+| **manhã 0** | **+11,7** | **−26,0** | **0,009** |
 | dia todo | +0,5 (2,0) | | |
 
 Os p de permutação das 7 horas e das 5 colunas (volume, acidentes, mortes e
 os dois "por veículo") estão na Tabela 5, entre colchetes. Na hora que
-escureceu: volume p = 0,059; acidentes com vítima 0,004; mortes 0,017; mortes
-por veículo 0,012.
+escureceu: volume p = 0,069; acidentes com vítima 0,007; mortes 0,014; mortes
+por veículo 0,010. Na manhã que clareou, o volume (+11,7) tem p = 0,159.
 
 - **As pessoas responderam à luz:** sem horário de verão, a noite escura perdeu
   ~5–6% dos veículos (quase todos leves: carros e motos), e a manhã que clareou
@@ -995,7 +998,7 @@ tratadas; até a auditoria de 12/10/2026 incluía os 22 municípios da fronteira
 | | mortes | mortes de pedestres | acidentes com vítima | atropelamentos com vítima |
 |---|--:|--:|--:|--:|
 | **A. hora 0, tripla com os controles** | **+81 (20)** | **+237 (62)** | −1 (4) | +20 (9) |
-| WCR p / permutação p | 0,012 / 0,021 | 0,048 / 0,024 | 0,84 / 0,91 | 0,43 / 0,23 |
+| WCR p / permutação p | 0,012 / 0,011 | 0,048 / 0,029 | 0,84 / 0,88 | 0,43 / 0,076 |
 | B. hora −1 (luz inalterada) | −126 (41) | −81 (90) | −21 (9) | −28 (13) |
 | C. manhã, hora 0 | −5 (24) | −43 (73) | −4 (11) | −42 (18) |
 | **D. só tratados: hora 0 contra as duas anteriores, no mesmo dia** | **+55 (17)**, p = 0,001 | **+154 (66)**, p = 0,02 | **+12 (3)**, p < 0,001 | **+23 (8)**, p = 0,003 |

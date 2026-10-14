@@ -119,6 +119,21 @@ FE <- "| uf^window + uf^sy + date"
 # attainable value is 1 / (N + 1); mean(abs(perm) >= abs(b)) could return 0,
 # which 999 draws cannot support.
 perm_pvalue <- function(perm, b) (1 + sum(abs(perm) >= abs(b))) / (1 + length(perm))
+
+# The permutation tests compare t-statistics, not coefficients: MacKinnon and
+# Webb (2020, J. Econometrics) show that a test on the coefficient can be
+# unreliable when clusters are heterogeneous, and states differ widely in size.
+# fit_bs returns the coefficient on `v` and its standard error clustered by
+# `cl`; a difference of two separately fitted coefficients is studentized by
+# the square root of the sum of their squared standard errors (t_diff). The
+# actual and every permuted assignment go through the same statistic.
+fit_bs <- function(f, data, v, cl = ~uf) {
+  m <- fixest::fepois(f, data = data, cluster = cl, notes = FALSE)
+  c(b = unname(coef(m)[v]), se = unname(fixest::se(m)[v]))
+}
+t_stat <- function(bs) bs[["b"]] / bs[["se"]]
+t_diff <- function(bs1, bs2) (bs1[["b"]] - bs2[["b"]]) / sqrt(bs1[["se"]]^2 + bs2[["se"]]^2)
+
 TRAFFIC <- c("SIM transport deaths, on road", "PRF deaths", "PRF injury accidents")
 
 # ── Figures: house style ────────────────────────────────────────────────────

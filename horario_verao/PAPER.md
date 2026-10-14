@@ -227,7 +227,7 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
 |---|--:|--:|--:|
 | primeiro estágio: escuro às 18–19h | | +33,7 p.p. (1,5) | |
 | hora que escureceu (lp) | **29,2 (9,0)** | **54 (20)** | **22,2 (5,6)** |
-| WCR p / permutação p | 0,010 / 0,019 | 0,002 / 0,020 | 0,001 / 0,002 |
+| WCR p / permutação p (t) | 0,010 / 0,018 | 0,002 / 0,014 | 0,001 / 0,007 |
 | imputação, tendência pré extrapolada | +38% [−11, 103] | +22% [−24, 97] | +8% [−5, 26] |
 | excesso por verão, noite 0 e +1 | **+57 (19)** | **+34 (10)** | **+146 (39)** |
 | manhã que clareou, por verão | −3 (11) | −4 (8) | −53 (33) |

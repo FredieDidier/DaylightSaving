@@ -10,7 +10,7 @@
 
 \subsection{The legal calendar}
 
-The dates and states of DST come from the decrees themselves, typed from the texts published by the Presidency \citep{brasil2008decreto, brasil2017decreto, brasil2019decreto}. Under Decree 6,558/2008, DST ran from midnight on the third Sunday of October to midnight on the third Sunday of February, a week later when that Sunday was Carnival Sunday (as in 2012 and 2015); Decree 9,242/2017 moved the start to the first Sunday of November from 2018. Within the sample, DST therefore started between 15 October and 4 November and ended between 15 and 26 February. A day is under DST when the start date is on or before it and the end date is after it, since both changes happen at midnight. Decrees 7,584/2011 and 7,826/2012 added Bahia for 2011/12 and Tocantins for 2012/13, and Decree 8,112/2013 removed Tocantins again. Decree 9,772/2019 revoked every DST decree and did not schedule another season.
+The dates and states of DST come from the decrees themselves, typed from the texts published by the Presidency \citep{brasil2008decreto, brasil2017decreto, brasil2019decreto}. Under Decree 6,558/2008, DST ran from midnight on the third Sunday of October to midnight on the third Sunday of February, a week later when that Sunday was Carnival Sunday (as in 2012 and 2015); Decree 9,242/2017 moved the start to the first Sunday of November from 2018. Within the sample, DST therefore started between 15 October and 4 November and ended between 15 and 26 February. A day is under DST when the start date is on or before it and the end date is after it, since both changes happen at midnight. Decree 7,584/2011 added Bahia for 2011/12; Decree 7,826/2012 removed Bahia and added Tocantins for 2012/13, and Decree 8,112/2013 removed Tocantins. Decree 9,772/2019 ended DST in the whole country and revoked the decrees still in force, 6,558/2008, 8,112/2013 and 9,242/2017 among them.
 
 \subsection{Deaths on the road}
 
@@ -55,7 +55,10 @@ Because hour 0 is defined relative to the sunset of each municipality and date, 
   \caption{The Hour after Sunset, Moved Earlier and Later}
   \label{fig:window-shift}
   \begin{figurenotes}[Notes]
-  Each point is equation~(\ref{eq:main}) for a 60-minute window that starts the stated number of minutes after standard-time sunset; 0 is hour 0 of Table~\ref{tab:main}. 95 percent confidence intervals.
+  Each point is equation~(\ref{eq:main}) for a 60-minute window that starts the stated number of minutes after standard-time sunset; 0 is hour 0 of Table~\ref{tab:main}. 95 percent confidence intervals, standard errors clustered by state.
+  \end{figurenotes}
+  \begin{figurenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
   \end{figurenotes}
 \end{figure}
 
@@ -65,7 +68,10 @@ Because hour 0 is defined relative to the sunset of each municipality and date, 
   \caption{Leaving One State or One Season Out}
   \label{fig:leave-out}
   \begin{figurenotes}[Notes]
-  Equation~(\ref{eq:main}) for hour 0, dropping the state or season named above each point. 95 percent confidence intervals; the dashed line is the estimate with every state and season.
+  Equation~(\ref{eq:main}) for hour 0, dropping the state or season named above each point. 95 percent confidence intervals, standard errors clustered by state; the dashed line is the estimate with every state and season.
+  \end{figurenotes}
+  \begin{figurenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
   \end{figurenotes}
 \end{figure}
 
@@ -76,6 +82,9 @@ Because hour 0 is defined relative to the sunset of each municipality and date, 
   \input{\tabdir/tab_sensitivity.tex}
   \begin{tablenotes}[Notes]
   Equation~(\ref{eq:main}) for hour 0, one change per row, standard errors clustered by state. Panel A: sunset from the full NOAA solar algorithm instead of the general solar position equations (at most 1.6 minutes apart); and without the events recorded on the full or half hour. Panel B: control states restricted to one region; summers dropped. Panel C: the share of the state under rain (Table~\ref{tab:dose}) as a control.
+  \end{tablenotes}
+  \begin{tablenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
   \end{tablenotes}
 \end{table}
 
@@ -89,7 +98,10 @@ Moving the window changes the estimate in the direction light predicts: a window
   \caption{The Hour after Sunset with State-by-Day Fixed Effects}
   \label{fig:within-day}
   \begin{figurenotes}[Notes]
-  Grey: hour 0 in Figure~\ref{fig:event-study}. Red: the same hour estimated against hours 3 to 5 before and 2 to 4 after sunset of the same state and day, with state-by-day fixed effects and the fixed effects of equation~(\ref{eq:main}) interacted with the hour. 95 percent confidence intervals; reference season 2018/19.
+  Grey: hour 0 in Figure~\ref{fig:event-study}. Red: the same hour estimated against hours 3 to 5 before and 2 to 4 after sunset of the same state and day, with state-by-day fixed effects and the fixed effects of equation~(\ref{eq:main}) interacted with the hour. 95 percent confidence intervals, standard errors clustered by state; reference season 2018/19.
+  \end{figurenotes}
+  \begin{figurenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
   \end{figurenotes}
 \end{figure}
 
@@ -102,6 +114,9 @@ Figure~\ref{fig:within-day} repeats the event study with a fixed effect for ever
   \label{fig:honestdid}
   \begin{figurenotes}[Notes]
   95 percent confidence intervals for the average of the five season coefficients after abolition in Figure~\ref{fig:event-study}, hour 0 \citep{rambachan2023more}. These coefficients are measured against 2018/19, not against the average of the seasons before abolition, so the target differs from $\beta$ in Table~\ref{tab:main}. Left: the slope of the violation may change by at most $M$ between seasons. Right: the violation after abolition is at most $\bar M$ times the largest one before it.
+  \end{figurenotes}
+  \begin{figurenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
   \end{figurenotes}
 \end{figure}
 
@@ -118,6 +133,9 @@ The event study therefore cannot rule out departures from parallel trends of the
   \begin{tablenotes}[Notes]
   Road deaths in hour 0, equation~(\ref{eq:main}) estimated separately for each group, standard errors clustered by state. Road users from the ICD-10 block of the underlying cause (Appendix~\ref{app:data}). Weekends and holidays: Saturdays, Sundays and national holidays (fixed dates, Carnival Monday and Tuesday, Good Friday). Dashes: fewer than five deaths per summer in the treated states before abolition, too few to estimate.
   \end{tablenotes}
+  \begin{tablenotes}[Source]
+  \citet{datasus2025sim}.
+  \end{tablenotes}
 \end{table}
 
 Table~\ref{tab:road-users} splits road deaths in hour 0 by road user, by the age and sex of pedestrians, and by type of day. Pedestrians aged 15 to 64 drive the pedestrian estimate (91.1 log points, standard error 30.9). Motorcyclists rise by 19.6 (10.9); car occupants do not change. The estimate on weekends and holidays (41.3, 15.8) is larger than on working days (16.1, 10.0).
@@ -130,7 +148,7 @@ Table~\ref{tab:road-users} splits road deaths in hour 0 by road user, by the age
   \centering\footnotesize
   \input{\tabdir/tab_traffic_volume.tex}
   \begin{tablenotes}[Notes]
-  Log points, standard errors clustered by state in parentheses, permutation p-values in brackets. Column 1: equation~(\ref{eq:main}) on hourly vehicle counts at continuous counting stations, with station fixed effects; summers 2014/15 to 2018/19 and 2021/22 to 2024/25. Columns 2 and 4: as in Table~\ref{tab:main}. Per vehicle: crash or death estimate minus the volume estimate. Every column is re-estimated with the same random set of 11 treated states in each of 999 draws, so the per-vehicle columns have their own reference distribution.
+  Log points, standard errors clustered by state in parentheses, permutation p-values in brackets. Column 1: equation~(\ref{eq:main}) on hourly vehicle counts at continuous counting stations, with station fixed effects; summers 2014/15 to 2018/19 and 2021/22 to 2024/25. Columns 2 and 4: as in Table~\ref{tab:main}. Per vehicle: crash or death estimate minus the volume estimate. Every column is re-estimated with the same random set of 11 treated states in each of 999 draws, so the per-vehicle columns have their own reference distribution; permutation tests are on t-statistics, a per-vehicle difference divided by the square root of the sum of its two squared standard errors.
   \end{tablenotes}
   \begin{tablenotes}[Sources]
   \citet{dnit2025pnct}; \citet{prf2025dados}.
@@ -148,6 +166,9 @@ Table~\ref{tab:volume} reports, for the seven hours around sunset and sunrise, t
   \input{\tabdir/tab_light_dose.tex}
   \begin{tablenotes}[Notes]
   Panel A: the first row is equation~(\ref{eq:main}) estimated by least squares on federal highway injury crashes in hour 0, with an indicator for crashes the officer recorded as dusk or night as the outcome; the second divides each column's estimate in Table~\ref{tab:main} by it (the change if the hour went from fully light to fully dark), with a 95 percent interval from 499 draws of a state bootstrap. Panel B: the rain share is the share of the state's road deaths that occur in municipalities with at least 1 mm of rain that day, at the municipal seat \citep{xavier2022new}, interacted with every term of equation~(\ref{eq:main}).
+  \end{tablenotes}
+  \begin{tablenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
   \end{tablenotes}
 \end{table}
 
@@ -178,6 +199,9 @@ If darkness kills pedestrians, street lighting should blunt the effect. Table~\r
   \begin{figurenotes}[Notes]
   Bahia had DST in 2011/12 only. Each point compares one Bahia season with all its other seasons, against the control states, summer window against off-season, in the hour after standard-time sunset (left) or sunrise (right). Abolition predicts the 2011/12 point to be the lowest on the left and the highest on the right.
   \end{figurenotes}
+  \begin{figurenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
+  \end{figurenotes}
 \end{figure}
 
 Bahia, excluded from the main sample, had DST in a single summer, 2011/12. That summer its hour 0 was light, and in every other summer it was dark, so the main result predicts that Bahia's hour 0 had unusually few events in 2011/12. The first stage is clear: officers recorded 68 percent of Bahia's crashes in hour 0 as dusk or night in 2011/12, against 92 to 100 percent in every other season. % bahia_switch.rds, first_stage.
@@ -191,7 +215,10 @@ Figure~\ref{fig:bahia} ranks the 2011/12 estimate among Bahia's 16 seasons for e
   \caption{Assault Deaths, Season by Season}
   \label{fig:assault}
   \begin{figurenotes}[Notes]
-  Deaths from assault (ICD-10 X85--Y09) in any place, by clock time of death. Equation~(\ref{eq:main}) by season as in Figure~\ref{fig:event-study}, for the whole day and for 5 to 8 p.m.\ clock time. 95 percent confidence intervals.
+  Deaths from assault (ICD-10 X85--Y09) in any place, by clock time of death. Equation~(\ref{eq:main}) by season as in Figure~\ref{fig:event-study}, for the whole day and for 5 to 8 p.m.\ clock time. 95 percent confidence intervals, standard errors clustered by state.
+  \end{figurenotes}
+  \begin{figurenotes}[Source]
+  \citet{datasus2025sim}.
   \end{figurenotes}
 \end{figure}
 
@@ -224,7 +251,7 @@ The records use legal clock time. In the areas that lost DST, the hourly profile
   \centering\footnotesize\setlength{\tabcolsep}{4pt}
   \input{\tabdir/tab_mexico.tex}
   \begin{tablenotes}[Notes]
-  Accidents on non-federal roads, 2016 to 2025; deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a panel of units by day, where a unit is the part of a state that lost DST (treated) or one of six that kept their clock; summer window 8 April to 24 October, off-season 8 November to 7 March; standard errors clustered by unit, wild cluster bootstrap on the linear analogue, and permutation of the treated units (999 draws). Panel D drops the comparison units: within each treated unit and day, hour 0 against the two hours before it, summer window against off-season, after 2023 against before, with unit-by-day fixed effects.
+  Accidents on non-federal roads, 2016 to 2025; deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a panel of units by day, where a unit is the part of a state that lost DST (treated) or one of six that kept their clock; summer window 8 April to 24 October, off-season 8 November to 7 March; standard errors clustered by unit, wild cluster bootstrap on the linear analogue, and permutation of the treated units on the t-statistic (999 draws). Panel D drops the comparison units: within each treated unit and day, hour 0 against the two hours before it, summer window against off-season, after 2023 against before, with unit-by-day fixed effects.
   \end{tablenotes}
   \begin{tablenotes}[Source]
   \citet{inegi2026atus}.
@@ -239,7 +266,10 @@ Table~\ref{tab:mexico} reports the Mexican estimates discussed in the paper: the
   \caption{Mexico: The Hour after Sunset, Year by Year}
   \label{fig:mexico-es}
   \begin{figurenotes}[Notes]
-  Panels A to C of Table~\ref{tab:mexico} with the treated $\times$ window term interacted with each year instead of with the period after abolition; 2022, the last year with DST, is the reference. 95 percent confidence intervals.
+  Panels A to C of Table~\ref{tab:mexico} with the treated $\times$ window term interacted with each year instead of with the period after abolition; 2022, the last year with DST, is the reference. 95 percent confidence intervals, standard errors clustered by unit.
+  \end{figurenotes}
+  \begin{figurenotes}[Source]
+  \citet{inegi2026atus}.
   \end{figurenotes}
 \end{figure}
 

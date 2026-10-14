@@ -12,8 +12,10 @@
 #       model, in levels.
 #   (b) Permutation inference over treatment assignment: draw 11 of the 23
 #       states as "treated" (999 draws), re-estimate the Poisson triple
-#       difference, and compare |b| with the permutation distribution. A Fisher
-#       test of the sharp null of no effect in any state.
+#       difference, and compare |t| (coefficient over its state-clustered
+#       standard error) with the permutation distribution of |t| (fit_bs,
+#       00_utils.R). A Fisher test of the sharp null of no effect in any state.
+#       Draws are made up front and run in parallel (DS_CORES, default 5).
 #   (c) Excess-zeros check for the Poisson mean model: observed share of
 #       zero cells against the share implied by the fitted means,
 #       mean(exp(-mu)). A large gap would call for a two-part model; Poisson
@@ -28,13 +30,16 @@ suppressPackageStartupMessages({
 })
 
 N_PERM <- as.integer(Sys.getenv("DS_PERM", unset = "999"))
+CORES  <- as.integer(Sys.getenv("DS_CORES", unset = "5"))
 set.seed(20190425)                       # Decree 9,772
 dqrng::dqset.seed(20190425)
+setFixest_nthreads(1)
 
 SEASONS <- season_range()
 days <- make_days(SEASONS)
 ev   <- as.data.table(read_parquet(EVENTS_FILE))
 ALL  <- c(TREATED, CONTROL)
+FAKES <- replicate(N_PERM, sample(ALL, length(TREATED)), simplify = FALSE)
 
 cases <- CJ(outcome = TRAFFIC, side = c("set", "rise"), sorted = FALSE)
 
@@ -57,19 +62,20 @@ res <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
   y_used <- p$y[obs(m_real)]
   zeros_obs  <- mean(y_used == 0)
   zeros_pois <- mean(exp(-mu))
-  perm <- replicate(N_PERM, {
-    fake <- sample(ALL, length(TREATED))
-    p[, fk := as.integer(uf %in% fake) * win * post]
-    coef(fepois(as.formula(paste("y ~ fk", FE)), data = p, notes = FALSE))[["fk"]]
-  })
+  t_real <- t_stat(fit_bs(as.formula(paste("y ~ twp", FE)), p, "twp"))
+  perm <- unlist(parallel::mclapply(FAKES, function(fake) {
+    q <- copy(p)[, fk := as.integer(uf %in% fake) * win * post]
+    t_stat(fit_bs(as.formula(paste("y ~ fk", FE)), q, "fk"))
+  }, mc.cores = CORES))
+  stopifnot(length(perm) == N_PERM, is.numeric(perm))
 
   data.table(cs, poisson_lp = 100 * b_real,
              linear_effect_pct_of_base = 100 * coef(lm_fit)[["twp"]] / base_mean,
              wcr_p = pval(wb), wcr_ci_pct = sprintf("[%.1f, %.1f]",
                                                     100 * confint(wb)[1] / base_mean,
                                                     100 * confint(wb)[2] / base_mean),
-             perm_p = perm_pvalue(perm, b_real),
-             perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(b_real)), N_PERM),
+             perm_p = perm_pvalue(perm, t_real),
+             perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(t_real)), N_PERM),
              zeros_obs_pct = 100 * zeros_obs, zeros_poisson_pct = 100 * zeros_pois,
              dispersion = var(y_used - mu) / mean(mu))
 }))

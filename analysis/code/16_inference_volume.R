@@ -57,20 +57,25 @@ crash_panel <- function(k, outc) {
   make_panel(ev, days, outc, as.integer(sub("^[a-z]+", "", k)), side)
 }
 
-fit_b <- function(p, v, fe) coef(fepois(as.formula(paste("y ~", v, fe)), data = p, notes = FALSE))[[v]]
+fit_p <- function(p, v, fe) fit_bs(as.formula(paste("y ~", v, fe)), p, v)
+# t-statistics for one assignment: vehicles, crashes, deaths, and the two
+# per-vehicle differences, each studentized (fit_bs, t_diff in 00_utils.R).
+stats <- function(bv, bc) c(vehicles = t_stat(bv), injury = t_stat(bc$injury), deaths = t_stat(bc$deaths),
+                            injury_pv = t_diff(bc$injury, bv), deaths_pv = t_diff(bc$deaths, bv))
 
 res <- list()
 for (k in KEYS) {
   pv <- vol[key == k]
   pc <- lapply(CRASH, function(o) crash_panel(k, o))
-  b  <- c(vehicles = fit_b(pv, "twp", FEV),
-          sapply(pc, fit_b, v = "twp", fe = FE))
+  bv <- fit_p(pv, "twp", FEV)
+  bc <- lapply(pc, fit_p, v = "twp", fe = FE)
+  b  <- c(vehicles = bv[["b"]], sapply(bc, `[[`, "b"))
+  s_real <- stats(bv, bc)
 
   t0 <- Sys.time()
   perm <- do.call(rbind, mclapply(FAKES, function(fake) {
     fk <- function(p) copy(p)[, fk := as.integer(uf %in% fake) * win * post]
-    c(vehicles = fit_b(fk(pv), "fk", FEV),
-      sapply(pc, function(p) fit_b(fk(p), "fk", FE)))
+    stats(fit_p(fk(pv), "fk", FEV), lapply(pc, function(p) fit_p(fk(p), "fk", FE)))
   }, mc.cores = CORES))
   cat(sprintf("%s: %d draws in %.1f min\n", k, N_PERM,
               as.numeric(difftime(Sys.time(), t0, units = "mins"))))
@@ -78,15 +83,13 @@ for (k in KEYS) {
   res[[k]] <- data.table(
     bin_key = k,
     vehicles_lp = 100 * b[["vehicles"]],
-    vehicles_perm_p = perm_pvalue(perm[, "vehicles"], b[["vehicles"]]),
+    vehicles_perm_p = perm_pvalue(perm[, "vehicles"], s_real[["vehicles"]]),
     injury_lp = 100 * b[["injury"]],
-    injury_perm_p = perm_pvalue(perm[, "injury"], b[["injury"]]),
-    injury_per_vehicle_perm_p = perm_pvalue(perm[, "injury"] - perm[, "vehicles"],
-                                            b[["injury"]] - b[["vehicles"]]),
+    injury_perm_p = perm_pvalue(perm[, "injury"], s_real[["injury"]]),
+    injury_per_vehicle_perm_p = perm_pvalue(perm[, "injury_pv"], s_real[["injury_pv"]]),
     deaths_lp = 100 * b[["deaths"]],
-    deaths_perm_p = perm_pvalue(perm[, "deaths"], b[["deaths"]]),
-    deaths_per_vehicle_perm_p = perm_pvalue(perm[, "deaths"] - perm[, "vehicles"],
-                                            b[["deaths"]] - b[["vehicles"]]),
+    deaths_perm_p = perm_pvalue(perm[, "deaths"], s_real[["deaths"]]),
+    deaths_per_vehicle_perm_p = perm_pvalue(perm[, "deaths_pv"], s_real[["deaths_pv"]]),
     n_perm = N_PERM)
 }
 res <- rbindlist(res)

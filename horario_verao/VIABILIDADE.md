@@ -818,7 +818,7 @@ anoitecer e noite): 2012/13 91,8 → 93,3%; 2015/16 96,6 → 98,3%; 2017/18 96,7
 **México (`29`, `30`; EXPLICANDO §5.13).** Lei de 2022 (DOF), ATUS 2016–2025
 (INEGI, hora legal conferida pelo perfil horário), 34 unidades (28 tratadas, 6
 controles; Chihuahua fora). Tripla com controles, hora 0: mortes +81 (20), WCR
-p = 0,012, permutação p = 0,021; pedestres +237 (62), 0,048 / 0,024; acidentes
+p = 0,012, permutação p = 0,011 (t, 13/10/2026); pedestres +237 (62), 0,048 / 0,029; acidentes
 com vítima −1 (4). Mas a hora −1 dá −126 (41): o controle é fino (1–3 mortes
 por ano na hora −1 fora do verão depois de 2023), e nas tratadas a hora −1
 ficou parada (88 → 98 mortes por ano). Dentro do dia, só tratadas (hora 0
@@ -830,6 +830,31 @@ pedestres +154 (66), p = 0,02; acidentes com vítima +12 (3); atropelamentos +23
 2018/19; recomendou suspender); ONS NT 0107/2021 (sem economia); ONS NT
 0093/2024 (R$ 244–356 mi de combustível por verão; ~R$ 1,8 bi/ano de
 capacidade). Os R$ 159,5 mi de 2016/17 são de imprensa e não serão citados.
+
+## 20. Permutação na estatística t (13/10/2026)
+
+Pedido do Fredie, seguindo MacKinnon e Webb (2020, J. Econometrics): com
+clusters heterogêneos (os estados diferem muito de tamanho), o teste no
+coeficiente pode falhar e o teste no t costuma ir melhor. Cada sorteio agora
+guarda coeficiente/EP por UF (por unidade no México); diferenças (pedestre −
+resto, acidentes − volume) usam (b1 − b2)/√(EP1² + EP2²). Funções `fit_bs`,
+`t_stat`, `t_diff` em `00_utils.R`; 06, 14, 16 e 26 rodados de novo (999
+sorteios, ~1 h no total); 09 (permutação opcional, fora do paper) também
+passou a t. WCR e pontos não mudam.
+
+| | coeficiente | t |
+|---|--:|--:|
+| hora 0: SIM / PRF mortes / com vítima | 0,019 / 0,020 / 0,002 | 0,018 / 0,014 / 0,007 |
+| manhã 0: SIM / PRF mortes / com vítima | 0,826 / 0,560 / 0,070 | 0,829 / 0,579 / 0,128 |
+| pedestre, SIM: pedestre / resto / diferença | 0,036 / 0,059 / 0,080 | 0,041 / 0,042 / 0,075 |
+| pedestre, PRF mortes: diferença | 0,003 | 0,001 |
+| pedestre, PRF com vítima: resto / diferença | 0,010 / 0,002 | 0,024 / 0,001 |
+| volume: hora 0 / hora −1 / manhã 0 | 0,059 / 0,015 / 0,041 | 0,069 / 0,025 / 0,159 |
+| com vítima por veículo: hora 0 / manhã 0 | 0,002 / 0,003 | 0,002 / 0,009 |
+| México, hora 0: mortes / pedestres / atropelamentos | 0,021 / 0,024 / 0,23 | 0,011 / 0,029 / 0,076 |
+
+Nenhuma conclusão do paper muda. A alta do volume na manhã que clareou deixa
+de passar na permutação (0,159); o texto já reportava o p.
 
 ## Leitura
 
