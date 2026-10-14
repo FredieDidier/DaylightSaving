@@ -22,8 +22,8 @@
 \hypersetup{colorlinks=true, linkcolor=MidnightBlue, citecolor=MidnightBlue, urlcolor=MidnightBlue}
 
 % The notes environments of the AEA template, so the shared text compiles here.
-\newenvironment{tablenotes}[1][Note]{\par\vspace{3pt}\begin{minipage}{\linewidth}\footnotesize\setstretch{1}\textit{#1:} }{\end{minipage}\par}
-\newenvironment{figurenotes}[1][Note]{\par\vspace{3pt}\begin{minipage}{\linewidth}\footnotesize\setstretch{1}\textit{#1:} }{\end{minipage}\par}
+\newenvironment{tablenotes}[1][Note]{\par\vspace{5pt}\noindent\begin{minipage}{\linewidth}\footnotesize\setstretch{1}\textit{#1:} }{\end{minipage}\par}
+\newenvironment{figurenotes}[1][Note]{\par\vspace{5pt}\noindent\begin{minipage}{\linewidth}\footnotesize\setstretch{1}\textit{#1:} }{\end{minipage}\par}
 
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.6}
@@ -45,6 +45,7 @@
 \medskip\noindent\textbf{JEL:} I18, R41, O54\\
 \textbf{Keywords:} daylight saving time, ambient light, road deaths, pedestrians, Brazil
 \end{abstract}
+\thispagestyle{empty}
 \end{titlepage}
 
 \input{sections/body}

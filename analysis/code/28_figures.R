@@ -125,7 +125,7 @@ g <- ggplot(fs, aes(m, share)) +
   scale_linetype_manual(values = setNames(c("solid", "22"), FS)) +
   scale_shape_manual(values = setNames(c(16, 17), FS)) +
   labs(x = "Clock minutes from standard-time sunset",
-       y = "Crashes recorded at dusk or night (%)") +
+       y = "Recorded at dusk or night (%)") +
   theme_paper()
 g_first <- g
 
@@ -133,7 +133,7 @@ g_first <- g
 # Panel A is the clock in Sao Paulo; Panel B what the police recorded in
 # that hour. Panel titles sit above each panel, flush left, as in stack_rows().
 ptitle <- function(g, txt) g + labs(title = txt) +
-  theme(plot.title = element_text(size = 10, face = "bold", hjust = 0, margin = margin(2, 0, 4, 0)),
+  theme(plot.title = element_text(size = 10, face = "bold", hjust = 0, margin = margin(2, 0, 10, 0)),
         plot.title.position = "plot")
 g <- patchwork::wrap_plots(
   ptitle(g_design, "A. Clock time of sunset and sunrise, S\u00e3o Paulo, 2018/19"),
@@ -304,7 +304,7 @@ rows <- lapply(TRAFFIC_LAB, function(o)
     geom_text(aes(y = hi, label = dropped), angle = 90, hjust = -0.12, size = 2.8, colour = "grey20") +
     facet_wrap(~ kind, nrow = 1, scales = "free_x") +
     scale_x_continuous(breaks = NULL) +
-    scale_y_continuous(labels = num_lab, expand = expansion(mult = c(0.05, 0.42))) +
+    scale_y_continuous(labels = num_lab, expand = expansion(mult = c(0.05, 0.5))) +
     labs(title = o, x = "Estimates ordered from smallest to largest; dashed line: all states and seasons",
          y = "Effect of abolition (log points)") +
     theme_paper())

@@ -21,6 +21,13 @@ This appendix documents the data and the measurement of the hour whose light cha
 \maketitle
 
 \appendix
+% The template's appendix \section prints no letter, though the text cites
+% "Appendix A", and does not accept a star, so the references heading printed
+% a stray "*". A standard section in the appendix style fixes both.
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}{\abovesectionskip}%
+  {\belowsectionskip}{\appendixsectionstyle}}
+\makeatother
 \input{sections/appendix_body}
 
 \bibliographystyle{aea}

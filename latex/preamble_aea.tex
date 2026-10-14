@@ -55,6 +55,18 @@
     \parbox{\abstractWidth}{\noindent\@abstract\@JELKey\par}}\vskip 24pt\par}
 \makeatother
 
+% The AEJ option sets \flushbottom, which stretches the space around headings
+% on any page that ends early (a float or a heading pushed to the next page).
+\raggedbottom
+
+% Notes under tables and figures. The template's top-aligned minipages stack
+% with only \lineskip between them, so "Sources" touched the line above; each
+% note is its own paragraph here, set off from the previous one.
+\renewenvironment{tablenotes}[1][Note]{\par\addvspace{5pt}\noindent
+  \begin{minipage}{\linewidth}\notesize{\itshape#1: }}{\end{minipage}\par}
+\renewenvironment{figurenotes}[1][Note]{\par\addvspace{5pt}\noindent
+  \begin{minipage}{\linewidth}\notesize{\itshape#1: }}{\end{minipage}\par}
+
 % Floats: relax the placement fractions rather than forcing positions.
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.6}
