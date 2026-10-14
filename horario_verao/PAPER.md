@@ -88,16 +88,17 @@ por resultado incômodo.
 | 33,7 p.p. (primeiro estágio às 18–19h do relógio) | vinha do `01_viability`, apagado; o primeiro estágio do paper é o da hora 0 (+23,6 p.p., `light_dose.rds`) e a curva da Fig. 3 |
 | radares móveis suspensos em ago/2019 | não citado: o DOU de 15/08/2019 não foi lido na fonte (só imprensa). A linha "sem 2019/20" (Tab. B1) já responde. Entra quando o DOU for conferido |
 | números sem exibição: placebos no tempo do `02`, risco por veículo com os mesmos verões (≈ 25 lp), efeito por temporada da imputação | órfãos: nenhum quadro os imprime. O texto diz qualitativamente que volume e acidentes vêm de verões diferentes |
-| Woods et al. (2025), Mitre-Becerril (2026), Fritz et al. (2020), Toro et al. (2015), Jagnani (2024), Sexton & Beatty (2014), Goodwin et al. em mais de um lugar | outros campos ou redundantes: Sullivan & Flannagan (2002) e Tyndall (2025, econ) bastam para pedestre e luz; Giuntella & Mazzonna e Gibson & Shrader bastam para o sono |
+| Mitre-Becerril (2026), Fritz et al. (2020), Toro et al. (2015), Jagnani (2024), Sexton & Beatty (2014), Goodwin et al. em mais de um lugar | outros campos ou redundantes: Sullivan & Flannagan (2002), Woods et al. (2025) e Tyndall (2025) cobrem pedestre e luz; Giuntella & Mazzonna e Gibson & Shrader bastam para o sono |
 | "a manhã tem menos gente na rua" como razão da assimetria | falso nos dados: a hora 0 da manhã tinha 107 mortes por verão antes, a da noite 110 |
 | Becker (1965) no parágrafo teórico | decisão do Fredie (13/10/2026): "Não citaria Becker". A frase sobre reotimizar o dia em torno do sol fica sem citação; a coordenação vem de Hamermesh, Myers & Pocock (2008) |
 | Peltzman (1975) | resultado contestado; trocado por Crandall & Graham (1984, *AER P&P*) e White (2004, *JLE*) para "o risco recai sobre pedestres e ciclistas". Decisão do Fredie, 14/10/2026 |
+| "is therefore an empirical question" (2º parágrafo da introdução) | soa escrito por IA. No lugar: o que a evitação e a externalidade fazem, e o que nenhuma das duas diz. Pedido do Fredie, 14/10/2026 |
 | "If people could re-time their activities freely, each household would re-optimize its day around the sun" | nenhum paper sustenta a frase (era raciocínio, e "each household" generaliza demais); Hamermesh et al. sustentam só a coordenação e o peso maior das pistas artificiais. Pedido do Fredie, 14/10/2026 |
 | "economics says why a clock rule matters at all" | o texto não comenta a disciplina; o parágrafo abre pela coordenação dos horários. Pedido do Fredie, 14/10/2026 |
 | tabelas de volume (PNCT) e do México no corpo | 13 exibições era muito para a revista (mediana 9 nos artigos medidos); os números ficam no texto do corpo, as tabelas no apêndice. Decisão do Fredie, 13/10/2026 |
 
 **Pendências do manuscrito (para o Fredie):**
-1. Afiliação e agradecimentos em `title_page.tex` e `paper_wp.tex`.
+1. ~~Afiliação e agradecimentos~~ feitos (14/10/2026): IDP e agradecimento a Leonardo Monasterio, como no WorldCupHealth; e-mail fdidier@terra.com.br. Financiamento, conflitos e IRB **não** vão no rodapé: a AEA pede um PDF separado, "Disclosure Statement", por autor, que diga explicitamente quando não há nada a declarar (sem ele a submissão não é avaliada); a frase de IRB só é exigida para dados coletados de seres humanos (Disclosure Policy e Submission Guidelines da AEJ: Policy, lidas em 14/10/2026).
 2. Primeira pessoa: o texto usa "I" (autor único). Se entrar coautor, trocar por "we".
 3. ~~`latex/exhibits.tex`~~ apagado (13/10/2026): legendas e notas vivem no manuscrito.
 4. Comparação de energia: a frase "fuel savings alone are close to the

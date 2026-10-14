@@ -416,6 +416,29 @@ atribui à obra algo além do resumo (o caso de Hamermesh, Neidell, Tyndall e da
 nota do MME). Toda frase nova que cita uma obra é conferida contra o trecho da
 obra que a sustenta, no mesmo passo em que é escrita.
 
+## Pedido do Fredie de 14/10/2026: "transitions" no 2º parágrafo da introdução
+
+O 2º parágrafo dizia "most of the evidence comes ... from the transitions" com
+uma só citação (Smith). Agora define o que esses estudos comparam e cita cinco,
+todos já conferidos acima. Frase: "comparing crashes in the days or weeks just
+before the clocks move with those just after".
+
+| obra | o que sustenta a frase | fonte |
+|---|---|---|
+| Smith 2016 | "regression discontinuity (RD) design that examines changes in daily crash counts immediately before and after DST transitions"; 2º desenho: datas que são DST em alguns anos e não em outros (extensão de 2007, ~1 mês); a realocação da luz vem do RD de outono, manhã (4–9h) contra fim de tarde (15–20h) | T (WP Colorado 14-05, pp. 2, 13–16) |
+| Sullivan & Flannagan 2002 | compara acidentes fatais através das trocas para e do DST, nas faixas do dia em que a luz muda de repente em relação ao relógio | R (SWOV) |
+| Sood & Ghosh 2007 | lei de 1986 mudou a data da troca; efeitos "in the weeks after the spring shift" | R (IDEAS) |
+| Laliotis et al. 2023 | RD nas transições de primavera e outono | R (City) |
+| Gillmore 2025 | RD na entrada e DiD com as datas de início e fim | R |
+
+Woods et al. (2025, *Journal of Safety Research* 93: 200–205) volta ao lado de
+Sullivan & Flannagan em "the road users whose crash risk is most sensitive to
+ambient light" (decisão do Fredie, 14/10/2026): pedestres e ciclistas +13% depois
+da troca de outono e −24% depois da de primavera, ocupantes o contrário (IIHS,
+Crossref). Na lista de estudos de transição não entra. No
+parágrafo de contribuição, "mostly from the clock changes" virou "mostly by
+comparing the days or weeks just before and after the clocks change".
+
 ## Fontes consultadas
 
 - https://preprints.scielo.org/index.php/scielo/preprint/view/6458
