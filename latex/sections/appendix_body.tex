@@ -204,6 +204,20 @@ Panel A of Table~\ref{tab:dose} scales the reduced form by the first stage. An h
 
 If darkness kills pedestrians, street lighting should blunt the effect. Table~\ref{tab:lighting} splits the municipalities of each state into a darker and a better-lit half by the share of households on streets without public lighting. With the 2022 Census, the estimate for road deaths is 40.8 log points (10.3) in the darker half and 14.1 (15.6) in the better-lit half; the difference has the predicted sign but $p=0.16$. With the 2010 Census the gap is smaller (34.7 against 26.0). The halves also differ in the hour before sunset, whose light changed only in degree (Panel B), so the split may capture other differences between municipalities. I read the table as consistent with a role for street lighting, not as evidence of one.
 
+\subsection{Valuing the deaths}\label{app:cost}
+
+Table~\ref{tab:cost} scales the net count of Table~\ref{tab:excess} with two ratios, both from land-transport deaths in the treated states' summer window before abolition. Column 2 multiplies it by the ratio of road deaths per summer to those with a valid clock time, $2{,}933/2{,}382 = 1.231$. Column 3 multiplies column 2 by the ratio of all land-transport deaths to road deaths, $6{,}003/2{,}933 = 2.047$. Of the land-transport deaths off the road, 84.9 percent occurred in hospital, 9.7 percent at another place, 3.5 percent in another health facility, 1.5 percent at home and 0.4 percent at an unknown place. % total_cost.rds, scale; SIM LOCOCOR, treated summer window, 2008/09-2018/19.
+
+The value of a statistical life follows the three rules of \citet{robinson2019valuing}, with $Y$ the gross national income per head at purchasing power parity in 2025, $Y_{\mathit{BR}} = 22{,}670$ and $Y_{\mathit{US}} = 89{,}490$ international dollars \citep{worldbank2026wdi}:
+\begin{align*}
+  \text{(a)}\quad \mathit{VSL} &= \max\{160\, Y_{\mathit{US}}\, (Y_{\mathit{BR}}/Y_{\mathit{US}})^{1.5},\; 20\, Y_{\mathit{BR}}\} = 1{,}825{,}618, \\
+  \text{(b)}\quad \mathit{VSL} &= 160\, Y_{\mathit{BR}} = 3{,}627{,}200, \\
+  \text{(c)}\quad \mathit{VSL} &= 100\, Y_{\mathit{BR}} = 2{,}267{,}000.
+\end{align*}
+Rule (a) is the authors' default: it starts from the US ratio of VSL to income per head and lets the ratio fall with income, down to a floor of 20 times income per head, which does not bind here (453,400). Rule (b) applies the US ratio and rule (c) the OECD ratio directly to Brazilian income. The values are converted to reais at the 2025 purchasing-power-parity conversion factor for GDP, 2.554 reais per international dollar \citep{worldbank2026wdi}, which gives R\$4.66, 9.27 and 5.79 million.
+
+The human-capital alternative is the cost per person killed in a fatal crash on a federal highway, R\$433,287 in December 2014 prices, almost all of it lost production \citep[Table 6A]{ipea2015acidentes}. Multiplied by the ratio of the IPCA consumer price index in December 2025 to December 2014, $7{,}403.29/4{,}059.86 = 1.824$ \citep{ibge2026ipca}, it is R\$790,113. Each value in Table~\ref{tab:cost} is the count of deaths times the value of one death; the standard errors treat the scaling ratios and the values as fixed.
+
 \subsection{Bahia, the one season it had DST}
 
 \begin{figure}[tbp]
