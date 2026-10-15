@@ -108,8 +108,11 @@ grid <- cbind(grid, spec[grid$k])
 res <- grid[, {
   p <- make_panel(ev, days, .BY$outcome, .BY$bin, .BY$side)
   m <- fepois(as.formula(paste("y ~ twp", FE)), data = p, cluster = ~uf)
+  # nobs: state-days left after fepois drops fixed-effect groups whose counts
+  # are all zero (they carry no information on twp); n_rows: the full panel.
   .(coef = coef(m)[["twp"]], se = se(m)[["twp"]], n_events = p[, sum(y)],
-    n_treated_win_pre = p[tw == 1 & post == 0, sum(y)])
+    n_treated_win_pre = p[tw == 1 & post == 0, sum(y)],
+    nobs = nobs(m), n_rows = nrow(p))
 }, by = .(outcome, side, bin)]
 res[, `:=`(pct = 100 * (exp(coef) - 1), p = 2 * pnorm(-abs(coef / se)))]
 res[, side := fifelse(side == "set", "evening (rel. to sunset)", "morning (rel. to sunrise)")]

@@ -95,7 +95,8 @@ main_panel <- function(s) {
     row("p-value, permutation of treated states", fp(x$perm_p)),
     row("Linear model: effect (percent of baseline)", f1(x$linear_effect_pct_of_base)),
     row("Linear model: p-value, wild cluster bootstrap", fp(x$wcr_p)),
-    row("Events per summer, treated states before abolition", f0(x$n_treated_win_pre / N_PRE)))
+    row("Events per summer, treated states before abolition", f0(x$n_treated_win_pre / N_PRE)),
+    row("Observations (state-days)", f0(x$nobs)))
 }
 write_tab("tab_main", c(
   open3,
