@@ -23,6 +23,66 @@ mesmo dia (scripts 22–28, VIABILIDADE §19, EXPLICANDO §5.12, PAPER.md
   controle, ~430 mortes por ano). Com a réplica, vale reconsiderar AEJ: Applied
   na frente (seção "Ranking").
 
+## Segunda leitura (15/10/2026)
+
+Pedido do Fredie: conferir se o parecer de 12/10 bastou ou se falta algo para
+fortalecer o paper. Conferido item por item contra `latex/sections/` e o
+apêndice.
+
+**O que o parecer pedia está feito.** Os sete essenciais (custo, dose e chuva,
+amontoamento, tirar um de fora e trocar o controle, quem morre, iluminação,
+integridade do registro) e todos os itens do "texto precisa antecipar" estão no
+paper. Faltavam dois, que dependiam de fonte:
+- **Radares (feito em 15/10/2026).** Despachos do Presidente de 14/08/2019, DOU
+  de 15/08/2019, Edição 157, Seção 1, p. 5 (texto em
+  `fontes_legais/DOU_2019-08-15_despachos_radares.txt`): suspende os medidores
+  de velocidade estáticos, móveis e portáteis da PRF. A retomada em 23/12/2019,
+  depois da liminar de 11/12 mantida pelo TRF-1 em 18/12, vem da nota da PRF
+  reproduzida pelo Poder360 (23/12/2019), não de ato oficial. Uma frase em
+  "Trends and robustness": sem 2019/20, a PRF dá 65,0 (mortes) e 25,7 (com vítima), maiores.
+- **SIM 2025.** O FTP do DATASUS (15/10/2026) tem os definitivos até 2024; 2025
+  segue em `PRELIM`. A 6ª temporada pós espera o DATASUS.
+
+**Três pontos novos, aceitos pelo Fredie e feitos no mesmo dia:**
+1. **O resumo e a conclusão diziam mais do que a evidência.** "Abolition cost 54
+   lives per summer, a lower bound" é limite inferior só em relação às mortes
+   sem hora e no hospital; as sete horas somam 41 (41) e o dia todo −5 (66).
+   Agora: "the hours whose light changed lost 54 lives per summer" (resumo, 100
+   palavras) e o mesmo escopo na conclusão e na nota da Tab. 5.
+2. **O controle no relógio de Brasília.** Com horário de verão, tudo o que é
+   marcado pela hora de Brasília corria uma hora mais cedo no relógio do N/NE no
+   verão; com a abolição, deixou de correr. Teste: a hora 0 contra horas do
+   mesmo estado e dia cuja luz não mudou, em cada grupo sozinho (`09`, `15`;
+   Tabela `tab_within_group` no apêndice). O tráfego da noite do controle não
+   se moveu (veículos na hora 0: −0,2 lp, EP 0,7; tratados −5,4). As mortes na
+   via na hora 0 do controle subiram em relação ao resto do dia (+19,7, EP 6,5),
+   sem tendência pré e com qualquer conjunto de horas de referência; a PRF do
+   controle caiu na mesma hora. Leitura: o que subiu não passou pelo tráfego e,
+   se veio do relógio do controle, a tripla **subestima** o efeito; só nos
+   tratados, a mesma comparação dá 47,2 (7,8). De manhã os dois grupos caem
+   juntos (tratados −19,4; controle −23,5); só nos tratados, a manhã devolve
+   menos de um terço da noite. Uma frase no corpo, o resto no apêndice.
+3. **México com as horas de referência do Brasil.** O painel D comparava a hora
+   0 com as horas −1 e −2, que o próprio paper diz que mudaram de luz. Agora usa
+   as horas −5 a −3 e +2 a +4, como o `09`, com −2, −1 e +1 em coeficiente
+   próprio. Mortes no local 54,6 → 58,4 (17,6); pedestres 154,1 (65,6) → 142,8
+   (37,8); atropelamentos com vítima 22,9 → 44,9 (7,6). A hora 0 é o pico nas
+   quatro. Com o item 2, é o mesmo estimador nos dois países: 47 no Brasil, 58
+   no México.
+
+**Energia (decisão delegada pelo Fredie).** A frase não sai; estava errada e foi
+reescrita. A NT 5/2019 do MME diz que o horário de verão *aumentou* a carga em
+0,7%, logo a abolição economizou um pouco de energia (o texto dizia que as
+mortes "não compraram economia nenhuma"). E, pela NT-ONS 0093/2024, a volta
+economizaria combustível **e**, pelas nossas estimativas, vidas: não há troca
+entre energia e vidas hoje, os dois lados apontam na mesma direção (o texto
+dizia "trades energy against lives"). Acrescentada uma frase: nenhum dos dois
+lados conta as duas trocas de relógio por ano que a abolição tirou, cujo custo
+a literatura atribui ao sono (Smith 2016; Gillmore 2025), e que a janela exclui.
+
+**Ainda aberto:** rodar a skill `manuscript-audit` completa antes de mandar o
+paper a alguém (ROADMAP, "Próximos").
+
 ## Veredito de editor, em uma frase
 
 Desenho limpo, primeiro estágio enorme e medido por terceiros, efeito na hora

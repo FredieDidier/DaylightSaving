@@ -25,6 +25,13 @@
 # light only in part (sun lower, twilight), so they get their own coefficient
 # instead of serving as reference.
 #
+# By group: the same comparison within the treated states alone and within
+# the control states alone (no bin^date, which needs both groups). When DST
+# ended, schedules set on Brasilia time moved one clock hour later in the
+# control states' summer; if that moved their evening, the control-alone
+# coefficient shows it. The treated-alone version is the Mexican estimator
+# (27_mexico_within_day.R) applied to Brazil.
+#
 # Also: event study by season for bin 0 (reference 2018/19), HonestDiD on it,
 # robustness to the reference set (day only / night only), and (optional, DS_PERM)
 # permutation inference over which 11 states are treated.
@@ -89,6 +96,21 @@ pooled <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
   }))
 }))
 pooled[, `:=`(pct = 100 * (exp(coef) - 1), p = 2 * pnorm(-abs(coef / se)))]
+
+# ── By group: treated alone, control alone ──────────────────────────────────
+FE3 <- "| uf^date + uf^bin^window + uf^bin^sy"
+by_group <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
+  cs <- cases[i]; s <- SIDES[[cs$side]]
+  p <- make_panel4(cs$outcome, cs$side, sort(c(s$focal, s$ref)))
+  rbindlist(lapply(c(treated = 1L, control = 0L), function(g) {
+    q <- p[treated == g]
+    q[, (bname(s$focal)) := lapply(s$focal, function(k) as.integer(bin == k) * win * post)]
+    m <- fepois(as.formula(paste("y ~", paste(bname(s$focal), collapse = " + "), FE3)),
+                data = q, cluster = ~uf, notes = FALSE)
+    data.table(cs, group = if (g == 1L) "treated" else "control", bin = s$focal,
+               coef = coef(m)[bname(s$focal)], se = se(m)[bname(s$focal)], n_obs = nobs(m))
+  }))
+}))
 
 # ── Event study for evening bin 0, and HonestDiD ────────────────────────────
 M_GRID    <- c(0, 0.01, 0.02, 0.03, 0.05, 0.075, 0.10)
@@ -160,7 +182,7 @@ perm <- if (N_PERM > 0) rbindlist(lapply(TRAFFIC, function(o) {
              perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(t_real)), N_PERM))
 })) else NULL
 
-saveRDS(list(pooled = pooled, event_study = es, event_study_vcov = V_es, honestdid = hd, perm = perm,
+saveRDS(list(pooled = pooled, by_group = by_group, event_study = es, event_study_vcov = V_es, honestdid = hd, perm = perm,
              seasons = SEASONS,
              n_perm = N_PERM),
         file.path(path_audit, "within_day.rds"))
@@ -171,6 +193,8 @@ options(width = 170)
 cat("Seasons:", min(SEASONS), "-", max(SEASONS), "\n\nPooled (log points):\n")
 print(pooled[, .(outcome, side, reference, bin, lp = round(100 * coef, 1), se = round(100 * se, 1),
                  pct = round(pct, 1), p = round(p, 3), n_obs)])
+cat("\nBy group, bin 0 (log points):\n")
+print(by_group[bin == 0L, .(outcome, side, group, lp = round(100 * coef, 1), se = round(100 * se, 1))])
 cat("\nHonestDiD, evening bin 0:\n")
 print(hd[restriction == "original" | param %in% c(0, 0.01, 0.02, 0.05, 0.25, 0.5),
          .(outcome, restriction, param, lb = round(100 * lb, 1), ub = round(100 * ub, 1),

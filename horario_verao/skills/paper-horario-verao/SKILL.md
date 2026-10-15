@@ -150,7 +150,7 @@ mudança, dose (hora toda escura ~124 lp), iluminação (Censo 2022: 41 contra 1
 p = 0,16, sem precisão), custo em reais de 2025 (54/67/137 mortes por verão;
 VSL R$ 253/311/637 mi; Ipea R$ 43/53/108 mi). Parecer e ranking de periódicos
 em `PARECER.md`: AEJ Applied → AEJ Policy → JHE (depois do México). **México** (`29`, `30`): a réplica
-vale pelo desenho dentro do dia (mortes +55, pedestres +154); a tripla com 6
+vale pelo desenho dentro do dia (horas de referência do `09`, desde 15/10/2026: mortes +58, pedestres +143; o mesmo estimador só nos tratados do Brasil dá +47); a tripla com 6
 controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 159,5 mi de 2016/17 (imprensa) não se citam.
 
@@ -179,3 +179,6 @@ hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
 - Ler o texto completo de Gillmore (2025) e Depalo (2023) antes de citar números
   além do resumo.
 - Status do projeto de lei de 2025 que proíbe o horário de verão.
+- Controle no relógio de Brasília (15/10/2026, `tab_within_group`): o tráfego da
+  noite do controle não se moveu; as mortes na via na hora 0 do controle subiram
+  (+19,7) em relação ao resto do dia. Se isso veio do relógio, a tripla subestima.

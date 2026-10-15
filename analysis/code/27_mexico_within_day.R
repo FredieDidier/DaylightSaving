@@ -9,13 +9,16 @@
 # (hour -1: -126 log points with treated-unit raw counts flat).
 #
 # Here only the treated units (those that lost DST) enter. Within each unit
-# and day, the hour after standard-time sunset is compared with the two hours
-# before it, whose light did not change:
-#   y[u,d,h] ~ h0 x window x post | unit^date + unit^h0^window + unit^h0^sy
-# with h0 = 1 for the hour after sunset. Unit-by-day effects absorb anything
-# common to the evening of a day (weather, holidays, traffic); the estimate is
-# the change in the hour-0 share of the evening, summer against off-season,
-# after 2023 against before. Standard errors clustered by unit.
+# and day, the hour after standard-time sunset is compared with the reference
+# hours of the Brazilian within-day design (09_within_day.R): 3 to 5 hours
+# before sunset (daylight under both regimes) and 2 to 4 after (dark under
+# both). Hours -2, -1 and +1 changed light in part (lower sun, twilight), so
+# each gets its own coefficient instead of serving as reference:
+#   y[u,d,b] ~ sum_k 1[b = k] x window x post | unit^date + unit^bin^window + unit^bin^sy
+# Unit-by-day effects absorb anything common to a day (weather, holidays,
+# traffic); a coefficient is the change in hour k's share of the day's
+# reference-plus-focal events, summer against off-season, after 2023 against
+# before. Standard errors clustered by unit.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -46,26 +49,33 @@ geo[, unit := cve_ent]
 ev <- geo[, .(cve_ent, cve_mun, unit, lat, lon, std_offset_h)][acc, on = .(cve_ent, cve_mun), nomatch = 0]
 ev <- ev[!is.na(cmin)]
 ev[, bin := floor((cmin - sun_times(date, lat, lon, std_offset_h)$sunset) / 60)]
-ev <- ev[bin %in% -2:0]
+FOCAL <- -2:1
+BINS  <- c(-5:-3, FOCAL, 2:4)
+ev <- ev[bin %in% BINS]
 ev[, `:=`(o_deaths = deaths, o_ped_deaths = ped_deaths, o_victim_acc = as.integer(victims),
           o_ped_struck = as.integer(victims & ped_crash))]
 OUT <- c("Deaths" = "o_deaths", "Pedestrian deaths" = "o_ped_deaths",
          "Accidents with victims" = "o_victim_acc", "Pedestrians struck, with victims" = "o_ped_struck")
 
 days <- CJ(unit = unique(geo$unit), date = seq(as.IDate("2016-01-01"), as.IDate("2025-12-31"), by = "day"),
-           bin = -2:0)
+           bin = BINS)
 md <- days[, month(date) * 100L + mday(date)]
 days[, window := fcase(md >= 408L & md <= 1024L, "win", md >= 1108L | md <= 307L, "off")]
 days <- days[!is.na(window)]
-days[, `:=`(sy = year(date), h0 = as.integer(bin == 0L))]
-days[, x := h0 * as.integer(window == "win") * as.integer(sy >= 2023L)]
+days[, sy := year(date)]
+days[, wp := as.integer(window == "win") * as.integer(sy >= 2023L)]
+fname <- function(k) paste0("f", fifelse(k < 0, paste0("m", abs(k)), paste0("p", k)))
+days[, (fname(FOCAL)) := lapply(FOCAL, function(k) as.integer(bin == k) * wp)]
 
 res <- rbindlist(lapply(names(OUT), function(o) {
   y <- ev[, .(y = sum(get(OUT[[o]]))), by = .(unit, date, bin)]
   p <- y[days, on = .(unit, date, bin)][is.na(y), y := 0]
-  m <- fepois(y ~ x | unit^date + unit^h0^window + unit^h0^sy, data = p, cluster = ~unit, notes = FALSE)
-  data.table(outcome = o, lp = 100 * coef(m)[["x"]], se = 100 * se(m)[["x"]], p = pvalue(m)[["x"]],
-             hour0_pre_per_year = p[h0 == 1 & window == "win" & sy < 2023, sum(y)] / 7,
+  m <- fepois(as.formula(paste("y ~", paste(fname(FOCAL), collapse = " + "),
+                               "| unit^date + unit^bin^window + unit^bin^sy")),
+              data = p, cluster = ~unit, notes = FALSE)
+  data.table(outcome = o, bin = FOCAL, lp = 100 * coef(m)[fname(FOCAL)], se = 100 * se(m)[fname(FOCAL)],
+             p = pvalue(m)[fname(FOCAL)],
+             hour0_pre_per_year = p[bin == 0L & window == "win" & sy < 2023, sum(y)] / 7,
              n_obs = nobs(m))
 }))
 

@@ -22,6 +22,12 @@
 #   (c) Within the day: stacked bins with station x date fixed effects and the
 #       rest of the day as reference, so a coefficient is the change in that
 #       hour's traffic relative to the rest of the same station-day.
+#   (c2) The same within-day comparison in each group alone, against the
+#       reference hours of 09_within_day.R (3-5 h before and 2-4 h after
+#       sunset; 2-4 h before and after sunrise). Schedules set on Brasilia
+#       time moved one clock hour later in the control states' summer when
+#       DST ended; the control-alone coefficients show whether their traffic
+#       moved with them.
 #   (d) Risk per vehicle: crash effect (11_reallocation.R, PRF) minus volume
 #       effect, hour by hour, in log points.
 #
@@ -153,6 +159,29 @@ within <- data.table(bin_key = sub("key::(.*):twp", "\\1", names(coef(wd))),
                      coef_lp = 100 * coef(wd), se_lp = 100 * se(wd))
 within[, p := 2 * pnorm(-abs(coef_lp / se_lp))]
 
+# ── (c2) Within the day, each group alone ───────────────────────────────────
+# The reference hours of 09 are not in the stack (they sit in "rest" with
+# other hours), so rebuild them: evening -5..-3 and +2..+4, morning -4..-2 and
+# +2..+4, with the focal hours of 09 (evening -2..+1, morning -1..+1).
+WD_SIDES <- list(set  = list(col = "bin_set",  focal = -2:1, ref = c(-5:-3, 2:4)),
+                 rise = list(col = "bin_rise", focal = -1:1, ref = c(-4:-2, 2:4)))
+by_group <- rbindlist(lapply(names(WD_SIDES), function(side) {
+  s <- WD_SIDES[[side]]
+  y <- hv[get(s$col) %in% c(s$focal, s$ref), .(y = sum(v)), by = c("station", "date", s$col)]
+  setnames(y, s$col, "bin")
+  grid <- sd[, .(bin = c(s$focal, s$ref)), by = .(station, uf, date, window, sy, treated, win, post)]
+  p <- y[grid, on = .(station, date, bin)][is.na(y), y := 0]
+  fn <- paste0("f", seq_along(s$focal))
+  p[, (fn) := lapply(s$focal, function(k) as.integer(bin == k) * win * post)]
+  rbindlist(lapply(c(treated = 1L, control = 0L), function(g) {
+    m <- fepois(as.formula(paste("y ~", paste(fn, collapse = " + "),
+                                 "| station^date + station^bin + uf^bin^window + uf^bin^sy")),
+                data = p[treated == g], cluster = ~uf, notes = FALSE)
+    data.table(side = side, group = if (g == 1L) "treated" else "control", bin = s$focal,
+               coef_lp = 100 * coef(m)[fn], se_lp = 100 * se(m)[fn], n_obs = nobs(m))
+  }))
+}))
+
 # ── (d) Risk per vehicle (PRF crashes minus volume, same hour) ──────────────
 rl <- readRDS(file.path(path_audit, "reallocation.rds"))$hours
 risk <- merge(rl[outcome != "SIM transport deaths, on road", .(outcome, bin_key = hour, crash_lp = coef_lp, crash_se = se_lp)],
@@ -164,6 +193,7 @@ cover <- sd[, .(stations = uniqueN(station), station_days = .N),
             keyby = .(group = fifelse(treated == 1, "treated", "control"), sy, window)]
 
 saveRDS(list(clock = clock, peak = peak, ddd = ddd, day = day, paired = paired, within = within,
+             by_group = by_group,
              risk = risk, cover = cover, pairs = pairs), file.path(path_audit, "traffic_volume.rds"))
 options(width = 180)
 cat("(a) Clock check: distance between treated-summer net profiles, pre shifted by lag vs post\n")
@@ -176,4 +206,6 @@ print(ddd[vehicles == "v", .(bin_key, coef_lp = round(coef_lp, 1), se_lp = round
 print(day)
 cat("\nRelocated-station pairs (all vehicles):\n"); print(paired[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
 cat("\n(c) Within the day (share of station-day traffic, log points):\n"); print(within[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
+cat("\n(c2) Within the day, each group alone (log points):\n")
+print(by_group[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
 cat("\n(d) Risk per vehicle (PRF):\n"); print(risk[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])

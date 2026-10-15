@@ -166,11 +166,20 @@ Feito nesta sessão:
   trocado por Crandall & Graham (1984) e White (2004); 1º parágrafo corrigido
   para "work and sleep" (o que Hamermesh et al. estudam).
 
+- ✅ **Segunda leitura do parecer (15/10/2026, `PARECER.md`, "Segunda
+  leitura").** Radares citados pelo DOU de 15/08/2019 (Ed. 157, S. 1, p. 5;
+  texto em `fontes_legais/`) e pela nota da PRF de 23/12/2019 (Poder360).
+  Resumo e conclusão: os 54 são "nas horas cuja luz mudou". Controle no relógio
+  de Brasília: `09` e `15` ganharam a comparação dentro do dia em cada grupo
+  sozinho (`by_group`), tabela nova `tab_within_group` no apêndice; tráfego do
+  controle parado na noite, mortes do controle sobem (+19,7), só tratados 47,2.
+  México (`27`) com as horas de referência do `09`: mortes 58,4 (17,6),
+  pedestres 142,8 (37,8). Parágrafo da energia corrigido (o MME diz que o
+  horário de verão aumentava a carga; hoje energia e vidas apontam para o mesmo
+  lado). SIM 2025 ainda preliminar no FTP.
+
 Próximos:
-1. Fredie: afiliação e agradecimentos (`title_page.tex`, `paper_wp.tex`);
-   ler o rascunho; decidir as pendências do `PAPER.md` (seção "Manuscrito").
-2. Rodar a skill `manuscript-audit` no rascunho.
-3. Conferir no DOU de 15/08/2019 o despacho dos radares antes de citá-lo.
+1. Rodar a skill `manuscript-audit` no rascunho.
 
 ## Decisões tomadas
 

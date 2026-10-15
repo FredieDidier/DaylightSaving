@@ -107,6 +107,21 @@ Moving the window changes the estimate in the direction light predicts: a window
 
 Figure~\ref{fig:within-day} repeats the event study with a fixed effect for every state and day, which absorbs any shock common to all hours of a state's day, such as rain, a holiday or the volume of traffic. The estimate pools to 27.7 log points (12.4) for road deaths (Table~\ref{tab:robustness}); the standard error does not fall, because the noise in a single hour's count is sampling noise rather than daily shocks.
 
+\begin{table}[tbp]
+  \caption{Within the Day, Treated and Control States Each Alone}
+  \label{tab:within-group}
+  \centering\footnotesize
+  \input{\tabdir/tab_within_group.tex}
+  \begin{tablenotes}[Notes]
+  Hour 0 against hours of the same state and day whose light did not change (evening: 3 to 5 hours before and 2 to 4 after standard-time sunset; morning: 2 to 4 hours before and after standard-time sunrise), summer window against off-season, after abolition against before, estimated in each group separately with state-by-day effects and the fixed effects of equation~(\ref{eq:main}) interacted with the hour; the hours in between, whose light changed in part, have their own coefficients. Column 4: vehicles at federal highway count stations, with station-by-day and station-by-hour effects. Standard errors clustered by state.
+  \end{tablenotes}
+  \begin{tablenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}; \citet{dnit2025pnct}.
+  \end{tablenotes}
+\end{table}
+
+The control states kept their clocks, but schedules set on Bras\'ilia time, such as national broadcasts, ran an hour earlier on those clocks in every summer with DST and have run at the same clock time all year since. If that change moved the control states' evening, they would not supply the counterfactual the triple difference assumes. Table~\ref{tab:within-group} compares hour 0 with hours of the same state and day whose light did not change, in each group alone. Traffic did not move in the control states' evening: vehicles in hour 0 changed by $-0.2$ log points (0.7), against $-5.4$ (1.6) in the treated states. Road deaths in the control states' hour 0 did rise relative to the rest of their day, by 19.7 log points (6.5), while their federal highway deaths and injury crashes in that hour fell. Whatever raised those deaths did not move traffic, and to the extent that it came from the control states' own schedules, the triple difference understates the effect: within the treated states alone, road deaths in hour 0 rose by 47.2 log points (7.8). This is the comparison the paper uses for Mexico (Section~\ref{sec:mexico}), where it gives 58.4 for deaths at the scene. In the morning, road deaths in hour 0 fell in both groups and traffic rose in both, so the triple difference nets out a change the control states share. Read within the treated states alone, the morning hour that turned light lost 19.4 log points (9.6), which, applied to the 107 and 110 deaths per summer the two hours had before abolition, offsets less than a third of the evening rise.
+
 \begin{figure}[tbp]
   \centering
   \includegraphics{fig_honestdid.pdf}
@@ -251,7 +266,7 @@ The records use legal clock time. In the areas that lost DST, the hourly profile
   \centering\footnotesize\setlength{\tabcolsep}{4pt}
   \input{\tabdir/tab_mexico.tex}
   \begin{tablenotes}[Notes]
-  Accidents on non-federal roads, 2016 to 2025; deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a panel of units by day, where a unit is the part of a state that lost DST (treated) or one of six that kept their clock; summer window 8 April to 24 October, off-season 8 November to 7 March; standard errors clustered by unit, wild cluster bootstrap on the linear analogue, and permutation of the treated units on the t-statistic (999 draws). Panel D drops the comparison units: within each treated unit and day, hour 0 against the two hours before it, summer window against off-season, after 2023 against before, with unit-by-day fixed effects.
+  Accidents on non-federal roads, 2016 to 2025; deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a panel of units by day, where a unit is the part of a state that lost DST (treated) or one of six that kept their clock; summer window 8 April to 24 October, off-season 8 November to 7 March; standard errors clustered by unit, wild cluster bootstrap on the linear analogue, and permutation of the treated units on the t-statistic (999 draws). Panel D drops the comparison units: within each treated unit and day, hour 0 against the hours 3 to 5 before and 2 to 4 after sunset, summer window against off-season, after 2023 against before, with unit-by-day fixed effects; hours $-2$, $-1$ and $+1$ have their own coefficients.
   \end{tablenotes}
   \begin{tablenotes}[Source]
   \citet{inegi2026atus}.

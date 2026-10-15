@@ -12,11 +12,11 @@ Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
   obra anotada acima dela).
 - `paper.tex`: submissão à AEJ: Economic Policy, **anônima** (revisão
   duplo-cega), template oficial da AEA (`AEA.cls`, `aea.bst`) em `reviewmode`,
-  12 pt, espaçamento 1,5, margens de 1 polegada. 27 páginas.
-- `appendix.tex`: Online Appendix, anônimo, arquivo separado (16 páginas).
+  12 pt, espaçamento 1,5, margens de 1 polegada. 29 páginas.
+- `appendix.tex`: Online Appendix, anônimo, arquivo separado (19 páginas).
 - `title_page.tex`: página de título exigida pela revista (autor, afiliação,
   agradecimentos). **Preencher os campos entre colchetes.**
-- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 45 páginas).
+- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 50 páginas).
 - Compilar: `latex/build.sh` (o artigo e o apêndice citam rótulos um do outro
   pelo pacote `xr`, então cada um compila depois do outro).
 
@@ -40,7 +40,7 @@ Avaliação crítica, como editor:
 **Normas da revista seguidas** (página de submissão e style guide da AEA,
 lidas em 13/10/2026): PDF; resumo ≤ 100 palavras (98); JEL e palavras-chave;
 título e resumo no topo da 1ª página; manuscrito e apêndice anônimos, autor só
-na página de título; ≤ 45 páginas em 12 pt (27); seções em algarismos romanos,
+na página de título; ≤ 45 páginas em 12 pt (29); seções em algarismos romanos,
 introdução sem título; equações numeradas à esquerda; tabelas só com linhas
 horizontais, sem asteriscos, EP entre parênteses, zero antes da vírgula
 decimal, ≤ 9 colunas, painéis "Panel A"; notas de fonte depois das notas;
@@ -72,8 +72,9 @@ corrido de 8,4 a 13 mil palavras (o nosso, ~6,5 mil) e introdução de 1,8 a
 | Tab. 5 excesso por verão | a quantidade de política (líquido 54) |
 | Tab. 6 custo | a conta de política |
 
-Apêndice online (15 exibições): A1 integridade do registro; B1 janela
+Apêndice online (16 exibições): A1 integridade do registro; B1 janela
 deslocada; B2 deixar um de fora; Tab. B1 sensibilidade; B3 FE de UF × dia;
+**Tab. dentro do dia por grupo** (`tab_within_group`, 15/10/2026: controle no relógio de Brasília);
 B4 HonestDiD; Tab. B2 quem morre; **Tab. B3 volume e risco por veículo**
 (números no texto do corpo); Tab. B4 dose e chuva; Tab. B5 iluminação; B5
 Bahia; B6 agressões; C1 mapa do México; **Tab. C1 México** (Seção VI do corpo
@@ -86,7 +87,6 @@ por resultado incômodo.
 |---|---|
 | "ofuscamento pelo sol baixo" como explicação da queda da PRF na hora −1 | a física vai contra: sem horário de verão o sol baixo cai *na* hora −1, que deveria ter mais acidentes, não menos. E o estudo de eventos mostra a queda já em 2018/19, ainda com horário de verão (coeficientes da hora −1, acidentes com vítima, entre 25 e 55 lp nas temporadas 2008/09–2017/18 contra 2018/19; pós entre −5 e 15). O texto diz que a queda é anterior à abolição |
 | 33,7 p.p. (primeiro estágio às 18–19h do relógio) | vinha do `01_viability`, apagado; o primeiro estágio do paper é o da hora 0 (+23,6 p.p., `light_dose.rds`) e a curva da Fig. 3 |
-| radares móveis suspensos em ago/2019 | não citado: o DOU de 15/08/2019 não foi lido na fonte (só imprensa). A linha "sem 2019/20" (Tab. B1) já responde. Entra quando o DOU for conferido |
 | números sem exibição: placebos no tempo do `02`, risco por veículo com os mesmos verões (≈ 25 lp), efeito por temporada da imputação | órfãos: nenhum quadro os imprime. O texto diz qualitativamente que volume e acidentes vêm de verões diferentes |
 | Mitre-Becerril (2026), Fritz et al. (2020), Toro et al. (2015), Jagnani (2024), Sexton & Beatty (2014), Goodwin et al. em mais de um lugar | outros campos ou redundantes: Sullivan & Flannagan (2002), Woods et al. (2025) e Tyndall (2025) cobrem pedestre e luz; Giuntella & Mazzonna e Gibson & Shrader bastam para o sono |
 | "a manhã tem menos gente na rua" como razão da assimetria | falso nos dados: a hora 0 da manhã tinha 107 mortes por verão antes, a da noite 110 |
@@ -101,9 +101,11 @@ por resultado incômodo.
 1. ~~Afiliação e agradecimentos~~ feitos (14/10/2026): IDP e agradecimento a Leonardo Monasterio, como no WorldCupHealth; e-mail fdidier@terra.com.br. Financiamento, conflitos e IRB **não** vão no rodapé: a AEA pede um PDF separado, "Disclosure Statement", por autor, que diga explicitamente quando não há nada a declarar (sem ele a submissão não é avaliada); a frase de IRB só é exigida para dados coletados de seres humanos (Disclosure Policy e Submission Guidelines da AEJ: Policy, lidas em 14/10/2026).
 2. Primeira pessoa: o texto usa "I" (autor único). Se entrar coautor, trocar por "we".
 3. ~~`latex/exhibits.tex`~~ apagado (13/10/2026): legendas e notas vivem no manuscrito.
-4. Comparação de energia: a frase "fuel savings alone are close to the
-   reference value of the deaths" compara a NT-ONS 0093/2024 (outro método)
-   com a nossa conta. Conferir se o Fredie quer essa frase.
+4. ~~Comparação de energia~~ decidida (15/10/2026, delegada pelo Fredie): fica,
+   reescrita. O MME diz que o horário de verão aumentava a carga (a abolição
+   economizou ~0,7%); pela NT-ONS 0093/2024 a volta economizaria combustível e
+   vidas, então os dois lados apontam para o mesmo lado, sem troca. Mais uma
+   frase: as trocas de relógio que a abolição tirou (sono) não entram na conta.
 5. Rodar a skill `manuscript-audit` antes de mandar a alguém.
 
 ## Título de trabalho
@@ -307,8 +309,9 @@ Apêndice
   Brasília (11/12) mantida pelo TRF-1 (18/12). Cobre metade da janela de
   2019/20, é nacional (o FE de data absorve) e só toca a PRF. Resposta: sem
   2019/20, PRF mortes 65,0 (20,7) e com vítima 25,7 (5,9) (`20_leave_out.R`).
-  Fontes: Poder360, Migalhas, Jornal de Brasília (dez/2019); conferir o DOU de
-  16/08/2019 antes de citar.
+  Fontes: DOU de 15/08/2019, Ed. 157, S. 1, p. 5 (despachos de 14/08,
+  conferido em 15/10/2026, `fontes_legais/`); retomada pela nota da PRF no
+  Poder360 (23/12/2019). Citado no corpo desde 15/10/2026.
 - **HonestDiD.** O alvo é a média pós contra 2018/19 (14,8 lp no SIM), não o β
   (29,2); a nota da figura já diz isso. Frase do VIABILIDADE §18.
 - **Bahia.** As seis comparações aparecem sempre juntas (a figura já as mostra;

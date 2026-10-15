@@ -11,6 +11,8 @@
 #   tab_pedestrians     pedestrians against other road users            (12, 14)
 #   tab_excess          excess events per summer, evening, morning, day  (11)
 #   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (15, 16)
+#   tab_within_group    hour 0 against hours of the same state-day, treated
+#                       and control states each alone                     (09, 15)
 #   tab_robustness      the hour that turned dark under other choices,
 #                       and the hours whose light did not change         (04, 05, 08, 09, 18)
 #   tab_sensitivity     the hour after sunset under other clocks, samples
@@ -193,6 +195,29 @@ write_tab("tab_traffic_volume", c(
   panel("Panel A. Evening", 6), unlist(lapply(c("eve-2", "eve-1", "eve+0", "eve+1"), vol_rows)),
   "\\addlinespace",
   panel("Panel B. Morning", 6), unlist(lapply(c("morn-1", "morn+0", "morn+1"), vol_rows)),
+  close_))
+
+# ── Table: within the day, each group alone ─────────────────────────────────
+wg <- rd("within_day.rds")$by_group[bin == 0L]
+vg <- rd("traffic_volume.rds")$by_group[bin == 0L]
+wg_rows <- function(s, g) {
+  x <- wg[side == s & group == g][match(TRAFFIC, outcome)]
+  v <- vg[side == s & group == g]
+  stopifnot(nrow(v) == 1L, !anyNA(x$coef))
+  c(row(if (g == "treated") "Treated states" else "Control states", f1(c(100 * x$coef, v$coef_lp))),
+    row("", se1(c(100 * x$se, v$se_lp))))
+}
+write_tab("tab_within_group", c(
+  "\\begin{tabular}{@{}l cccc@{}}", "\\toprule",
+  " & Road & Federal highway & Federal highway & \\\\",
+  " & deaths & deaths & injury crashes & Vehicles \\\\",
+  " & (1) & (2) & (3) & (4) \\\\",
+  "\\midrule",
+  panel("Panel A. Hour after standard-time sunset, which turned dark", 5),
+  wg_rows("set", "treated"), wg_rows("set", "control"),
+  "\\addlinespace",
+  panel("Panel B. Hour after standard-time sunrise, which turned light", 5),
+  wg_rows("rise", "treated"), wg_rows("rise", "control"),
   close_))
 
 # ── Table: robustness and placebo hours ─────────────────────────────────────
@@ -380,9 +405,9 @@ write_tab("tab_mexico", c(
   "\\addlinespace",
   panel("Panel C. Hour after sunrise, which turned light", 5), mx_rows("rise", 0L),
   "\\addlinespace",
-  panel("Panel D. Treated units only: hour after sunset against the two before", 5),
+  panel("Panel D. Treated units only: hour after sunset against hours of the same day", 5),
   {
-    w <- rd("mexico_within_day.rds")[match(MXO, outcome)]
+    w <- rd("mexico_within_day.rds")[bin == 0L][match(MXO, outcome)]
     c(row("Effect of abolition (log points)", f1(w$lp)), row("", se1(w$se)),
       row("p-value, clustered by unit", fp(w$p)))
   },
