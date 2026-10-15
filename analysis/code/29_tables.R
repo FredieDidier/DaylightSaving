@@ -95,9 +95,9 @@ main_panel <- function(s) {
     row("Change (percent)", f1(x$pct)),
     row("p-value, clustered by state", fp(x$p)),
     row("p-value, permutation of treated states", fp(x$perm_p)),
-    row("Linear model: effect (percent of baseline)", f1(x$linear_effect_pct_of_base)),
+    row("Linear model: effect (percent of pre-abolition mean)", f1(x$linear_effect_pct_of_base)),
     row("Linear model: p-value, wild cluster bootstrap", fp(x$wcr_p)),
-    row("Events per summer, treated states before abolition", f0(x$n_treated_win_pre / N_PRE)),
+    row("Mean events per summer, treated states before abolition", f0(x$n_treated_win_pre / N_PRE)),
     row("Observations (state-days)", f0(x$nobs)))
 }
 write_tab("tab_main", c(
@@ -119,7 +119,7 @@ ped_panel <- function(g) {
     row("p-value, clustered by state", fp(x$cluster_p)),
     row("p-value, wild cluster bootstrap", fp(x$wcr_p)),
     row("p-value, permutation of treated states", fp(x$perm_p)),
-    row("Events per summer, treated states before abolition", f0(x$pre_per_season)))
+    row("Mean events per summer, treated states before abolition", f0(x$pre_per_season)))
 }
 dx <- pm[group == "ped - other"][match(PAIR, pair)]
 pp <- pm[group == "ped"][match(PAIR, pair)]
@@ -301,7 +301,7 @@ ru_rows <- function(sp, lab, prefix = "") unlist(lapply(names(lab), function(g) 
 allr <- ru[split == "all"]
 write_tab("tab_road_users", c(
   "\\begin{tabular}{@{}l cccc@{}}", "\\toprule",
-  " & Effect & Standard & & Deaths per summer, \\\\",
+  " & Effect & Standard & & Mean deaths per summer, \\\\",
   " & (log points) & error & p-value & treated states before \\\\",
   "\\midrule",
   row("All road deaths", c(f1(allr$lp), sprintf("(%s)", formatC(allr$se, format = "f", digits = 1)),
@@ -391,7 +391,7 @@ mx_rows <- function(s, b, inference = FALSE) {
     out <- c(out, row("p-value, wild cluster bootstrap", fp(i$wcr_p)),
              row("p-value, permutation of treated units", fp(i$perm_p)))
   }
-  c(out, row("Events per year, treated units, before", f1(x$pre_per_year)))
+  c(out, row("Mean events per year, treated units, before", f1(x$pre_per_year)))
 }
 write_tab("tab_mexico", c(
   "\\begin{tabular}{@{}l cccc@{}}", "\\toprule",
