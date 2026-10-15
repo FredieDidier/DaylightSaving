@@ -43,7 +43,24 @@ test <- rbindlist(lapply(c("on_road", "no_time"), function(ms) {
 series <- cells[, .(share = 100 * sum(share * n) / sum(n), n = sum(n)),
                 by = .(measure, group = fifelse(treated == 1L, "treated", "control"), window, sy)]
 
-saveRDS(list(test = test, series = series), file.path(path_audit, "record_integrity.rds"))
+# Clock check, as for the traffic counts (15): if certificates carried
+# STANDARD time, the treated states' summer profile of on-road deaths by clock
+# hour would sit one hour earlier under DST. Treated summer net of the treated
+# off-season and of the control's same contrast, pre vs post; lag k moves the
+# pre profile k hours later.
+prof <- sim[on_road == 1L & !is.na(clock_min(HORAOBITO)),
+            .N, by = .(treated, window, post, hour = clock_min(HORAOBITO) %/% 60L)]
+prof[, share := N / sum(N), by = .(treated, window, post)]
+w <- dcast(prof, hour ~ treated + window + post, value.var = "share", fill = 0)
+stopifnot(nrow(w) == 24L)
+net <- function(t, p) w[[sprintf("%d_win_%d", t, p)]] - w[[sprintf("%d_off_%d", t, p)]]
+pre  <- net(1, 0) - net(0, 0)
+post <- net(1, 1) - net(0, 1)
+shift <- function(x, k) x[((seq_along(x) - 1L - k) %% 24L) + 1L]
+clock <- data.table(lag = -1:1, sq_dist = sapply(-1:1, function(k) 1e4 * sum((shift(pre, k) - post)^2)))
+
+saveRDS(list(test = test, series = series, clock = clock), file.path(path_audit, "record_integrity.rds"))
 options(width = 160)
+print(clock)
 print(test[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)])
 print(dcast(series[window == "win"], sy ~ measure + group, value.var = "share")[, lapply(.SD, round, 1)])

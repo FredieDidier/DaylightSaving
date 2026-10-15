@@ -97,6 +97,37 @@ por resultado incômodo.
 | "economics says why a clock rule matters at all" | o texto não comenta a disciplina; o parágrafo abre pela coordenação dos horários. Pedido do Fredie, 14/10/2026 |
 | tabelas de volume (PNCT) e do México no corpo | 13 exibições era muito para a revista (mediana 9 nos artigos medidos); os números ficam no texto do corpo, as tabelas no apêndice. Decisão do Fredie, 13/10/2026 |
 
+**Revisão de escrita (15/10/2026).** O que não voltar a escrever, e por quê:
+- "mostly pedestrians", "Pedestrians bear most of the increase": o pedestre é
+  43% do excesso no SIM, não a maioria. Usar "disproportionately".
+- "states that never had DST": o NE teve horário de verão em 1985/86 e
+  2000/01. Os controles "had none in those summers" / "in the sample".
+- "the weeks around clock changes": a janela inclui a semana antes do fim
+  (15/02/2009); o sono está nas semanas *depois* da troca.
+- a janela "is the set of days under DST in every season": é um subconjunto
+  (começa 11 dias depois da última entrada).
+- "switched hour", "darkened hour", "dark hour": um nome só, hour 0 ou the hour
+  that turned dark.
+- as horas vizinhas não são "placebos" nem "quiet": a +1 entra no excesso.
+- Paralelismos aprovados (não são tique): Column 1/2/3 na Seção V e no
+  apêndice; "Federal highway deaths count... / Federal highway injury crashes
+  are..."; "In 2024... / In 2025..."; "With the 2022 Census... / With the 2010
+  Census..."; "In the evening... / In the morning..." (Bahia); "They count... /
+  They come from..." (conclusão).
+- Decididos por mim, a pedido do Fredie ("decidido por vc na sua visão de
+  especialista isento", 15/10/2026):
+  - a linha "Two hours after sunset" da Tabela 3 **fica e é lida** na IV.C
+    (21,2, mais baixa porque a segunda hora mudou menos): responde ao "por que
+    uma hora só?" com dado, e o `08_wider_window.R` só existe por ela;
+  - **SIM em hora legal, agora conferido** (`22_record_integrity.R`, item
+    `clock` do `record_integrity.rds`): distância 7,8 sem deslocamento contra
+    17,1 e 24,5 com uma hora. Frase no apêndice A, como a do PNCT;
+  - manhã, Painel B: o texto cita o p = 0,031 do wild bootstrap nas mortes
+    das rodovias federais, em vez de calar sobre ele;
+  - México: desde 2016, 15 de 3,6 milhões de acidentes sem dia ou hora (5 e
+    10), nenhum dos 10 sem hora com morte. "Nearly every" fica no corpo; o
+    apêndice dizia "nenhum" e foi corrigido.
+
 **Pendências do manuscrito (para o Fredie):**
 1. ~~Afiliação e agradecimentos~~ feitos (14/10/2026): IDP e agradecimento a Leonardo Monasterio, como no WorldCupHealth; e-mail fdidier@terra.com.br. Financiamento, conflitos e IRB **não** vão no rodapé: a AEA pede um PDF separado, "Disclosure Statement", por autor, que diga explicitamente quando não há nada a declarar (sem ele a submissão não é avaliada); a frase de IRB só é exigida para dados coletados de seres humanos (Disclosure Policy e Submission Guidelines da AEJ: Policy, lidas em 14/10/2026).
 2. Primeira pessoa: o texto usa "I" (autor único). Se entrar coautor, trocar por "we".
@@ -107,6 +138,21 @@ por resultado incômodo.
    vidas, então os dois lados apontam para o mesmo lado, sem troca. Mais uma
    frase: as trocas de relógio que a abolição tirou (sono) não entram na conta.
 5. Rodar a skill `manuscript-audit` antes de mandar a alguém.
+6. **Pacote de replicação** (exigido antes do aceite; Data and Code
+   Availability Policy da AEA, lida em 15/10/2026). O `README.md` segue o
+   modelo dos Social Science Data Editors desde 15/10/2026, e
+   `config/00_setup.R` instala os pacotes. Falta, no depósito:
+   - **dado bruto**: a política pede o bruto no pacote. O de SIM, PRF e PNCT
+     foi apagado depois da limpeza; rebaixar com 02, 05 e 06 e incluir, ou
+     justificar no README;
+   - **licenças**: escolher a do código e a dos dados derivados (`LICENSE.txt`);
+     conferir os termos de redistribuição de SIM, PRF, PNCT, IBGE e INEGI para
+     marcar a segunda caixa do "Statement about Rights". GADM proíbe
+     redistribuir sem permissão e o BR-DWGD não declara licença: ficam fora;
+   - **uma rodada limpa** do build e da análise, cronometrada, para trocar a
+     estimativa de 2 a 3 horas (tirada dos horários dos caches) por um tempo
+     medido;
+   - o README vai em **PDF** na raiz do pacote.
 
 ## Título de trabalho
 

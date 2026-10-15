@@ -264,7 +264,7 @@ write_tab("tab_sensitivity", c(
   sens_row("Baseline", pick_h("shift")),
   "\\addlinespace",
   panel("Panel A. Clock time and sun", 4),
-  sens_row("Sunset from the full NOAA solar calculator", pick_h("Meeus solar algorithm")),
+  sens_row("Sunset from the full NOAA solar algorithm", pick_h("Meeus solar algorithm")),
   sens_row("Without times recorded at :00 or :30", pick_h("drop :00 and :30")),
   "\\addlinespace",
   panel("Panel B. Comparison states and seasons", 4),

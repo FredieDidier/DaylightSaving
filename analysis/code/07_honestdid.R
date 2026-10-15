@@ -9,8 +9,9 @@
 # Two kinds of restriction on how far the post-period violation of parallel
 # trends may stray:
 #   - Smoothness (DeltaSD): the slope of the violation may change by at most M
-#     log points per season between consecutive seasons. M = 0 is exactly
-#     "extrapolate the pre-period linear trend"; larger M allows curvature.
+#     per season between consecutive seasons, in log units (0.01 = 1 log
+#     point). M = 0 is exactly "extrapolate the pre-period linear trend";
+#     larger M allows curvature.
 #   - Relative magnitudes (DeltaRM): a post-period violation may be at most
 #     Mbar times the largest season-to-season violation seen before 2019.
 # The breakdown value is the smallest M (or Mbar) at which the robust 95% CI
