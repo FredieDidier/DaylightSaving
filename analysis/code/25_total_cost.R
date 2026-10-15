@@ -3,9 +3,13 @@
 #
 # How many deaths per summer, and what are they worth?
 #
-# (1) Deaths. The excess of 11_reallocation.R counts only on-road deaths with
-#     a recorded clock time. Two scale factors, from SIM land-transport deaths
-#     (V01-V89) in the treated states, summer window, seasons before abolition:
+# (1) Deaths. The net excess of the darkness-dose model (23_light_dose.R,
+#     clock-hour x date effects), which sums every hour of the day weighted by
+#     how much its light changed, per summer window and per DST season of the
+#     2017 rule; the sum of the three hours of 11_reallocation.R is carried
+#     alongside. These count only on-road deaths with a recorded clock time.
+#     Two scale factors, from SIM land-transport deaths (V01-V89) in the
+#     treated states, summer window, seasons before abolition:
 #       f_time   on-road deaths / on-road deaths with a valid clock time
 #       f_place  all transport deaths (any place) / on-road deaths
 #     Three counts per summer:
@@ -15,8 +19,6 @@
 #       C  B x f_place: all transport deaths, assuming deaths in hospital come
 #          from crashes in the dark hours in the same proportion as deaths on
 #          the road. C is an extrapolation, not an estimate.
-#     The net count (two hours after sunset and the hour after sunrise) and the
-#     dark-hours-only count are both carried.
 #
 # (2) Value. Value of a statistical life by the reference approach of
 #     Robinson, Hammitt & O'Keeffe (2019, J. Benefit-Cost Analysis 10(S1):
@@ -86,13 +88,21 @@ scale <- data.table(f_time = f_time, f_place = f_place,
 
 # ── Deaths and value per summer ─────────────────────────────────────────────
 ex <- readRDS(file.path(path_audit, "reallocation.rds"))$sums[outcome == "SIM transport deaths, on road"]
-SUMS <- c("net: evening 0, +1 and morning 0", "evening, dark (0, +1)")
+dz <- readRDS(file.path(path_audit, "light_dose.rds"))$dose[outcome == "SIM transport deaths, on road" &
+                                                             spec == "main"]
+stopifnot(nrow(dz) == 1L)
+base_counts <- data.table(
+  sum = c("dose model, summer window", "dose model, DST season (2017 rule)",
+          "net: evening 0, +1 and morning 0"),
+  excess = c(dz$net, dz$season_net, ex[sum == "net: evening 0, +1 and morning 0", excess_per_season]),
+  excess_se = c(dz$net_se, dz$season_net_se, ex[sum == "net: evening 0, +1 and morning 0", se]))
+SUMS <- base_counts$sum
 deaths <- rbindlist(lapply(SUMS, function(k) {
-  x <- ex[sum == k]
+  x <- base_counts[sum == k]
   data.table(sum = k,
              count = c("A on road, with clock time", "B on road", "C all transport deaths"),
-             deaths = x$excess_per_season * c(1, f_time, f_time * f_place),
-             se = x$se * c(1, f_time, f_time * f_place))
+             deaths = x$excess * c(1, f_time, f_time * f_place),
+             se = x$excess_se * c(1, f_time, f_time * f_place))
 }))
 deaths[, share_of_summer_transport_deaths_pct := 100 * deaths / scale$all_transport_deaths_per_summer_pre]
 value <- CJ(sum = SUMS, count = unique(deaths$count), rule = vsl$rule, sorted = FALSE)

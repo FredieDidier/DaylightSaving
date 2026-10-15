@@ -1,10 +1,10 @@
 # =============================================================================
-# 28_figures.R
+# 29_figures.R
 #
 # Every figure of the paper, drawn from the estimates cached in audit/*.rds
 # (and, for the two maps, from the boundaries of build/12_map_boundaries.R).
 # Nothing is estimated here, so a label, a colour or a size changes in seconds
-# and never requires a refit. Run after 01-27, which write the caches.
+# and never requires a refit. Run after 01-28, which write the caches.
 #
 # Main text
 #   fig_map_brazil        treated, control and excluded states   (maps/, no cache)
@@ -17,6 +17,7 @@
 #   fig_event_study       hour after sunset vs hour before, by season (02)
 # Appendix
 #   fig_within_day        event study with state-by-day fixed effects (09, 02)
+#   fig_window_legs       treated - control by season, summer and off-season (04)
 #   fig_honestdid         Rambachan-Roth sensitivity               (07)
 #   fig_assault           assault deaths, whole day and 5-8 p.m.   (10)
 #   fig_bahia             Bahia's single DST season, 2011/12       (17)
@@ -164,26 +165,30 @@ rows <- lapply(TRAFFIC, function(o)
 save_fig(stack_rows(rows), "fig_hours_from_sunset", height = 6.4)
 
 # ── Event study: the hour after sunset and the hour before ──────────────────
-HB <- c("Hour after sunset (light changed)", "Hour before sunset (light unchanged)")
+# Coefficients against the average of the seasons before abolition (02), the
+# comparison the pooled estimate makes.
+HB <- c("Hour after sunset (turned dark)", "Hour before sunset (sun lower, not set)")
 es <- rd("switched_hour_event_study.rds")$event_study
 es[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
           hour = factor(fifelse(bin == 0L, HB[1], HB[2]), levels = HB))]
-es[, c("lo", "hi") := ci(coef, se)]
-g <- ggplot(es, aes(sy, 100 * coef, colour = hour, shape = hour)) +
+es[, c("lo", "hi") := ci(coef_vs_pre, se_vs_pre)]
+g <- ggplot(es, aes(sy, 100 * coef_vs_pre, colour = hour, shape = hour)) +
   event_frame(es$sy, TRAFFIC_LAB) +
   geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.5, position = dodge) +
   geom_point(size = 1.8, position = dodge) +
   facet_wrap(~ outcome, ncol = 1, scales = "free_y") +
   scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["grey"]]), HB)) +
   scale_shape_manual(values = setNames(c(16, 1), HB)) +
-  labs(x = "Season", y = "Relative to 2018/19 (log points)") +
+  labs(x = "Season", y = "Relative to the average season with DST (log points)") +
   theme_paper() + theme_outcome_strip()
 save_fig(g, "fig_event_study", height = 7)
 
 # ── Appendix: within the day ────────────────────────────────────────────────
 WD <- c("Triple difference", "With state-by-day fixed effects")
-wd <- rbind(rd("switched_hour_event_study.rds")$event_study[bin == 0L, .(outcome, sy, coef, se, design = WD[1])],
-            rd("within_day.rds")$event_study[, .(outcome, sy, coef, se, design = WD[2])])
+wd <- rbind(rd("switched_hour_event_study.rds")$event_study[bin == 0L, .(outcome, sy, coef = coef_vs_pre,
+                                                                          se = se_vs_pre, design = WD[1])],
+            rd("within_day.rds")$event_study[, .(outcome, sy, coef = coef_vs_pre, se = se_vs_pre,
+                                                 design = WD[2])])
 wd[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
           design = factor(design, levels = WD))]
 wd[, c("lo", "hi") := ci(coef, se)]
@@ -194,9 +199,29 @@ g <- ggplot(wd, aes(sy, 100 * coef, colour = design, shape = design)) +
   facet_wrap(~ outcome, ncol = 1, scales = "free_y") +
   scale_colour_manual(values = setNames(c(PAL[["grey"]], PAL[["red"]]), WD)) +
   scale_shape_manual(values = setNames(c(1, 16), WD)) +
-  labs(x = "Season", y = "Hour after sunset, relative to 2018/19 (log points)") +
+  labs(x = "Season", y = "Hour after sunset, relative to the average season with DST (log points)") +
   theme_paper() + theme_outcome_strip()
 save_fig(g, "fig_within_day", height = 7)
+
+# ── Appendix: the two legs of the triple difference ─────────────────────────
+# Treated minus control states in the hour after sunset, season by season,
+# in the summer window and in the off-season separately (04); the triple
+# difference is the first minus the second.
+LG <- c("Summer window", "Off-season")
+lg <- rd("pretrends.rds")$legs
+lg[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
+          leg = factor(fifelse(window == "win", LG[1], LG[2]), levels = LG))]
+lg[, c("lo", "hi") := ci(coef, se)]
+g <- ggplot(lg, aes(sy, 100 * coef, colour = leg, shape = leg)) +
+  event_frame(lg$sy, TRAFFIC_LAB) +
+  geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.5, position = dodge) +
+  geom_point(size = 1.8, position = dodge) +
+  facet_wrap(~ outcome, ncol = 1, scales = "free_y") +
+  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["blue"]]), LG)) +
+  scale_shape_manual(values = setNames(c(16, 17), LG)) +
+  labs(x = "Season", y = "Treated minus control, relative to 2018/19 (log points)") +
+  theme_paper() + theme_outcome_strip()
+save_fig(g, "fig_window_legs", height = 7)
 
 # ── Appendix: HonestDiD ─────────────────────────────────────────────────────
 # Columns are the two restrictions (plotmath strips, so M-bar has its bar);

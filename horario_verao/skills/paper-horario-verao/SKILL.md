@@ -38,7 +38,7 @@ quando existir, será em inglês.
   build/06–07               PNCT (volume horário do DNIT): download e limpeza
   build/08–11               chuva (Xavier), iluminação (Censo), México (INEGI geo e ATUS)
   analysis/code/00_utils.R  grupos, janelas, sol, painel (fonte única)
-  analysis/code/00_master_analysis.R  roda 01–29 em ordem (config/00_master_build.R faz o build)
+  analysis/code/00_master_analysis.R  roda 01–30 em ordem (config/00_master_build.R faz o build)
   analysis/code/01…27       hora que trocou de luz (01, grava o arquivo de eventos)
                             → event study (02) → relógio da PRF (03) → tendências (04)
                             → imputação (05) → inferência (06) → HonestDiD (07)
@@ -49,11 +49,12 @@ quando existir, será em inglês.
                             → amontoamento (19) → deixar um de fora (20) → usuários da via (21)
                             → integridade do registro (22) → dose de luz e chuva (23)
                             → iluminação pública (24) → custo (25) → México (26, 27)
-  analysis/code/28, 29      TODAS as figuras (28) e tabelas .tex (29), lidas só dos .rds
+                            → trocas de relógio antes de 2019 contra a abolição (28)
+  analysis/code/29, 30      TODAS as figuras (29) e tabelas .tex (30), lidas só dos .rds
   latex/                    paper.tex (submissão, anônima, AEA.cls), appendix.tex,
                             title_page.tex, paper_wp.tex; texto em sections/;
                             ./build.sh compila tudo
-  analysis/output/maps/     mapas (28_figures.R; fronteiras do build/12)
+  analysis/output/maps/     mapas (29_figures.R; fronteiras do build/12)
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
                             VIABILIDADE, PAPER, fontes_legais/, skills/
 
@@ -154,6 +155,30 @@ vale pelo desenho dentro do dia (horas de referência do `09`, desde 15/10/2026:
 controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 159,5 mi de 2016/17 (imprensa) não se citam.
 
+**Rodada do parecer simulado da AEJ: Policy (15/10/2026, `PARECER_AEJ_POLICY.md`):**
+- **Luz, não relógio** (`23`, Tabela 4 do paper): dose de escuridão pelo sol (noite 1,
+  crepúsculo civil 1/2) por hora do relógio, com EF hora do relógio × data. Hora da
+  noite de dia pleno a noite: mortes na via +47,7 lp (9,7); com efeito livre por hora
+  do relógio nos tratados pós (só a diferença de pôr do sol entre tratados identifica)
+  +52,4 (18,3); manhã −6,4 (14,7). Controle contado na hora do relógio da hora 0 dos
+  tratados (`20`): 32,9 (12,1).
+- **Contagem líquida sem escolher horas** (dose): 63 (12) por janela de verão, 74 (14)
+  por temporada inteira da regra de 2017; escalas 91 e 186; VSL R$ 344 mi por temporada
+  (R$ 868 mi na escala ampla). A soma de três horas (54, EP 20) virou checagem.
+- **Dinâmica** (`04`, Figura B3): a tripla dá 48,7 nas duas primeiras temporadas e 15,8
+  nas três últimas, mas isso vem da perna do inverno (o fora de temporada de 2019/20
+  inclui abr–jun/2020). Só o verão: 39,3 e 31,2. Sem mar/2020–fev/2022: 22,9 (9,1).
+  Faixa honesta: 23 a 35 lp.
+- **Trocas de relógio** (`28`): efeito de uma noite mais escura nas 3 semanas após cada
+  troca, 42,3 (13,8) contra 29,2 da abolição; dentro do dia, 79,1 contra 27,7. A
+  adaptação reduziu o efeito de um a dois terços, sem eliminá-lo.
+- **México com placebo** (`27`, Tabela C1 painel E): nas unidades que mantiveram o
+  relógio, o mesmo estimador dá mortes −20 (27), mas acidentes +10,8 e atropelados
+  +20,7. O México sustenta mortes, não acidentes.
+- **Volume** (`15`, `16`): acidentes reestimados nos verões das estações; hora 0 +17,6,
+  por veículo +24,0 (permutação p = 0,005), sem tendência pré nesses verões.
+- Score bootstrap no Poisson (`06`): p = 0,010 / 0,023 / 0,001.
+
 **Apêndice:** Bahia 2011/12 como checagem de sinal (`18`, VIABILIDADE §15):
 primeiro estágio claro (PRF anota escuro em 68% contra 92–100%); na noite, os
 acidentes com vítima têm o menor valor de 16 temporadas; a manhã não aparece.
@@ -166,6 +191,8 @@ hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
 - que a abolição "aumentou as mortes no trânsito" sem dizer "nas horas que
   escureceram"; nem que o total do dia "não muda" (é só ruidoso demais);
 - que a PRF "confirma" sem a ressalva da tendência;
+- que o México replica os acidentes (o placebo nas unidades que mantiveram o relógio
+  sobe quase o mesmo); só mortes;
 - qualquer efeito sobre nascimentos (partos seguem o relógio do hospital) ou
   sobre agressões (tendência, não luz: VIABILIDADE §9).
 
@@ -173,12 +200,11 @@ hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
 
 - A **hora antes do pôr do sol** cai na PRF (e não no SIM). Mecanismo candidato:
   ofuscamento pelo sol baixo, tráfego que muda de hora.
-- Risco por veículo com os mesmos verões nas duas fontes (PNCT 2014/15–2018/19 e
-  2021/22–2024/25): acidentes com vítima na hora 0 dão ~18,5 em vez de ~22, por
-  veículo ~+25 em vez de +29 (auditoria; ainda não é exibição).
 - Ler o texto completo de Gillmore (2025) e Depalo (2023) antes de citar números
   além do resumo.
 - Status do projeto de lei de 2025 que proíbe o horário de verão.
 - Controle no relógio de Brasília (15/10/2026, `tab_within_group`): o tráfego da
   noite do controle não se moveu; as mortes na via na hora 0 do controle subiram
-  (+19,7) em relação ao resto do dia. Se isso veio do relógio, a tripla subestima.
+  (+19,7) em relação ao resto do dia. O placebo mexicano mostra o mesmo tipo de
+  subida em acidentes onde nada mudou; o mecanismo segue sem teste direto.
+- SIM 2025 definitivo: 6ª temporada pós.

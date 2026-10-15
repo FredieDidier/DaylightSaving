@@ -12,9 +12,9 @@ Brazil's abolition of daylight saving time (Decree 9,772 of 25 April 2019) on
 road deaths in the clock hour that turned dark, with a replication on Mexico's
 abolition of 2022. It is written in R and has three entry points:
 `config/00_master_build.R` builds the data (12 scripts), `analysis/code/00_master_analysis.R`
-estimates everything and writes every figure and table (29 scripts), and `latex/build.sh`
-compiles the paper and the Online Appendix. The main text has 4 figures and 6 tables
-and the Online Appendix has 9 figures and 7 tables, all produced by the code. The
+estimates everything and writes every figure and table (30 scripts), and `latex/build.sh`
+compiles the paper and the Online Appendix. The main text has 4 figures and 7 tables
+and the Online Appendix has 10 figures and 7 tables, all produced by the code. The
 analysis takes about 2 to 3 hours on an 8-core laptop; rebuilding the data from
 scratch takes longer, mostly in downloads.
 
@@ -57,7 +57,7 @@ license of the repository (CC BY 4.0 on openICPSR); third-party data keep their 
 | Mexican road crashes (ATUS), 1997–2025 | INEGI (2026a) | `build/11` | open data zip, <https://www.inegi.org.mx/contenidos/programas/accidentes/datosabiertos/conjunto_de_datos_atus_anual_csv.zip> (release of 28/08/2026) | yes (`mexico/input/atus_raw`) |
 | Mexican municipal seats | INEGI (2026b) | `build/10` | INEGI geostatistical web service | yes (`mexico/input/inegi_geo`) |
 | Mexican boundaries, GADM 4.1 | GADM (2022) | `build/12` | downloaded by `geodata::gadm`; free for academic use, redistribution not allowed without permission | no; downloaded by the script |
-| Country outlines for the maps | Natural Earth (n.d.) | `analysis/code/28` | R packages `rnaturalearth`, `rnaturalearthdata`; public domain | read from the R package |
+| Country outlines for the maps | Natural Earth (n.d.) | `analysis/code/29` | R packages `rnaturalearth`, `rnaturalearthdata`; public domain | read from the R package |
 | GNI per head and PPP conversion factor, 2025 | World Bank (2026) | `analysis/code/25` | WDI series NY.GNP.PCAP.PP.CD and PA.NUS.PPP; CC BY 4.0 | values written in the script |
 | Consumer price index (IPCA) | IBGE (2026) | `analysis/code/25` | SIDRA table 1737 | values written in the script |
 | Social cost of a death on a federal highway | Ipea and PRF (2015), Table 6A | `analysis/code/25` | public report | value written in the script |
@@ -84,7 +84,7 @@ Every data file lives under one folder, `DROPBOX_ROOT/build/`, with `DROPBOX_ROO
 | `mexico/input/atus_raw/`, `mexico/input/inegi_geo/` | INEGI; `build/10` | raw ATUS zip; cached responses of the INEGI web service | yes |
 | `mexico/output/atus_accidents.parquet`, `mx_muni_geo.parquet` | `build/10`, `11` | one row per Mexican crash; municipal seats | yes |
 | `mexico/output/mx_states.gpkg`, `mx_border_states_munis.gpkg`, `mexico/input/gadm/` | `build/12` | GADM boundaries | no (GADM terms) |
-| `audit/events_sun_bins.parquet`, `audit/*.rds` | `analysis/code/01`–`27` | event file and the cached estimates that `28` and `29` read | yes |
+| `audit/events_sun_bins.parquet`, `audit/*.rds` | `analysis/code/01`–`28` | event file and the cached estimates that `29` and `30` read | yes |
 
 All files are Parquet, GeoPackage, CSV, JSON or R's `.rds`; each build script describes
 its output in its header.
@@ -108,9 +108,9 @@ its output in its header.
 ### Controlled randomness
 
 - [x] Random seeds are set at the top of every script that draws:
-  `analysis/code/05_imputation.R` line 37, `06_inference.R` lines 34–35,
-  `09_within_day.R` line 50, `14_inference_pedestrian.R` lines 28–29,
-  `16_inference_volume.R` line 39, `23_light_dose.R` line 38, `26_mexico.R` lines 51–52.
+  `analysis/code/05_imputation.R` line 37, `06_inference.R` lines 40–41,
+  `09_within_day.R` line 51, `14_inference_pedestrian.R` lines 28–29,
+  `16_inference_volume.R` line 40, `26_mexico.R` lines 51–52.
   All draws are made before the work is split across cores, so results do not
   depend on the number of cores.
 
@@ -134,7 +134,7 @@ Approximate storage space needed: 3.3 GB with the raw rain grid, 0.7 GB without 
 
 The code was last run on an Apple M1 Pro laptop (8 cores, 16 GB of memory, macOS 26.6),
 with the default numbers of worker processes (4 or 5). The analysis takes about 2 to 3 hours, most of it
-in the permutation and bootstrap draws of `05`, `06`, `14`, `16`, `23` and `26`; this
+in the permutation and bootstrap draws of `05`, `06`, `14`, `16` and `26`; this
 figure comes from the timestamps of the cached results, not from one uninterrupted run.
 Rebuilding the data adds the downloads of `build/02`, `05`, `06` and `10`, which depend on
 the remote servers and resume where they stopped.
@@ -157,10 +157,10 @@ build/09                  street lighting, Census 2022 and 2010
 build/10-11               Mexico: municipal seats, ATUS crashes
 build/12                  boundaries for the two maps
 analysis/code/00_utils.R  shared definitions: groups, windows, solar equations, panel
-analysis/code/00_master_analysis.R   runs 01-29 in order, each in its own R process
-analysis/code/01-27       one estimate each, cached in DROPBOX_ROOT/build/audit/*.rds
-analysis/code/28          every figure and map, read only from the caches
-analysis/code/29          every table, read only from the caches
+analysis/code/00_master_analysis.R   runs 01-30 in order, each in its own R process
+analysis/code/01-28       one estimate each, cached in DROPBOX_ROOT/build/audit/*.rds
+analysis/code/29          every figure and map, read only from the caches
+analysis/code/30          every table, read only from the caches
 analysis/output/          graphs/, maps/ (PDF and PNG), tables/ (LaTeX tabulars)
 latex/                    paper.tex (submission, anonymized), appendix.tex (Online
                           Appendix), title_page.tex, paper_wp.tex (working paper);
@@ -191,8 +191,7 @@ To be set at deposit, in a `LICENSE.txt` at the root of the package.
 ### Details
 
 - Run with the default draw counts. The environment variables `DS_PERM` and `DS_BOOT`
-  change them for several scripts at once (`DS_BOOT` sets both the 299 draws of `05` and
-  the 499 of `23`), and setting `DS_PERM` also turns on a permutation test in `09` that
+  change them for several scripts at once (`DS_BOOT` sets the 299 draws of `05`), and setting `DS_PERM` also turns on a permutation test in `09` that
   the paper does not use. `DS_CORES` sets the number of worker processes only.
 - `00_master_analysis.R 06 14` reruns single steps; `--from 15` reruns from a step on.
   Each script can also be run alone once its inputs exist.
@@ -201,38 +200,40 @@ To be set at deposit, in a `LICENSE.txt` at the root of the package.
 
 ## List of tables and programs
 
-The estimates come from the scripts in the last column; `28_figures.R` and `29_tables.R`
+The estimates come from the scripts in the last column; `29_figures.R` and `30_tables.R`
 only read their caches and write the files. Figures are in `analysis/output/graphs/`
 (maps in `analysis/output/maps/`) and tables in `analysis/output/tables/`.
 
 | Exhibit | Program | Line | Output file | Estimated in |
 |---|---|---|---|---|
-| Figure 1 | `28_figures.R` | 417 | `maps/fig_map_brazil.pdf` | `build/01`, `12` |
-| Figure 2 | `28_figures.R` | 142 | `fig_light.pdf` | `03` |
-| Figure 3 | `28_figures.R` | 164 | `fig_hours_from_sunset.pdf` | `01` |
-| Figure 4 | `28_figures.R` | 181 | `fig_event_study.pdf` | `02` |
-| Table 1 | `29_tables.R` | 72 | `tab_descriptives.tex` | `13` |
-| Table 2 | `29_tables.R` | 103 | `tab_main.tex` | `01`, `06` |
-| Table 3 | `29_tables.R` | 235 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18` |
-| Table 4 | `29_tables.R` | 127 | `tab_pedestrians.tex` | `12`, `14` |
-| Table 5 | `29_tables.R` | 160 | `tab_excess.tex` | `11` |
-| Table 6 | `29_tables.R` | 363 | `tab_cost.tex` | `25` |
-| Figure A1 | `28_figures.R` | 328 | `fig_record_integrity.pdf` | `22` |
-| Figure B1 | `28_figures.R` | 287 | `fig_window_shift.pdf` | `19` |
-| Figure B2 | `28_figures.R` | 311 | `fig_leave_out.pdf` | `20` |
-| Table B1 | `29_tables.R` | 262 | `tab_sensitivity.tex` | `19`, `20`, `23` |
-| Figure B3 | `28_figures.R` | 199 | `fig_within_day.pdf` | `02`, `09` |
-| Table B2 | `29_tables.R` | 210 | `tab_within_group.tex` | `09`, `15` |
-| Figure B4 | `28_figures.R` | 228 | `fig_honestdid.pdf` | `07` |
-| Table B3 | `29_tables.R` | 302 | `tab_road_users.tex` | `21` |
-| Table B4 | `29_tables.R` | 188 | `tab_traffic_volume.tex` | `15`, `16` |
-| Table B5 | `29_tables.R` | 317 | `tab_light_dose.tex` | `23` |
-| Table B6 | `29_tables.R` | 341 | `tab_street_lighting.tex` | `24` |
-| Figure B5 | `28_figures.R` | 265 | `fig_bahia.pdf` | `17` |
-| Figure B6 | `28_figures.R` | 243 | `fig_assault.pdf` | `10` |
-| Figure C1 | `28_figures.R` | 464 | `maps/fig_map_mexico.pdf` | `build/10`, `12` |
-| Table C1 | `29_tables.R` | 396 | `tab_mexico.tex` | `26`, `27` |
-| Figure C2 | `28_figures.R` | 349 | `fig_mexico_event_study.pdf` | `26` |
+| Figure 1 | `29_figures.R` | 442 | `maps/fig_map_brazil.pdf` | `build/01`, `12` |
+| Figure 2 | `29_figures.R` | 143 | `fig_light.pdf` | `03` |
+| Table 1 | `30_tables.R` | 75 | `tab_descriptives.tex` | `13` |
+| Table 2 | `30_tables.R` | 107 | `tab_main.tex` | `01`, `06` |
+| Figure 3 | `29_figures.R` | 165 | `fig_hours_from_sunset.pdf` | `01` |
+| Figure 4 | `29_figures.R` | 184 | `fig_event_study.pdf` | `02` |
+| Table 3 | `30_tables.R` | 265 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
+| Table 4 | `30_tables.R` | 160 | `tab_dose.tex` | `23` |
+| Table 5 | `30_tables.R` | 131 | `tab_pedestrians.tex` | `12`, `14` |
+| Table 6 | `30_tables.R` | 184 | `tab_excess.tex` | `11`, `23` |
+| Table 7 | `30_tables.R` | 396 | `tab_cost.tex` | `25` |
+| Figure A1 | `29_figures.R` | 353 | `fig_record_integrity.pdf` | `22` |
+| Figure B1 | `29_figures.R` | 312 | `fig_window_shift.pdf` | `19` |
+| Figure B2 | `29_figures.R` | 336 | `fig_leave_out.pdf` | `20` |
+| Table B1 | `30_tables.R` | 297 | `tab_sensitivity.tex` | `04`, `19`, `20`, `23` |
+| Figure B3 | `29_figures.R` | 224 | `fig_window_legs.pdf` | `04` |
+| Figure B4 | `29_figures.R` | 204 | `fig_within_day.pdf` | `02`, `09` |
+| Table B2 | `30_tables.R` | 238 | `tab_within_group.tex` | `09`, `15` |
+| Figure B5 | `29_figures.R` | 253 | `fig_honestdid.pdf` | `07` |
+| Table B3 | `30_tables.R` | 349 | `tab_road_users.tex` | `21` |
+| Table B4 | `30_tables.R` | 216 | `tab_traffic_volume.tex` | `15`, `16` |
+| Table B5 | `30_tables.R` | 373 | `tab_street_lighting.tex` | `24` |
+| Table B6 | `30_tables.R` | 471 | `tab_transitions.tex` | `28` |
+| Figure B6 | `29_figures.R` | 290 | `fig_bahia.pdf` | `17` |
+| Figure B7 | `29_figures.R` | 268 | `fig_assault.pdf` | `10` |
+| Figure C1 | `29_figures.R` | 489 | `maps/fig_map_mexico.pdf` | `build/10`, `12` |
+| Table C1 | `30_tables.R` | 431 | `tab_mexico.tex` | `26`, `27` |
+| Figure C2 | `29_figures.R` | 374 | `fig_mexico_event_study.pdf` | `26` |
 
 ## References
 

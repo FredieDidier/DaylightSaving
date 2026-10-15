@@ -48,6 +48,10 @@ SUMS <- list(
   "evening, all (-2 to +1)"          = c("eve-2", "eve-1", "eve+0", "eve+1"),
   "morning, light (0)"               = "morn+0",
   "net: evening 0, +1 and morning 0" = c("eve+0", "eve+1", "morn+0"),
+  # The same three hours on each side: -1 changed in degree at both ends, +1
+  # went from twilight to night in the evening and from day to day in the
+  # morning.
+  "net: -1 to +1 at both ends"       = c("eve-1", "eve+0", "eve+1", "morn-1", "morn+0", "morn+1"),
   "net: all seven hours"             = HOURS$key)
 
 stack_panel <- function(o) {

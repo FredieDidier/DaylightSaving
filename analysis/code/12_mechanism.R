@@ -34,7 +34,7 @@ PAIRS <- list(
 HOURS <- data.table(side = c("set", "set", "rise"), bin = c(0L, 1L, 0L),
                     hour = c("eve+0", "eve+1", "morn+0"))
 
-res <- list()
+res <- list(); shares <- list()
 for (nm in names(PAIRS)) {
   p <- rbindlist(lapply(names(PAIRS[[nm]]), function(g) rbindlist(lapply(seq_len(nrow(HOURS)), function(i) {
     x <- make_panel(ev, days, PAIRS[[nm]][[g]], HOURS$bin[i], HOURS$side[i])
@@ -58,12 +58,23 @@ for (nm in names(PAIRS)) {
                  fill = TRUE)
   }
   res[[nm]] <- tab
+  # Pedestrian share of the excess in each hour, E_ped / (E_ped + E_other),
+  # with a delta-method standard error from the joint covariance.
+  shares[[nm]] <- rbindlist(lapply(HOURS$hour, function(h) {
+    i <- match(paste0(c("ped_", "other_"), h), k)
+    E <- S[i] * (1 - exp(-b[i])); g <- S[i] * exp(-b[i]); tot <- sum(E)
+    grad <- numeric(length(b))
+    grad[i] <- c(g[1] * E[2], -g[2] * E[1]) / tot^2
+    data.table(pair = nm, hour = h, group = "ped", share_se = 100 * sqrt(drop(t(grad) %*% V %*% grad)))
+  }))
 }
+shares <- rbindlist(shares)
 res <- rbindlist(res)
 res[, p := 2 * pnorm(-abs(coef_lp / se_lp))]
 res[, pct := 100 * (exp(coef_lp / 100) - 1)]
 res[group != "ped - other", share_of_excess := 100 * excess_per_season /
       sum(excess_per_season), by = .(pair, hour)]
+res <- shares[res, on = .(pair, hour, group)]
 
 
 options(width = 180)

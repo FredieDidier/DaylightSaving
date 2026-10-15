@@ -9,8 +9,9 @@
 #   vehicles        Poisson volume triple difference on the PNCT station panel,
 #                   y[s,d] ~ treated x window x post | station + uf^window +
 #                   uf^sy + date
-#   injury crashes  PRF crashes with victims, UF x day, as in 01 and 11
-#   deaths          PRF deaths, UF x day, as in 01 and 11
+#   injury crashes  PRF crashes with victims, UF x day, as in 01, on the
+#                   summers the stations counted (as in 15)
+#   deaths          PRF deaths, UF x day, same summers
 #   per vehicle     crash estimate minus volume estimate, for each crash outcome
 # Each draw picks 11 of the 23 states as "treated" (DS_PERM draws, default
 # 999; the treatment was not randomized, so this is a permutation test, not
@@ -21,7 +22,7 @@
 # Reads the station-day x hour panel that 15 writes
 # (pnct/output/pnct_station_day_bins.parquet); the point estimates must equal
 # those of 15, and the script stops if they do not. The p-values are printed in
-# brackets in tab_traffic_volume (29_tables.R).
+# brackets in tab_traffic_volume (30_tables.R).
 #
 # Draws run in parallel (DS_CORES, default 5) and are drawn up front, so the
 # result does not depend on the number of cores.
@@ -49,8 +50,7 @@ vol <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "pnct", "outp
                                             "pnct_station_day_bins.parquet")))
 vol <- vol[key %in% KEYS]
 
-SEASONS <- season_range()
-days <- make_days(SEASONS)
+days <- make_days(sort(unique(vol[window == "win", sy])))
 ev   <- as.data.table(read_parquet(EVENTS_FILE))
 crash_panel <- function(k, outc) {
   side <- if (startsWith(k, "eve")) "set" else "rise"

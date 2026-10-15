@@ -32,7 +32,8 @@
 # coefficient shows it. The treated-alone version is the Mexican estimator
 # (27_mexico_within_day.R) applied to Brazil.
 #
-# Also: event study by season for bin 0 (reference 2018/19), HonestDiD on it,
+# Also: event study by season for bin 0 (reference 2018/19, and re-centred on
+# the average of the seasons before abolition as in 02), HonestDiD on it,
 # robustness to the reference set (day only / night only), and (optional, DS_PERM)
 # permutation inference over which 11 states are treated.
 # =============================================================================
@@ -134,6 +135,10 @@ es_hd <- lapply(TRAFFIC, function(o) {
   b <- coef(m)[keep]; V <- vcov(m)[keep, keep]
   es <- rbind(data.table(outcome = o, sy = c(pre_s, post_s), coef = b, se = sqrt(diag(V))),
               data.table(outcome = o, sy = LAST_PRE, coef = 0, se = 0))
+  # Against the average of the seasons before abolition, as in 02.
+  a_pre <- c(rep(1, length(pre_s)), rep(0, length(post_s))) / (length(pre_s) + 1)
+  L <- t(vapply(es$sy, function(s) as.numeric(c(pre_s, post_s) == s) - a_pre, numeric(length(b))))
+  es[, `:=`(coef_vs_pre = drop(L %*% b), se_vs_pre = sqrt(pmax(0, rowSums((L %*% V) * L))))]
   # Joint test that the pre-period season coefficients are zero, from b and V.
   # With 23 clusters a cluster-robust Wald over 10 coefficients tends to
   # over-reject; read it with the HonestDiD bounds, not alone.
@@ -187,7 +192,7 @@ saveRDS(list(pooled = pooled, by_group = by_group, event_study = es, event_study
              n_perm = N_PERM),
         file.path(path_audit, "within_day.rds"))
 
-# Figure: drawn by 28_figures.R from the caches of 02 and of this script.
+# Figure: drawn by 29_figures.R from the caches of 02 and of this script.
 
 options(width = 170)
 cat("Seasons:", min(SEASONS), "-", max(SEASONS), "\n\nPooled (log points):\n")

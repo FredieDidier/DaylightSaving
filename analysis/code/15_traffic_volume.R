@@ -28,8 +28,11 @@
 #       time moved one clock hour later in the control states' summer when
 #       DST ended; the control-alone coefficients show whether their traffic
 #       moved with them.
-#   (d) Risk per vehicle: crash effect (11_reallocation.R, PRF) minus volume
-#       effect, hour by hour, in log points.
+#   (d) Risk per vehicle: crash effect minus volume effect, hour by hour, in
+#       log points. The PRF crash triple differences are re-estimated here on
+#       the summers the stations counted (VOL_SEASONS), so that both effects
+#       come from the same seasons; on those seasons the crash pre-trend is
+#       also estimated (2014/15-2018/19).
 #
 # Groups as everywhere: treated RS SC PR SP RJ ES MG GO MT MS DF; control the
 # North and Northeast without BA, TO, AC, AM. Only complete, counted
@@ -65,6 +68,8 @@ hv[, sy := year(date) - (month(date) < 7L)]
 md <- hv[, month(date) * 100L + mday(date)]
 hv[, window := fcase(md >= 1115L | md <= 214L, "win", md >= 401L & md <= 831L, "off")]
 hv <- hv[!is.na(window)]
+VOL_SEASONS <- sort(unique(hv[window == "win", sy]))
+stopifnot(identical(VOL_SEASONS, c(2014:2018, 2021:2024)))
 hv[, `:=`(treated = as.integer(uf %in% TREATED), win = as.integer(window == "win"),
           post = as.integer(sy > LAST_PRE))]
 hv[, `:=`(tw = treated * win, twp = treated * win * post)]
@@ -182,10 +187,19 @@ by_group <- rbindlist(lapply(names(WD_SIDES), function(side) {
   }))
 }))
 
-# ── (d) Risk per vehicle (PRF crashes minus volume, same hour) ──────────────
-rl <- readRDS(file.path(path_audit, "reallocation.rds"))$hours
-risk <- merge(rl[outcome != "SIM transport deaths, on road", .(outcome, bin_key = hour, crash_lp = coef_lp, crash_se = se_lp)],
-              ddd[vehicles == "v", .(bin_key, vol_lp = coef_lp, vol_se = se_lp)], by = "bin_key")
+# ── (d) Risk per vehicle (PRF crashes minus volume, same hour, same seasons) ─
+ev_c <- as.data.table(read_parquet(EVENTS_FILE))
+days_v <- make_days(VOL_SEASONS)
+crash <- rbindlist(lapply(c("PRF injury accidents", "PRF deaths"), function(o)
+  rbindlist(lapply(seq_len(nrow(HOURS)), function(i) {
+    p <- make_panel(ev_c, days_v, o, HOURS$bin[i], HOURS$side[i])
+    m <- fepois(as.formula(paste("y ~ twp", FE)), data = p, cluster = ~uf, notes = FALSE)
+    tr <- fepois(as.formula(paste("y ~ tw:t", FE)), data = p[post == 0], cluster = ~uf, notes = FALSE)
+    data.table(outcome = o, bin_key = HOURS$key[i], crash_lp = 100 * coef(m)[["twp"]],
+               crash_se = 100 * se(m)[["twp"]], pre_trend_lp = 100 * coef(tr)[[1]],
+               pre_trend_se = 100 * se(tr)[[1]])
+  }))))
+risk <- merge(crash, ddd[vehicles == "v", .(bin_key, vol_lp = coef_lp, vol_se = se_lp)], by = "bin_key")
 risk[, `:=`(per_vehicle_lp = crash_lp - vol_lp, per_vehicle_se = sqrt(crash_se^2 + vol_se^2))]
 
 # ── Coverage ────────────────────────────────────────────────────────────────

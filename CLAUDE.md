@@ -20,9 +20,9 @@ DaylightSaving/                      (git — código, nunca dado)
   build/01_dst_calendar.R            manual/ → painéis UF × temporada e UF × dia
   build/02–12                        um passo por fonte (config/00_master_build.R roda tudo;
                                      12 = fronteiras dos mapas)
-  analysis/code/01–27                estimam e guardam audit/*.rds
-  analysis/code/28, 29               figuras e tabelas, lidas só dos .rds
-                                     (00_master_analysis.R roda 01–29)
+  analysis/code/01–28                estimam e guardam audit/*.rds
+  analysis/code/29, 30               figuras e tabelas, lidas só dos .rds
+                                     (00_master_analysis.R roda 01–30)
   analysis/output/                   graphs/, tables/, maps/ (mapas do Brasil e do México)
   latex/                             paper.tex (AEJ: Policy, anônimo), appendix.tex,
                                      title_page.tex, paper_wp.tex; texto em sections/;

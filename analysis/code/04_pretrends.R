@@ -13,7 +13,18 @@
 #   (c) pooled estimate with and without a linear treated x window trend
 #       fitted on the whole sample (05_imputation.R does the cleaner version:
 #       trend fitted on untreated observations only, then extrapolated);
-#   (d) pooled estimate without the COVID seasons (2020/21, 2021/22).
+#   (d) pooled estimate without the pandemic: every date from March 2020 to
+#       February 2022 (PANDEMIC, 00_utils.R), which includes the lockdown
+#       months that fall in the off-season of 2019/20;
+#   (e) the effect in the first two seasons without DST (2019/20, 2020/21)
+#       and in the last three, with and without the pandemic dates;
+#   (f) the summer window alone: a difference in differences, treated against
+#       control states, after against before, with state and date effects.
+#       It leaves out the off-season comparison and so any shock confined to
+#       the off-season;
+#   (g) the two legs of the triple difference season by season: the treated -
+#       control gap in the summer window and in the off-season, each against
+#       2018/19 (figure: the source of the season-to-season swings).
 # Also: share of on-road SIM transport deaths with missing clock time, by
 # group, window and period (missing hours drop out of every bin).
 # =============================================================================
@@ -39,14 +50,42 @@ res <- rbindlist(lapply(TRAFFIC, function(o) rbindlist(lapply(c(0L, -1L), functi
   pre_tr <- est("y ~ tw:t", p[post == 0])
   base   <- est("y ~ twp", p)
   trend  <- est("y ~ twp + tw:t", p)
-  nocov  <- est("y ~ twp", p[!sy %in% 2020:2021])
+  nopan  <- est("y ~ twp", drop_pandemic(p))
+  p[, `:=`(early = twp * (sy <= LAST_PRE + 2L), late = twp * (sy > LAST_PRE + 2L))]
+  el     <- est("y ~ early + late", p)
+  el_np  <- est("y ~ early + late", drop_pandemic(p))
+  s <- p[window == "win"][, `:=`(tp = treated * post, early = treated * post * (sy <= LAST_PRE + 2L),
+                                 late = treated * post * (sy > LAST_PRE + 2L))]
+  fs <- function(f, d) fepois(as.formula(f), data = d, cluster = ~uf, notes = FALSE)
+  sdd <- fs("y ~ tp | uf + date", s)
+  sel <- fs("y ~ early + late | uf + date", s)
   data.table(outcome = o, bin = b,
              wald_pre_p = w$p,
              pre_trend_lp = 100 * pre_tr$b[["tw:t"]], pre_trend_se = 100 * pre_tr$s[["tw:t"]],
              base_lp = 100 * base$b[["twp"]], base_se = 100 * base$s[["twp"]],
              trend_lp = 100 * trend$b[["twp"]], trend_se = 100 * trend$s[["twp"]],
-             nocovid_lp = 100 * nocov$b[["twp"]], nocovid_se = 100 * nocov$s[["twp"]])
+             nopandemic_lp = 100 * nopan$b[["twp"]], nopandemic_se = 100 * nopan$s[["twp"]],
+             early_lp = 100 * el$b[["early"]], early_se = 100 * el$s[["early"]],
+             late_lp = 100 * el$b[["late"]], late_se = 100 * el$s[["late"]],
+             early_nopan_lp = 100 * el_np$b[["early"]], early_nopan_se = 100 * el_np$s[["early"]],
+             late_nopan_lp = 100 * el_np$b[["late"]], late_nopan_se = 100 * el_np$s[["late"]],
+             summer_dd_lp = 100 * coef(sdd)[["tp"]], summer_dd_se = 100 * se(sdd)[["tp"]],
+             summer_early_lp = 100 * coef(sel)[["early"]], summer_early_se = 100 * se(sel)[["early"]],
+             summer_late_lp = 100 * coef(sel)[["late"]], summer_late_se = 100 * se(sel)[["late"]])
 }))))
+
+# ── (g) The two legs, season by season ──────────────────────────────────────
+legs <- rbindlist(lapply(TRAFFIC, function(o) {
+  p <- make_panel(ev, days, o, 0L)
+  rbindlist(lapply(c("win", "off"), function(wn) {
+    m <- fepois(y ~ i(sy, treated, ref = LAST_PRE) | uf + date, data = p[window == wn],
+                cluster = ~uf, notes = FALSE)
+    rbind(data.table(outcome = o, window = wn,
+                     sy = as.integer(sub("sy::(\\d+):treated", "\\1", names(coef(m)))),
+                     coef = coef(m), se = se(m)),
+          data.table(outcome = o, window = wn, sy = LAST_PRE, coef = 0, se = 0))
+  }))
+}))
 
 # Missing clock time among on-road SIM transport deaths.
 yrs <- (min(SEASONS)):(max(SEASONS) + 1L)
@@ -64,7 +103,7 @@ miss <- sim[, .(miss_pct = round(100 * mean(miss), 1), n = .N),
 miss_ddd <- miss[, sum(miss_pct * fifelse(group == "treated", 1, -1) *
                          fifelse(window == "win", 1, -1) * fifelse(period == "post", 1, -1))]
 
-saveRDS(list(pretrends = res, missing_hour = miss), file.path(path_audit, "pretrends.rds"))
+saveRDS(list(pretrends = res, legs = legs, missing_hour = miss), file.path(path_audit, "pretrends.rds"))
 options(width = 170)
 print(res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)])
 cat("\nMissing clock time, on-road SIM transport deaths (%):\n")

@@ -9,18 +9,19 @@
 #   Rscript analysis/code/00_master_analysis.R --from 15    # 15 onwards
 #   Rscript analysis/code/00_master_analysis.R --list       # print the order
 #
-# 01-27 estimate and cache their results in audit/*.rds under DROPBOX_ROOT;
-# 28 draws every figure and 29 writes every table from those caches, so a
+# 01-28 estimate and cache their results in audit/*.rds under DROPBOX_ROOT;
+# 29 draws every figure and 30 writes every table from those caches, so a
 # change of label or layout reruns only the last two. The order matters in
-# four places: 01 writes the event file that most later scripts read, 11
-# must run before 15 and 25 (they read its excess counts), 15 writes the
-# station panel that 16 reads, and 28-29 run last.
+# five places: 01 writes the event file that most later scripts read, 11
+# and 23 must run before 25 (it reads their excess counts), 15 writes the
+# station panel that 16 reads, 01 and 09 run before 28 (it reads their
+# estimates), and 29-30 run last.
 # Any script can still be run on its own once its inputs exist.
 #
 # Each script gets its own process because several fork a worker pool over a
 # large panel, and one session would keep every earlier script's memory alive.
 # The slow ones (permutation and bootstrap draws) read their draw counts from
-# the environment: DS_PERM (06, 09, 14, 16, 26), DS_BOOT (05, 23) and DS_CORES for
+# the environment: DS_PERM (06, 09, 14, 16, 26), DS_BOOT (05) and DS_CORES for
 # the number of workers. 09 runs its permutation test only when DS_PERM is set.
 #
 # The first failure stops the run and its exit status is propagated.
@@ -35,8 +36,8 @@ STEPS <- c(
   "17_bahia_switch.R",
   "18_placebo_hours.R", "19_heaping.R", "20_leave_out.R", "21_road_users.R",
   "22_record_integrity.R", "23_light_dose.R", "24_street_lighting.R",
-  "25_total_cost.R", "26_mexico.R", "27_mexico_within_day.R",
-  "28_figures.R", "29_tables.R")
+  "25_total_cost.R", "26_mexico.R", "27_mexico_within_day.R", "28_transitions.R",
+  "29_figures.R", "30_tables.R")
 num <- sub("_.*", "", STEPS)
 
 args <- commandArgs(trailingOnly = TRUE)

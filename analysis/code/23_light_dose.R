@@ -11,12 +11,35 @@
 #     clustered by state. The share is among crashes that happened, so it mixes
 #     the change in light with the change in which crashes happen; it is a
 #     scale, not a structural first stage.
-# (b) Wald ratio: the reduced form of 01 (log points) divided by (a)
-#     (percentage points), times 100: the change in events when the hour goes
-#     from light to fully dark. The PRF first stage scales the SIM estimate too
-#     (same hour, same places; federal highways only). 95% interval from a
-#     pairs bootstrap over states (DS_BOOT draws, default 499; states drawn
-#     with replacement, duplicates relabelled; draws fixed up front).
+# (b) Darkness as a dose, from the sun. For each municipal seat, date and
+#     clock hour h, the darkness index (dark_minutes, 00_utils.R: night 1,
+#     civil twilight 1/2, daylight 0) of standard-time [60h, 60h + 60) minus
+#     that of [60h - 60, 60h): under DST, clock hour h was standard hour h - 1,
+#     so this is the change abolition brought to that clock hour. Averaged over
+#     the state's seats, weighted by their on-road deaths (all hours, all
+#     seasons). It runs from +1 (an evening hour that went from full daylight
+#     to night) to -1 (a morning hour that went the other way) and sums to
+#     zero over the day: abolition moved light, it did not remove any.
+#     Panel: state x date x clock hour (0-23), summer window and off-season.
+#       y[u,d,h] ~ te Xe + tm Xm | uf^h^window + uf^h^sy + h^date
+#     X = dose x treated x window x post, split at noon into the evening (e)
+#     and the morning (m). te is the change, in log points, when an evening
+#     clock hour goes from fully light to fully dark. The clock-hour x date
+#     effect absorbs any change, anywhere in the country, in the risk at a
+#     given clock time on a given date, so the clock time at which the
+#     treated states' hour 0 falls cannot drive te. Variants: date effects
+#     only (no clock-hour x date); adding state x date effects (within the
+#     state's day); adding a free effect for every clock hour in the treated
+#     states' summers after 2019, so that te comes only from the difference,
+#     at the same clock hour, between treated states whose sun sets at
+#     different clock times.
+#     Every hour enters, with zero dose where the light did not change, so the
+#     model gives a net count of excess events per summer without choosing
+#     hours (as in 11: observed minus counterfactual, delta-method standard
+#     errors). The same coefficients applied to the days of the 2017 rule's
+#     DST season outside the summer window (first Sunday of November to 14
+#     November; 15 February to the day before the third Sunday of February, a
+#     week later when that Sunday is Carnival) give the count per DST season.
 # (c) Rain. On a rainy, overcast evening the hour was already dim under DST,
 #     so abolition darkens it less. Rain index per state-day: share of the
 #     state's on-road deaths (all hours, all seasons, by municipality) that
@@ -28,15 +51,7 @@
 
 source(here::here("config", "config.R"))
 source(here::here("analysis", "code", "00_utils.R"))
-suppressPackageStartupMessages({
-  library(fixest)
-  library(parallel)
-})
-
-B     <- as.integer(Sys.getenv("DS_BOOT", unset = "499"))
-CORES <- as.integer(Sys.getenv("DS_CORES", unset = "4"))
-set.seed(20190425)
-setFixest_nthreads(1)
+suppressPackageStartupMessages(library(fixest))
 
 SEASONS <- season_range()
 days <- make_days(SEASONS)
@@ -64,35 +79,96 @@ fs_dat <- days[, .(uf, date, window, sy, twp, tw, post)][fs_dat, on = .(uf, date
 stopifnot(abs(nrow(fs_dat) - ev[outcome == "PRF injury accidents" & bin_set == 0L &
                                   date %in% days$date, .N]) / nrow(fs_dat) < 0.01)
 
-fs_fit <- function(d) coef(feols(dark ~ twp | uf^window + uf^sy + date, data = d))[["twp"]]
 m_fs <- feols(dark ~ twp | uf^window + uf^sy + date, data = fs_dat, cluster = ~uf)
 fs <- data.table(fs_pp = 100 * coef(m_fs)[["twp"]], fs_se_pp = 100 * se(m_fs)[["twp"]],
                  treated_pre_dark_pct = 100 * fs_dat[tw == 1 & post == 0, mean(dark)],
                  n_crashes = nrow(fs_dat))
 
-# ── Reduced forms and the Wald ratio ────────────────────────────────────────
-panels <- lapply(setNames(TRAFFIC, TRAFFIC), function(o) make_panel(ev, days, o, 0L, "set"))
-rf_fit <- function(p) coef(fepois(as.formula(paste("y ~ twp", FE)), data = p, notes = FALSE))[["twp"]]
-rf <- sapply(panels, rf_fit)
-
-ALL <- c(TREATED, CONTROL)
-draws <- replicate(B, sample(ALL, length(ALL), replace = TRUE), simplify = FALSE)
-resample <- function(d, s) rbindlist(lapply(seq_along(s), function(i)
-  d[uf == s[i]][, uf := paste0(s[i], "_", i)]))
-boot <- do.call(rbind, mclapply(draws, function(s) {
-  if (!any(s %in% TREATED) || !any(s %in% CONTROL)) return(rep(NA_real_, 4))
-  c(fs = tryCatch(fs_fit(resample(fs_dat, s)), error = function(e) NA_real_),
-    sapply(panels, function(p) tryCatch(rf_fit(resample(p, s)), error = function(e) NA_real_)))
-}, mc.cores = CORES))
-colnames(boot) <- c("fs", TRAFFIC)
-
-wald <- rbindlist(lapply(TRAFFIC, function(o) {
-  r <- 100 * boot[, o] / boot[, "fs"]
-  data.table(outcome = o, rf_lp = 100 * rf[[o]], wald_lp_per_full_dark = 100 * rf[[o]] / coef(m_fs)[["twp"]],
-             lo = quantile(r, 0.025, na.rm = TRUE), hi = quantile(r, 0.975, na.rm = TRUE),
-             n_boot_ok = sum(is.finite(r)))
+# ── (b) Darkness dose ───────────────────────────────────────────────────────
+N_POST <- sum(SEASONS > LAST_PRE)
+post_s <- SEASONS[SEASONS > LAST_PRE]
+# Days of the 2017 rule's DST season outside the summer window, post seasons.
+nth_sunday <- function(y, mo, n) {
+  d <- as.IDate(sprintf("%d-%02d-01", y, mo))
+  d + (7L - wday(d) + 1L) %% 7L + 7L * (n - 1L)
+}
+extra <- rbindlist(lapply(post_s, function(s) {
+  start <- nth_sunday(s, 11L, 1L)
+  end   <- nth_sunday(s + 1L, 2L, 3L)
+  if (end == easter_date(s + 1L) - 49L) end <- end + 7L
+  d <- c(seq(start, as.IDate(sprintf("%d-11-14", s)), by = 1L),
+         if (end > as.IDate(sprintf("%d-02-15", s + 1L)))
+           seq(as.IDate(sprintf("%d-02-15", s + 1L)), end - 1L, by = 1L))
+  data.table(sy = s, date = as.IDate(d))
 }))
+wt <- ev[outcome == "SIM transport deaths, on road" & uf %in% TREATED, .(n = .N), by = .(uf, code6)]
+wt <- geo[, .(code6, lat, lon, std_offset_h)][wt, on = "code6", nomatch = 0]
+dose_dates <- sort(unique(c(days[window == "win", date], extra$date)))
+dose <- rbindlist(lapply(dose_dates, function(x) {
+  s1 <- sun_times(rep(x, nrow(wt)), wt$lat, wt$lon, wt$std_offset_h)
+  s6 <- sun_times(rep(x, nrow(wt)), wt$lat, wt$lon, wt$std_offset_h, zenith = 96)
+  rbindlist(lapply(0:23, function(h) {
+    dk <- function(lo) dark_minutes(lo, lo + 60, s6$sunrise, s1$sunrise, s1$sunset, s6$sunset)
+    data.table(uf = wt$uf, h = h, d = (dk(60 * h) - dk(60 * h - 60)) / 60, n = wt$n)
+  }))[, .(date = x, dose = sum(n * d) / sum(n)), by = .(uf, h)]
+}))
+# The doses of a state-day sum to zero (light is moved, not removed).
+stopifnot(dose[, abs(sum(dose)), by = .(uf, date)][, max(V1)] < 1e-9)
 
+hour_panel <- function(o, d) {
+  y <- ev[outcome == o, .(y = sum(w)), by = .(uf, date, h = cmin %/% 60L)]
+  p <- d[, .(h = 0:23), by = .(uf, date, window, sy, treated, win, post, tw, twp)]
+  p <- y[p, on = .(uf, date, h)][is.na(y), y := 0]
+  p <- dose[p, on = .(uf, date, h)][is.na(dose), dose := 0]
+  p[, `:=`(xe = dose * twp * (h >= 12L), xm = dose * twp * (h < 12L))]
+  p[]
+}
+DOSE_FE <- c(clock_blind = "| uf^h^window + uf^h^sy + date",
+             main        = "| uf^h^window + uf^h^sy + h^date",
+             within_day  = "| uf^date + uf^h^window + uf^h^sy + h^date",
+             hour_free   = "| uf^h^window + uf^h^sy + h^date")
+excess <- function(q, b, V) {
+  eta <- q$xe * b[["xe"]] + q$xm * b[["xm"]]
+  part <- function(x, bb) sum(q$y * (1 - exp(-x * bb))) / N_POST
+  g <- c(xe = sum(q$y * exp(-eta) * q$xe), xm = sum(q$y * exp(-eta) * q$xm)) / N_POST
+  data.table(net = sum(q$y * (1 - exp(-eta))) / N_POST, net_se = sqrt(drop(t(g) %*% V %*% g)),
+             evening = part(q$xe, b[["xe"]]), morning = part(q$xm, b[["xm"]]),
+             counterfactual = sum(q$y * exp(-eta)) / N_POST)
+}
+DOSE_OUT <- c(TRAFFIC, "SIM pedestrian deaths, on road", "SIM non-pedestrian deaths, on road")
+dose_res <- rbindlist(lapply(DOSE_OUT, function(o) {
+  p <- hour_panel(o, days)
+  specs <- if (o %in% TRAFFIC) names(DOSE_FE) else "main"
+  rbindlist(lapply(specs, function(sp) {
+    rhs <- "y ~ xe + xm"
+    if (sp == "hour_free") {
+      p[, hT := fifelse(twp == 1L, paste0("h", h), "none")]
+      rhs <- paste(rhs, "+ i(hT, ref = \"none\")")
+    }
+    m <- fepois(as.formula(paste(rhs, DOSE_FE[[sp]])), data = p, cluster = ~uf, notes = FALSE)
+    b <- coef(m)[c("xe", "xm")]; V <- vcov(m)[c("xe", "xm"), c("xe", "xm")]
+    out <- data.table(outcome = o, spec = sp, evening_lp = 100 * b[["xe"]],
+                      evening_se = 100 * sqrt(V[1, 1]), morning_lp = 100 * b[["xm"]],
+                      morning_se = 100 * sqrt(V[2, 2]),
+                      diff_p = 2 * pnorm(-abs((b[["xe"]] - b[["xm"]]) /
+                                                sqrt(V[1, 1] + V[2, 2] - 2 * V[1, 2]))),
+                      n_obs = nobs(m))
+    ex <- excess(p[twp == 1L & (xe != 0 | xm != 0)], b, V)
+    out <- cbind(out, ex)
+    if (sp == "main") {
+      # The whole DST season: summer-window cells plus the season days outside
+      # the window, treated states, seasons after abolition.
+      q <- hour_panel(o, unique(days[, .(uf, treated)])[treated == 1L][
+        , .(date = extra$date, sy = extra$sy), by = .(uf, treated)][
+        , `:=`(window = "season", win = 1L, post = 1L, tw = 1L, twp = 1L)])
+      both <- rbind(p[twp == 1L & (xe != 0 | xm != 0)], q[xe != 0 | xm != 0], fill = TRUE)
+      es <- excess(both, b, V)
+      out[, `:=`(season_net = es$net, season_net_se = es$net_se,
+                 extra_days_per_season = nrow(extra) / N_POST)]
+    }
+    out
+  }), fill = TRUE)
+}))
 # ── Rain: effect on dry and rainy state-days ────────────────────────────────
 pr <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "weather", "output",
                                            "pr_seat_day.parquet")))
@@ -127,7 +203,9 @@ rain_res <- rbindlist(lapply(TRAFFIC, function(o) {
              mean_rain_share_win = p[win == 1, mean(rain_share)])
 }))
 
-saveRDS(list(first_stage = fs, wald = wald, rain = rain_res, n_boot = B),
+saveRDS(list(first_stage = fs, dose = dose_res, rain = rain_res),
         file.path(path_audit, "light_dose.rds"))
-options(width = 160)
-print(fs); print(wald); print(rain_res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 2) else x)])
+options(width = 200)
+print(fs)
+print(dose_res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 2) else x)])
+print(rain_res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 2) else x)])

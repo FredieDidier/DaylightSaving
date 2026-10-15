@@ -1,7 +1,7 @@
 # =============================================================================
 # 12_map_boundaries.R
 #
-# Boundaries for the two maps of the paper (analysis/code/28_figures.R): the
+# Boundaries for the two maps of the paper (analysis/code/29_figures.R): the
 # Brazilian states and the Mexican states and municipalities. Nothing here
 # enters an estimate.
 #

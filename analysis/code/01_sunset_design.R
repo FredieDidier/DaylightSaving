@@ -25,7 +25,7 @@
 #
 # Writes the event-level file that the later scripts read (with the
 # pedestrian / other split used by 12_mechanism.R) and the bin-by-bin Poisson
-# triple differences (figure: 28_figures.R).
+# triple differences (figure: 29_figures.R).
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -117,7 +117,7 @@ res <- grid[, {
 res[, `:=`(pct = 100 * (exp(coef) - 1), p = 2 * pnorm(-abs(coef / se)))]
 res[, side := fifelse(side == "set", "evening (rel. to sunset)", "morning (rel. to sunrise)")]
 
-# Figure: drawn by 28_figures.R from the cache saved below.
+# Figure: drawn by 29_figures.R from the cache saved below.
 
 saveRDS(list(results = res, prf_match_pct = prf_match, seasons = SEASONS),
         file.path(path_audit, "sunset_design.rds"))

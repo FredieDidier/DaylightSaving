@@ -16,6 +16,8 @@ The dates and states of DST come from the decrees themselves, typed from the tex
 
 Road deaths are deaths whose underlying cause is a land-transport accident (ICD-10 V01--V89) and whose place of occurrence is a public road. Pedestrians are V01--V09; cyclists V10--V19; motorcyclists V20--V29; occupants of cars and light vehicles V40--V59; the remaining codes are other road users. The clock time is the time of death written on the certificate, in hours and minutes; times that are missing or invalid are left out of every hourly count. Figure~\ref{fig:records} shows, for the summer window, the share of land-transport deaths that occurred on the road and the share of road deaths without a valid clock time, by group and season. A linear triple difference on each share, with the fixed effects of equation~(\ref{eq:main}) and cells weighted by deaths, gives $+0.4$ percentage points (standard error 0.75) for the share on the road and $+0.4$ (0.65) for the share without a time. % record_integrity.rds, test.
 
+The time on the certificate is close to the time of the crash for deaths at the scene. Pairing each federal highway crash with one death with the only road-death certificate with a clock time in the same municipality and on the same date gives 37,875 pairs, most of them the same event. The certificate's time minus the crash time has a median of zero minutes; it lies in the hour after the crash in 59.2 percent of the pairs and within 30 minutes either way in 66.9 percent. Pairs formed with the certificates of the same municipality seven days later, which cannot be the same event, give 4.7 and 5.2 percent. % record_integrity.rds, link.
+
 Death certificates record legal clock time. If they recorded standard time, the profile of road deaths by clock hour in the treated states' summers under DST would sit one hour earlier than without DST. Net of the off-season and of the control states, the two profiles are closer with no shift (squared distance 7.8) than with a shift of one hour in either direction (17.1 and 24.5). % record_integrity.rds, clock.
 
 \begin{figure}[tbp]
@@ -44,7 +46,7 @@ The stations record legal clock time. If they recorded standard time, the profil
 \subsection{Sun times and recorded times}
 
 Sunrise and sunset are computed at the municipal seat \citep{noaa2025solar}, with the seat coordinates from IBGE (2010 seats; a point inside the 2020 boundary for the five municipalities created in 2013) and the standard offset of each municipality's time zone. Recorded clock times heap: 34.5 percent of road deaths are recorded on the full hour and 23.0 percent on the half hour, and 90 percent on a multiple of five minutes (21.3, 19.4 and 95.2 percent for federal highway deaths). % heaping.rds, heap_share.
-Because hour 0 is defined relative to the sunset of each municipality and date, a heap at, say, 7:00 p.m.\ falls inside or outside hour 0 depending on the place and the date. Figure~\ref{fig:window-shift} and Panel A of Table~\ref{tab:sensitivity} show the estimates when the window is moved by up to 15 minutes, when sunset comes from NOAA's full solar algorithm \citep{meeus1998astronomical} instead of the general equations, and when every time recorded on the full or half hour is dropped.
+Because hour 0 is defined relative to the sunset of each municipality and date, a heap at, say, 7:00 p.m.\ falls inside or outside hour 0 depending on the place and the date. Figure~\ref{fig:window-shift} and Panel A of Table~\ref{tab:sensitivity} show the estimates when the window is moved by up to 15 minutes, when sunset comes from NOAA's full solar algorithm \citep{meeus1998astronomical} instead of the general equations, when every time recorded on the full or half hour is spread evenly over the 30 minutes around it, and when those times are dropped.
 
 % -----------------------------------------------------------------------------
 \section{Additional Results}\label{app:results}
@@ -83,14 +85,29 @@ Because hour 0 is defined relative to the sunset of each municipality and date, 
   \centering\footnotesize\setlength{\tabcolsep}{5pt}
   \input{\tabdir/tab_sensitivity.tex}
   \begin{tablenotes}[Notes]
-  Equation~(\ref{eq:main}) for hour 0, one change per row, standard errors clustered by state. Panel A: sunset from the full NOAA solar algorithm instead of the general solar position equations (at most 1.6 minutes apart); and without the events recorded on the full or half hour. Panel B: control states restricted to one region; summers dropped. Panel C: the share of the state under rain (Table~\ref{tab:dose}) as a control.
+  Equation~(\ref{eq:main}) for hour 0, one change per row, standard errors clustered by state. Panel A: sunset from the full NOAA solar algorithm instead of the general solar position equations (at most 1.6 minutes apart); events recorded on the full or half hour spread evenly over the 30 minutes centred on their time, so that each counts in hour 0 in proportion to the part of that half hour inside it; and without those events. Panel B: control states restricted to one region; summers dropped; Saturday before Carnival to Ash Wednesday and 24 December to 1 January dropped. The summer-window rows are the difference in differences of Table~\ref{tab:robustness} with separate effects for the first two and the last three summers without DST. The rows without March 2020 to February 2022 have separate effects for 2019/20 and for 2022/23 and 2023/24. Panel C: the rain share is the share of the state's road deaths that occur in municipalities with at least 1 mm of rain that day, at the municipal seat \citep{xavier2022new}; as a control, and interacted with every term of equation~(\ref{eq:main}), which gives the effect on a dry state-day and its change on a fully rainy one.
   \end{tablenotes}
   \begin{tablenotes}[Sources]
   \citet{datasus2025sim}; \citet{prf2025dados}.
   \end{tablenotes}
 \end{table}
 
-Moving the window changes the estimate in the direction light predicts: a window that starts 15 minutes before standard-time sunset includes minutes that were light in both regimes and gives 14.6 log points for road deaths, and one that starts 15 minutes after it is darker throughout and gives 41.2 (Figure~\ref{fig:window-shift}). Leaving out one state at a time keeps the estimate for road deaths between 24.3 (without S\~ao Paulo) and 34.1 (without Minas Gerais), and one season at a time between 22.7 (without 2019/20) and 35.2 (without 2022/23) (Figure~\ref{fig:leave-out}). With the Northeast alone as the control group the estimate is 32.9 (9.2); with the four states of the North alone, 15.7 (8.8). Dropping the three La Ni\~na summers of 2020/21 to 2022/23 gives 43.5 (9.5) (Table~\ref{tab:sensitivity}).
+Moving the window changes the estimate in the direction light predicts: a window that starts 15 minutes before standard-time sunset includes minutes that were light in both regimes and gives 14.6 log points for road deaths, and one that starts 15 minutes after it is darker throughout and gives 41.2 (Figure~\ref{fig:window-shift}). Spreading the times recorded on the full or half hour gives 31.4 (9.5). Leaving out one state at a time keeps the estimate for road deaths between 24.3 (without S\~ao Paulo) and 34.1 (without Minas Gerais), and one season at a time between 22.7 (without 2019/20) and 35.2 (without 2022/23) (Figure~\ref{fig:leave-out}). With the Northeast alone as the control group the estimate is 32.9 (9.2); with the four states of the North alone, 15.7 (8.8). Dropping the three La Ni\~na summers of 2020/21 to 2022/23 gives 43.5 (9.5), and dropping Carnival and the year-end holidays 30.8 (7.8) (Table~\ref{tab:sensitivity}).
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics{fig_window_legs.pdf}
+  \caption{The Two Legs of the Triple Difference, Season by Season}
+  \label{fig:window-legs}
+  \begin{figurenotes}[Notes]
+  Hour after standard-time sunset. Each point is the coefficient on the treated states in one season from a Poisson model of the summer window alone or of the off-season alone, with state and date effects, against 2018/19. The triple difference of Figure~\ref{fig:event-study} is the summer coefficient minus the off-season coefficient. 95 percent confidence intervals, standard errors clustered by state.
+  \end{figurenotes}
+  \begin{figurenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
+  \end{figurenotes}
+\end{figure}
+
+Figure~\ref{fig:window-legs} shows where the season-to-season swings of the triple difference come from. In the summer window, the gap between treated and control states in hour 0 rose with abolition and stayed at about the same level in all five seasons without DST. In the off-season, which has no change of light, the gap was low in 2019/20, whose off-season includes April to June 2020, and high in 2021/22 and 2022/23. The larger triple-difference estimates of the first two seasons therefore come from the off-season leg. In the summer window alone, the first two summers give 39.3 (12.4) and the last three 31.2 (15.8). Without any day from March 2020 to February 2022, the triple difference gives 36.9 (19.4) for 2019/20 and 18.7 (11.3) for the last two summers.
 
 \subsection{State-by-day fixed effects and sensitivity to trends}
 
@@ -100,7 +117,7 @@ Moving the window changes the estimate in the direction light predicts: a window
   \caption{The Hour after Sunset with State-by-Day Fixed Effects}
   \label{fig:within-day}
   \begin{figurenotes}[Notes]
-  Grey: hour 0 in Figure~\ref{fig:event-study}. Red: the same hour estimated against hours 3 to 5 before and 2 to 4 after sunset of the same state and day, with state-by-day fixed effects and the fixed effects of equation~(\ref{eq:main}) interacted with the hour. 95 percent confidence intervals, standard errors clustered by state; reference season 2018/19.
+  Grey: hour 0 in Figure~\ref{fig:event-study}. Red: the same hour estimated against hours 3 to 5 before and 2 to 4 after sunset of the same state and day, with state-by-day fixed effects and the fixed effects of equation~(\ref{eq:main}) interacted with the hour. Both against the average of the seasons with DST, as in Figure~\ref{fig:event-study}. 95 percent confidence intervals, standard errors clustered by state.
   \end{figurenotes}
   \begin{figurenotes}[Sources]
   \citet{datasus2025sim}; \citet{prf2025dados}.
@@ -137,7 +154,7 @@ The control states kept their clocks, but schedules set on Bras\'ilia time, such
   \end{figurenotes}
 \end{figure}
 
-Figure~\ref{fig:honestdid} reports the sensitivity analysis of \citet{rambachan2023more} for the average post-abolition coefficient of the event study. For road deaths that average is 14.8 log points, and its conventional interval already includes zero, because a single reference season is a noisy baseline. If the pre-abolition trend is extended linearly ($M=0$), the interval is 28 to 99 log points; allowing its slope to change by 0.02 per season (2 log points) brings zero into it. % honestdid.rds.
+Figure~\ref{fig:honestdid} reports the sensitivity analysis of \citet{rambachan2023more} for the average post-abolition coefficient of the event study. The method measures the violations of parallel trends from a single reference season, so here the coefficients are taken against 2018/19, not against the average season with DST as in Figure~\ref{fig:event-study}. For road deaths that average is 14.8 log points, and its conventional interval already includes zero, because a single reference season is a noisy baseline. If the pre-abolition trend is extended linearly ($M=0$), the interval is 28 to 99 log points; allowing its slope to change by 0.02 per season (2 log points) brings zero into it. % honestdid.rds.
 The event study therefore cannot rule out departures from parallel trends of the size of its own season-to-season noise, which is why the paper's case rests on the pattern within the day.
 
 \subsection{Who dies}
@@ -148,14 +165,14 @@ The event study therefore cannot rule out departures from parallel trends of the
   \centering\footnotesize\setlength{\tabcolsep}{5pt}
   \input{\tabdir/tab_road_users.tex}
   \begin{tablenotes}[Notes]
-  Road deaths in hour 0, equation~(\ref{eq:main}) estimated separately for each group, standard errors clustered by state. Road users from the ICD-10 block of the underlying cause (Appendix~\ref{app:data}). Weekends and holidays: Saturdays, Sundays and national holidays (fixed dates, Carnival Monday and Tuesday, Good Friday). Dashes: fewer than five deaths per summer in the treated states before abolition, too few to estimate.
+  Road deaths in hour 0, equation~(\ref{eq:main}) estimated separately for each group, standard errors clustered by state. Road users from the ICD-10 block of the underlying cause (Appendix~\ref{app:data}); 85 percent of the other road users who died in hour 0 have no vehicle specified (V87 to V89), 10 percent were in heavy transport vehicles and the rest in buses, three-wheeled or other vehicles. Weekends and holidays: Saturdays, Sundays and national holidays (fixed dates, Carnival Monday and Tuesday, Good Friday); the last row of Panel C also drops the Saturday before Carnival to Ash Wednesday and 24 December to 1 January. Dashes: fewer than five deaths per summer in the treated states before abolition, too few to estimate.
   \end{tablenotes}
   \begin{tablenotes}[Source]
   \citet{datasus2025sim}.
   \end{tablenotes}
 \end{table}
 
-Table~\ref{tab:road-users} splits road deaths in hour 0 by road user, by the age and sex of pedestrians, and by type of day. Among pedestrians, deaths of those aged 15 to 64, two thirds of the total, rose by 91.1 log points (30.9); the other age groups are too small to estimate. Motorcyclists rise by 19.6 (10.9); car occupants do not change. The estimate on weekends and holidays (41.3, 15.8) is larger than on working days (16.1, 10.0).
+Table~\ref{tab:road-users} splits road deaths in hour 0 by road user, by the age and sex of pedestrians, and by type of day. Among pedestrians, deaths of those aged 15 to 64, two thirds of the total, rose by 91.1 log points (30.9); the other age groups are too small to estimate. Motorcyclists rise by 19.6 (10.9); car occupants do not change. The estimate on weekends and holidays (41.3, 15.8) is larger than on working days (16.1, 10.0), and stays so without Carnival and the year-end holidays (39.3, 16.2).
 
 \subsection{Traffic volume and risk per vehicle}
 
@@ -165,31 +182,18 @@ Table~\ref{tab:road-users} splits road deaths in hour 0 by road user, by the age
   \centering\footnotesize
   \input{\tabdir/tab_traffic_volume.tex}
   \begin{tablenotes}[Notes]
-  Log points, standard errors clustered by state in parentheses, permutation p-values in brackets. Column 1: equation~(\ref{eq:main}) on hourly vehicle counts at continuous counting stations, with station fixed effects; summers 2014/15 to 2018/19 and 2021/22 to 2024/25. Columns 2 and 4: as in Table~\ref{tab:main}. Per vehicle: crash or death estimate minus the volume estimate. Every column is re-estimated with the same random set of 11 treated states in each of 999 draws, so the per-vehicle columns have their own reference distribution; permutation tests are on t-statistics, a per-vehicle difference divided by the square root of the sum of its two squared standard errors.
+  Log points, standard errors clustered by state in parentheses, permutation p-values in brackets. Column 1: equation~(\ref{eq:main}) on hourly vehicle counts at continuous counting stations, with station fixed effects; summers 2014/15 to 2018/19 and 2021/22 to 2024/25. Column 2: the 30 pairs formed by a station counted only after abolition within 2 km of one counted only before on the same highway, with pair-by-window and pair-by-season effects in place of the state effects. Columns 3 and 5: as in Table~\ref{tab:main}, on the same summers as column 1. Per vehicle: crash or death estimate minus the volume estimate of column 1. Every column is re-estimated with the same random set of 11 treated states in each of 999 draws, so the per-vehicle columns have their own reference distribution; permutation tests are on t-statistics, a per-vehicle difference divided by the square root of the sum of its two squared standard errors.
   \end{tablenotes}
   \begin{tablenotes}[Sources]
   \citet{dnit2025pnct}; \citet{prf2025dados}.
   \end{tablenotes}
 \end{table}
 
-Table~\ref{tab:volume} reports, for the seven hours around sunset and sunrise, the triple difference on hourly vehicle counts at federal highway stations (column 1), on federal highway injury crashes and deaths (columns 2 and 4), and their difference, the change per vehicle (columns 3 and 5). Because no station is counted both before and after abolition, the volume model has station fixed effects and the seasonal comparison runs at the level of the state, as in equation~(\ref{eq:main}). Section~\ref{sec:traffic} of the paper discusses hour 0, the hour before sunset and the hour after sunrise.
+Table~\ref{tab:volume} reports, for the seven hours around sunset and sunrise, the triple difference on hourly vehicle counts at federal highway stations (column 1), on federal highway injury crashes and deaths (columns 3 and 5), and their difference, the change per vehicle (columns 4 and 6). Because no station is counted both before and after abolition, the volume model has station fixed effects and the seasonal comparison runs at the level of the state, as in equation~(\ref{eq:main}). Column 2 follows the 30 stations that were moved less than 2 kilometers along the same highway, as pairs: the evening falls are smaller there and the morning rise larger. The crash columns come from the same summers as the volume, on which hour 0 shows no pre-abolition trend in injury crashes. Section~\ref{sec:traffic} of the paper discusses hour 0, the hour before sunset and the hour after sunrise.
 
-\subsection{Darkness as a dose, rain and street lighting}
+\subsection{Rain and street lighting}
 
-\begin{table}[tbp]
-  \caption{Darkness as a Dose}
-  \label{tab:dose}
-  \centering\footnotesize
-  \input{\tabdir/tab_light_dose.tex}
-  \begin{tablenotes}[Notes]
-  Panel A: the first row is equation~(\ref{eq:main}) estimated by least squares on federal highway injury crashes in hour 0, with an indicator for crashes the officer recorded as dusk or night as the outcome; the second divides each column's estimate in Table~\ref{tab:main} by it (the change if the hour went from fully light to fully dark), with a 95 percent interval in brackets, from 499 draws of a state bootstrap. Panel B: the rain share is the share of the state's road deaths that occur in municipalities with at least 1 mm of rain that day, at the municipal seat \citep{xavier2022new}, interacted with every term of equation~(\ref{eq:main}).
-  \end{tablenotes}
-  \begin{tablenotes}[Sources]
-  \citet{datasus2025sim}; \citet{prf2025dados}.
-  \end{tablenotes}
-\end{table}
-
-Panel A of Table~\ref{tab:dose} scales the reduced form by the first stage. An hour that went from fully light to fully dark would raise road deaths by 124 log points (95 percent interval 42 to 197). The ratio treats the officers' record as the dose of darkness; because the record is coarse and is observed only for crashes that happened, it is a scale for the reduced form, not a structural estimate. On a rainy, overcast evening the hour was already dim under DST, so abolition should darken it less. Panel B points that way for every outcome, without precision: for road deaths, the effect on a dry state-day is 43.9 log points (15.3) and the change from a dry to a fully rainy state-day $-5.4$ (34.0). Controlling for the share of the state under rain leaves the main estimate at 29.1 (Table~\ref{tab:sensitivity}).
+On a rainy, overcast evening the hour was already dim under DST, so abolition should darken it less. Panel C of Table~\ref{tab:sensitivity} points that way for every outcome, without precision: for road deaths, the effect on a dry state-day is 43.9 log points (15.3) and the change from a dry to a fully rainy state-day $-5.4$ (34.0). Controlling for the share of the state under rain leaves the main estimate at 29.1.
 
 \begin{table}[tbp]
   \caption{Street Lighting}
@@ -208,7 +212,7 @@ If darkness kills pedestrians, street lighting should blunt the effect. Table~\r
 
 \subsection{Valuing the deaths}\label{app:cost}
 
-Table~\ref{tab:cost} scales the net count of Table~\ref{tab:excess} with two ratios, both from land-transport deaths in the treated states' summer window before abolition. Column 2 multiplies it by the ratio of road deaths per summer to those with a valid clock time, $2{,}933/2{,}382 = 1.231$. Column 3 multiplies column 2 by the ratio of all land-transport deaths to road deaths, $6{,}003/2{,}933 = 2.047$. Of the land-transport deaths off the road, 84.9 percent occurred in hospital, 9.7 percent at another place, 3.5 percent in another health facility, 1.5 percent at home and 0.4 percent at an unknown place. % total_cost.rds, scale; SIM LOCOCOR, treated summer window, 2008/09-2018/19.
+Table~\ref{tab:cost} scales the net count of the darkness dose model (Table~\ref{tab:excess}, Panel A) with two ratios, both from land-transport deaths in the treated states' summer window before abolition. The whole-season count adds, for each season after abolition, the days of the 2017 rule's DST season outside the summer window: the first Sunday of November to 14 November and 15 February to the day before the third Sunday of February (a week later when that Sunday was Carnival), 15.8 days a season on average. Their excess deaths apply the dose coefficients of the summer window to the deaths observed on those days. Column 2 multiplies it by the ratio of road deaths per summer to those with a valid clock time, $2{,}933/2{,}382 = 1.231$. Column 3 multiplies column 2 by the ratio of all land-transport deaths to road deaths, $6{,}003/2{,}933 = 2.047$. Of the land-transport deaths off the road, 84.9 percent occurred in hospital, 9.7 percent at another place, 3.5 percent in another health facility, 1.5 percent at home and 0.4 percent at an unknown place. % total_cost.rds, scale; SIM LOCOCOR, treated summer window, 2008/09-2018/19.
 
 The value of a statistical life follows the three rules of \citet{robinson2019valuing}, with $Y$ the gross national income per head at purchasing power parity in 2025, $Y_{\mathit{BR}} = 22{,}670$ and $Y_{\mathit{US}} = 89{,}490$ international dollars \citep{worldbank2026wdi}:
 \begin{align*}
@@ -219,6 +223,23 @@ The value of a statistical life follows the three rules of \citet{robinson2019va
 Rule (a) is the default of \citet{robinson2019valuing}: it starts from the US ratio of VSL to income per head and lets the ratio fall with income, down to a floor of 20 times income per head, which does not bind here (453,400). Rule (b) applies the US ratio and rule (c) the OECD ratio directly to Brazilian income. The values are converted to reais at the 2025 purchasing-power-parity conversion factor for GDP, 2.554 reais per international dollar \citep{worldbank2026wdi}, which gives R\$4.66, 9.27 and 5.79 million.
 
 The human-capital alternative is the cost per person killed in a fatal crash on a federal highway, R\$433,287 in December 2014 prices, almost all of it lost production \citep[Table 6A]{ipea2015acidentes}. Multiplied by the ratio of the IPCA consumer price index in December 2025 to December 2014, $7{,}403.29/4{,}059.86 = 1.824$ \citep{ibge2026ipca}, it is R\$790,113. Each value in Table~\ref{tab:cost} is the count of deaths times the value of one death; the standard errors treat the scaling ratios and the values as fixed.
+
+\subsection{The clock changes before abolition}
+
+\begin{table}[tbp]
+  \caption{The Clock Changes before 2019 and Abolition}
+  \label{tab:transitions}
+  \centering\footnotesize
+  \input{\tabdir/tab_transitions.tex}
+  \begin{tablenotes}[Notes]
+  Abolition: Table~\ref{tab:main} (Panel A) and the state-by-day row of Table~\ref{tab:robustness} (Panel B). Clock changes: days within 21 days of each change of the seasons 2008/09 to 2018/19, at the dates of the decrees, and the same calendar days of the seasons 2019/20 to 2023/24 at the dates the 2008 rule would have set (third Sunday of October; third Sunday of February, a week later on Carnival Sunday), when no clock moved. Panel A: $y_{sd} = \exp(\beta\, T_s \times \textit{after}_d \times \textit{DST era}_d + \text{state} \times \text{season} + \text{state} \times \textit{after} + \text{date})$. Panel B: hour 0 against hours 3 to 5 before and 2 to 4 after sunset of the same state and day, with state-by-day effects and the other effects interacted with the hour. Both changes in one model with every effect interacted with the change, so the average, with the sign of the October change reversed, has a clustered standard error.
+  \end{tablenotes}
+  \begin{tablenotes}[Sources]
+  \citet{datasus2025sim}; \citet{prf2025dados}.
+  \end{tablenotes}
+\end{table}
+
+Table~\ref{tab:transitions} reports the comparison of Section~\ref{sec:transitions}. The seasons after abolition enter only to net out the change in deaths from the weeks before to the weeks after mid-October and mid-February that has nothing to do with the clock. Panel B is the cleaner comparison for the clock changes, because each change also moves an hour of sleep, lost in October and gained in February, and that acts on every hour of the day: an October rise from lost sleep and a February fall from gained sleep would both push the hour-0 estimates of Panel A toward zero. In both panels the clock changes give larger effects on road deaths than abolition, and similar ones on federal highway injury crashes.
 
 \subsection{Bahia, the one season it had DST}
 
@@ -254,7 +275,7 @@ Figure~\ref{fig:bahia} ranks the 2011/12 estimate among Bahia's 16 seasons for e
 \end{figure}
 
 Ambient light also affects crime \citep{doleac2015under, dominguez2023crime}, so I examined deaths from assault with the same design. They show no signature of light (Figure~\ref{fig:assault}). The whole-day triple difference is 2.4 log points (1.7), and $-0.5$ (1.5) without 2019/20, the one season in which the coefficients jump. Between 8 a.m.\ and 5 p.m., hours whose light did not change, the estimate (7.0, 2.6) is of the same order as between 5 and 8 p.m.\ (15.2, 5.0). % assault_trends.rds, results.
-A change in violence concentrated in one season and spread across the day is not an effect of light, and the paper does not study assault deaths further.
+A change in violence concentrated in one season and spread across the day is not an effect of light, and the paper does not study assault deaths further. It is also a reminder that the triple difference can find changes after 2019 in hours whose light did not change; for road deaths, Panel D of Table~\ref{tab:robustness} finds none.
 
 % -----------------------------------------------------------------------------
 \section{Mexico}\label{app:mexico}
@@ -274,6 +295,8 @@ A change in violence concentrated in one season and spread across the day is not
 
 The accident records cover accidents on non-federal roads, urban and suburban, from 1997; the analysis uses 2016 to 2025. The dead are counted at the scene of the accident, the concept used for Brazil. Day or time not specified is coded as missing, which from 2016 on affects 15 of 3.6 million accidents. % raw ATUS 2016-2025: 5 without day, 10 without time, of 3,611,562. The seat of each municipality comes from INEGI's geostatistical framework \citep{inegi2026marco}; for the boroughs of Mexico City, which have no seat, the most populous urban locality stands in, and two municipalities of Sinaloa without coordinates are dropped. Standard offsets follow the zones of the law: UTC$-$6 for the Central zone, $-$7 for the Pacific zone, $-$8 for Baja California and $-$5 for Quintana Roo.
 
+The register's coverage grew modestly over the sample. In the areas that lost DST, the number of municipalities with at least one recorded accident rose from 1,247 to 1,293 a year in 2016--2019 to 1,374 to 1,412 in 2023--2025, while the number of accidents stayed between about 286,000 and 300,000 a year outside the pandemic. The comparisons within the day, which use each unit's own day as the base, are unaffected by the number of reporting municipalities. % mexico_within_day.rds, coverage.
+
 The records use legal clock time. In the areas that lost DST, the hourly profile of accidents in the summer window under DST (2016 to 2022) matches the profile without DST (2023 to 2025) at the same clock hour far better (squared distance 0.68) than shifted by one hour in either direction (6.95 and 10.13). % mexico.rds, clock_check.
 
 \begin{table}[tbp]
@@ -282,14 +305,14 @@ The records use legal clock time. In the areas that lost DST, the hourly profile
   \centering\footnotesize\setlength{\tabcolsep}{4pt}
   \input{\tabdir/tab_mexico.tex}
   \begin{tablenotes}[Notes]
-  Accidents on non-federal roads, 2016 to 2025; deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a panel of units by day, where a unit is the part of a state that lost DST (treated) or one of six that kept their clock; summer window 8 April to 24 October, off-season 8 November to 7 March; standard errors clustered by unit, wild cluster bootstrap on the linear analogue, and permutation of the treated units on the t-statistic (999 draws). Panel D drops the comparison units: within each treated unit and day, hour 0 against the hours 3 to 5 before and 2 to 4 after sunset, summer window against off-season, after 2023 against before, with unit-by-day fixed effects; hours $-2$, $-1$ and $+1$ have their own coefficients. Mean events per year average the seven years before abolition, 2016 to 2022.
+  Accidents on non-federal roads, 2016 to 2025; deaths are at the scene. Panels A to C: equation~(\ref{eq:main}) on a panel of units by day, where a unit is the part of a state that lost DST (treated) or one of six that kept their clock; summer window 8 April to 24 October, off-season 8 November to 7 March; standard errors clustered by unit, wild cluster bootstrap on the linear analogue, and permutation of the treated units on the t-statistic (999 draws). Panel D drops the comparison units: within each treated unit and day, hour 0 against the hours 3 to 5 before and 2 to 4 after sunset, summer window against off-season, after 2023 against before, with unit-by-day fixed effects; hours $-2$, $-1$ and $+1$ have their own coefficients; the second row leaves out 2020 and 2021. Panel E: the same comparison in the six units that kept their clocks, whose hour 0 did not change light. Mean events per year average the seven years before abolition, 2016 to 2022.
   \end{tablenotes}
   \begin{tablenotes}[Source]
   \citet{inegi2026atus}.
   \end{tablenotes}
 \end{table}
 
-Table~\ref{tab:mexico} reports the Mexican estimates discussed in the paper: the triple difference against the six units that kept their clocks for hour 0, the hour before it and the hour after sunrise (Panels A to C), and the comparison within each treated unit and day (Panel D).
+Table~\ref{tab:mexico} reports the Mexican estimates discussed in the paper: the triple difference against the six units that kept their clocks for hour 0, the hour before it and the hour after sunrise (Panels A to C), the comparison within each treated unit and day (Panel D), and the same comparison in the units that kept their clocks (Panel E). Panel E is the benchmark for Panel D. Deaths do not rise there, so the rise in deaths in Panel D is not something the within-day comparison finds everywhere; accidents with victims and pedestrians struck do rise there, by about two thirds and one half of their rise in Panel D. Pedestrian deaths in Panel E rest on five deaths a year in hour 0 and are not informative.
 
 \begin{figure}[tbp]
   \centering

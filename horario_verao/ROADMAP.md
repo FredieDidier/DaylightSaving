@@ -178,8 +178,27 @@ Feito nesta sessão:
   horário de verão aumentava a carga; hoje energia e vidas apontam para o mesmo
   lado). SIM 2025 ainda preliminar no FTP.
 
+- ✅ **Parecer simulado da AEJ: Policy (15/10/2026, `PARECER_AEJ_POLICY.md`) e
+  resposta a todos os itens** (detalhe item por item na seção "Resposta" daquele
+  arquivo). Novo: modelo de dose de escuridão pelo sol com EF hora do relógio ×
+  data (`23`, Tabela 4 do corpo; a razão de Wald do registro do policial saiu);
+  controle contado na hora do relógio dos tratados e sem carnaval/fim de ano
+  (`20`); pandemia recortada por calendário, cedo × tarde e só o verão (`04`,
+  figura nova `fig_window_legs`); event study contra a média das temporadas com
+  horário de verão (`02`, `09`); trocas de relógio antes de 2019 contra a
+  abolição (`28_transitions.R`, novo; `tab_transitions`); score bootstrap no
+  Poisson (`06`); parcela dos pedestres com EP (`12`); amontoamento redistribuído
+  (`19`); composição de "outros" (`21`); hora do atestado contra hora do acidente
+  da PRF (`22`); volume e risco por veículo nos mesmos verões (`15`, `16`) e
+  estações realocadas na tabela; contagem e custo pela dose, por temporada
+  inteira (`25`); México com placebo nas unidades que mantiveram o relógio,
+  sem 2020–21 e cobertura do ATUS (`27`). Figuras e tabelas renumeradas:
+  `29_figures.R`, `30_tables.R`. Referências novas conferidas: Ferguson et al.
+  (1995), Sexton & Beatty (2014), Kline & Santos (2012).
+
 Próximos:
 1. Rodar a skill `manuscript-audit` no rascunho.
+2. SIM 2025 definitivo: 6ª temporada pós (rodar tudo de novo).
 
 ## Decisões tomadas
 
@@ -211,6 +230,10 @@ Próximos:
 | 13/10/2026 | A queda da PRF na hora −1 é anterior à abolição; "ofuscamento" sai | O estudo de eventos mostra a queda já em 2018/19; e sem horário de verão o sol baixo cai *na* hora −1, o contrário do que o ofuscamento explicaria |
 | 13/10/2026 | Mapas em `analysis/output/maps/`, desenhados no `28_figures.R` | Pedido do Fredie; fronteiras baixadas pelo `build/12_map_boundaries.R` |
 | 13/10/2026 | Permutação compara a estatística t, não o coeficiente | Pedido do Fredie; MacKinnon e Webb (2020): com clusters heterogêneos o teste no coeficiente pode falhar. Diferenças divididas por √(EP1² + EP2²). Números em VIABILIDADE §20 |
+| 15/10/2026 | Contagem do custo pelo modelo de dose, por temporada inteira (regra de 2017) | Não escolhe horas depois de ver os dados; a temporada é a unidade da decisão (voltar com o horário de verão devolve a temporada toda) e é a base da conta do ONS. A soma de três horas (54) fica como checagem na Tabela 6 |
+| 15/10/2026 | Event study contra a média das temporadas com horário de verão | É a comparação que o β faz; 2018/19 sozinha era uma temporada alta no SIM. O HonestDiD continua contra 2018/19 (o método pede uma temporada de referência) |
+| 15/10/2026 | Bahia e agressões ficam no apêndice | Transparência: a Bahia é checagem de sinal (decisão de 12/10); agressões mostram que a tripla acha efeitos onde a luz não mudou, e o texto agora diz isso |
+| 15/10/2026 | Sem permutação "espacial" | Todo bloco contíguo de 11 entre os 23 estados se sobrepõe ao bloco tratado, então não há conjunto placebo limpo; a dose com efeito livre por hora do relógio responde à preocupação de fundo (identifica pela diferença de pôr do sol dentro dos tratados) |
 | 08/10/2026 | Vale o decreto contra o tzdata | O tzdata põe MT no horário de verão de 1994/95; o Dec. 1.252/1994 o exclui |
 
 ## Pendências pequenas

@@ -7,7 +7,11 @@
 #       pedestrian V01-V09, cyclist V10-V19, motorcyclist V20-V29,
 #       car or light-vehicle occupant V40-V59, other V30-V39 and V60-V89;
 #   (b) pedestrians by age (0-14, 15-64, 65+) and sex;
-#   (c) the day: working days against weekends and national holidays.
+#   (c) the day: working days against weekends and national holidays, and
+#       the weekends and holidays again without Carnival and the year-end
+#       holidays (holiday_days, 00_utils.R), whose travel is least like the
+#       rest of the summer.
+# Also the make-up of "other": the ICD-10 blocks of the deaths it holds.
 # Same Poisson triple difference as 01 for clock [sunset_std, + 60 min).
 #
 # Events are rebuilt from the raw SIM files because the event file of 01 does
@@ -43,7 +47,7 @@ sim[, bin_set := floor((cmin - sun_times(date, lat, lon, std_offset_h)$sunset) /
 ev02 <- as.data.table(read_parquet(EVENTS_FILE))[outcome == "SIM transport deaths, on road"]
 stopifnot(nrow(ev02) == nrow(sim), sum(ev02$bin_set == 0) == sum(sim$bin_set == 0))
 
-blk <- as.integer(substr(sim$CAUSABAS, 2, 3))
+sim[, blk := as.integer(substr(CAUSABAS, 2, 3))]
 sim[, user := fcase(blk <= 9L, "pedestrian", blk <= 19L, "cyclist", blk <= 29L, "motorcyclist",
                     blk >= 40L & blk <= 59L, "car or light vehicle", default = "other")]
 unit <- substr(sim$IDADE, 1, 1); val <- suppressWarnings(as.integer(substr(sim$IDADE, 2, 3)))
@@ -53,23 +57,16 @@ sim[, age_group := fcase(age < 15L, "0-14", age < 65L, "15-64", age >= 65L, "65+
 sim[, sex := fcase(SEXO == "1", "male", SEXO == "2", "female")]
 
 # National holidays inside or next to the summer window and the off-season:
-# fixed dates plus Carnival Monday and Tuesday and Good Friday (Easter by the
-# anonymous Gregorian algorithm). State and municipal holidays are not coded.
-easter <- function(y) {
-  a <- y %% 19; b <- y %/% 100; c <- y %% 100; d <- b %/% 4; e <- b %% 4
-  f <- (b + 8) %/% 25; g <- (b - f + 1) %/% 3; h <- (19 * a + b - d - g + 15) %% 30
-  i <- c %/% 4; k <- c %% 4; l <- (32 + 2 * e + 2 * i - h - k) %% 7
-  m <- (a + 11 * h + 22 * l) %/% 451; mo <- (h + l - 7 * m + 114) %/% 31
-  as.IDate(sprintf("%d-%02d-%02d", y, mo, ((h + l - 7 * m + 114) %% 31) + 1))
-}
+# fixed dates plus Carnival Monday and Tuesday and Good Friday (easter_date,
+# 00_utils.R). State and municipal holidays are not coded.
 yrs <- (min(SEASONS)):(max(SEASONS) + 1L)
 fixed <- c("01-01", "04-21", "05-01", "09-07", "10-12", "11-02", "11-15", "12-25")
 # 20 November (Black Consciousness Day) is a national holiday from 2024 on
 # (Law 14,759/2023) and falls in the 2024/25 summer window.
 hol <- c(as.IDate(unlist(lapply(yrs, function(y) sprintf("%d-%s", y, fixed)))),
          as.IDate(sprintf("%d-11-20", yrs[yrs >= 2024L])),
-         do.call(c, lapply(yrs, function(y) easter(y) + c(-48L, -47L, -2L))))
-stopifnot(easter(2019L) == as.IDate("2019-04-21"), easter(2024L) == as.IDate("2024-03-31"))
+         do.call(c, lapply(yrs, function(y) easter_date(y) + c(-48L, -47L, -2L))))
+stopifnot(easter_date(2019L) == as.IDate("2019-04-21"), easter_date(2024L) == as.IDate("2024-03-31"))
 days[, daytype := fifelse(wday(date) %in% c(1L, 7L) | date %in% hol, "weekend or holiday", "working day")]
 
 est <- function(sel, dd = days) {
@@ -94,7 +91,9 @@ res <- rbind(
   rbindlist(lapply(c("working day", "weekend or holiday"), function(g)
     data.table(split = "day", group = g, est(all_, days[daytype == g])))),
   rbindlist(lapply(c("working day", "weekend or holiday"), function(g)
-    data.table(split = "day, pedestrians", group = g, est(sim$user == "pedestrian", days[daytype == g])))))
+    data.table(split = "day, pedestrians", group = g, est(sim$user == "pedestrian", days[daytype == g])))),
+  data.table(split = "day", group = "weekend or holiday, without Carnival and year-end",
+             est(all_, days[daytype == "weekend or holiday" & !date %in% holiday_days(yrs)])))
 
 # A cell with ~2 events per summer gives a degenerate Poisson estimate (child
 # pedestrians: 2.3 before abolition, 1.0 after, estimate -1235 log points).
@@ -102,9 +101,19 @@ res <- rbind(
 # in the cache but flagged, and no exhibit prints them.
 res[, estimable := pre_per_season >= 5]
 
+other_blocks <- sim[user == "other" & bin_set == 0L,
+                    .(n = .N), by = .(block = fcase(blk <= 39L, "V30-V39 three-wheeled vehicle",
+                                                    blk <= 69L, "V60-V69 heavy transport vehicle",
+                                                    blk <= 79L, "V70-V79 bus",
+                                                    blk <= 86L, "V80-V86 other specified",
+                                                    blk <= 88L, "V87-V88 traffic, vehicle unspecified",
+                                                    default = "V89 vehicle and traffic unspecified"))]
+other_blocks[, pct := 100 * n / sum(n)]
 coverage <- sim[, .(n = .N, age_missing_pct = 100 * mean(is.na(age)), sex_missing_pct = 100 * mean(is.na(sex))),
                 by = user]
-saveRDS(list(results = res, coverage = coverage), file.path(path_audit, "road_users.rds"))
+saveRDS(list(results = res, coverage = coverage, other_blocks = other_blocks),
+        file.path(path_audit, "road_users.rds"))
+print(other_blocks[order(-n)])
 options(width = 160)
 print(coverage)
 print(res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)])

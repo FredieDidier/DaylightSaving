@@ -16,6 +16,12 @@
 #       standard error) with the permutation distribution of |t| (fit_bs,
 #       00_utils.R). A Fisher test of the sharp null of no effect in any state.
 #       Draws are made up front and run in parallel (DS_CORES, default 5).
+#   (b2) Score wild bootstrap (Kline and Santos 2012) on the Poisson model
+#       itself, null imposed: fit the model without the treatment term, take
+#       each state's score for it, sum(x~ (y - mu)), where x~ is the treatment
+#       indicator net of the fixed effects (weighted by the fitted means), and
+#       compare the studentized score with its distribution when each state's
+#       score is multiplied by a Webb weight (9,999 draws).
 #   (c) Excess-zeros check for the Poisson mean model: observed share of
 #       zero cells against the share implied by the fitted means,
 #       mean(exp(-mu)). A large gap would call for a two-part model; Poisson
@@ -55,6 +61,18 @@ res <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
   wb <- boottest(lm_fit, param = "twp", clustid = "uf", B = 9999, type = "webb")
   base_mean <- p[tw == 1 & post == 0, mean(y)]
 
+  # (b2) score wild bootstrap, Poisson, null imposed
+  m0 <- fepois(as.formula(paste("y ~ 1", FE)), data = p, notes = FALSE)
+  keep <- obs(m0); mu0 <- fitted(m0)
+  xt <- demean(p$twp[keep], f = p[keep, .(uw = paste(uf, window), us = paste(uf, sy), date)],
+               weights = mu0)[, 1]
+  sg <- tapply(xt * (p$y[keep] - mu0), p$uf[keep], sum)
+  t_score <- sum(sg) / sqrt(sum(sg^2))
+  webb <- c(-sqrt(1.5), -1, -sqrt(0.5), sqrt(0.5), 1, sqrt(1.5))
+  t_boot <- replicate(9999, { v <- sample(webb, length(sg), replace = TRUE)
+                              sum(v * sg) / sqrt(sum((v * sg)^2)) })
+  score_p <- mean(abs(t_boot) >= abs(t_score))
+
   # (b) permutation inference
   m_real <- fepois(as.formula(paste("y ~ twp", FE)), data = p, notes = FALSE)
   b_real <- coef(m_real)[["twp"]]
@@ -74,6 +92,7 @@ res <- rbindlist(lapply(seq_len(nrow(cases)), function(i) {
              wcr_p = pval(wb), wcr_ci_pct = sprintf("[%.1f, %.1f]",
                                                     100 * confint(wb)[1] / base_mean,
                                                     100 * confint(wb)[2] / base_mean),
+             score_p = score_p,
              perm_p = perm_pvalue(perm, t_real),
              perm_rank = sprintf("%d of %d", sum(abs(perm) >= abs(t_real)), N_PERM),
              zeros_obs_pct = 100 * zeros_obs, zeros_poisson_pct = 100 * zeros_pois,
@@ -85,6 +104,6 @@ options(width = 170)
 print(res[, .(outcome, hour = fifelse(side == "set", "evening bin 0", "morning bin 0"),
               poisson_lp = round(poisson_lp, 1),
               linear_pct = round(linear_effect_pct_of_base, 1), wcr_p = round(wcr_p, 4),
-              wcr_ci_pct, perm_p = round(perm_p, 3), perm_rank,
+              wcr_ci_pct, score_p = round(score_p, 4), perm_p = round(perm_p, 3), perm_rank,
               zeros_obs_pct = round(zeros_obs_pct, 1), zeros_poisson_pct = round(zeros_poisson_pct, 1),
               dispersion = round(dispersion, 2))])

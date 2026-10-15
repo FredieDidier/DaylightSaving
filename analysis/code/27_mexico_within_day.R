@@ -19,6 +19,18 @@
 # traffic); a coefficient is the change in hour k's share of the day's
 # reference-plus-focal events, summer against off-season, after 2023 against
 # before. Standard errors clustered by unit.
+#
+# Two checks of the estimator itself:
+#   placebo  the same comparison in the six units that kept their clock
+#            (Baja California and the border municipalities on US dates
+#            before and after the law, Sonora and Quintana Roo without DST),
+#            whose hour 0 did not change light: it should not rise. In
+#            Brazil the same estimator in the control states gives +20 log
+#            points in hour 0 (09_within_day.R), so it needs this benchmark;
+#   no 2020-2021  the treated units without the pandemic years, which fall
+#            in the years before abolition here.
+# Also the coverage of the register: municipalities with at least one
+# accident, accidents and deaths at the scene, by year and group.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -30,23 +42,17 @@ geo <- as.data.table(read_parquet(file.path(MX, "mx_muni_geo.parquet")))[!is.na(
 acc <- as.data.table(read_parquet(file.path(MX, "atus_accidents.parquet")))[, date := as.IDate(date)]
 
 norm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
-BORDER <- list(
-  "05" = c("Acuna", "Allende", "Guerrero", "Hidalgo", "Jimenez", "Morelos", "Nava", "Ocampo",
-           "Piedras Negras", "Villa Union", "Zaragoza"),
-  "19" = c("Anahuac"),
-  "28" = c("Nuevo Laredo", "Guerrero", "Mier", "Miguel Aleman", "Camargo", "Gustavo Diaz Ordaz",
-           "Reynosa", "Rio Bravo", "Valle Hermoso", "Matamoros"))
 geo[, nm := norm(name)]
-border <- rbindlist(lapply(names(BORDER), function(e) data.table(cve_ent = e, nm = norm(BORDER[[e]]))))
+border <- rbindlist(lapply(names(MX_BORDER), function(e) data.table(cve_ent = e, nm = norm(MX_BORDER[[e]]))))
 geo[, border := FALSE][border, border := TRUE, on = .(cve_ent, nm)]
 stopifnot(geo[border == TRUE, .N] == 22L)
 geo[, std_offset_h := fcase(cve_ent == "02", -8, cve_ent == "23", -5,
                             cve_ent %in% c("03", "25", "26"), -7,
                             cve_ent == "18" & nm != norm("Bahia de Banderas"), -7, default = -6)]
-geo <- geo[!(cve_ent %in% c("02", "23", "26") | border)]       # treated units only
-geo[, unit := cve_ent]
+geo[, unit := fcase(cve_ent %in% MX_CONTROL_STATES, cve_ent, border, paste0(cve_ent, "b"), default = cve_ent)]
+geo[, group := fifelse(cve_ent %in% MX_CONTROL_STATES | border, "kept clock", "lost DST")]
 
-ev <- geo[, .(cve_ent, cve_mun, unit, lat, lon, std_offset_h)][acc, on = .(cve_ent, cve_mun), nomatch = 0]
+ev <- geo[, .(cve_ent, cve_mun, unit, group, lat, lon, std_offset_h)][acc, on = .(cve_ent, cve_mun), nomatch = 0]
 ev <- ev[!is.na(cmin)]
 ev[, bin := floor((cmin - sun_times(date, lat, lon, std_offset_h)$sunset) / 60)]
 FOCAL <- -2:1
@@ -59,6 +65,7 @@ OUT <- c("Deaths" = "o_deaths", "Pedestrian deaths" = "o_ped_deaths",
 
 days <- CJ(unit = unique(geo$unit), date = seq(as.IDate("2016-01-01"), as.IDate("2025-12-31"), by = "day"),
            bin = BINS)
+days <- unique(geo[, .(unit, group)])[days, on = "unit"]
 md <- days[, month(date) * 100L + mday(date)]
 days[, window := fcase(md >= 408L & md <= 1024L, "win", md >= 1108L | md <= 307L, "off")]
 days <- days[!is.na(window)]
@@ -67,18 +74,30 @@ days[, wp := as.integer(window == "win") * as.integer(sy >= 2023L)]
 fname <- function(k) paste0("f", fifelse(k < 0, paste0("m", abs(k)), paste0("p", k)))
 days[, (fname(FOCAL)) := lapply(FOCAL, function(k) as.integer(bin == k) * wp)]
 
-res <- rbindlist(lapply(names(OUT), function(o) {
-  y <- ev[, .(y = sum(get(OUT[[o]]))), by = .(unit, date, bin)]
-  p <- y[days, on = .(unit, date, bin)][is.na(y), y := 0]
-  m <- fepois(as.formula(paste("y ~", paste(fname(FOCAL), collapse = " + "),
-                               "| unit^date + unit^bin^window + unit^bin^sy")),
-              data = p, cluster = ~unit, notes = FALSE)
-  data.table(outcome = o, bin = FOCAL, lp = 100 * coef(m)[fname(FOCAL)], se = 100 * se(m)[fname(FOCAL)],
-             p = pvalue(m)[fname(FOCAL)],
-             hour0_pre_per_year = p[bin == 0L & window == "win" & sy < 2023, sum(y)] / 7,
-             n_obs = nobs(m))
+CASES <- data.table(group = c("lost DST", "kept clock", "lost DST"),
+                    sample = c("all years", "all years", "without 2020 and 2021"))
+res <- rbindlist(lapply(seq_len(nrow(CASES)), function(i) {
+  cs <- CASES[i]
+  dd <- days[group == cs$group]
+  if (cs$sample != "all years") dd <- dd[!sy %in% 2020:2021]
+  rbindlist(lapply(names(OUT), function(o) {
+    y <- ev[group == cs$group, .(y = sum(get(OUT[[o]]))), by = .(unit, date, bin)]
+    p <- y[dd, on = .(unit, date, bin)][is.na(y), y := 0]
+    m <- fepois(as.formula(paste("y ~", paste(fname(FOCAL), collapse = " + "),
+                                 "| unit^date + unit^bin^window + unit^bin^sy")),
+                data = p, cluster = ~unit, notes = FALSE)
+    data.table(cs, outcome = o, bin = FOCAL, lp = 100 * coef(m)[fname(FOCAL)],
+               se = 100 * se(m)[fname(FOCAL)], p = pvalue(m)[fname(FOCAL)],
+               hour0_pre_per_year = p[bin == 0L & window == "win" & sy < 2023, sum(y)] /
+                 uniqueN(p[sy < 2023, sy]),
+               n_units = uniqueN(p$unit), n_obs = nobs(m))
+  }))
 }))
 
-saveRDS(res, file.path(path_audit, "mexico_within_day.rds"))
+coverage <- geo[, .(cve_ent, cve_mun, group)][acc, on = .(cve_ent, cve_mun), nomatch = 0][
+  year(date) >= 2016L, .(municipalities = uniqueN(paste(cve_ent, cve_mun)), accidents = .N,
+                         deaths = sum(deaths)), keyby = .(group, year = year(date))]
+saveRDS(list(results = res, coverage = coverage), file.path(path_audit, "mexico_within_day.rds"))
+print(dcast(coverage, year ~ group, value.var = c("municipalities", "accidents", "deaths")))
 options(width = 160)
-print(res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)])
+print(res[bin == 0L, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)])

@@ -23,7 +23,7 @@ UF_CODE <- c(RO = 11, AC = 12, AM = 13, RR = 14, PA = 15, AP = 16, TO = 17,
              SC = 42, RS = 43, MS = 50, MT = 51, GO = 52, DF = 53)
 code_to_uf <- setNames(names(UF_CODE), UF_CODE)
 
-# Mexico (26_mexico.R and the map in 28_figures.R). Units whose clock did not
+# Mexico (26_mexico.R and the map in 29_figures.R). Units whose clock did not
 # change with the Ley de los Husos Horarios (DOF 28/10/2022): Baja California
 # (02), Quintana Roo (23) and Sonora (26), plus the border municipalities that
 # keep DST on US dates, as listed in Art. 5, fraction I (INEGI state codes;
@@ -81,8 +81,10 @@ clock_min <- function(hhmm) {
 
 # NOAA general solar position equations. Minutes after local STANDARD midnight
 # at a point (lat, lon in degrees, east positive) whose standard UTC offset is
-# offset_h hours.
-sun_times <- function(date, lat, lon, offset_h) {
+# offset_h hours. zenith 90.833 gives sunrise and sunset; 96 gives the start of
+# morning and the end of evening civil twilight (sun 6 degrees below the
+# horizon).
+sun_times <- function(date, lat, lon, offset_h, zenith = 90.833) {
   doy <- as.integer(format(as.Date(date), "%j"))
   g   <- 2 * pi / 365 * (doy - 1 + 0.5)
   eqt <- 229.18 * (0.000075 + 0.001868 * cos(g) - 0.032077 * sin(g) -
@@ -90,9 +92,43 @@ sun_times <- function(date, lat, lon, offset_h) {
   dec <- 0.006918 - 0.399912 * cos(g) + 0.070257 * sin(g) - 0.006758 * cos(2 * g) +
     0.000907 * sin(2 * g) - 0.002697 * cos(3 * g) + 0.00148 * sin(3 * g)
   phi <- lat * pi / 180
-  ha  <- acos(cos(90.833 * pi / 180) / (cos(phi) * cos(dec)) - tan(phi) * tan(dec)) * 180 / pi
+  ha  <- acos(cos(zenith * pi / 180) / (cos(phi) * cos(dec)) - tan(phi) * tan(dec)) * 180 / pi
   list(sunrise = 720 - 4 * (lon + ha) - eqt + 60 * offset_h,
        sunset  = 720 - 4 * (lon - ha) - eqt + 60 * offset_h)
+}
+
+# Darkness index of the standard-time minutes [lo, hi): each minute of night
+# counts 1, each minute of civil twilight 1/2, each minute of daylight 0.
+# dawn and dusk are the civil twilight limits, rise and set the sunrise and
+# sunset, all in minutes after standard midnight (sun_times). Returns minutes.
+dark_minutes <- function(lo, hi, dawn, rise, set, dusk) {
+  ov <- function(a, b) pmax(0, pmin(hi, b) - pmax(lo, a))
+  ov(-1440, dawn) + ov(dusk, 2880) + 0.5 * (ov(dawn, rise) + ov(set, dusk))
+}
+
+# The pandemic. Dates from March 2020 to February 2022 are dropped together in
+# the checks that leave the pandemic out; with July-June seasons, the strictest
+# months (April-June 2020) fall in the off-season of 2019/20.
+PANDEMIC <- as.IDate(c("2020-03-01", "2022-02-28"))
+drop_pandemic <- function(d) d[!(date >= PANDEMIC[1] & date <= PANDEMIC[2])]
+
+# Easter Sunday (anonymous Gregorian algorithm). Carnival Sunday is 49 days
+# earlier; Decree 6,558/2008 moves the end of DST a week later when it would
+# fall on Carnival Sunday.
+easter_date <- function(y) {
+  a <- y %% 19; b <- y %/% 100; c <- y %% 100; d <- b %/% 4; e <- b %% 4
+  f <- (b + 8) %/% 25; g <- (b - f + 1) %/% 3; h <- (19 * a + b - d - g + 15) %% 30
+  i <- c %/% 4; k <- c %% 4; l <- (32 + 2 * e + 2 * i - h - k) %% 7
+  m <- (a + 11 * h + 22 * l) %/% 451; n <- h + l - 7 * m + 114
+  as.IDate(sprintf("%d-%02d-%02d", y, n %/% 31, n %% 31 + 1))
+}
+# Carnival (Saturday to Ash Wednesday) and the year-end holidays (24 December
+# to 1 January), the summer-window days on which travel is least like the rest.
+holiday_days <- function(years) {
+  car <- unlist(lapply(years, function(y) as.integer(easter_date(y) - 50:46)))
+  ye  <- unlist(lapply(years, function(y) as.integer(c(as.IDate(sprintf("%d-12-%02d", y, 24:31)),
+                                                       as.IDate(sprintf("%d-01-01", y + 1))))))
+  as.IDate(sort(unique(c(car, ye))))
 }
 
 # ── Panel ───────────────────────────────────────────────────────────────────

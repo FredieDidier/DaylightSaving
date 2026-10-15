@@ -11,6 +11,14 @@
 # Test: linear triple difference on the share, cells weighted by deaths,
 #   share ~ treated x window x post | uf^window + uf^sy + window^sy,
 # standard errors clustered by state.
+#
+# Also: how close is the clock time on the death certificate to the time of
+# the crash? A federal highway crash with one death and the only on-road
+# transport death certificate with a clock time in the same municipality and
+# on the same date are, most of the time, the same event. For those pairs,
+# lag = certificate time minus crash time (minutes). Pairs formed with the
+# certificates of the same municipality seven days later, which cannot be the
+# same event, give the distribution expected by chance.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -59,7 +67,30 @@ post <- net(1, 1) - net(0, 1)
 shift <- function(x, k) x[((seq_along(x) - 1L - k) %% 24L) + 1L]
 clock <- data.table(lag = -1:1, sq_dist = sapply(-1:1, function(k) 1e4 * sum((shift(pre, k) - post)^2)))
 
-saveRDS(list(test = test, series = series, clock = clock), file.path(path_audit, "record_integrity.rds"))
+# ── Certificate time against crash time ─────────────────────────────────────
+ev <- as.data.table(read_parquet(EVENTS_FILE))[outcome %in% c("PRF deaths", "SIM transport deaths, on road")]
+one <- function(o, cond) ev[outcome == o & cond, .(n = .N, cmin = cmin[1], w = w[1]), by = .(code6, date)][n == 1L]
+crash <- one("PRF deaths", TRUE)[w == 1]
+death <- one("SIM transport deaths, on road", TRUE)
+pair_lag <- function(shift_days) {
+  d <- copy(death)[, date := date - shift_days]
+  x <- crash[d, on = .(code6, date), nomatch = 0]
+  lag <- x$i.cmin - x$cmin
+  lag[lag > 720] <- lag[lag > 720] - 1440
+  lag[lag <= -720] <- lag[lag <= -720] + 1440
+  lag
+}
+lag_same <- pair_lag(0L); lag_chance <- pair_lag(7L)
+summ <- function(l) data.table(pairs = length(l), median_min = median(l),
+                               within_0_60_pct = 100 * mean(l >= 0 & l < 60),
+                               within_30_pct = 100 * mean(abs(l) <= 30),
+                               negative_pct = 100 * mean(l < 0))
+link <- rbind(cbind(pairing = "same date", summ(lag_same)),
+              cbind(pairing = "seven days later (chance)", summ(lag_chance)))
+
+saveRDS(list(test = test, series = series, clock = clock, link = link),
+        file.path(path_audit, "record_integrity.rds"))
+print(link)
 options(width = 160)
 print(clock)
 print(test[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)])

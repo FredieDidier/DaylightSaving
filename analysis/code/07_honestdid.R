@@ -70,7 +70,7 @@ out <- rbindlist(lapply(TRAFFIC, function(o) {
 
 saveRDS(out, file.path(path_audit, "honestdid.rds"))
 
-# Figure: drawn by 28_figures.R from the cache saved above.
+# Figure: drawn by 29_figures.R from the cache saved above.
 
 options(width = 160)
 print(out[, .(outcome, restriction, param, lb_lp = round(100 * lb, 1), ub_lp = round(100 * ub, 1),

@@ -1,5 +1,5 @@
 # =============================================================================
-# 29_tables.R
+# 30_tables.R
 #
 # Every table of the paper, written as a LaTeX tabular from the estimates
 # cached in audit/*.rds. Nothing is estimated here. Captions and notes live in
@@ -9,16 +9,19 @@
 #   tab_main            the hour that turned dark and the hour that turned
 #                       light: estimate, three p-values, baseline        (01, 06)
 #   tab_pedestrians     pedestrians against other road users            (12, 14)
-#   tab_excess          excess events per summer, evening, morning, day  (11)
+#   tab_dose            darkness as a dose, from the sun: a fully dark
+#                       evening and morning hour, four sets of effects     (23)
+#   tab_excess          excess events per summer: dose model, then hour by
+#                       hour, evening, morning, day                       (23, 11)
 #   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (15, 16)
 #   tab_within_group    hour 0 against hours of the same state-day, treated
 #                       and control states each alone                     (09, 15)
 #   tab_robustness      the hour that turned dark under other choices,
-#                       and the hours whose light did not change         (04, 05, 08, 09, 18)
-#   tab_sensitivity     the hour after sunset under other clocks, samples
-#                       and a rain control                               (19, 20, 23)
+#                       and the hours whose light did not change  (04, 05, 08, 09, 18, 20)
+#   tab_sensitivity     the hour after sunset under other clocks, samples,
+#                       days and weather                                  (04, 19, 20, 23)
+#   tab_transitions     the clock changes before 2019 against abolition  (28)
 #   tab_road_users      who dies: road user, pedestrian age and sex, day (21)
-#   tab_light_dose      darkness as a dose; rain                          (23)
 #   tab_street_lighting darker against better-lit municipalities          (24)
 #   tab_cost            deaths per summer and their value                 (25)
 #   tab_mexico          Mexico, abolition of 2022: evening, hour before, morning,
@@ -95,6 +98,7 @@ main_panel <- function(s) {
     row("Change (percent)", f1(x$pct)),
     row("p-value, clustered by state", fp(x$p)),
     row("p-value, permutation of treated states", fp(x$perm_p)),
+    row("p-value, score wild bootstrap", fp(x$score_p)),
     row("Linear model: effect (percent of pre-abolition mean)", f1(x$linear_effect_pct_of_base)),
     row("Linear model: p-value, wild cluster bootstrap", fp(x$wcr_p)),
     row("Mean events per summer, treated states before abolition", f0(x$n_treated_win_pre / N_PRE)),
@@ -139,18 +143,38 @@ write_tab("tab_pedestrians", c(
   panel("Panel D. Pedestrian share (percent)", 4),
   row("Of events before abolition", f1(100 * pp$pre_per_season / (pp$pre_per_season + po$pre_per_season))),
   row("Of excess events after abolition", f1(pp$share_of_excess)),
+  row("", se1(pp$share_se)),
+  close_))
+
+# ── Table: darkness as a dose ───────────────────────────────────────────────
+dz <- rd("light_dose.rds")$dose
+DZ <- c(clock_blind = "Date effects only",
+        main        = "Clock hour by date effects (baseline)",
+        within_day  = "Adding state-by-day effects",
+        hour_free   = "Adding an effect per clock hour, treated states after 2019")
+dz_rows <- function(sp, col, secol) {
+  x <- dz[spec == sp][match(TRAFFIC, outcome)]
+  c(row(DZ[[sp]], f1(x[[col]])), row("", se1(x[[secol]])))
+}
+dmain <- dz[spec == "main"][match(TRAFFIC, outcome)]
+write_tab("tab_dose", c(
+  open3,
+  panel("Panel A. Evening clock hour, from full daylight to night (log points)", 4),
+  unlist(lapply(names(DZ), dz_rows, col = "evening_lp", secol = "evening_se")),
+  "\\addlinespace",
+  panel("Panel B. Morning clock hour, from full daylight to night (log points)", 4),
+  dz_rows("main", "morning_lp", "morning_se"),
+  row("Evening equals morning, p-value", fp(dmain$diff_p)),
   close_))
 
 # ── Table: excess events per summer ─────────────────────────────────────────
 ex <- rd("reallocation.rds")$sums
 EX <- c("evening, dark (0, +1)"            = "Two hours after sunset",
-        "evening, all (-2 to +1)"          = "Two hours before to two hours after sunset",
         "morning, light (0)"               = "Hour after sunrise",
         "net: evening 0, +1 and morning 0" = "Two hours after sunset and hour after sunrise",
-        # Only five of the seven hours of 11_reallocation.R appear above (the
-        # hour before and the second hour after sunrise are summed, not
-        # shown). The seven hours are listed in the table note
-        # (latex/sections/body.tex).
+        "net: -1 to +1 at both ends"       = "Hours $-1$ to $+1$ around sunset and sunrise",
+        # The seven hours of 11_reallocation.R: two before to two after sunset,
+        # one before to two after sunrise (listed in the table note).
         "net: all seven hours"             = "Seven hours around sunset and sunrise",
         "whole day (separate model)"       = "Whole day, estimated separately")
 ex_rows <- function(keys) unlist(lapply(keys, function(k) {
@@ -159,15 +183,18 @@ ex_rows <- function(keys) unlist(lapply(keys, function(k) {
 }))
 write_tab("tab_excess", c(
   open3,
-  panel("Panel A. Evening", 4), ex_rows(names(EX)[1:2]),
+  panel("Panel A. Darkness dose model: every hour, weighted by its change in light", 4),
+  row("Net, summer window", f0(dmain$net)), row("", se0(dmain$net_se)),
+  row("\\quad of which evening hours", f0(dmain$evening)),
+  row("\\quad of which morning hours", f0(dmain$morning)),
+  row("Net, whole DST season (2017 rule)", f0(dmain$season_net)), row("", se0(dmain$season_net_se)),
   "\\addlinespace",
-  panel("Panel B. Morning", 4), ex_rows(names(EX)[3]),
-  "\\addlinespace",
-  panel("Panel C. Net", 4), ex_rows(names(EX)[4:6]),
+  panel("Panel B. Hour by hour", 4), ex_rows(names(EX)),
   close_))
 
 # ── Table: traffic volume and risk per vehicle ──────────────────────────────
-rk <- rd("traffic_volume.rds")$risk
+tv <- rd("traffic_volume.rds")
+rk <- tv$risk; pr <- tv$paired
 iv <- rd("inference_volume.rds")
 pb <- function(p) sprintf("[%s]", fp(p))
 BINS <- c("eve-2" = "Two hours before sunset", "eve-1" = "Hour before sunset",
@@ -177,24 +204,25 @@ BINS <- c("eve-2" = "Two hours before sunset", "eve-1" = "Hour before sunset",
 vol_rows <- function(b) {
   ic <- rk[bin_key == b & outcome == "PRF injury accidents"]
   de <- rk[bin_key == b & outcome == "PRF deaths"]
-  c(row(BINS[[b]], c(f1(ic$vol_lp), f1(ic$crash_lp), f1(ic$per_vehicle_lp),
+  pa <- pr[bin_key == b]
+  c(row(BINS[[b]], c(f1(ic$vol_lp), f1(pa$coef_lp), f1(ic$crash_lp), f1(ic$per_vehicle_lp),
                      f1(de$crash_lp), f1(de$per_vehicle_lp))),
-    row("", c(se1(ic$vol_se), se1(ic$crash_se), se1(ic$per_vehicle_se),
+    row("", c(se1(ic$vol_se), se1(pa$se_lp), se1(ic$crash_se), se1(ic$per_vehicle_se),
               se1(de$crash_se), se1(de$per_vehicle_se))),
     with(iv[bin_key == b],
-         row("", c(pb(vehicles_perm_p), pb(injury_perm_p), pb(injury_per_vehicle_perm_p),
+         row("", c(pb(vehicles_perm_p), "", pb(injury_perm_p), pb(injury_per_vehicle_perm_p),
                    pb(deaths_perm_p), pb(deaths_per_vehicle_perm_p)))))
 }
 write_tab("tab_traffic_volume", c(
-  "\\begin{tabular}{@{}l ccc cc@{}}", "\\toprule",
-  " & & \\multicolumn{2}{c}{Injury crashes} & \\multicolumn{2}{c}{Deaths} \\\\",
-  "\\cmidrule(lr){3-4}\\cmidrule(l){5-6}",
-  " & Vehicles & All & Per vehicle & All & Per vehicle \\\\",
-  " & (1) & (2) & (3) & (4) & (5) \\\\",
+  "\\begin{tabular}{@{}l cc cc cc@{}}", "\\toprule",
+  " & \\multicolumn{2}{c}{Vehicles} & \\multicolumn{2}{c}{Injury crashes} & \\multicolumn{2}{c}{Deaths} \\\\",
+  "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(l){6-7}",
+  " & All stations & Relocated pairs & All & Per vehicle & All & Per vehicle \\\\",
+  " & (1) & (2) & (3) & (4) & (5) & (6) \\\\",
   "\\midrule",
-  panel("Panel A. Evening", 6), unlist(lapply(c("eve-2", "eve-1", "eve+0", "eve+1"), vol_rows)),
+  panel("Panel A. Evening", 7), unlist(lapply(c("eve-2", "eve-1", "eve+0", "eve+1"), vol_rows)),
   "\\addlinespace",
-  panel("Panel B. Morning", 6), unlist(lapply(c("morn-1", "morn+0", "morn+1"), vol_rows)),
+  panel("Panel B. Morning", 7), unlist(lapply(c("morn-1", "morn+0", "morn+1"), vol_rows)),
   close_))
 
 # ── Table: within the day, each group alone ─────────────────────────────────
@@ -226,34 +254,41 @@ wd <- rd("within_day.rds")$pooled[side == "set" & reference == "all" & bin == 0L
 ww <- rd("wider_window.rds")[grepl("^B", window)][match(TRAFFIC, outcome)]
 im <- rd("imputation.rds")[side == "set" & bin == 0L]
 ph <- rd("placebo_hours.rds")
+lo <- rd("leave_out.rds")
 est_rows <- function(label, b, s) c(row(label, f1(b)), row("", se1(s)))
 imp_row <- function(label, tr) {
   x <- im[trend == tr][match(TRAFFIC, outcome)]
   c(row(label, f1(100 * x$att)), row("", ci1(100 * x$lo, 100 * x$hi)))
 }
 plc <- function(b) ph[block == b][match(TRAFFIC, outcome)]
+ck <- lo[kind == "clock"][match(TRAFFIC, outcome)]
 write_tab("tab_robustness", c(
   open3,
-  panel("Panel A. Hour after standard-time sunset (log points)", 4),
+  panel("Panel A. Trends and timing (log points)", 4),
   est_rows("Baseline", pt$base_lp, pt$base_se),
   est_rows("With a linear treated $\\times$ summer trend", pt$trend_lp, pt$trend_se),
-  est_rows("Without the 2020/21 and 2021/22 seasons", pt$nocovid_lp, pt$nocovid_se),
-  est_rows("With state-by-day fixed effects", 100 * wd$coef, 100 * wd$se),
-  est_rows("Two hours after sunset", ww$base_lp, ww$base_se),
-  row("Seasons before abolition jointly zero, p-value", fp(pt$wald_pre_p)),
+  est_rows("Without March 2020 to February 2022", pt$nopandemic_lp, pt$nopandemic_se),
+  est_rows("First two summers without DST", pt$early_lp, pt$early_se),
+  est_rows("\\quad Last three summers without DST", pt$late_lp, pt$late_se),
+  est_rows("Summer window only (no off-season)", pt$summer_dd_lp, pt$summer_dd_se),
+  row("Seasons before abolition equal, p-value", fp(pt$wald_pre_p)),
   "\\addlinespace",
-  panel("Panel B. Imputation estimator, hour after sunset (percent)", 4),
+  panel("Panel B. Imputation estimator (percent)", 4),
   imp_row("Without a trend", FALSE),
   imp_row("With the pre-abolition trend extrapolated", TRUE),
   "\\addlinespace",
-  panel("Panel C. Hours whose light did not change (log points)", 4),
+  panel("Panel C. Other comparisons (log points)", 4),
+  est_rows("Control states at the treated states' clock time", ck$lp, ck$se),
+  est_rows("With state-by-day fixed effects", 100 * wd$coef, 100 * wd$se),
+  est_rows("Two hours after sunset", ww$base_lp, ww$base_se),
+  "\\addlinespace",
+  panel("Panel D. Hours whose light did not change (log points)", 4),
   est_rows("Midday", plc("midday (light unchanged)")$lp, plc("midday (light unchanged)")$se),
   est_rows("Night", plc("night (light unchanged)")$lp, plc("night (light unchanged)")$se),
   close_))
 
 # ── Table: sensitivity of the hour after sunset ─────────────────────────────
 hp <- rd("heaping.rds")$results
-lo <- rd("leave_out.rds")
 ld <- rd("light_dose.rds")
 sens_row <- function(label, x) c(row(label, f1(x$lp)), row("", se1(x$se)))
 pick_h <- function(v) hp[variant == v & shift_min == 0L][match(TRAFFIC, outcome)]
@@ -265,17 +300,29 @@ write_tab("tab_sensitivity", c(
   "\\addlinespace",
   panel("Panel A. Clock time and sun", 4),
   sens_row("Sunset from the full NOAA solar algorithm", pick_h("Meeus solar algorithm")),
+  sens_row("Times recorded at :00 or :30 spread over 30 minutes", pick_h("spread :00 and :30")),
   sens_row("Without times recorded at :00 or :30", pick_h("drop :00 and :30")),
   "\\addlinespace",
-  panel("Panel B. Comparison states and seasons", 4),
+  panel("Panel B. Comparison states, seasons and days", 4),
   sens_row("Control states: Northeast only", pick_l("control", "North (control = Northeast only)")),
   sens_row("Control states: North only", pick_l("control", "Northeast (control = North only)")),
   sens_row("Without the La Ni\\~na summers, 2020/21 to 2022/23", pick_l("seasons", "La Nina summers 2020/21-2022/23")),
   sens_row("Without 2019/20, the first summer without DST", pick_l("seasons", "2019/20")),
+  sens_row("Without Carnival and the year-end holidays", pick_l("days", "Carnival and year-end holidays")),
+  c(row("Summer window only, first two summers without DST", f1(pt$summer_early_lp)),
+    row("", se1(pt$summer_early_se))),
+  c(row("\\quad Last three summers without DST", f1(pt$summer_late_lp)),
+    row("", se1(pt$summer_late_se))),
+  c(row("Without March 2020 to February 2022, first summer", f1(pt$early_nopan_lp)),
+    row("", se1(pt$early_nopan_se))),
+  c(row("\\quad Last two summers", f1(pt$late_nopan_lp)),
+    row("", se1(pt$late_nopan_se))),
   "\\addlinespace",
   panel("Panel C. Weather", 4),
   c(row("Controlling for the share of the state under rain", f1(rc$with_rain_control_lp)),
     row("", se1(rc$with_rain_control_se))),
+  c(row("Effect on a dry state-day", f1(rc$effect_dry_lp)), row("", se1(rc$effect_dry_se))),
+  c(row("Change, dry to fully rainy state-day", f1(rc$rain_change_lp)), row("", se1(rc$rain_change_se))),
   close_))
 
 # ── Table: who dies (road deaths only) ──────────────────────────────────────
@@ -309,24 +356,9 @@ write_tab("tab_road_users", c(
   "\\addlinespace", panel(RU[[1]][[1]], 5), ru_rows(RU[[1]][[2]], RU[[1]][[3]]),
   "\\addlinespace", panel(RU[[2]][[1]], 5), ru_rows(RU[[2]][[2]], RU[[2]][[3]]),
   "\\addlinespace", panel(RU[[3]][[1]], 5), ru_rows("day", RU[[3]][[3]]),
+  ru_rows("day", c(`weekend or holiday, without Carnival and year-end` =
+                     "\\quad without Carnival and year-end")),
   ru_rows("day, pedestrians", setNames(paste("Pedestrians,", tolower(RU[[3]][[3]])), names(RU[[3]][[3]]))),
-  close_))
-
-# ── Table: darkness as a dose, and rain ─────────────────────────────────────
-fs <- ld$first_stage; wd_ <- ld$wald[match(TRAFFIC, outcome)]
-write_tab("tab_light_dose", c(
-  open3,
-  panel("Panel A. Darkness as a dose", 4),
-  row("Crashes recorded dark (percentage points)",
-      c("", "", sprintf("%s (%s)", f1(fs$fs_pp), formatC(fs$fs_se_pp, format = "f", digits = 1)))),
-  row("Effect of a fully dark hour (log points)", f1(wd_$wald_lp_per_full_dark)),
-  row("", ci1(wd_$lo, wd_$hi)),
-  "\\addlinespace",
-  panel("Panel B. Rain (log points)", 4),
-  row("Effect on a dry state-day", f1(rc$effect_dry_lp)),
-  row("", se1(rc$effect_dry_se)),
-  row("Change, dry to fully rainy state-day", f1(rc$rain_change_lp)),
-  row("", se1(rc$rain_change_se)),
   close_))
 
 # ── Table: street lighting ──────────────────────────────────────────────────
@@ -346,33 +378,36 @@ write_tab("tab_street_lighting", c(
   "\\midrule",
   panel("Panel A. Hour after sunset, Census 2022 (log points)", 4), sl_rows(0L),
   "\\addlinespace",
-  panel("Panel B. Hour before sunset, light unchanged, Census 2022 (log points)", 4), sl_rows(-1L),
+  panel("Panel B. Hour before sunset, sun lower, Census 2022 (log points)", 4), sl_rows(-1L),
   "\\addlinespace",
   panel("Panel C. Hour after sunset, Census 2010 (log points)", 4), sl_rows(0L, "unlit_pct_2010"),
   close_))
 
 # ── Table: deaths and their value per summer ────────────────────────────────
 tc <- rd("total_cost.rds")
-dn <- tc$deaths[sum == "net: evening 0, +1 and morning 0"]
-vl <- tc$value[sum == "net: evening 0, +1 and morning 0"]
 CNT <- c("A on road, with clock time", "B on road", "C all transport deaths")
+DN <- c("dose model, summer window" = "Summer window, 15 November to 14 February",
+        "dose model, DST season (2017 rule)" = "Whole DST season, 2017 rule")
 RULE <- c("(a) elasticity 1.5 from the US ratio of 160" = "VSL, income elasticity 1.5 (reference)",
           "(c) 100 x GNI per capita" = "VSL, 100 $\\times$ income per head",
           "(b) 160 x GNI per capita" = "VSL, 160 $\\times$ income per head",
           "(d) IPEA social cost of a death (human capital)" = "Ipea social cost of a death")
+vl <- tc$value[sum == "dose model, DST season (2017 rule)"]
 write_tab("tab_cost", c(
   "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
   " & Road deaths with & All road & All transport \\\\",
   " & a clock time & deaths & deaths \\\\",
   " & (1) & (2) & (3) \\\\",
   "\\midrule",
-  panel("Panel A. Excess deaths per summer", 4),
-  row("Two hours after sunset and hour after sunrise", f0(dn[match(CNT, count)]$deaths)),
-  row("", se0(dn[match(CNT, count)]$se)),
-  row("Share of summer transport deaths (percent)",
-      f1(dn[match(CNT, count)]$share_of_summer_transport_deaths_pct)),
+  panel("Panel A. Excess deaths", 4),
+  unlist(lapply(names(DN), function(k) {
+    x <- tc$deaths[sum == k][match(CNT, count)]
+    c(row(DN[[k]], f0(x$deaths)), row("", se0(x$se)))
+  })),
+  row("Share of summer-window transport deaths (percent)",
+      f1(tc$deaths[sum == names(DN)[1]][match(CNT, count)]$share_of_summer_transport_deaths_pct)),
   "\\addlinespace",
-  panel("Panel B. Value per summer (millions of 2025 reais)", 4),
+  panel("Panel B. Value per DST season (millions of 2025 reais)", 4),
   unlist(lapply(names(RULE), function(r) {
     x <- vl[rule == r][match(CNT, count)]
     c(row(RULE[[r]], f0(x$value_brl_million)), row("", se0(x$value_se_brl_million)))
@@ -401,14 +436,41 @@ write_tab("tab_mexico", c(
   "\\midrule",
   panel("Panel A. Hour after sunset, which turned dark", 5), mx_rows("set", 0L, TRUE),
   "\\addlinespace",
-  panel("Panel B. Hour before sunset, light unchanged", 5), mx_rows("set", -1L),
+  panel("Panel B. Hour before sunset, sun lower", 5), mx_rows("set", -1L),
   "\\addlinespace",
   panel("Panel C. Hour after sunrise, which turned light", 5), mx_rows("rise", 0L),
   "\\addlinespace",
-  panel("Panel D. Treated units only: hour after sunset against hours of the same day", 5),
+  panel("Panel D. Hour after sunset against hours of the same day, units that lost DST", 5),
   {
-    w <- rd("mexico_within_day.rds")[bin == 0L][match(MXO, outcome)]
-    c(row("Effect of abolition (log points)", f1(w$lp)), row("", se1(w$se)),
-      row("p-value, clustered by unit", fp(w$p)))
+    w <- rd("mexico_within_day.rds")$results[bin == 0L]
+    a <- w[group == "lost DST" & sample == "all years"][match(MXO, outcome)]
+    n <- w[group == "lost DST" & sample != "all years"][match(MXO, outcome)]
+    c(row("Effect of abolition (log points)", f1(a$lp)), row("", se1(a$se)),
+      row("p-value, clustered by unit", fp(a$p)),
+      row("Without 2020 and 2021", f1(n$lp)), row("", se1(n$se)))
   },
+  "\\addlinespace",
+  panel("Panel E. The same comparison in the units that kept their clock", 5),
+  {
+    w <- rd("mexico_within_day.rds")$results[bin == 0L & group == "kept clock"][match(MXO, outcome)]
+    c(row("Change after 2022 (log points)", f1(w$lp)), row("", se1(w$se)),
+      row("p-value, clustered by unit", fp(w$p)),
+      row("Mean events per year, before", f1(w$hour0_pre_per_year)))
+  },
+  close_))
+
+# ── Table: the clock changes before abolition ───────────────────────────────
+tr <- rd("transitions.rds")$results
+tr_rows <- function(d) {
+  x <- tr[design == d][match(TRAFFIC, outcome)]
+  c(row("Abolition, five summers", f1(x$regime_lp)), row("", se1(x$regime_se)),
+    row("End of DST in February, three weeks", f1(x$end_lp)), row("", se1(x$end_se)),
+    row("Start of DST in October, three weeks", f1(x$start_lp)), row("", se1(x$start_se)),
+    row("Both changes, as a darker evening", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)))
+}
+write_tab("tab_transitions", c(
+  open3,
+  panel("Panel A. Hour after sunset (log points)", 4), tr_rows("hour0"),
+  "\\addlinespace",
+  panel("Panel B. Hour after sunset against hours of the same day (log points)", 4), tr_rows("within_day"),
   close_))

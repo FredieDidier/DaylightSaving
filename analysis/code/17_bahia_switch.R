@@ -109,7 +109,7 @@ fs <- ev_ba[outcome == "PRF injury accidents" & bin_set == 0L &
 fs <- days[uf == "BA", .(date, window, sy)][fs, on = "date", nomatch = 0][window == "win"]
 fs_tab <- fs[, .(dark_pct = round(100 * mean(fase_dia != "pleno dia"), 1), n = .N), keyby = sy]
 
-# Figure: drawn by 28_figures.R from the cache saved below.
+# Figure: drawn by 29_figures.R from the cache saved below.
 
 saveRDS(list(by_season = res, rank = rank_tab, first_stage = fs_tab, seasons = SEASONS),
         file.path(path_audit, "bahia_switch.rds"))
