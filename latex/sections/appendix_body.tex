@@ -100,7 +100,7 @@ Moving the window changes the estimate in the direction light predicts: a window
   \caption{The Two Legs of the Triple Difference, Season by Season}
   \label{fig:window-legs}
   \begin{figurenotes}[Notes]
-  Hour after standard-time sunset. Each point is the coefficient on the treated states in one season from a Poisson model of the summer window alone or of the off-season alone, with state and date effects, against 2018/19. The triple difference of Figure~\ref{fig:event-study} is the summer coefficient minus the off-season coefficient. 95 percent confidence intervals, standard errors clustered by state.
+  Hour after standard-time sunset. Each point is the coefficient on the treated states in one season from a Poisson model of the summer window alone or of the off-season alone, with state and date effects, against 2018/19. Up to its common date effects, the triple difference is the summer coefficient minus the off-season coefficient; Figure~\ref{fig:event-study} shows it against the average season with DST rather than 2018/19. 95 percent confidence intervals, standard errors clustered by state.
   \end{figurenotes}
   \begin{figurenotes}[Sources]
   \citet{datasus2025sim}; \citet{prf2025dados}.
@@ -275,7 +275,7 @@ Figure~\ref{fig:bahia} ranks the 2011/12 estimate among Bahia's 16 seasons for e
 \end{figure}
 
 Ambient light also affects crime \citep{doleac2015under, dominguez2023crime}, so I examined deaths from assault with the same design. They show no signature of light (Figure~\ref{fig:assault}). The whole-day triple difference is 2.4 log points (1.7), and $-0.5$ (1.5) without 2019/20, the one season in which the coefficients jump. Between 8 a.m.\ and 5 p.m., hours whose light did not change, the estimate (7.0, 2.6) is of the same order as between 5 and 8 p.m.\ (15.2, 5.0). % assault_trends.rds, results.
-A change in violence concentrated in one season and spread across the day is not an effect of light, and the paper does not study assault deaths further. It is also a reminder that the triple difference can find changes after 2019 in hours whose light did not change; for road deaths, Panel D of Table~\ref{tab:robustness} finds none.
+A change in violence concentrated in one season and spread across the day is not an effect of light, and the paper does not study assault deaths further. The triple difference can thus find changes after 2019 in hours whose light did not change; for road deaths, Panel D of Table~\ref{tab:robustness} finds none.
 
 % -----------------------------------------------------------------------------
 \section{Mexico}\label{app:mexico}
@@ -295,7 +295,7 @@ A change in violence concentrated in one season and spread across the day is not
 
 The accident records cover accidents on non-federal roads, urban and suburban, from 1997; the analysis uses 2016 to 2025. The dead are counted at the scene of the accident, the concept used for Brazil. Day or time not specified is coded as missing, which from 2016 on affects 15 of 3.6 million accidents. % raw ATUS 2016-2025: 5 without day, 10 without time, of 3,611,562. The seat of each municipality comes from INEGI's geostatistical framework \citep{inegi2026marco}; for the boroughs of Mexico City, which have no seat, the most populous urban locality stands in, and two municipalities of Sinaloa without coordinates are dropped. Standard offsets follow the zones of the law: UTC$-$6 for the Central zone, $-$7 for the Pacific zone, $-$8 for Baja California and $-$5 for Quintana Roo.
 
-The register's coverage grew modestly over the sample. In the areas that lost DST, the number of municipalities with at least one recorded accident rose from 1,247 to 1,293 a year in 2016--2019 to 1,374 to 1,412 in 2023--2025, while the number of accidents stayed between about 286,000 and 300,000 a year outside the pandemic. The comparisons within the day, which use each unit's own day as the base, are unaffected by the number of reporting municipalities. % mexico_within_day.rds, coverage.
+The register's coverage grew modestly over the sample. In the areas that lost DST, the number of municipalities with at least one recorded accident rose from 1,247 to 1,293 a year in 2016--2019 to 1,374 to 1,412 in 2023--2025, while the number of accidents stayed between about 286,000 and 300,000 a year outside the pandemic. The comparisons within the day use each unit's own day as the base, so a change in how many accidents a unit records does not move them; a change in the hourly profile of the municipalities that start reporting would. % mexico_within_day.rds, coverage.
 
 The records use legal clock time. In the areas that lost DST, the hourly profile of accidents in the summer window under DST (2016 to 2022) matches the profile without DST (2023 to 2025) at the same clock hour far better (squared distance 0.68) than shifted by one hour in either direction (6.95 and 10.13). % mexico.rds, clock_check.
 

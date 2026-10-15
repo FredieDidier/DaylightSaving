@@ -30,9 +30,9 @@
 #     treated states' hour 0 falls cannot drive te. Variants: date effects
 #     only (no clock-hour x date); adding state x date effects (within the
 #     state's day); adding a free effect for every clock hour in the treated
-#     states' summers after 2019, so that te comes only from the difference,
-#     at the same clock hour, between treated states whose sun sets at
-#     different clock times.
+#     states' summers after 2019, so that te comes only from differences in
+#     darkness at the same clock hour, which arise because the sun sets at
+#     different clock times across the treated states and the summer's dates.
 #     Every hour enters, with zero dose where the light did not change, so the
 #     model gives a net count of excess events per summer without choosing
 #     hours (as in 11: observed minus counterfactual, delta-method standard

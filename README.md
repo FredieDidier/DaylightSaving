@@ -133,7 +133,7 @@ Approximate storage space needed: 3.3 GB with the raw rain grid, 0.7 GB without 
 #### Details
 
 The code was last run on an Apple M1 Pro laptop (8 cores, 16 GB of memory, macOS 26.6),
-with the default numbers of worker processes (4 or 5). The analysis takes about 2 to 3 hours, most of it
+with the default of 5 worker processes. The analysis takes about 2 to 3 hours, most of it
 in the permutation and bootstrap draws of `05`, `06`, `14`, `16` and `26`; this
 figure comes from the timestamps of the cached results, not from one uninterrupted run.
 Rebuilding the data adds the downloads of `build/02`, `05`, `06` and `10`, which depend on
@@ -190,9 +190,10 @@ To be set at deposit, in a `LICENSE.txt` at the root of the package.
 
 ### Details
 
-- Run with the default draw counts. The environment variables `DS_PERM` and `DS_BOOT`
-  change them for several scripts at once (`DS_BOOT` sets the 299 draws of `05`), and setting `DS_PERM` also turns on a permutation test in `09` that
-  the paper does not use. `DS_CORES` sets the number of worker processes only.
+- Run with the default draw counts. `DS_PERM` changes the 999 permutation draws of
+  `06`, `14`, `16` and `26` at once and also turns on a permutation test in `09` that the
+  paper does not use; `DS_BOOT` changes the 299 bootstrap draws of `05`. `DS_CORES` sets
+  the number of worker processes only.
 - `00_master_analysis.R 06 14` reruns single steps; `--from 15` reruns from a step on.
   Each script can also be run alone once its inputs exist.
 - Numbers quoted in the text that no exhibit prints are traced, in a LaTeX comment beside
