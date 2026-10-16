@@ -38,7 +38,7 @@ O paper continua com 36 páginas (limite 45); o apêndice foi de 23 para 24.
 | 7 | Robustez sem os municípios litorâneos | ✔ | linha na Tabela B1 e meia frase no corpo |
 | 8 | Separar a saída de fevereiro da abolição, no texto | ✔ | feito no corpo e no apêndice |
 | 9 | "Instrumento de medida" confunde com fonte de variação | ✔ no paper | nada a fazer |
-| 10 | Infarto (Toro, Tigre & Sampaio 2015) é deslocamento | — | não citamos |
+| 10 | Infarto (Toro, Tigre & Sampaio 2015) é deslocamento | ✔ | ele tem razão; o artigo volta à Seção V em meia linha |
 | 11 | Ajustes de redação no EXPLICANDO | — | só no EXPLICANDO |
 | 12 | Trechos grifados, sem comentário | — | — |
 | 13 | Elogios e reações | — | — |
@@ -294,12 +294,35 @@ do lugar não é novo; a fonte de variação, o fim do regime, é".
 > "mas é deslocamento, né? o sujeito adianta o infarto que teria mais cedo do
 > que tarde, eu imagino"
 
-Sobre Toro, Tigre & Sampaio (2015, *Economics Letters*), infarto nos dias
-após a entrada no horário de verão. **O paper não cita esse trabalho.** A
-pergunta análoga para nós (as mortes só mudaram de hora?) está em IV.H: a manhã
-não compensa, e o dia inteiro é ruidoso demais para dizer (EP 66). Morte no
-trânsito não é antecipação de uma morte que viria de qualquer jeito. Nenhuma
-ação.
+Sobre Toro, Tigre & Sampaio (2015, *Economics Letters* 136: 1–4), lido na
+versão da tese do Toro (UFPE, cap. 3) e no resumo publicado.
+
+**O que o artigo faz:** regressão descontínua diária, SIM 2007–2012, log das
+mortes por infarto agudo do miocárdio nos estados com horário de verão,
+corrigido por dia da semana, estado e ano. O salto no primeiro dia depois da
+entrada é de 7,1% a 8,5% (EP ~0,04; significante a 5% em dois dos três
+seletores de banda). Nos estados sem horário de verão o salto é zero, na saída
+de fevereiro também, nas semanas anteriores também, e câncer, infecções virais
+e doenças parasitárias não se movem.
+
+**Ele tem razão no ponto do deslocamento.** O desenho mede o salto logo depois
+da troca e não testa se as mortes caem nas semanas seguintes. A conta de 196
+mortes por ano do artigo supõe que o efeito dura 7 dias sem compensação
+depois. Então o artigo mostra que a troca antecipa ou provoca infartos, mas
+não separa as duas coisas, nem dá o saldo líquido. Citar só como "mais mortes
+por infarto logo depois da troca", nunca como contagem anual.
+
+**Para o nosso paper:** o problema não se repete. Morte no trânsito não é
+antecipação de uma morte que viria de qualquer jeito (a idade mediana dos
+mortos na hora 0 é 35 anos), e a pergunta análoga, se as mortes só mudaram
+de hora, está em IV.H.
+
+**Decisão (16/10): o artigo volta ao paper, na Seção V**, em meia linha: as
+duas trocas por ano que a abolição tirou têm um custo de sono que a nossa conta
+não inclui, e no Brasil esse custo aparece em mais mortes por infarto. Isso
+mostra o lado da conta que favorece a abolição. Não entra na seção das
+trocas (IV.I): lá a frase é sobre o sono agir em todas as horas do dia, e um
+salto diário de infarto não sustenta isso.
 
 ## 11. Redação do EXPLICANDO
 

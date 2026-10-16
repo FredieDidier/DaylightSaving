@@ -79,7 +79,9 @@ Every data file lives under one folder, `DROPBOX_ROOT/build/`, with `DROPBOX_ROO
 | `calendar/output/dst_uf_season.parquet`, `dst_uf_day.parquet` | `build/01` | DST status by state and season, and by state and day | yes |
 | `sim/output/sim_<year>.parquet` (2008–2025) | `build/05` | death certificates, selected columns | yes |
 | `prf/output/prf_accidents.parquet` | `build/03` | one row per federal highway crash, 2007–2025 | yes |
+| `prf/output/prf_persons.parquet` | `build/13` | one row per person in a federal highway crash: role, condition, sex, age | yes |
 | `geo/output/muni_geo.parquet`, `br_states.gpkg` | `build/04`, `12` | municipal seats with time zone; state boundaries | yes |
+| `geo/input/Municipios_Defrontantes_com_o_Mar_2022.xls`, `geo/output/muni_coastal.parquet` | `build/14` | the 279 municipalities that face the sea | yes |
 | `pnct/output/pnct_hourly.parquet`, `pnct_station_day_bins.parquet`, `download_log.csv` | `build/06`, `07`, `analysis/code/15` | hourly vehicle counts by station | yes |
 | `weather/output/pr_seat_day.parquet` | `build/08` | daily rain at each municipal seat | yes |
 | `census/input/*`, `census/output/muni_lighting.parquet` | `build/09` | share of households on unlit streets by municipality | yes |
@@ -101,7 +103,7 @@ its output in its header.
   `patchwork` 1.3.0, `ragg` 1.5.0, `sf` 1.1-0, `terra` 1.8-50, `geobr` 2.0.0,
   `geodata` 0.6-6, `rnaturalearth` 1.2.0, `rnaturalearthdata` 1.0.0.9000 (r-universe),
   `censobr` 0.2.0 (GitHub, commit 429440f), `read.dbc` 1.2.0 (GitHub, commit 52e0b15),
-  `RCurl` 1.98-1.16, `curl` 6.1.0, `jsonlite` 2.0.0, `dplyr` 1.2.0, `here` 1.0.1.
+  `RCurl` 1.98-1.16, `curl` 6.1.0, `jsonlite` 2.0.0, `dplyr` 1.2.0, `here` 1.0.1, `readxl` 1.4.3.
 - TeX Live 2024 (`pdflatex`, `bibtex`); the AEA template (`AEA.cls`, `aea.bst`) is in `latex/`.
 - `unzip` on the command line (read by `build/11`).
 - Tested on macOS 26.6. The parallel steps use `parallel::mclapply`, which forks;
@@ -138,7 +140,7 @@ The code was last run on an Apple M1 Pro laptop (8 cores, 16 GB of memory, macOS
 with the default of 5 worker processes. The analysis takes about 2 to 3 hours, most of it
 in the permutation and bootstrap draws of `05`, `06`, `14`, `16` and `26`; this
 figure comes from the timestamps of the cached results, not from one uninterrupted run.
-Rebuilding the data adds the downloads of `build/02`, `05`, `06` and `10`, which depend on
+Rebuilding the data adds the downloads of `build/02`, `05`, `06`, `10` and `13`, which depend on
 the remote servers and resume where they stopped.
 
 ## Description of programs/code
@@ -213,31 +215,32 @@ only read their caches and write the files. Figures are in `analysis/output/grap
 |---|---|---|---|---|
 | Figure 1 | `29_figures.R` | 442 | `maps/fig_map_brazil.pdf` | `build/01`, `12` |
 | Figure 2 | `29_figures.R` | 143 | `fig_light.pdf` | `03` |
-| Table 1 | `30_tables.R` | 75 | `tab_descriptives.tex` | `13` |
-| Table 2 | `30_tables.R` | 107 | `tab_main.tex` | `01`, `06` |
+| Table 1 | `30_tables.R` | 77 | `tab_descriptives.tex` | `13` |
+| Table 2 | `30_tables.R` | 109 | `tab_main.tex` | `01`, `06` |
 | Figure 3 | `29_figures.R` | 165 | `fig_hours_from_sunset.pdf` | `01` |
 | Figure 4 | `29_figures.R` | 184 | `fig_event_study.pdf` | `02` |
-| Table 3 | `30_tables.R` | 265 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
-| Table 4 | `30_tables.R` | 160 | `tab_dose.tex` | `23` |
-| Table 5 | `30_tables.R` | 131 | `tab_pedestrians.tex` | `12`, `14` |
-| Table 6 | `30_tables.R` | 184 | `tab_excess.tex` | `11`, `23` |
-| Table 7 | `30_tables.R` | 396 | `tab_cost.tex` | `25` |
+| Table 3 | `30_tables.R` | 267 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
+| Table 4 | `30_tables.R` | 162 | `tab_dose.tex` | `23` |
+| Table 5 | `30_tables.R` | 133 | `tab_pedestrians.tex` | `12`, `14` |
+| Table 6 | `30_tables.R` | 186 | `tab_excess.tex` | `11`, `23` |
+| Table 7 | `30_tables.R` | 425 | `tab_cost.tex` | `25` |
 | Figure A1 | `29_figures.R` | 353 | `fig_record_integrity.pdf` | `22` |
 | Figure B1 | `29_figures.R` | 312 | `fig_window_shift.pdf` | `19` |
 | Figure B2 | `29_figures.R` | 336 | `fig_leave_out.pdf` | `20` |
-| Table B1 | `30_tables.R` | 297 | `tab_sensitivity.tex` | `04`, `19`, `20`, `23` |
+| Table B1 | `30_tables.R` | 299 | `tab_sensitivity.tex` | `04`, `19`, `20`, `23` |
 | Figure B3 | `29_figures.R` | 224 | `fig_window_legs.pdf` | `04` |
 | Figure B4 | `29_figures.R` | 204 | `fig_within_day.pdf` | `02`, `09` |
-| Table B2 | `30_tables.R` | 238 | `tab_within_group.tex` | `09`, `15` |
+| Table B2 | `30_tables.R` | 240 | `tab_within_group.tex` | `09`, `15` |
 | Figure B5 | `29_figures.R` | 253 | `fig_honestdid.pdf` | `07` |
-| Table B3 | `30_tables.R` | 349 | `tab_road_users.tex` | `21` |
-| Table B4 | `30_tables.R` | 216 | `tab_traffic_volume.tex` | `15`, `16` |
-| Table B5 | `30_tables.R` | 373 | `tab_street_lighting.tex` | `24` |
-| Table B6 | `30_tables.R` | 473 | `tab_transitions.tex` | `28` |
+| Table B3 | `30_tables.R` | 353 | `tab_road_users.tex` | `21` |
+| Table B4 | `30_tables.R` | 379 | `tab_sex_age.tex` | `21` |
+| Table B5 | `30_tables.R` | 218 | `tab_traffic_volume.tex` | `15`, `16` |
+| Table B6 | `30_tables.R` | 402 | `tab_street_lighting.tex` | `24` |
+| Table B7 | `30_tables.R` | 502 | `tab_transitions.tex` | `28` |
 | Figure B6 | `29_figures.R` | 290 | `fig_bahia.pdf` | `17` |
 | Figure B7 | `29_figures.R` | 268 | `fig_assault.pdf` | `10` |
 | Figure C1 | `29_figures.R` | 489 | `maps/fig_map_mexico.pdf` | `build/10`, `12` |
-| Table C1 | `30_tables.R` | 431 | `tab_mexico.tex` | `26`, `27` |
+| Table C1 | `30_tables.R` | 460 | `tab_mexico.tex` | `26`, `27` |
 | Figure C2 | `29_figures.R` | 374 | `fig_mexico_event_study.pdf` | `26` |
 
 ## References
