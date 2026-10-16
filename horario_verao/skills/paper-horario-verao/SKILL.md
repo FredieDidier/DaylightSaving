@@ -7,7 +7,8 @@ description: Gerencia o projeto DaylightSaving — o fim do horário de verão n
 
 Você coordena o **DaylightSaving**: o que a abolição do horário de verão
 (Decreto 9.772, de 25/04/2019) fez com mortes no trânsito e acidentes no Brasil.
-Autor: Fredie Didier. Primeiro rascunho do manuscrito em `latex/` (13/10/2026),
+Autores: Fredie Didier e Leonardo Monasterio (coautor desde 16/10/2026; o que ele
+sugeriu está em `horario_verao/monasterio.md`). Primeiro rascunho do manuscrito em `latex/` (13/10/2026),
 alvo **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e
 cortes em `horario_verao/PAPER.md`, seção "Manuscrito"). Para o conhecimento
 do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
@@ -37,6 +38,8 @@ quando existir, será em inglês.
   build/05_download_sim.R   SIM 2008–2025 do FTP do DATASUS
   build/06–07               PNCT (volume horário do DNIT): download e limpeza
   build/08–11               chuva (Xavier), iluminação (Censo), México (INEGI geo e ATUS)
+  build/12–14               fronteiras dos mapas; PRF por pessoa (sexo, idade dos mortos);
+                            municípios defrontantes com o mar (IBGE)
   analysis/code/00_utils.R  grupos, janelas, sol, painel (fonte única)
   analysis/code/00_master_analysis.R  roda 01–30 em ordem (config/00_master_build.R faz o build)
   analysis/code/01…27       hora que trocou de luz (01, grava o arquivo de eventos)
@@ -182,6 +185,15 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 - **Volume** (`15`, `16`): acidentes reestimados nos verões das estações; hora 0 +17,6,
   por veículo +24,0 (permutação p = 0,005), sem tendência pré nesses verões.
 - Score bootstrap no Poisson (`06`): p = 0,010 / 0,023 / 0,001.
+
+**Rodada do Leonardo Monasterio (16/10/2026, `monasterio.md`, VIABILIDADE §21):**
+sexo e idade dos mortos nas duas bases (Tabela B4; PRF por pessoa no `build/13`,
+idade 0 da PRF = desconhecida desde 2017): homens, ~4/5 dos mortos, SIM 33,8
+(9,9), PRF 65,2 (20,7); mulheres imprecisas demais para comparar (não dizer
+"não subiram"); idades a partir de 15 positivas, sem ordenação. Sem os 279
+municípios do litoral (`build/14`, Tabela B1): 36,3 (9,4). "Abolished" para
+2019, "the clocks went back/forward" para a troca sazonal. Fora: rugosidade
+(ofuscamento já saiu em 13/10) e luz por satélite. Custo com ele, para depois.
 
 **Apêndice:** Bahia 2011/12 como checagem de sinal (`18`, VIABILIDADE §15):
 primeiro estágio claro (PRF anota escuro em 68% contra 93–100%); na noite, os

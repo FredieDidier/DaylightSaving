@@ -67,17 +67,7 @@ rm(sim); gc()
 
 prf <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "prf", "output",
                                             "prf_accidents.parquet")))
-norm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
-geo[, key := paste(uf, norm(name))]
-prf[, key := paste(uf, norm(municipio))]
-# PRF names that differ from the IBGE seat name (renamed municipalities,
-# spelling variants), typed in build/manual/prf_municipio_alias.csv. Without
-# them ~0.4% of PRF accidents would go unmatched.
-alias <- fread(file.path(path_manual, "prf_municipio_alias.csv"), encoding = "UTF-8")
-alias <- alias[, .(key = paste(uf, norm(municipio_prf)), code6)]
-keys <- rbind(unique(geo[, .(key, code6)], by = "key"), alias[!key %in% geo$key])
-stopifnot(!anyDuplicated(keys$key), all(alias$code6 %in% geo$code6))
-prf <- keys[prf, on = "key"]
+prf <- prf_code6(prf, geo)   # municipality by name (00_utils.R)
 prf_match <- prf[, round(100 * mean(!is.na(code6)), 1)]
 prf[, cmin := 60L * hour + minute]
 prf[, ped := grepl("^Atropelamento de (pessoa|pedestre)", tipo_acidente, ignore.case = TRUE)]

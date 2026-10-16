@@ -1,8 +1,8 @@
 # =============================================================================
 # 00_master_build.R
 #
-# Runs the build in order, from the legal calendar to the Mexican crash file,
-# each script in its own R process.
+# Runs the build in order, from the legal calendar to the list of coastal
+# municipalities, each script in its own R process.
 #
 # Usage
 #   Rscript config/00_master_build.R            # every step
@@ -14,10 +14,11 @@
 # and INEGI's ATUS zip (mexico/input/atus_raw, read by 11). README.md lists
 # the source of each step.
 #
-# Order matters in two places: 04 writes the municipal seats that 08 reads,
-# and the download steps (02, 06) come before their cleaning steps (03, 07).
-# 02, 05, 06 and 10 query remote services and take a while; they resume where
-# they stopped.
+# Order matters in a few places: 04 writes the municipal seats that 08 and 14
+# read, 03 writes the accident file that 13 checks its persons against, and
+# the download steps (02, 06) come before their cleaning steps (03, 07).
+# 02, 05, 06, 10 and 13 query remote services and take a while; they resume
+# where they stopped.
 #
 # The first failure stops the run and its exit status is propagated.
 # =============================================================================
@@ -34,7 +35,9 @@ STEPS <- c(
   "09_census_lighting.R",   # SIDRA, censobr         -> street lighting
   "10_mexico_geo.R",        # INEGI geo API          -> Mexican seats
   "11_mexico_atus.R",       # INEGI ATUS zip         -> Mexican crashes
-  "12_map_boundaries.R")    # geobr, GADM            -> boundaries for the maps
+  "12_map_boundaries.R",    # geobr, GADM            -> boundaries for the maps
+  "13_prf_persons.R",       # PRF open data          -> prf_persons (age, sex)
+  "14_coastal_municipalities.R")  # IBGE list        -> municipalities facing the sea
 num <- sub("_.*", "", STEPS)
 
 args <- commandArgs(trailingOnly = TRUE)

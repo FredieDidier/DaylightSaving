@@ -10,7 +10,7 @@
 
 cran <- c("data.table", "arrow", "fixest", "dqrng", "ggplot2", "patchwork", "ragg",
           "sf", "terra", "geobr", "geodata", "rnaturalearth", "RCurl", "curl",
-          "jsonlite", "dplyr", "here", "remotes")
+          "jsonlite", "dplyr", "here", "readxl", "remotes")
 # Not on CRAN, or installed from a development build.
 universe <- c(fwildclusterboot  = "https://s3alfisc.r-universe.dev",
               rnaturalearthdata = "https://ropensci.r-universe.dev")

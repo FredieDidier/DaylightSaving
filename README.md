@@ -1,6 +1,6 @@
 # Replication package: *Darker Evenings: Road Deaths after Brazil Abolished Daylight Saving Time*
 
-Author: Fredie Didier. Manuscript in `latex/` (submitted to *AEJ: Economic Policy*).
+Authors: Fredie Didier and Leonardo Monasterio. Manuscript in `latex/` (submitted to *AEJ: Economic Policy*).
 
 This README follows the template of the Social Science Data Editors (version 1.1),
 which the AEA Data Editor recommends.
@@ -11,10 +11,10 @@ The code builds the data from public sources and then estimates the effect of
 Brazil's abolition of daylight saving time (Decree 9,772 of 25 April 2019) on
 road deaths in the clock hour that turned dark, with a replication on Mexico's
 abolition of 2022. It is written in R and has three entry points:
-`config/00_master_build.R` builds the data (12 scripts), `analysis/code/00_master_analysis.R`
+`config/00_master_build.R` builds the data (14 scripts), `analysis/code/00_master_analysis.R`
 estimates everything and writes every figure and table (30 scripts), and `latex/build.sh`
 compiles the paper and the Online Appendix. The main text has 4 figures and 7 tables
-and the Online Appendix has 10 figures and 7 tables, all produced by the code. The
+and the Online Appendix has 10 figures and 8 tables, all produced by the code. The
 analysis takes about 2 to 3 hours on an 8-core laptop; rebuilding the data from
 scratch takes longer, mostly in downloads.
 
@@ -22,8 +22,8 @@ scratch takes longer, mostly in downloads.
 
 ### Statement about rights
 
-- [x] I certify that the author of the manuscript has legitimate access to and permission to use the data used in this manuscript.
-- [ ] I certify that the author has documented permission to redistribute/publish the data contained within this replication package.
+- [x] I certify that the authors of the manuscript have legitimate access to and permission to use the data used in this manuscript.
+- [ ] I certify that the authors have documented permission to redistribute/publish the data contained within this replication package.
 
 Every source is public and free of charge. The second box is not checked because
 documented permission to redistribute has not been confirmed for every source; the
@@ -33,7 +33,7 @@ a script downloads the first, and the second is downloaded by hand from the URL 
 
 ### License for data
 
-To be set at deposit. Files derived by the author are released under the default
+To be set at deposit. Files derived by the authors are released under the default
 license of the repository (CC BY 4.0 on openICPSR); third-party data keep their own terms.
 
 ### Summary of availability
@@ -49,8 +49,10 @@ license of the repository (CC BY 4.0 on openICPSR); third-party data keep their 
 | Legal DST calendar, 1985–2019 | decrees, e.g. Brasil (2008, 2019) | `build/01` | typed by hand from the decrees on planalto.gov.br; texts in `horario_verao/fontes_legais/` | yes, `build/manual/*.csv` |
 | Death register (SIM), 2008–2024 | Ministério da Saúde (2025) | `build/05` | DATASUS FTP, `ftp.datasus.gov.br/dissemin/publicos/SIM/`, no registration | cleaned extract (`sim/output`); raw files re-downloaded by the script |
 | Federal highway crashes (PRF), 2007–2025 | Polícia Rodoviária Federal (2025) | `build/02`, `03` | open data page of the PRF; file ids in `build/manual/prf_files.csv` | cleaned extract (`prf/output`); raw files re-downloaded by the script |
+| Persons in federal highway crashes (PRF), 2007–2025: role, condition, sex, age | Polícia Rodoviária Federal (2025) | `build/13` | open data page of the PRF; file ids in `build/manual/prf_person_files.csv` | cleaned extract (`prf/output`); raw files re-downloaded by the script |
 | Hourly traffic counts (PNCT), 2014–2019 and 2021–2025 | DNIT (2025) | `build/06`, `07` | public API of `servicos.dnit.gov.br/dadospnct` (routes in the script header) | cleaned extract (`pnct/output`); raw files re-downloaded by the script |
 | Municipal seats and state boundaries | IBGE (2020), via the R package `geobr` | `build/04`, `12` | downloaded by `geobr` | yes (`geo/output`) |
+| Municipalities that face the sea, 2022 | IBGE (2022) | `build/14` | geoftp.ibge.gov.br, downloaded by the script | yes (`geo/input`, `geo/output`) |
 | Daily rain grid BR-DWGD v3.2.4 | Xavier et al. (2022) | `build/08` | manual download of `pr_20010101_20251231_BR-DWGD_UFES_UTEXAS_v_3.2.4.nc` from <https://sites.google.com/site/alexandrecandidoxavierufes/brazilian-daily-weather-gridded-data>; no license stated | no (2.6 GB raw grid); the derived file `weather/output/pr_seat_day.parquet` is included |
 | Census 2022 (street lighting, table 9839) and Census 2010 (tract surroundings) | IBGE (2011, 2023) | `build/09` | SIDRA API; Census 2010 through the R package `censobr` | yes (`census/input`, `census/output`) |
 | Population of the states, Census 2022 (table 4709) | IBGE (2023) | none: quoted in Section I | SIDRA | the two totals are in the text |
@@ -144,7 +146,7 @@ the remote servers and resume where they stopped.
 ```
 config/config.R           paths; DROPBOX_ROOT is the only line to edit
 config/00_setup.R         installs the R packages
-config/00_master_build.R  runs build/01-12 in order
+config/00_master_build.R  runs build/01-14 in order
 build/manual/             legal DST calendar typed from the decrees; PRF file ids;
                           PRF municipality name aliases
 build/01                  treatment calendar by state, season and day
@@ -156,6 +158,8 @@ build/08                  rain at each municipal seat (BR-DWGD)
 build/09                  street lighting, Census 2022 and 2010
 build/10-11               Mexico: municipal seats, ATUS crashes
 build/12                  boundaries for the two maps
+build/13                  PRF persons in each crash (sex, age of the dead)
+build/14                  municipalities that face the sea (IBGE)
 analysis/code/00_utils.R  shared definitions: groups, windows, solar equations, panel
 analysis/code/00_master_analysis.R   runs 01-30 in order, each in its own R process
 analysis/code/01-28       one estimate each, cached in DROPBOX_ROOT/build/audit/*.rds
@@ -250,6 +254,8 @@ IBGE (Instituto Brasileiro de Geografia e Estatística). 2011. "Censo Demográfi
 
 IBGE. 2020. "Malha Territorial: Unidades da Federação, 2020." Read with the R package geobr.
 
+IBGE. 2022. "Municípios Defrontantes com o Mar, 2022." geoftp.ibge.gov.br (accessed October 2026).
+
 IBGE. 2023. "Censo Demográfico 2022: População residente (table 4709) and características urbanísticas do entorno dos domicílios (table 9839)." SIDRA, sidra.ibge.gov.br (accessed October 2026).
 
 IBGE. 2026. "Índice Nacional de Preços ao Consumidor Amplo (IPCA), número-índice (table 1737)." SIDRA, sidra.ibge.gov.br (accessed October 2026).
@@ -269,6 +275,8 @@ Natural Earth. n.d. "Admin 0 – Countries, 1:50m." naturalearthdata.com, read w
 NOAA Global Monitoring Division. n.d. "General Solar Position Calculations." gml.noaa.gov/grad/solcalc/solareqns.PDF (accessed October 2026).
 
 Polícia Rodoviária Federal. 2025. "Dados abertos: Acidentes, agrupados por ocorrência, 2007–2025." www.gov.br/prf (accessed October 2026).
+
+Polícia Rodoviária Federal. 2025. "Dados abertos: Acidentes, agrupados por pessoa, 2007–2025." www.gov.br/prf (accessed October 2026).
 
 World Bank. 2026. "World Development Indicators: GNI per capita, PPP (current international \$) and PPP conversion factor, GDP." Series NY.GNP.PCAP.PP.CD and PA.NUS.PPP (accessed October 2026).
 

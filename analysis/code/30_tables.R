@@ -19,9 +19,11 @@
 #   tab_robustness      the hour that turned dark under other choices,
 #                       and the hours whose light did not change  (04, 05, 08, 09, 18, 20)
 #   tab_sensitivity     the hour after sunset under other clocks, samples,
-#                       days and weather                                  (04, 19, 20, 23)
+#                       places, days and weather                          (04, 19, 20, 23)
 #   tab_transitions     the clock changes before 2019 against abolition  (28)
 #   tab_road_users      who dies: road user, pedestrian age and sex, day (21)
+#   tab_sex_age         sex and age of the dead, road deaths and federal
+#                       highway deaths                                    (21)
 #   tab_street_lighting darker against better-lit municipalities          (24)
 #   tab_cost            deaths per summer and their value                 (25)
 #   tab_mexico          Mexico, abolition of 2022: evening, hour before, morning,
@@ -303,19 +305,20 @@ write_tab("tab_sensitivity", c(
   sens_row("Times recorded at :00 or :30 spread over 30 minutes", pick_h("spread :00 and :30")),
   sens_row("Without times recorded at :00 or :30", pick_h("drop :00 and :30")),
   "\\addlinespace",
-  panel("Panel B. Comparison states, seasons and days", 4),
+  panel("Panel B. Comparison states, places, seasons and days", 4),
   sens_row("Control states: Northeast only", pick_l("control", "North (control = Northeast only)")),
   sens_row("Control states: North only", pick_l("control", "Northeast (control = North only)")),
+  sens_row("Without the municipalities on the coast", pick_l("places", "coastal municipalities")),
   sens_row("Without the La Ni\\~na summers, 2020/21 to 2022/23", pick_l("seasons", "La Nina summers 2020/21-2022/23")),
   sens_row("Without 2019/20, the first summer without DST", pick_l("seasons", "2019/20")),
   sens_row("Without Carnival and the year-end holidays", pick_l("days", "Carnival and year-end holidays")),
   c(row("Summer window only, first two summers without DST", f1(pt$summer_early_lp)),
     row("", se1(pt$summer_early_se))),
-  c(row("\\quad Last three summers without DST", f1(pt$summer_late_lp)),
+  c(row("Summer window only, last three summers without DST", f1(pt$summer_late_lp)),
     row("", se1(pt$summer_late_se))),
   c(row("Without March 2020 to February 2022, first summer", f1(pt$early_nopan_lp)),
     row("", se1(pt$early_nopan_se))),
-  c(row("\\quad Last two summers", f1(pt$late_nopan_lp)),
+  c(row("Without March 2020 to February 2022, last two summers", f1(pt$late_nopan_lp)),
     row("", se1(pt$late_nopan_se))),
   "\\addlinespace",
   panel("Panel C. Weather", 4),
@@ -326,7 +329,8 @@ write_tab("tab_sensitivity", c(
   close_))
 
 # ── Table: who dies (road deaths only) ──────────────────────────────────────
-ru <- rd("road_users.rds")$results
+ru_all <- rd("road_users.rds")$results
+ru <- ru_all[outcome == "SIM transport deaths, on road"]
 RU <- list(
   list("Panel A. Road user", "road user",
        c(pedestrian = "Pedestrians", motorcyclist = "Motorcyclists",
@@ -359,6 +363,31 @@ write_tab("tab_road_users", c(
   ru_rows("day", c(`weekend or holiday, without Carnival and year-end` =
                      "\\quad without Carnival and year-end")),
   ru_rows("day, pedestrians", setNames(paste("Pedestrians,", tolower(RU[[3]][[3]])), names(RU[[3]][[3]]))),
+  close_))
+
+# ── Table: sex and age of the dead, both registers ──────────────────────────
+SA <- c(male = "Men", female = "Women", `0-14` = "Aged under 15", `15-29` = "Aged 15 to 29",
+        `30-44` = "Aged 30 to 44", `45-59` = "Aged 45 to 59", `60+` = "Aged 60 or over",
+        unknown = "Age not recorded")
+sa_cells <- function(x) if (!x$estimable || is.na(x$lp)) c("--", "--", "--", f1(x$pre_per_season)) else
+  c(f1(x$lp), sprintf("(%s)", formatC(x$se, format = "f", digits = 1)), fp(x$p), f1(x$pre_per_season))
+sa_row <- function(label, sp, g) {
+  x <- lapply(TRAFFIC[1:2], function(o) ru_all[outcome == o & split == sp & group == g])
+  stopifnot(all(sapply(x, nrow) == 1L))
+  row(label, c(sa_cells(x[[1]]), sa_cells(x[[2]])))
+}
+write_tab("tab_sex_age", c(
+  "\\begin{tabular}{@{}l cccc cccc@{}}", "\\toprule",
+  " & \\multicolumn{4}{c}{Road deaths} & \\multicolumn{4}{c}{Federal highway deaths} \\\\",
+  "\\cmidrule(lr){2-5}\\cmidrule(l){6-9}",
+  paste(" & Effect & Standard & & Deaths per & Effect & Standard & & Deaths per \\\\"),
+  paste(" & (log points) & error & p-value & summer & (log points) & error & p-value & summer \\\\"),
+  "\\midrule",
+  sa_row("All", "all", "all"),
+  "\\addlinespace", panel("Panel A. Sex", 9),
+  unlist(lapply(c("male", "female"), function(g) sa_row(SA[[g]], "sex", g))),
+  "\\addlinespace", panel("Panel B. Age", 9),
+  unlist(lapply(c("0-14", "15-29", "30-44", "45-59", "60+", "unknown"), function(g) sa_row(SA[[g]], "age", g))),
   close_))
 
 # ── Table: street lighting ──────────────────────────────────────────────────

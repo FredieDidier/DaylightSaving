@@ -148,6 +148,23 @@ make_panel <- function(ev, days, outc, b, side = "set") {
   p[]
 }
 
+# PRF accidents carry the municipality's name, not its code. Names are matched
+# to the IBGE seat name within the state; the names that differ (renamed
+# municipalities, spelling variants) are typed in build/manual/
+# prf_municipio_alias.csv, without which ~0.4% of PRF accidents would go
+# unmatched. Returns `prf` with code6 (NA when unmatched).
+prf_code6 <- function(prf, geo) {
+  norm <- function(x) toupper(gsub("[^A-Za-z]", "", iconv(x, from = "UTF-8", to = "ASCII//TRANSLIT")))
+  seats <- geo[, .(key = paste(uf, norm(name)), code6)]
+  alias <- fread(file.path(path_manual, "prf_municipio_alias.csv"), encoding = "UTF-8")
+  alias <- alias[, .(key = paste(uf, norm(municipio_prf)), code6)]
+  keys <- rbind(unique(seats, by = "key"), alias[!key %in% seats$key])
+  stopifnot(!anyDuplicated(keys$key), all(alias$code6 %in% geo$code6))
+  out <- keys[copy(prf)[, key := paste(uf, norm(municipio))], on = "key"]
+  out[, key := NULL]
+  out[]
+}
+
 FE <- "| uf^window + uf^sy + date"
 
 # Permutation p-value, two-sided: the observed assignment counts as one of the

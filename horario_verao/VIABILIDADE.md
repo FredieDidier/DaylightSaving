@@ -856,6 +856,57 @@ passou a t. WCR e pontos não mudam.
 Nenhuma conclusão do paper muda. A alta do volume na manhã que clareou deixa
 de passar na permutação (0,159); o texto já reportava o p.
 
+## 21. Rodada do Leonardo Monasterio (16/10/2026): sexo, idade e litoral
+
+O que ele sugeriu e o que foi decidido está em `monasterio.md`.
+
+**Sexo e idade dos mortos, nas duas bases** (`21_road_users.R`, `road_users.rds`;
+Tabela B4 do apêndice). Na PRF, sexo e idade vêm da base "agrupados por pessoa"
+(`build/13_prf_persons.R`): os mortos por pessoa batem com o `mortos` da base
+por acidente em todos os anos da amostra (a menos de 1 morte em 2011). Desde
+2017 a PRF grava idade desconhecida como 0 (5–6% dos mortos, contra 0,3%
+antes); idade 0 vira desconhecida em todos os anos. Idade desconhecida: 11,7%
+dos mortos antes de 2017, 5,9% depois.
+
+| hora 0, lp (EP) | mortes na via | mortes PRF | mortes por verão (SIM / PRF) |
+|---|--:|--:|--:|
+| todos | 29,2 (9,0) | 53,9 (20,3) | 109,9 / 46,5 |
+| homens | 33,8 (9,9) | 65,2 (20,7) | 85,6 / 36,1 |
+| mulheres | 12,7 (22,2) | 5,8 (42,3) | 24,3 / 10,2 |
+| 0–14 | −17,4 (80,5) | — | 7,5 / 2,3 |
+| 15–29 | 31,5 (13,1) | 89,4 (37,0) | 33,9 / 12,6 |
+| 30–44 | 10,5 (16,7) | 59,9 (31,8) | 31,8 / 13,5 |
+| 45–59 | 44,1 (19,2) | 64,3 (28,6) | 22,8 / 8,4 |
+| 60+ | 59,9 (25,6) | — | 13,5 / 4,3 |
+| idade não registrada | — | 89,2 (68,8) | 0,4 / 5,5 |
+
+"—": menos de 5 mortes por verão nos tratados antes de 2019. Leitura: homens
+são ~4/5 dos mortos e sobem nas duas bases; mulheres, imprecisas demais para
+comparar (não dizer que "não subiram"). Toda faixa a partir de 15 anos é
+positiva onde dá para estimar; os intervalos se sobrepõem, então não há
+ordenação por idade.
+
+**México:** não dá para repetir. No ATUS, `SEXO` e `ID_EDAD` são do condutor
+apontado como responsável (o catálogo de idade começa em 12 anos e tem o
+código "se ignora porque se fugó"); os mortos vêm só contados por papel
+(condutor, passageiro, pedestre, ciclista, outro), sem sexo nem idade. Sexo e
+idade dos mortos exigiriam outra base (os registros de óbito do INEGI), fora
+do escopo da réplica.
+
+**Sem os municípios do litoral** (`build/14_coastal_municipalities.R`, lista do
+IBGE de 2022: 279 municípios defrontantes com o mar, mais a Lagoa dos Patos,
+que sai; `20_leave_out.R`, Tabela B1): mortes na via 36,3 (9,4), PRF mortes
+56,4 (22,9), com vítima 23,6 (6,9). O turismo de praia não explica o efeito.
+
+**Linha sem Carnaval e festas de fim de ano, rerodada:** 30,8 (8,0) / 56,3
+(18,3) / 20,9 (5,5). O cache anterior dava EP 7,8 / 18,5 / 5,4 e acidentes
+20,7. Causa, reproduzida exatamente: o `leave_out.rds` tinha sido gravado com
+os feriados calculados só até 2023 (`holiday_days(2008:2023)`), o que deixava
+de fora o Carnaval de 2024 (10 a 14/02/2024), dentro da janela de verão de
+2023/24. O código commitado em 15/10 já usava até 2024, mas o `20` não foi
+rodado de novo; o `21`, sim (a linha dele não mudou). O texto foi corrigido;
+nenhuma outra linha do `leave_out.rds` mudou.
+
 ## Leitura
 
 - **A favor:** primeiro estágio enorme e medido de forma independente;
