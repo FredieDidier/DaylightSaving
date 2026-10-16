@@ -333,7 +333,7 @@ rows <- lapply(TRAFFIC_LAB, function(o)
     labs(title = o, x = "Estimates ordered from smallest to largest; dashed line: all states and seasons",
          y = "Effect of abolition (log points)") +
     theme_paper())
-save_fig(stack_rows(rows), "fig_leave_out", height = 8.2)
+save_fig(stack_rows(rows), "fig_leave_out", height = 7.95)
 
 # ── Appendix: how deaths are recorded ───────────────────────────────────────
 ri_ <- rd("record_integrity.rds")$series[window == "win"]

@@ -58,7 +58,7 @@ Dropbox/DaylightSaving/build/        (dado, nunca git)
 
 ## 3. Período
 
-Jul/2008 a jun/2025 (temporadas jul–jun): 11 com horário de verão, 6 sem. Detalhes em `horario_verao/CONTEXTO_PESQUISA.md`.
+Jul/2008 a jun/2024 (temporadas jul–jun; 2023/24 é a última com SIM definitivo): 11 com horário de verão, 5 sem. Volume e acidentes na tabela de volume vão até 2024/25; México 2016–2025. Detalhes em `horario_verao/CONTEXTO_PESQUISA.md`.
 
 ## 4. Calendário legal (o que já está conferido)
 

@@ -40,7 +40,7 @@ dir.create(path_tables, recursive = TRUE, showWarnings = FALSE)
 
 # ── Formatting ──────────────────────────────────────────────────────────────
 minus <- function(s) sub("^-", "$-$", s)
-f1  <- function(x) minus(formatC(x, format = "f", digits = 1))
+f1  <- function(x) minus(formatC(x, format = "f", digits = 1, big.mark = ","))
 f0  <- function(x) minus(formatC(round(x), format = "d", big.mark = ","))
 se1 <- function(x) sprintf("(%s)", formatC(x, format = "f", digits = 1))
 se0 <- function(x) sprintf("(%s)", formatC(round(x), format = "d", big.mark = ","))
@@ -466,7 +466,9 @@ tr_rows <- function(d) {
   c(row("Abolition, five summers", f1(x$regime_lp)), row("", se1(x$regime_se)),
     row("End of DST in February, three weeks", f1(x$end_lp)), row("", se1(x$end_se)),
     row("Start of DST in October, three weeks", f1(x$start_lp)), row("", se1(x$start_se)),
-    row("Both changes, as a darker evening", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)))
+    row("Both changes, as a darker evening", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)),
+    row("Abolition minus both changes", f1(x$diff_lp)), row("", se1(x$diff_se)),
+    row("\\quad p-value, clustered by state", fp(x$diff_p)))
 }
 write_tab("tab_transitions", c(
   open3,

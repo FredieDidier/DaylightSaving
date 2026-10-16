@@ -439,6 +439,21 @@ Crossref). Na lista de estudos de transição não entra. No
 parágrafo de contribuição, "mostly from the clock changes" virou "mostly by
 comparing the days or weeks just before and after the clocks change".
 
+## Conferência de 16/10/2026 (manuscript-audit)
+
+As três referências da rodada do parecer (15/10) estavam citadas sem registro
+aqui. Conferidas por ponto de citação:
+
+| obra | o que o texto afirma | fonte | veredito |
+|---|---|---|---|
+| Ferguson, Preusser, Lund, Zador & Ulmer 1995 (*AJPH* 85(1): 92–95) | DST o ano todo teria evitado cerca de 900 acidentes fatais em 1987–1991, quatro quintos com pedestres | R (resumo via IIHS/TRID): 901 acidentes fatais, 727 com pedestres e 174 com ocupantes | ok (727/901 = 0,81) |
+| Sexton & Beatty 2014 (*JEBO* 107: 290–307) | sob o DST, as pessoas *parecem* mover algumas atividades para mais cedo no dia | R (IPUMS/Crossref): evidência "cautelosa" de que atividades com uso de energia vão para mais cedo, nas trocas e na mudança de datas de 2007 | ok, com o "appear to"; não reforçar |
+| Kline & Santos 2012 (*J. Econometric Methods* 1(1): 23–41) | score wild bootstrap: modelo sob a nula, score multiplicado por pesos | metadados (Crossref) e método | ok |
+
+Os demais comandos de citação do manuscrito (146 ao todo) são de obras já conferidas
+por ponto em 14/10/2026 (tabela acima); as frases reescritas desde então foram
+relidas contra aquela tabela e nenhuma mudou o que atribui à obra.
+
 ## Fontes consultadas
 
 - https://preprints.scielo.org/index.php/scielo/preprint/view/6458

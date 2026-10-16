@@ -196,9 +196,85 @@ Feito nesta sessão:
   `29_figures.R`, `30_tables.R`. Referências novas conferidas: Ferguson et al.
   (1995), Sexton & Beatty (2014), Kline & Santos (2012).
 
+- ✅ **Auditoria do manuscrito (16/10/2026, skill `manuscript-audit`).** Números
+  de cada parágrafo contra as tabelas que ele cita e, os que só existem em
+  cache, contra os `.rds` (lidos de novo, não da prosa); aritmética derivada;
+  afirmações qualitativas contra todas as exibições que as testam; citações
+  novas na fonte; varreduras de prosa (duas vezes); tipografia medida no PDF.
+  **Corrigido (antes → depois):** "no other hour moves much" → a 2ª hora antes
+  do nascer do sol, escura nos dois regimes, sobe 26,4 (13,5) no SIM
+  (`sunset_design.rds`), dito no texto; introdução e "case for a causal
+  reading" restritos a meio-dia e noite (Painel D); "which Panel D supports"
+  (premissa da contagem líquida) → o Painel D não detecta mudança, mas com ~580
+  mortes por verão em cada bloco seus intervalos comportam uma queda do tamanho
+  da contagem líquida (pontos: −26 e −37 mortes); zeros "within one percentage
+  point" → 1,1 (PRF mortes, manhã: 93,76 contra 92,71); estações realocadas
+  "less than 2 km" → "at most 2 km" (um par a 2,0 km; o código usa ≤ 2);
+  "Other road users" +55,8 (26,4), que a prosa omitia, agora no corpo e no
+  apêndice ("car occupants do not change" → próximo de zero e impreciso);
+  faixa "23 a 35" → 22,9 a 34,5 no corpo e 23 a 34 na conclusão (34,499 é 34,
+  como na introdução); resumo "each summer" → "per DST season" (74 é a
+  temporada; "per summer" no paper é a janela, 63); Bahia "92 a 100" → 93 a 100
+  (mínimo 92,6); "almost two hours" → "about two hours" (116–133 min nos
+  municípios da amostra); "Panel C" ambíguo → "Panel C of Table 3", e Tabela 3
+  citada no parágrafo da pandemia; "modelled", "centred" → grafia americana;
+  dois "therefore" seguidos no México; "Column 2 multiplies it" → "column 1";
+  cabeçalho do `body.tex` com os nomes antigos dos scripts (28/29 → 29/30).
+  **Tipografia:** toda URL das referências saía "sidra. ibge. gov. br"
+  (máquina de escrever itálica dentro do `{\em}` do `aea.bst`) → `\urlstyle{same}`
+  no `preamble_aea.tex` e no `paper_wp.tex`; `tab_mexico` "1605.3" → "1,605.3"
+  (`f1` com separador; as outras 13 tabelas saíram idênticas byte a byte).
+  **Portadores fora do paper:** CLAUDE.md e CONTEXTO diziam jun/2025 e 6
+  temporadas sem (o paper usa 2023/24 e 5); a skill do projeto dizia primeiro
+  estágio "~34 p.p." (é 23,6) e risco por veículo "+29 (28,6), p = 0,002" (é
+  24,0 (7,8), p = 0,005); corrigidos, com a cópia instalada sincronizada.
+  LITERATURE.md ganhou o registro de Ferguson et al. (1995), Sexton & Beatty
+  (2014) e Kline & Santos (2012), conferidos na fonte.
+  **Conferido e sem mudança:** todos os números de Tabelas 1–7 e B1–C1 citados
+  na prosa; os de cache (missing_hour 15,4–20,1; heaping 34,5/23,0/89,9;
+  primeiro estágio 23,6 (2,01) e 73,6; dose de pedestres 115,8 (29,6) e demais
+  33,7 (11,9); tendência extrapolada da PRF 103,9 (34,3) e 15,3 (23,5);
+  janela deslocada 14,6 e 41,2; tirar um fora 24,3 SP / 34,1 MG / 22,7 2019/20 /
+  35,2 2022/23; HonestDiD 14,8, [28, 99], M = 0,02; agressões; pares 37.875,
+  59,2 e 4,7; relógio 7,85/17,1/24,5 e 0,23/0,32/0,38; cobertura do ATUS;
+  Bahia, posições 4, 11 e 1 à noite, 3, 3 e 12 de manhã); custo e VSL refeitos à mão (1.825.618; R$ 4,66 mi;
+  790.113; 74 × 1,231 × 2,047 = 186); painel 23 × 245 × 16 = 90.160; somas do
+  excesso (57,3 + 5,2 = 62,5); p da permutação = (17 + 1)/1000; estudo de
+  eventos ("as cinco acima da média, as duas primeiras mais"); pernas do
+  inverno e do verão; calendário (11 dias, 15/02/2009, 04/11/2018); resumo 97
+  palavras; anonimização (PDF e metadados sem nome); numeração das exibições
+  na ordem das páginas; nenhuma legenda depois das referências; rótulos das
+  figuras dentro das faixas.
+  **Figura B2** (`fig_leave_out`) excedia a página em 16 pt no apêndice e 9 pt
+  no working paper: redesenhada com 7,95 pol. em vez de 8,2 (decisão do Fredie;
+  a letra não muda), sem aviso nos dois. As outras 13 figuras saíram idênticas
+  pixel a pixel (só a data do PDF mudava) e ficaram como estavam.
+  **Deixado como está, com motivo:** frases longas encadeadas que são
+  enumerações (Painel C, coluna 3 do custo, México Painel A); "about 108 days"
+  (92 + 15,8); "p = 0,04" da noite (0,036 do cache).
+
+- ✅ **Trocas de relógio contra a abolição, com linha de diferença (16/10/2026).**
+  "Between a third and two thirds smaller" comparava a olho. O `28` ganhou um
+  modelo que empilha o painel da abolição (o do `01` na hora 0, o do `09`
+  dentro do dia) com as duas trocas, todo efeito fixo interagido com o
+  experimento e cluster por estado no conjunto, porque as amostras se sobrepõem
+  (as semanas antes da troca de fevereiro caem na janela de verão). Cada
+  coeficiente iguala o ajuste separado (maior diferença 2,9e-6, afirmado no
+  script). Abolição menos trocas: mortes na via −13,1 (12,5), p = 0,29, no
+  Painel A e −51,4 (18,3), p = 0,005, no B; PRF mortes −67,4 (27,3) e
+  −50,0 (100,3); acidentes com vítima 1,6 (8,7) e 0,9 (10,7). Linhas novas na
+  Tabela B6. Texto (introdução, V.H, conclusão, apêndice): só a comparação
+  dentro do dia separa os dois; ali o efeito caiu cerca de dois terços
+  (27,7/79,1), sem sumir; a do Painel A não se distingue de zero. As demais
+  células do `transitions.rds` mudaram no máximo 0,0004 lp (ruído numérico do
+  `fepois`), sem mudar nada impresso.
+- ✅ **Tabela B1 no working paper**: nota encurtada em uma linha (as linhas do
+  Painel B que os rótulos já dizem; o "1.6 minutes", que o corpo dá). Nenhum
+  float excede a página em nenhum documento. Paper mantido em 35 páginas
+  (frases novas compensadas na seção do México e nos limites da conclusão).
+
 Próximos:
-1. Rodar a skill `manuscript-audit` no rascunho.
-2. SIM 2025 definitivo: 6ª temporada pós (rodar tudo de novo).
+1. SIM 2025 definitivo: 6ª temporada pós (rodar tudo de novo).
 
 ## Decisões tomadas
 

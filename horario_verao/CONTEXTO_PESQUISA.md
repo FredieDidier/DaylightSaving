@@ -43,7 +43,7 @@ no relógio: mais luz de manhã, menos luz no fim da tarde.
 
 ## Período
 
-**Jul/2008 a jun/2025**, em temporadas jul–jun (decidido em 08/10/2026): 11 temporadas com horário de verão (2008/09–2018/19) e 6 sem (2019/20–2024/25). Início = primeira temporada sob a regra fixa do Dec. 6.558/2008. Jan–fev/2025 de SIM e SINASC depende de 2025 estar consolidado (conferir no FTP); SIH e PRF podem ir até 2025/26. A temporada 2019/20 termina antes da COVID; 2020/21 e 2021/22 entram com e sem. Voltar a 2004/05 só como robustez.
+**Jul/2008 a jun/2024**, em temporadas jul–jun: 11 temporadas com horário de verão (2008/09–2018/19) e 5 sem (2019/20–2023/24), porque 2023/24 é a última com SIM definitivo (decisão de 08/10/2026 no ROADMAP; o plano inicial ia até 2024/25). O PNCT e os acidentes da tabela de volume vão até 2024/25. Início = primeira temporada sob a regra fixa do Dec. 6.558/2008. Jan–fev/2025 de SIM e SINASC depende de 2025 estar consolidado (conferir no FTP); SIH e PRF podem ir até 2025/26. A temporada 2019/20 termina antes da COVID; 2020/21 e 2021/22 entram com e sem. Voltar a 2004/05 só como robustez.
 
 ## Dados (núcleo: todos públicos, nenhum precisa de LAI)
 

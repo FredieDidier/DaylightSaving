@@ -30,6 +30,15 @@
 # transition) so that the average of the two, with the October sign reversed
 # (both read as the effect of a darker evening), has a clustered standard
 # error.
+#
+# Abolition minus the clock changes: the regime model (01 for hour 0, 09
+# within the day) shares states with the transitions and some days (the three
+# weeks before the February change overlap the summer window), so the two
+# estimates are not independent. A second fit stacks the regime panel with the
+# two transitions, every fixed effect interacted with the experiment and
+# standard errors clustered by state across the stack. The likelihood
+# separates by experiment, so each coefficient equals its separate fit
+# (asserted); the stack only supplies the covariance for the difference.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -65,6 +74,21 @@ frame <- function(tr) rbindlist(lapply(seq_len(nrow(cal)), function(i) {
 }))[, `:=`(treated = as.integer(uf %in% TREATED), transition = tr)][
   , x := treated * after * era]
 
+days  <- make_days(season_range())
+FOCAL <- -2:1                            # focal evening bins of 09_within_day.R
+bname <- function(k) paste0("b", fifelse(k < 0, paste0("m", abs(k)), paste0("p", k)))
+A_DIFF <- c(x_end = -0.5, x_start = 0.5, x_reg = 1)   # abolition minus the average change
+
+joint_diff <- function(m, mj, reg_coef) {
+  b <- coef(mj)[names(A_DIFF)]; V <- vcov(mj)[names(b), names(b)]
+  gap <- max(abs(c(b[c("x_end", "x_start")] - coef(m)[c("x_end", "x_start")], b[["x_reg"]] - reg_coef)))
+  message(sprintf("  stacked vs separate fits: largest gap %.2e", gap))
+  stopifnot(gap < 1e-4)                  # 0.01 log points: the tables print 0.1
+  est <- sum(A_DIFF * b); se <- sqrt(drop(t(A_DIFF) %*% V %*% A_DIFF))
+  data.table(diff_lp = 100 * est, diff_se = 100 * se, diff_p = 2 * pnorm(-abs(est / se)),
+             joint_regime_lp = 100 * b[["x_reg"]], joint_regime_se = 100 * sqrt(V["x_reg", "x_reg"]))
+}
+
 res <- rbindlist(lapply(TRAFFIC, function(o) {
   d <- rbind(frame("end"), frame("start"))
   d[, `:=`(x_end = x * (transition == "end"), x_start = x * (transition == "start"))]
@@ -82,13 +106,37 @@ res <- rbindlist(lapply(TRAFFIC, function(o) {
   m4 <- fepois(y ~ x_end + x_start | transition^uf^date + transition^uf^bin^sy +
                  transition^uf^bin^after + transition^bin^date,
                data = p4, cluster = ~uf, notes = FALSE)
-  rbindlist(lapply(list(hour0 = m, within_day = m4), function(mm) {
+  # The same two models stacked with the regime panel.
+  rg <- y[days, on = .(uf, date)][is.na(y), y := 0][
+    , .(stack = "regime", uf, date, sy, half = window, y, x_end = 0, x_start = 0, x_reg = twp)]
+  j <- rbind(p[, .(stack = transition, uf, date, sy, half = paste0("after", after), y,
+                   x_end, x_start, x_reg = 0)], rg)
+  mj <- fepois(y ~ x_end + x_start + x_reg | stack^uf^sy + stack^uf^half + stack^date,
+               data = j, cluster = ~uf, notes = FALSE)
+  m1 <- fepois(as.formula(paste("y ~ twp", FE)), data = y[days, on = .(uf, date)][is.na(y), y := 0],
+               cluster = ~uf, notes = FALSE)
+  bins9 <- sort(c(REF, FOCAL))
+  y9 <- ev[outcome == o & bin_set %in% bins9, .(y = sum(w)), by = .(uf, date, bin = bin_set)]
+  g9 <- days[, .(bin = bins9), by = .(uf, date, sy, window, twp)]
+  r9 <- y9[g9, on = .(uf, date, bin)][is.na(y), y := 0]
+  r9[, (bname(FOCAL)) := lapply(FOCAL, function(k) as.integer(bin == k) * twp)]
+  j4 <- rbind(p4[, .(stack = transition, uf, date, sy, bin, half = paste0("after", after), y,
+                     x_end, x_start, x_reg = 0, bm2 = 0, bm1 = 0, bp1 = 0)],
+              r9[, .(stack = "regime", uf, date, sy, bin, half = window, y,
+                     x_end = 0, x_start = 0, x_reg = bp0, bm2, bm1, bp1)])
+  mj4 <- fepois(y ~ x_end + x_start + x_reg + bm2 + bm1 + bp1 | stack^uf^date + stack^uf^bin^sy +
+                  stack^uf^bin^half + stack^bin^date,
+                data = j4, cluster = ~uf, notes = FALSE)
+  m9 <- fepois(y ~ bm2 + bm1 + bp0 + bp1 | uf^date + uf^bin^window + uf^bin^sy + bin^date,
+               data = r9, cluster = ~uf, notes = FALSE)
+  joint <- rbind(joint_diff(m, mj, coef(m1)[["twp"]]), joint_diff(m4, mj4, coef(m9)[["bp0"]]))
+  cbind(rbindlist(lapply(list(hour0 = m, within_day = m4), function(mm) {
     b <- coef(mm)[c("x_end", "x_start")]; V <- vcov(mm)[names(b), names(b)]
     a <- c(0.5, -0.5)
     data.table(end_lp = 100 * b[[1]], end_se = 100 * sqrt(V[1, 1]),
                start_lp = 100 * b[[2]], start_se = 100 * sqrt(V[2, 2]),
                avg_dark_lp = 100 * sum(a * b), avg_dark_se = 100 * sqrt(drop(t(a) %*% V %*% a)))
-  }), idcol = "design")[, outcome := o][]
+  }), idcol = "design"), joint)[, outcome := o][]
 }))
 res[, n_days_each_side := K]
 
@@ -101,6 +149,8 @@ reg <- rbind(reg, readRDS(file.path(path_audit, "within_day.rds"))$pooled[
   side == "set" & reference == "all" & bin == 0L, .(outcome, design = "within_day",
                                                     regime_lp = 100 * coef, regime_se = 100 * se)])
 res <- reg[res, on = .(outcome, design)]
+# The regime coefficient refitted here is the one 01 and 09 report.
+stopifnot(max(abs(res$joint_regime_lp - res$regime_lp)) < 0.01)
 
 saveRDS(list(results = res, calendar = cal, k = K), file.path(path_audit, "transitions.rds"))
 options(width = 200)

@@ -229,7 +229,7 @@ only read their caches and write the files. Figures are in `analysis/output/grap
 | Table B3 | `30_tables.R` | 349 | `tab_road_users.tex` | `21` |
 | Table B4 | `30_tables.R` | 216 | `tab_traffic_volume.tex` | `15`, `16` |
 | Table B5 | `30_tables.R` | 373 | `tab_street_lighting.tex` | `24` |
-| Table B6 | `30_tables.R` | 471 | `tab_transitions.tex` | `28` |
+| Table B6 | `30_tables.R` | 473 | `tab_transitions.tex` | `28` |
 | Figure B6 | `29_figures.R` | 290 | `fig_bahia.pdf` | `17` |
 | Figure B7 | `29_figures.R` | 268 | `fig_assault.pdf` | `10` |
 | Figure C1 | `29_figures.R` | 489 | `maps/fig_map_mexico.pdf` | `build/10`, `12` |

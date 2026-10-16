@@ -109,7 +109,8 @@ depois da auditoria de 09/10/2026; a tabela-resumo está no PAPER.md) e em
 `audit/*.rds`. O que se pode dizer hoje:
 
 - O **primeiro estágio** é enorme e medido por terceiros: a parcela de
-  acidentes que a PRF anota como escuro às 18–19h subiu ~34 p.p. nos tratados.
+  acidentes que a PRF anota como crepúsculo ou noite na hora 0 subiu 23,6 p.p.
+  (EP 2,0) nos tratados (`23`, `light_dose.rds`).
 - **A hora que escureceu ganhou mortes de trânsito.** O SIM é o resultado
   âncora, porque passa nos testes de tendência; a PRF corrobora, mas é sensível
   à tendência.
@@ -122,8 +123,8 @@ depois da auditoria de 09/10/2026; a tabela-resumo está no PAPER.md) e em
   federais); na hora 0 não divergem de fato; a PRF corrobora o mecanismo, não o
   tamanho do excesso.
 - **O tráfego seguiu a luz** (PNCT, VIABILIDADE §14): noite −6% de veículos,
-  manhã +12%; por veículo, a hora escura +29 lp (28,6) nos acidentes com vítima
-  (permutação p = 0,002; `17`). Nenhum
+  manhã +12%; por veículo, a hora escura +24,0 lp (7,8) nos acidentes com vítima,
+  nos verões das estações (permutação p = 0,005; `15`, `16`). Nenhum
   posto é contado antes e depois; jul/2019–abr/2021 sem contagem (Nota Técnica
   DNIT 001/2020/DE).
 - **A manhã não paga a conta da noite** (VIABILIDADE §10): noite escura
@@ -168,10 +169,13 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 - **Dinâmica** (`04`, Figura B3): a tripla dá 48,7 nas duas primeiras temporadas e 15,8
   nas três últimas, mas isso vem da perna do inverno (o fora de temporada de 2019/20
   inclui abr–jun/2020). Só o verão: 39,3 e 31,2. Sem mar/2020–fev/2022: 22,9 (9,1).
-  Faixa honesta: 23 a 35 lp.
+  Faixa honesta: 22,9 a 34,5 lp (23 a 34 arredondado).
 - **Trocas de relógio** (`28`): efeito de uma noite mais escura nas 3 semanas após cada
-  troca, 42,3 (13,8) contra 29,2 da abolição; dentro do dia, 79,1 contra 27,7. A
-  adaptação reduziu o efeito de um a dois terços, sem eliminá-lo.
+  troca, 42,3 (13,8) contra 29,2 da abolição; dentro do dia, 79,1 contra 27,7. Num
+  modelo empilhado (covariância das amostras sobrepostas), abolição menos trocas:
+  −13,1 (12,5), p = 0,29, na comparação entre estados; −51,4 (18,3), p = 0,005,
+  dentro do dia. Só a comparação dentro do dia separa: o efeito caiu cerca de dois
+  terços, sem sumir. Não escrever "de um terço a dois terços".
 - **México com placebo** (`27`, Tabela C1 painel E): nas unidades que mantiveram o
   relógio, o mesmo estimador dá mortes −20 (27), mas acidentes +10,8 e atropelados
   +20,7. O México sustenta mortes, não acidentes.
@@ -180,7 +184,7 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 - Score bootstrap no Poisson (`06`): p = 0,010 / 0,023 / 0,001.
 
 **Apêndice:** Bahia 2011/12 como checagem de sinal (`18`, VIABILIDADE §15):
-primeiro estágio claro (PRF anota escuro em 68% contra 92–100%); na noite, os
+primeiro estágio claro (PRF anota escuro em 68% contra 93–100%); na noite, os
 acidentes com vítima têm o menor valor de 16 temporadas; a manhã não aparece.
 Uma temporada só: p ≈ 0,06, nada além disso.
 
