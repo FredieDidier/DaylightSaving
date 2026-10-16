@@ -269,7 +269,7 @@ write_tab("tab_robustness", c(
   est_rows("With a linear treated $\\times$ summer trend", pt$trend_lp, pt$trend_se),
   est_rows("Without March 2020 to February 2022", pt$nopandemic_lp, pt$nopandemic_se),
   est_rows("First two summers without DST", pt$early_lp, pt$early_se),
-  est_rows("\\quad Last three summers without DST", pt$late_lp, pt$late_se),
+  est_rows("Last three summers without DST", pt$late_lp, pt$late_se),
   est_rows("Summer window only (no off-season)", pt$summer_dd_lp, pt$summer_dd_se),
   row("Seasons before abolition equal, p-value", fp(pt$wald_pre_p)),
   "\\addlinespace",
