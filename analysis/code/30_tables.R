@@ -476,7 +476,7 @@ write_tab("tab_mexico", c(
     n <- w[group == "lost DST" & sample != "all years"][match(MXO, outcome)]
     c(row("Effect of abolition (log points)", f1(a$lp)), row("", se1(a$se)),
       row("p-value, clustered by unit", fp(a$p)),
-      row("Without 2020 and 2021", f1(n$lp)), row("", se1(n$se)))
+      row("Without March 2020 to February 2022", f1(n$lp)), row("", se1(n$se)))
   },
   "\\addlinespace",
   panel("Panel E. The same comparison in the units that kept their clock", 5),
@@ -495,8 +495,8 @@ tr_rows <- function(d) {
   c(row("Abolition, five summers", f1(x$regime_lp)), row("", se1(x$regime_se)),
     row("End of DST in February, three weeks", f1(x$end_lp)), row("", se1(x$end_se)),
     row("Start of DST in October, three weeks", f1(x$start_lp)), row("", se1(x$start_se)),
-    row("Both changes, as a darker evening", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)),
-    row("Abolition minus both changes", f1(x$diff_lp)), row("", se1(x$diff_se)),
+    row("Average of the two, (February $-$ October)/2", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)),
+    row("Abolition minus the average", f1(x$diff_lp)), row("", se1(x$diff_se)),
     row("\\quad p-value, clustered by state", fp(x$diff_p)))
 }
 write_tab("tab_transitions", c(

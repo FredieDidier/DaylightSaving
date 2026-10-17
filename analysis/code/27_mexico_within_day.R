@@ -27,8 +27,9 @@
 #            whose hour 0 did not change light: it should not rise. In
 #            Brazil the same estimator in the control states gives +20 log
 #            points in hour 0 (09_within_day.R), so it needs this benchmark;
-#   no 2020-2021  the treated units without the pandemic years, which fall
-#            in the years before abolition here.
+#   no pandemic  the treated units without March 2020 to February 2022
+#            (PANDEMIC, 00_utils.R), the same dates as in Brazil; here they
+#            fall before abolition.
 # Also the coverage of the register: municipalities with at least one
 # accident, accidents and deaths at the scene, by year and group.
 # =============================================================================
@@ -75,11 +76,11 @@ fname <- function(k) paste0("f", fifelse(k < 0, paste0("m", abs(k)), paste0("p",
 days[, (fname(FOCAL)) := lapply(FOCAL, function(k) as.integer(bin == k) * wp)]
 
 CASES <- data.table(group = c("lost DST", "kept clock", "lost DST"),
-                    sample = c("all years", "all years", "without 2020 and 2021"))
+                    sample = c("all years", "all years", "without the pandemic"))
 res <- rbindlist(lapply(seq_len(nrow(CASES)), function(i) {
   cs <- CASES[i]
   dd <- days[group == cs$group]
-  if (cs$sample != "all years") dd <- dd[!sy %in% 2020:2021]
+  if (cs$sample != "all years") dd <- drop_pandemic(dd)
   rbindlist(lapply(names(OUT), function(o) {
     y <- ev[group == cs$group, .(y = sum(get(OUT[[o]]))), by = .(unit, date, bin)]
     p <- y[dd, on = .(unit, date, bin)][is.na(y), y := 0]
