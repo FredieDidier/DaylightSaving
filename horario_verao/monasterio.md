@@ -30,8 +30,8 @@ O paper continua com 36 páginas (limite 45); o apêndice foi de 23 para 24.
 | # | Sugestão | Status em 16/10 | Decisão |
 |---|---|---|---|
 | 1 | Entra como coautor | ✔ | feito, com o e-mail dele |
-| 2 | Melhorar o cálculo do custo além do VSL (fica com ele) | ✗ | para depois (conversa com ele) |
-| 3 | Usar a idade dos mortos no custo (anos de vida) | ✗ | para depois, junto com o 2 |
+| 2 | Melhorar o cálculo do custo além do VSL (fica com ele) | ◐ | 17/10: ele indicou o TD 2565 do Ipea e vai falar com o autor; ver item 14 |
+| 3 | Usar a idade dos mortos no custo (anos de vida) | ✗ | 17/10: ele mesmo acha que não faz tanto sentido; não entra |
 | 4 | Perfil dos mortos: sexo e idade, nas duas fontes | ✔ | Tabela B4 do apêndice e uma frase no corpo |
 | 5 | Iluminação pública: satélite ou Censo | ✔ Censo | satélite não entra, nem no apêndice |
 | 6 | Ofuscamento: rugosidade do relevo (*ruggedness*) | ✗ | não entra (o paper já não defende o ofuscamento) |
@@ -42,6 +42,7 @@ O paper continua com 36 páginas (limite 45); o apêndice foi de 23 para 24.
 | 11 | Ajustes de redação no EXPLICANDO | — | só no EXPLICANDO |
 | 12 | Trechos grifados, sem comentário | — | — |
 | 13 | Elogios e reações | — | — |
+| 14 | WhatsApp de 17/10: TD 2565 do Ipea e custo dos acidentes não fatais | ◐ | recomendação: paper não muda agora; esperar a conversa com o autor do TD |
 
 ---
 
@@ -367,6 +368,63 @@ Só valem se o EXPLICANDO for reaproveitado; o paper não tem esses trechos.
 - Áudio 1: "eu gostei muito [...] tem uns comentários pontuais e mais uma
   sugestão de dados" (o satélite do item 5, ou a rugosidade do item 6).
 
+## 14. Mensagens de 17/10/2026 (WhatsApp)
+
+> "Dei uma lida aqui e o ajuste por idade do valor estatístico da vida não faz
+> taaando sentido assim" (09:28)
+
+> "O Carlos Henrique, meu amigo do ipea, atualizou o trabalho antigo dos custos
+> de acidentes em 2020: [link] Esse deve ser o nosso número, mas vou ler com
+> calma" (09:29)
+
+> "Se quiser dar uma bombada no custo – pode ser um rodapé talvez – dá para
+> incluir os custos dos acidentes que não resultaram em morte a partir do
+> trabalho do C Henrique. É meio chute. [...] ou melhor, seria meio chute
+> incorporar.. bastar manter a estimativa de acidentes não fatais por fatais
+> do Carlos Henrique.... Fico de falar com ele, beleza?" (09:31–09:33)
+
+**O trabalho:** Carvalho, C. H. R. de (2020), *Custos dos acidentes de
+trânsito no Brasil: estimativa simplificada com base na atualização das
+pesquisas do Ipea sobre custos de acidentes nos aglomerados urbanos e
+rodovias*, Texto para Discussão 2565, Ipea, junho de 2020
+(<https://repositorio.ipea.gov.br/server/api/core/bitstreams/06cc1126-53a9-4dae-af80-a7f66708989d/content>).
+
+**O que ele traz (lido em 17/10):**
+- Ano-base 2014, PRF de 2014 e a matriz de custos médios da pesquisa
+  Ipea/Denatran/ANTP de 2005–06, corrigida pelo IPCA. Não há pesquisa nova.
+- Custo por morto em acidente com fatalidade nas rodovias federais:
+  R$ 433.286,69 (dez./2014; Tabela 1A). É o mesmo valor que o paper já usa,
+  de Ipea e PRF (2015), Tabela 6A (R$ 433.287). A Tabela 6 do próprio TD cita
+  "Ipea e PRF (2015)" como fonte. **Para o valor de uma morte, o TD não muda
+  o número.**
+- Por gravidade, rodovias federais, 2014 (Tabela 3): acidentes com
+  fatalidade 6.743, R$ 4,48 bi (R$ 664.821 cada); com vítimas não fatais
+  62.346, R$ 6,03 bi (R$ 96.748 cada); sem vítimas 98.158, R$ 2,31 bi.
+  O custo dos acidentes com vítimas não fatais é 1,35 vez o dos acidentes
+  fatais.
+- Rodovias estaduais e municipais: R$ 24,8 a 30,5 bi; aglomerados urbanos:
+  R$ 9,9 a 12,9 bi (pesquisas de 2003 e 2005 corrigidas pelo IPCA e pela
+  variação das mortes no Datasus). Não se somam, por dupla contagem. Total da
+  ordem de R$ 50 bi por ano.
+
+**Leitura:**
+- Item 3 (idade): ele desiste da ideia. Não entra.
+- "Esse deve ser o nosso número": para o custo de uma morte, já é. O ganho
+  possível do TD é outro: a razão entre o custo dos acidentes não fatais e o
+  dos fatais, para um rodapé com os feridos, que hoje a Seção V diz que não
+  são valorados.
+- Cuidados se entrar: (i) a razão é de capital humano e o custo das mortes no
+  paper é VSL, então somar as duas coisas mistura métodos; aplicada ao piso
+  de capital humano (R$ 58–147 mi), ela é coerente; (ii) supõe que os
+  acidentes não fatais subiram na mesma proporção que as mortes, e no PRF os
+  acidentes com vítima sobem 22 log pontos contra 54 das mortes (e são
+  sensíveis à tendência); (iii) a razão é das rodovias federais, e boa parte
+  das mortes do SIM é urbana.
+
+**Recomendação (17/10, a confirmar com o Fredie):** o paper não muda agora. Ele vai falar com o Carlos
+Henrique; o rodapé com os não fatais entra (ou não) depois dessa conversa.
+Se entrar, citar o TD 2565 ao lado de Ipea e PRF (2015).
+
 ---
 
 ## Páginas
@@ -380,7 +438,7 @@ A AEJ: Policy aceita até 45 páginas em 12 pt (`PAPER.md`). Depois desta rodada
 | 4, sexo e idade | 1 frase em IV.F | Tabela B4, um parágrafo, uma frase em A |
 | 7, litoral | meia frase em IV.C | uma linha na Tabela B1 e na nota |
 | 8, saída × abolição | 0 (troca de palavras) | 0 |
-| 2 e 3, custo (para depois) | linha ou coluna na Tabela 7, 2–3 frases | as entradas, no apêndice de custo |
+| 2, custo (para depois; o 3 saiu em 17/10) | linha ou coluna na Tabela 7, 2–3 frases | as entradas, no apêndice de custo |
 
 Sobram ~9 páginas para o custo e para o que vier dos pareceristas.
 
