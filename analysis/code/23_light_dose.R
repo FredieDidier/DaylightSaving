@@ -16,8 +16,8 @@
 #     civil twilight 1/2, daylight 0) of standard-time [60h, 60h + 60) minus
 #     that of [60h - 60, 60h): under DST, clock hour h was standard hour h - 1,
 #     so this is the change abolition brought to that clock hour. Averaged over
-#     the state's seats, weighted by their on-road deaths (all hours, all
-#     seasons). It runs from +1 (an evening hour that went from full daylight
+#     the state's seats, weighted by their on-road deaths (all hours, seasons
+#     before abolition). It runs from +1 (an evening hour that went from full daylight
 #     to night) to -1 (a morning hour that went the other way) and sums to
 #     zero over the day: abolition moved light, it did not remove any.
 #     Panel: state x date x clock hour (0-23), summer window and off-season.
@@ -40,9 +40,12 @@
 #     DST season outside the summer window (first Sunday of November to 14
 #     November; 15 February to the day before the third Sunday of February, a
 #     week later when that Sunday is Carnival) give the count per DST season.
+#     Those extra days fall in term time; a second count refits the dose by
+#     part of the window (school weeks, holidays, other) and values the extra
+#     days at the school-week coefficients.
 # (c) Rain. On a rainy, overcast evening the hour was already dim under DST,
 #     so abolition darkens it less. Rain index per state-day: share of the
-#     state's on-road deaths (all hours, all seasons, by municipality) that
+#     state's on-road deaths (all hours, seasons before abolition, by municipality) that
 #     live in municipalities with >= 1 mm of rain that day (Xavier BR-DWGD at
 #     the seat, build/08_xavier_rain.R). Two uses: rain as a control in the
 #     main specification, and the rain share interacted with every term of
@@ -101,7 +104,7 @@ extra <- rbindlist(lapply(post_s, function(s) {
            seq(as.IDate(sprintf("%d-02-15", s + 1L)), end - 1L, by = 1L))
   data.table(sy = s, date = as.IDate(d))
 }))
-wt <- ev[outcome == "SIM transport deaths, on road" & uf %in% TREATED, .(n = .N), by = .(uf, code6)]
+wt <- seat_weights(ev[uf %in% TREATED])
 wt <- geo[, .(code6, lat, lon, std_offset_h)][wt, on = "code6", nomatch = 0]
 dose_dates <- sort(unique(c(days[window == "win", date], extra$date)))
 dose <- rbindlist(lapply(dose_dates, function(x) {
@@ -165,6 +168,24 @@ dose_res <- rbindlist(lapply(DOSE_OUT, function(o) {
       es <- excess(both, b, V)
       out[, `:=`(season_net = es$net, season_net_se = es$net_se,
                  extra_days_per_season = nrow(extra) / N_POST)]
+      # The season days outside the window fall in term time. Refit with
+      # separate coefficients by part of the window (school_part(), 00_utils.R)
+      # and value those days at the school-week coefficients.
+      p[, part := school_part(date, window, sy)]
+      for (g in c("school", "holiday", "other"))
+        p[, (paste0(c("xe_", "xm_"), g)) := .(xe * (part == g), xm * (part == g))]
+      X <- paste0(rep(c("xe_", "xm_"), 3), rep(c("school", "holiday", "other"), each = 2))
+      mp <- fepois(as.formula(paste("y ~", paste(X, collapse = " + "), DOSE_FE[[sp]])),
+                   data = p, cluster = ~uf, notes = FALSE)
+      bp <- coef(mp)
+      cnt <- function(d, be, bm) sum(d$y * (1 - exp(-(d$xe * be + d$xm * bm)))) / N_POST
+      w <- p[twp == 1L & (xe != 0 | xm != 0)]
+      win_parts <- sum(vapply(c("school", "holiday", "other"), function(g)
+        cnt(w[part == g], bp[[paste0("xe_", g)]], bp[[paste0("xm_", g)]]), numeric(1)))
+      extra_term <- cnt(q[xe != 0 | xm != 0], bp[["xe_school"]], bp[["xm_school"]])
+      out[, `:=`(evening_school_lp = 100 * bp[["xe_school"]], evening_school_se = 100 * se(mp)[["xe_school"]],
+                 evening_holiday_lp = 100 * bp[["xe_holiday"]], evening_holiday_se = 100 * se(mp)[["xe_holiday"]],
+                 season_net_term = win_parts + extra_term)]
     }
     out
   }), fill = TRUE)
@@ -173,7 +194,7 @@ dose_res <- rbindlist(lapply(DOSE_OUT, function(o) {
 pr <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "weather", "output",
                                            "pr_seat_day.parquet")))
 pr[, date := as.IDate(date)]
-w <- ev[outcome == "SIM transport deaths, on road", .(n = .N), by = .(uf, code6)]
+w <- seat_weights(ev)
 w[, wt := n / sum(n), by = uf]
 rain <- pr[date %in% days$date][w, on = "code6", nomatch = 0][
   , .(rain_share = sum(wt * (pr_mm >= 1)) / sum(wt)), by = .(uf, date)]

@@ -9,8 +9,8 @@
 # (build/09_census_lighting.R): Census 2022 (main, the closest to abolition)
 # and Census 2010 (urban tracts; robustness). Municipalities are split
 # WITHIN each state at the median of that share, weighted by the
-# municipality's on-road SIM transport deaths (all hours, all seasons), and
-# the comparison is within state. The halves are equal only roughly: the
+# municipality's on-road SIM transport deaths (all hours, seasons before
+# abolition), and the comparison is within state. The halves are equal only roughly: the
 # municipality that crosses the median goes whole to the darker half, so
 # the Federal District (one municipality) is entirely "dark", and in AP and
 # RR the capital puts 85-100% of deaths there. Dropping DF or assigning the
@@ -35,7 +35,7 @@ lig  <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "census", "o
                                              "muni_lighting.parquet")))
 
 # Weighted median split within state, one measure at a time.
-w0 <- ev[outcome == "SIM transport deaths, on road", .(n = .N), by = .(uf, code6)]
+w0 <- seat_weights(ev)
 d2 <- rbind(copy(days)[, half := "dark"], copy(days)[, half := "lit"])
 
 run_measure <- function(meas) {

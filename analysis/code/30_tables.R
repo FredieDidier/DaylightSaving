@@ -326,6 +326,16 @@ write_tab("tab_sensitivity", c(
     row("", se1(rc$with_rain_control_se))),
   c(row("Effect on a dry state-day", f1(rc$effect_dry_lp)), row("", se1(rc$effect_dry_se))),
   c(row("Change, dry to fully rainy state-day", f1(rc$rain_change_lp)), row("", se1(rc$rain_change_se))),
+  "\\addlinespace",
+  panel("Panel D. School calendar, summer window", 4),
+  sens_row("School weeks", pick_l("school", "school weeks")),
+  sens_row("School holidays", pick_l("school", "school holidays")),
+  sens_row("\\quad 24 December to 1 January", pick_l("school", "school holidays, 24 December to 1 January")),
+  sens_row("\\quad 2 to 15 January", pick_l("school", "school holidays, 2 to 15 January")),
+  sens_row("School weeks minus holidays", pick_l("school", "school weeks minus holidays")),
+  sens_row("\\quad without Par\\'a", pick_l("school", "school weeks minus holidays, without Para")),
+  sens_row("\\quad without the municipalities on the coast", pick_l("school", "school weeks minus holidays, without the coast")),
+  sens_row("\\quad placebo before abolition", pick_l("school", "school weeks minus holidays, placebo 2014")),
   close_))
 
 # ── Table: who dies (road deaths only) ──────────────────────────────────────
@@ -497,7 +507,10 @@ tr_rows <- function(d) {
     row("Start of DST in October, three weeks", f1(x$start_lp)), row("", se1(x$start_se)),
     row("Average of the two, (February $-$ October)/2", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)),
     row("Abolition minus the average", f1(x$diff_lp)), row("", se1(x$diff_se)),
-    row("\\quad p-value, clustered by state", fp(x$diff_p)))
+    row("\\quad p-value, clustered by state", fp(x$diff_p)),
+    row("Abolition, school weeks of the summer window", f1(x$school_regime_lp)), row("", se1(x$school_regime_se)),
+    row("Abolition in school weeks minus the average", f1(x$school_diff_lp)), row("", se1(x$school_diff_se)),
+    row("\\quad p-value, clustered by state", fp(x$school_diff_p)))
 }
 write_tab("tab_transitions", c(
   open3,

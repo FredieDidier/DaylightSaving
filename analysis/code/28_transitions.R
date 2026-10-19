@@ -39,6 +39,12 @@
 # standard errors clustered by state across the stack. The likelihood
 # separates by experiment, so each coefficient equals its separate fit
 # (asserted); the stack only supplies the covariance for the difference.
+#
+# Term time. The three weeks after each change fall in term time, while most
+# of the summer window is school holidays. A third pair of stacks splits the
+# regime effect by school_part() (00_utils.R) and compares the clock changes
+# with abolition in the school weeks of the window (15 November to 7
+# December), the same time of the school year.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -89,6 +95,17 @@ joint_diff <- function(m, mj, reg_coef) {
              joint_regime_lp = 100 * b[["x_reg"]], joint_regime_se = 100 * sqrt(V["x_reg", "x_reg"]))
 }
 
+# Abolition in the school weeks minus the average change, from a stack whose
+# regime part has separate effects by part of the window.
+school_diff <- function(mj) {
+  a <- c(x_end = -0.5, x_start = 0.5, x_regs = 1)
+  b <- coef(mj)[names(a)]; V <- vcov(mj)[names(a), names(a)]
+  est <- sum(a * b); se <- sqrt(drop(t(a) %*% V %*% a))
+  data.table(school_regime_lp = 100 * b[["x_regs"]], school_regime_se = 100 * sqrt(V["x_regs", "x_regs"]),
+             school_diff_lp = 100 * est, school_diff_se = 100 * se, school_diff_p = 2 * pnorm(-abs(est / se)))
+}
+days[, part := school_part(date, window, sy)]
+
 res <- rbindlist(lapply(TRAFFIC, function(o) {
   d <- rbind(frame("end"), frame("start"))
   d[, `:=`(x_end = x * (transition == "end"), x_start = x * (transition == "start"))]
@@ -130,6 +147,25 @@ res <- rbindlist(lapply(TRAFFIC, function(o) {
   m9 <- fepois(y ~ bm2 + bm1 + bp0 + bp1 | uf^date + uf^bin^window + uf^bin^sy + bin^date,
                data = r9, cluster = ~uf, notes = FALSE)
   joint <- rbind(joint_diff(m, mj, coef(m1)[["twp"]]), joint_diff(m4, mj4, coef(m9)[["bp0"]]))
+  # The same stacks with the regime split by part of the window.
+  rgs <- y[days, on = .(uf, date)][is.na(y), y := 0][
+    , .(stack = "regime", uf, date, sy, half = part, y, x_end = 0, x_start = 0,
+        x_regs = twp * (part == "school"), x_regh = twp * (part == "holiday"),
+        x_rego = twp * (part == "other"))]
+  js <- rbind(p[, .(stack = transition, uf, date, sy, half = paste0("after", after), y,
+                    x_end, x_start, x_regs = 0, x_regh = 0, x_rego = 0)], rgs)
+  mjs <- fepois(y ~ x_end + x_start + x_regs + x_regh + x_rego | stack^uf^sy + stack^uf^half + stack^date,
+                data = js, cluster = ~uf, notes = FALSE)
+  r9s <- days[, .(uf, date, part)][r9, on = .(uf, date)]
+  j4s <- rbind(p4[, .(stack = transition, uf, date, sy, bin, half = paste0("after", after), y,
+                      x_end, x_start, x_regs = 0, x_regh = 0, x_rego = 0, bm2 = 0, bm1 = 0, bp1 = 0)],
+               r9s[, .(stack = "regime", uf, date, sy, bin, half = part, y, x_end = 0, x_start = 0,
+                       x_regs = bp0 * (part == "school"), x_regh = bp0 * (part == "holiday"),
+                       x_rego = bp0 * (part == "other"), bm2, bm1, bp1)])
+  mj4s <- fepois(y ~ x_end + x_start + x_regs + x_regh + x_rego + bm2 + bm1 + bp1 |
+                   stack^uf^date + stack^uf^bin^sy + stack^uf^bin^half + stack^bin^date,
+                 data = j4s, cluster = ~uf, notes = FALSE)
+  joint <- cbind(joint, rbind(school_diff(mjs), school_diff(mj4s)))
   cbind(rbindlist(lapply(list(hour0 = m, within_day = m4), function(mm) {
     b <- coef(mm)[c("x_end", "x_start")]; V <- vcov(mm)[names(b), names(b)]
     a <- c(0.5, -0.5)

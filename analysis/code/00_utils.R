@@ -135,6 +135,29 @@ holiday_days <- function(years) {
 # UF x day counts of one outcome in one sun bin, zeros filled over `days`.
 # side = "set" bins on clock - sunset_std, "rise" on clock - sunrise_std.
 EVENTS_FILE <- file.path(path_audit, "events_sun_bins.parquet")
+# Parts of the summer window by the school calendar of the state networks
+# (horario_verao/fontes_dados/calendarios_escolares.md): classes in every
+# calendar found from 15 November to 7 December, holidays in every one from
+# 24 December to 15 January. 2020/21, with remote classes and school years
+# extended into 2021, belongs to neither. The days in between are "other".
+school_part <- function(date, window, sy) {
+  md <- month(date) * 100L + mday(date)
+  fcase(window == "off", "off",
+        sy == 2020L, "other",
+        md >= 1115L & md <= 1207L, "school",
+        md >= 1224L | md <= 115L, "holiday",
+        default = "other")
+}
+
+# On-road deaths per municipality in the seasons before abolition, all hours:
+# the weights that average municipal sun times or traits up to the state.
+# Pre-abolition only, so the weights do not depend on the treated period.
+seat_weights <- function(ev, by = c("uf", "code6")) {
+  keep <- ev$outcome == "SIM transport deaths, on road" &
+    ev$date >= as.IDate(sprintf("%d-07-01", FIRST_SEASON)) &
+    ev$date <  as.IDate(sprintf("%d-07-01", LAST_PRE + 1L))
+  ev[keep, .(n = .N), by = by]
+}
 # Argument names must not coincide with column names of `ev` (data.table would
 # resolve them to the columns and the filter would always be TRUE), so the
 # selection vector is built outside the brackets.
