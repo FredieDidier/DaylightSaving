@@ -82,7 +82,15 @@ band <- rbind(d[date %between% WIN, .(date, lo = sunset,  hi = sunset + 1,  even
 band[, `:=`(event = factor(event, levels = EVT), what = "Hour whose light changed")]
 win_lab <- data.frame(x = mean(WIN), y = Inf, label = "Summer window",
                       event = factor("Sunset", levels = EVT))
-hfmt <- function(x) sprintf("%d:%02d", floor(x), round(60 * (x - floor(x))))
+# Clock times as in the text: 12-hour clock with a.m. and p.m., minutes only
+# when they are not zero ("6 p.m.", "5:30 a.m.").
+hfmt <- function(x) {
+  hh <- floor(x); mm <- round(60 * (x - hh))
+  h12 <- ifelse(hh %% 12 == 0, 12, hh %% 12)
+  out <- paste0(h12, ifelse(mm == 0, "", sprintf(":%02d", mm)), ifelse(hh < 12, " a.m.", " p.m."))
+  out[is.na(x)] <- NA
+  out
+}
 g <- ggplot(long, aes(date, h)) +
   annotate("rect", xmin = WIN[1], xmax = WIN[2], ymin = -Inf, ymax = Inf, fill = "grey94") +
   geom_text(data = win_lab, aes(x, y, label = label), inherit.aes = FALSE, vjust = 1.6,
