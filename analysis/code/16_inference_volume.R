@@ -22,7 +22,7 @@
 # Reads the station-day x hour panel that 15 writes
 # (pnct/output/pnct_station_day_bins.parquet); the point estimates must equal
 # those of 15, and the script stops if they do not. The p-values are printed in
-# brackets in tab_traffic_volume (30_tables.R).
+# brackets in tab_traffic_volume (28_tables.R).
 #
 # Draws run in parallel (DS_CORES, default 5) and are drawn up front, so the
 # result does not depend on the number of cores.

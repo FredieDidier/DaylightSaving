@@ -1,5 +1,5 @@
 # =============================================================================
-# 30_tables.R
+# 28_tables.R
 #
 # Every table of the paper, written as a LaTeX tabular from the estimates
 # cached in audit/*.rds. Nothing is estimated here. Captions and notes live in
@@ -16,18 +16,19 @@
 #   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (15, 16)
 #   tab_within_group    hour 0 against hours of the same state-day, treated
 #                       and control states each alone                     (09, 15)
+#   tab_measurement     the time of death and the hour it falls in: death
+#                       and crash times, the records, heaping, the window
+#                       moved, heaped times spread or dropped        (19, 22)
 #   tab_robustness      the hour that turned dark under other choices,
 #                       and the hours whose light did not change  (04, 05, 08, 09, 18, 20)
-#   tab_sensitivity     the hour after sunset under other clocks, samples,
-#                       places, days and weather                          (04, 19, 20, 23)
-#   tab_transitions     the clock changes before 2019 against abolition  (28)
+#   tab_sensitivity     the hour after sunset under other samples, places,
+#                       days, weather and school calendar             (04, 20, 23)
+#   tab_transitions     the clock changes before 2019 against abolition  (26)
 #   tab_road_users      who dies: road user, pedestrian age and sex, day (21)
 #   tab_sex_age         sex and age of the dead, road deaths and federal
 #                       highway deaths                                    (21)
 #   tab_street_lighting darker against better-lit municipalities          (24)
 #   tab_cost            deaths per summer and their value                 (25)
-#   tab_mexico          Mexico, abolition of 2022: evening, hour before, morning,
-#                       and the within-day comparison in treated units  (26, 27)
 #
 # Conventions: outcome names as in OUTCOME_LAB (never the data source);
 # estimates in log points with the standard error below in parentheses;
@@ -289,6 +290,47 @@ write_tab("tab_robustness", c(
   est_rows("Night", plc("night (light unchanged)")$lp, plc("night (light unchanged)")$se),
   close_))
 
+# ── Table: measuring the time of death ──────────────────────────────────────
+ri <- rd("record_integrity.rds")
+hs <- rd("heaping.rds")$heap_share[match(TRAFFIC, outcome)]
+hpm <- rd("heaping.rds")$results
+lnk <- ri$link
+pr <- function(label, x) row(label, c(x, "", ""))
+shift_row <- function(m) {
+  x <- hpm[variant == "shift" & shift_min == m][match(TRAFFIC, outcome)]
+  lab <- if (m < 0) sprintf("Window starting %d minutes earlier", -m) else sprintf("Window starting %d minutes later", m)
+  c(row(lab, f1(x$lp)), row("", se1(x$se)))
+}
+mv <- function(v) hpm[variant == v & shift_min == 0L][match(TRAFFIC, outcome)]
+write_tab("tab_measurement", c(
+  open3,
+  panel("Panel A. Time of death against time of crash (percent of pairs)", 4),
+  pr("Certificate in the hour after the crash, same date", f1(lnk[pairing == "same date"]$within_0_60_pct)),
+  pr("\\quad pairs formed seven days apart (chance)", f1(lnk[pairing != "same date"]$within_0_60_pct)),
+  pr("Certificate within 30 minutes of the crash, same date", f1(lnk[pairing == "same date"]$within_30_pct)),
+  pr("\\quad pairs formed seven days apart (chance)", f1(lnk[pairing != "same date"]$within_30_pct)),
+  "\\addlinespace",
+  panel("Panel B. Records and abolition, triple difference (percentage points)", 4),
+  pr("Share of land-transport deaths on the road", f1(ri$test[measure == "on_road"]$pp)),
+  pr("", se1(ri$test[measure == "on_road"]$se_pp)),
+  pr("Share of road deaths without a clock time", f1(ri$test[measure == "no_time"]$pp)),
+  pr("", se1(ri$test[measure == "no_time"]$se_pp)),
+  "\\addlinespace",
+  panel("Panel C. Heaping (percent of events)", 4),
+  row("Recorded on the full hour", f1(hs$full_hour_pct)),
+  row("Recorded on the half hour", f1(hs$half_hour_pct)),
+  "\\addlinespace",
+  panel("Panel D. Hour after sunset (log points)", 4),
+  c(row("Baseline", f1(mv("shift")$lp)), row("", se1(mv("shift")$se))),
+  unlist(lapply(c(-15L, -10L, -5L, 5L, 10L, 15L), shift_row)),
+  c(row("Times recorded on the full or half hour spread over 30 minutes", f1(mv("spread :00 and :30")$lp)),
+    row("", se1(mv("spread :00 and :30")$se))),
+  c(row("Without times recorded on the full or half hour", f1(mv("drop :00 and :30")$lp)),
+    row("", se1(mv("drop :00 and :30")$se))),
+  c(row("Sunset from the full NOAA solar algorithm", f1(mv("Meeus solar algorithm")$lp)),
+    row("", se1(mv("Meeus solar algorithm")$se))),
+  close_))
+
 # ── Table: sensitivity of the hour after sunset ─────────────────────────────
 hp <- rd("heaping.rds")$results
 ld <- rd("light_dose.rds")
@@ -300,12 +342,7 @@ write_tab("tab_sensitivity", c(
   open3,
   sens_row("Baseline", pick_h("shift")),
   "\\addlinespace",
-  panel("Panel A. Clock time and sun", 4),
-  sens_row("Sunset from the full NOAA solar algorithm", pick_h("Meeus solar algorithm")),
-  sens_row("Times recorded at :00 or :30 spread over 30 minutes", pick_h("spread :00 and :30")),
-  sens_row("Without times recorded at :00 or :30", pick_h("drop :00 and :30")),
-  "\\addlinespace",
-  panel("Panel B. Comparison states, places, seasons and days", 4),
+  panel("Panel A. Comparison states, places, seasons and days", 4),
   sens_row("Control states: Northeast only", pick_l("control", "North (control = Northeast only)")),
   sens_row("Control states: North only", pick_l("control", "Northeast (control = North only)")),
   sens_row("Without the municipalities on the coast", pick_l("places", "coastal municipalities")),
@@ -321,13 +358,13 @@ write_tab("tab_sensitivity", c(
   c(row("Without March 2020 to February 2022, last two summers", f1(pt$late_nopan_lp)),
     row("", se1(pt$late_nopan_se))),
   "\\addlinespace",
-  panel("Panel C. Weather", 4),
+  panel("Panel B. Weather", 4),
   c(row("Controlling for the share of the state under rain", f1(rc$with_rain_control_lp)),
     row("", se1(rc$with_rain_control_se))),
   c(row("Effect on a dry state-day", f1(rc$effect_dry_lp)), row("", se1(rc$effect_dry_se))),
   c(row("Change, dry to fully rainy state-day", f1(rc$rain_change_lp)), row("", se1(rc$rain_change_se))),
   "\\addlinespace",
-  panel("Panel D. School calendar, summer window", 4),
+  panel("Panel C. School calendar, summer window", 4),
   sens_row("School weeks", pick_l("school", "school weeks")),
   sens_row("School holidays", pick_l("school", "school holidays")),
   sens_row("\\quad 24 December to 1 January", pick_l("school", "school holidays, 24 December to 1 January")),
@@ -431,7 +468,8 @@ RULE <- c("(a) elasticity 1.5 from the US ratio of 160" = "VSL, income elasticit
           "(c) 100 x GNI per capita" = "VSL, 100 $\\times$ income per head",
           "(b) 160 x GNI per capita" = "VSL, 160 $\\times$ income per head",
           "(d) IPEA social cost of a death (human capital)" = "Ipea social cost of a death")
-vl <- tc$value[sum == "dose model, DST season (2017 rule)"]
+vl <- tc$value[sum == "dose model, summer window"]
+vs <- tc$value[sum == "dose model, DST season (2017 rule)" & rule == names(RULE)[1]][match(CNT, count)]
 write_tab("tab_cost", c(
   "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
   " & Road deaths with & All road & All transport \\\\",
@@ -446,56 +484,14 @@ write_tab("tab_cost", c(
   row("Share of summer-window transport deaths (percent)",
       f1(tc$deaths[sum == names(DN)[1]][match(CNT, count)]$share_of_summer_transport_deaths_pct)),
   "\\addlinespace",
-  panel("Panel B. Value per DST season (millions of 2025 reais)", 4),
+  panel("Panel B. Value per summer window (millions of 2025 international dollars)", 4),
   unlist(lapply(names(RULE), function(r) {
     x <- vl[rule == r][match(CNT, count)]
-    c(row(RULE[[r]], f0(x$value_brl_million)), row("", se0(x$value_se_brl_million)))
+    c(row(RULE[[r]], f0(x$value_intl_million)), row("", se0(x$value_se_intl_million)))
   })),
-  close_))
-
-# ── Table: Mexico, the 2022 abolition ───────────────────────────────────────
-mx <- rd("mexico.rds")
-MXO <- c("Deaths", "Pedestrian deaths", "Accidents with victims", "Pedestrians struck, with victims")
-mx_rows <- function(s, b, inference = FALSE) {
-  x <- mx$by_hour[side == s & bin == b][match(MXO, outcome)]
-  out <- c(row("Effect of abolition (log points)", f1(x$lp)), row("", se1(x$se)),
-           row("p-value, clustered by unit", fp(x$p)))
-  if (inference) {
-    i <- mx$inference[match(MXO, outcome)]
-    out <- c(out, row("p-value, wild cluster bootstrap", fp(i$wcr_p)),
-             row("p-value, permutation of treated units", fp(i$perm_p)))
-  }
-  c(out, row("Mean events per year, treated units, before", f1(x$pre_per_year)))
-}
-write_tab("tab_mexico", c(
-  "\\begin{tabular}{@{}l cccc@{}}", "\\toprule",
-  " & & Pedestrian & Accidents & Pedestrians struck, \\\\",
-  " & Deaths & deaths & with victims & with victims \\\\",
-  " & (1) & (2) & (3) & (4) \\\\",
-  "\\midrule",
-  panel("Panel A. Hour after sunset, which turned dark", 5), mx_rows("set", 0L, TRUE),
   "\\addlinespace",
-  panel("Panel B. Hour before sunset, sun lower", 5), mx_rows("set", -1L),
-  "\\addlinespace",
-  panel("Panel C. Hour after sunrise, which turned light", 5), mx_rows("rise", 0L),
-  "\\addlinespace",
-  panel("Panel D. Hour after sunset against hours of the same day, units that lost DST", 5),
-  {
-    w <- rd("mexico_within_day.rds")$results[bin == 0L]
-    a <- w[group == "lost DST" & sample == "all years"][match(MXO, outcome)]
-    n <- w[group == "lost DST" & sample != "all years"][match(MXO, outcome)]
-    c(row("Effect of abolition (log points)", f1(a$lp)), row("", se1(a$se)),
-      row("p-value, clustered by unit", fp(a$p)),
-      row("Without March 2020 to February 2022", f1(n$lp)), row("", se1(n$se)))
-  },
-  "\\addlinespace",
-  panel("Panel E. The same comparison in the units that kept their clock", 5),
-  {
-    w <- rd("mexico_within_day.rds")$results[bin == 0L & group == "kept clock"][match(MXO, outcome)]
-    c(row("Change after 2022 (log points)", f1(w$lp)), row("", se1(w$se)),
-      row("p-value, clustered by unit", fp(w$p)),
-      row("Mean events per year, before", f1(w$hour0_pre_per_year)))
-  },
+  panel("Panel C. Value per DST season, 2017 rule (millions of 2025 international dollars)", 4),
+  c(row(RULE[[1]], f0(vs$value_intl_million)), row("", se0(vs$value_se_intl_million))),
   close_))
 
 # ── Table: the clock changes before abolition ───────────────────────────────

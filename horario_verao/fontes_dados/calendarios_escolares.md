@@ -1,7 +1,7 @@
 # Calendários escolares das redes estaduais (levantamento de 18/10/2026)
 
 Para que serve: o teste "semanas com aula contra férias" dentro da janela de
-verão (`analysis/code/20_leave_out.R`, Tabela B1; `28_transitions.R`,
+verão (`analysis/code/20_leave_out.R`, Tabela B1; `26_transitions.R`,
 Tabela B7). As datas abaixo são de redes **estaduais**; redes municipais e
 escolas privadas seguem o mesmo padrão em linhas gerais (fim em dezembro,
 volta entre fim de janeiro e fevereiro), com variação de dias.

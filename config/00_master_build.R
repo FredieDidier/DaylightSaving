@@ -10,14 +10,13 @@
 #
 # Before running, set DROPBOX_ROOT in config/config.R. Every step downloads its
 # raw data into DROPBOX_ROOT/build/<source>/input or reads it from there, with
-# two inputs placed by hand: the Xavier rain NetCDF (weather/input, read by 08)
-# and INEGI's ATUS zip (mexico/input/atus_raw, read by 11). README.md lists
-# the source of each step.
+# one input placed by hand: the Xavier rain NetCDF (weather/input, read by 08).
+# README.md lists the source of each step.
 #
-# Order matters in a few places: 04 writes the municipal seats that 08 and 14
-# read, 03 writes the accident file that 13 checks its persons against, and
+# Order matters in a few places: 04 writes the municipal seats that 08 and 12
+# read, 03 writes the accident file that 11 checks its persons against, and
 # the download steps (02, 06) come before their cleaning steps (03, 07).
-# 02, 05, 06, 10 and 13 query remote services and take a while; they resume
+# 02, 05, 06 and 11 query remote services and take a while; they resume
 # where they stopped.
 #
 # The first failure stops the run and its exit status is propagated.
@@ -33,11 +32,9 @@ STEPS <- c(
   "07_clean_pnct.R",        # pnct/input             -> pnct_hourly
   "08_xavier_rain.R",       # Xavier NetCDF          -> rain at each seat
   "09_census_lighting.R",   # SIDRA, censobr         -> street lighting
-  "10_mexico_geo.R",        # INEGI geo API          -> Mexican seats
-  "11_mexico_atus.R",       # INEGI ATUS zip         -> Mexican crashes
-  "12_map_boundaries.R",    # geobr, GADM            -> boundaries for the maps
-  "13_prf_persons.R",       # PRF open data          -> prf_persons (age, sex)
-  "14_coastal_municipalities.R")  # IBGE list        -> municipalities facing the sea
+  "10_map_boundaries.R",    # geobr                  -> state boundaries for the map
+  "11_prf_persons.R",       # PRF open data          -> prf_persons (age, sex)
+  "12_coastal_municipalities.R")  # IBGE list        -> municipalities facing the sea
 num <- sub("_.*", "", STEPS)
 
 args <- commandArgs(trailingOnly = TRUE)

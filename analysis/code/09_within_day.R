@@ -29,8 +29,7 @@
 # the control states alone (no bin^date, which needs both groups). When DST
 # ended, schedules set on Brasilia time moved one clock hour later in the
 # control states' summer; if that moved their evening, the control-alone
-# coefficient shows it. The treated-alone version is the Mexican estimator
-# (27_mexico_within_day.R) applied to Brazil.
+# coefficient shows it.
 #
 # Also: event study by season for bin 0 (reference 2018/19, and re-centred on
 # the average of the seasons before abolition as in 02), HonestDiD on it,
@@ -192,7 +191,7 @@ saveRDS(list(pooled = pooled, by_group = by_group, event_study = es, event_study
              n_perm = N_PERM),
         file.path(path_audit, "within_day.rds"))
 
-# Figure: drawn by 29_figures.R from the caches of 02 and of this script.
+# Figure: drawn by 27_figures.R from the caches of 02 and of this script.
 
 options(width = 170)
 cat("Seasons:", min(SEASONS), "-", max(SEASONS), "\n\nPooled (log points):\n")

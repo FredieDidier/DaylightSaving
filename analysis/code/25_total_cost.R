@@ -31,7 +31,8 @@
 #     (World Bank WDI NY.GNP.PCAP.PP.CD, last updated 08/10/2026, API read
 #     12/10/2026): Brazil 22,670; United States 89,490. PPP conversion factor,
 #     GDP, Brazil 2025 (PA.NUS.PPP): 2.55441 BRL per international $. Values
-#     in 2025 reais.
+#     in 2025 international dollars (US dollars at purchasing power parity),
+#     the unit of the VSL itself, and in 2025 reais at the PPP rate.
 #       (d) the IPEA social cost of a death on a federal highway, a human-
 #           capital cost (mostly lost production), not a willingness to pay:
 #           R$ 433,286.69 per person killed in a fatal crash, December 2014
@@ -44,7 +45,8 @@
 #           Relatorio de Pesquisa, 2016, Table 1A) repeats the value; no later
 #           Ipea cost per death was found. Brought to December 2025 by the IPCA
 #           number index (IBGE SIDRA table 1737, variable 2266): 4,059.86
-#           (Dec 2014) and 7,403.29 (Dec 2025).
+#           (Dec 2014) and 7,403.29 (Dec 2025), and to international dollars
+#           at the PPP rate above.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -65,7 +67,8 @@ vsl <- rbind(
              vsl_brl_million = unname(vsl_intl) * PPP_BRL / 1e6),
   data.table(rule = "(d) IPEA social cost of a death (human capital)", vsl_intl_usd = NA_real_,
              vsl_brl_million = IPEA_DEATH_2014 * IPCA_2025_12 / IPCA_2014_12 / 1e6))
-vsl[, ratio_to_gni := vsl_brl_million * 1e6 / PPP_BRL / GNI_PC_BRA]
+vsl[, vsl_intl_million := vsl_brl_million / PPP_BRL]
+vsl[, ratio_to_gni := vsl_intl_million * 1e6 / GNI_PC_BRA]
 
 # ── Scale factors ───────────────────────────────────────────────────────────
 sim <- rbindlist(lapply((min(SEASONS)):(max(SEASONS) + 1L), function(y)
@@ -107,7 +110,8 @@ deaths <- rbindlist(lapply(SUMS, function(k) {
 deaths[, share_of_summer_transport_deaths_pct := 100 * deaths / scale$all_transport_deaths_per_summer_pre]
 value <- CJ(sum = SUMS, count = unique(deaths$count), rule = vsl$rule, sorted = FALSE)
 value <- deaths[value, on = .(sum, count)][vsl, on = "rule"]
-value[, `:=`(value_brl_million = deaths * vsl_brl_million, value_se_brl_million = se * vsl_brl_million)]
+value[, `:=`(value_brl_million = deaths * vsl_brl_million, value_se_brl_million = se * vsl_brl_million,
+             value_intl_million = deaths * vsl_intl_million, value_se_intl_million = se * vsl_intl_million)]
 
 saveRDS(list(scale = scale, deaths = deaths, vsl = vsl, value = value,
              inputs = list(GNI_PC_BRA = GNI_PC_BRA, GNI_PC_USA = GNI_PC_USA, PPP_BRL = PPP_BRL,
@@ -116,4 +120,4 @@ saveRDS(list(scale = scale, deaths = deaths, vsl = vsl, value = value,
         file.path(path_audit, "total_cost.rds"))
 options(width = 180)
 print(scale); print(vsl); print(deaths)
-print(value[sum == SUMS[1], .(count, rule, deaths = round(deaths), value_brl_million = round(value_brl_million))])
+print(value[sum == SUMS[1], .(count, rule, deaths = round(deaths), value_intl_million = round(value_intl_million))])

@@ -37,12 +37,12 @@ quando existir, será em inglês.
                             ponto no limite de 2020) + fuso padrão
   build/05_download_sim.R   SIM 2008–2025 do FTP do DATASUS
   build/06–07               PNCT (volume horário do DNIT): download e limpeza
-  build/08–11               chuva (Xavier), iluminação (Censo), México (INEGI geo e ATUS)
-  build/12–14               fronteiras dos mapas; PRF por pessoa (sexo, idade dos mortos);
+  build/08–09               chuva (Xavier), iluminação (Censo)
+  build/10–12               fronteiras do mapa; PRF por pessoa (sexo, idade dos mortos);
                             municípios defrontantes com o mar (IBGE)
   analysis/code/00_utils.R  grupos, janelas, sol, painel (fonte única)
-  analysis/code/00_master_analysis.R  roda 01–30 em ordem (config/00_master_build.R faz o build)
-  analysis/code/01…27       hora que trocou de luz (01, grava o arquivo de eventos)
+  analysis/code/00_master_analysis.R  roda 01–28 em ordem (config/00_master_build.R faz o build)
+  analysis/code/01…26       hora que trocou de luz (01, grava o arquivo de eventos)
                             → event study (02) → relógio da PRF (03) → tendências (04)
                             → imputação (05) → inferência (06) → HonestDiD (07)
                             → janela larga (08) → dentro do dia (09) → agressões (10)
@@ -51,18 +51,18 @@ quando existir, será em inglês.
                             → Bahia 2011/12, checagem de sinal (17) → placebo das horas (18)
                             → amontoamento (19) → deixar um de fora (20) → usuários da via (21)
                             → integridade do registro (22) → dose de luz e chuva (23)
-                            → iluminação pública (24) → custo (25) → México (26, 27)
-                            → trocas de relógio antes de 2019 contra a abolição (28)
-  analysis/code/29, 30      TODAS as figuras (29) e tabelas .tex (30), lidas só dos .rds
+                            → iluminação pública (24) → custo (25)
+                            → trocas de relógio antes de 2019 contra a abolição (26)
+  analysis/code/27, 28      TODAS as figuras (27) e tabelas .tex (28), lidas só dos .rds
   latex/                    paper.tex (submissão, anônima, AEA.cls), appendix.tex,
                             title_page.tex, paper_wp.tex; texto em sections/;
                             ./build.sh compila tudo
-  analysis/output/maps/     mapas (29_figures.R; fronteiras do build/12)
+  analysis/output/maps/     mapa do Brasil (27_figures.R; fronteiras do build/10)
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
                             VIABILIDADE, PAPER, fontes_legais/, skills/
 
 ~/Library/CloudStorage/Dropbox/DaylightSaving/build/   (dado, nunca git)
-  calendar/ prf/ geo/ sim/ pnct/ weather/ census/ mexico/ audit/   (audit/ guarda os .rds)
+  calendar/ prf/ geo/ sim/ pnct/ weather/ census/ audit/   (audit/ guarda os .rds)
 ```
 
 ## O desenho, em uma tela
@@ -151,8 +151,8 @@ Cortes et al. estudam o horário de verão enquanto ele existia; nenhum estuda o
 amontoamento das horas (34,5% em hora cheia; a estimativa resiste a mover a
 janela e trocar a fórmula solar), tirar um de fora (SIM 24–35), quem morre
 (pedestre 77, moto 20, carro 0; fim de semana > dia útil), registro sem
-mudança, dose (hora toda escura ~124 lp), iluminação (Censo 2022: 41 contra 14,
-p = 0,16, sem precisão), custo em reais de 2025 (54/67/137 mortes por verão;
+mudança, dose (hora toda escura ~124 lp), iluminação (Censo 2022: 42,5 contra 10,9, p = 0,10 desde 18/10;
+sem precisão), custo em reais de 2025 (54/67/137 mortes por verão;
 VSL R$ 253/311/637 mi; Ipea R$ 43/53/108 mi). Parecer e ranking de periódicos
 em `PARECER.md`: AEJ Applied → AEJ Policy → JHE (depois do México). **México** (`29`, `30`): a réplica
 vale pelo desenho dentro do dia (horas de referência do `09`, desde 15/10/2026: mortes +58, pedestres +143; o mesmo estimador só nos tratados do Brasil dá +47); a tripla com 6
@@ -166,19 +166,35 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
   do relógio nos tratados pós (só a diferença de pôr do sol entre tratados identifica)
   +52,4 (18,3); manhã −6,4 (14,7). Controle contado na hora do relógio da hora 0 dos
   tratados (`20`): 32,9 (12,1).
-- **Contagem líquida sem escolher horas** (dose): 63 (12) por janela de verão, 74 (14)
+- **Contagem líquida sem escolher horas** (dose): 62 (12) por janela de verão, 74 (14)
   por temporada inteira da regra de 2017; escalas 91 e 186; VSL R$ 344 mi por temporada
-  (R$ 868 mi na escala ampla). A soma de três horas (54, EP 20) virou checagem.
+  (R$ 867 mi na escala ampla). A soma de três horas (54, EP 20) virou checagem.
 - **Dinâmica** (`04`, Figura B3): a tripla dá 48,7 nas duas primeiras temporadas e 15,8
   nas três últimas, mas isso vem da perna do inverno (o fora de temporada de 2019/20
   inclui abr–jun/2020). Só o verão: 39,3 e 31,2. Sem mar/2020–fev/2022: 22,9 (9,1).
   Faixa honesta: 22,9 a 34,5 lp (23 a 34 arredondado).
-- **Trocas de relógio** (`28`): efeito de uma noite mais escura nas 3 semanas após cada
+- **Trocas de relógio** (`26`): efeito de uma noite mais escura nas 3 semanas após cada
   troca, 42,3 (13,8) contra 29,2 da abolição; dentro do dia, 79,1 contra 27,7. Num
   modelo empilhado (covariância das amostras sobrepostas), abolição menos trocas:
   −13,1 (12,5), p = 0,29, na comparação entre estados; −51,4 (18,3), p = 0,005,
-  dentro do dia. Só a comparação dentro do dia separa: o efeito caiu cerca de dois
-  terços, sem sumir. Não escrever "de um terço a dois terços".
+  dentro do dia. **Mas as trocas caem em período letivo e a janela é quase toda
+  férias** (18/10/2026): contra a abolição só nas semanas com aula, as trocas não se
+  distinguem (15,8, EP 18,0; dentro do dia −22,2, EP 20,9). Não escrever que o efeito
+  "caiu dois terços" nem que as pessoas "se ajustaram"; o que se diz é que, na mesma
+  época do ano letivo, o efeito cinco verões depois é próximo do efeito logo após a
+  troca (sem descartar queda moderada).
+- **Aula contra férias** (`20`, Tabela B1; datas em `00_utils.R::school_part()`,
+  fontes em `horario_verao/fontes_dados/calendarios_escolares.md`): aula 15/11–07/12,
+  férias 24/12–15/01, 2020/21 fora. Mortes na via, hora 0: aula 58,1 (12,6), férias
+  −12,3 (16,8). No paper (Tabela B1, painel D): férias de 24/12–01/01 5,8 (28,7) e de
+  02–15/01 −27,9 (19,0) (não são as festas); diferença aula − férias sem litoral 66,6
+  (22,1), sem Pará 73,7 (21,3) (o Pará, controle, tem ano letivo de março a janeiro);
+  placebo pré-2019 −15,9 (26,2). Fora do paper, por falta de células: pedestres por
+  parte (~3 mortes por verão em cada); a diferença vem dos demais usuários. Contagem
+  da temporada com o efeito das semanas com aula nos dias extras: 79 em vez de 74
+  (`light_dose.rds`, `season_net_term`); o paper diz que 74 é conservador.
+- **Pesos municipais** (dose, chuva, relógio dos tratados, iluminação): mortes antes
+  de 2019 (`seat_weights()`, 18/10/2026). Janela de verão: 62 mortes (era 63).
 - **México com placebo** (`27`, Tabela C1 painel E): nas unidades que mantiveram o
   relógio, o mesmo estimador dá mortes −20 (27), mas acidentes +10,8 e atropelados
   +20,7. O México sustenta mortes, não acidentes.
@@ -186,12 +202,31 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
   por veículo +24,0 (permutação p = 0,005), sem tendência pré nesses verões.
 - Score bootstrap no Poisson (`06`): p = 0,010 / 0,023 / 0,001.
 
+**Rodada do Monasterio de 20/10/2026 (PDF anotado + 9 áudios; ROADMAP):**
+- **México saiu do paper** (código 10/11 do build e 26/27 da análise apagados; scripts
+  renumerados: build 10 mapa, 11 PRF por pessoa, 12 litoral; análise 26 trocas,
+  27 figuras, 28 tabelas). Os dados do México foram apagados do Dropbox (21/10). Ignorar
+  a seção México abaixo, que é histórico.
+- **Número de manchete: 62 por janela de verão** (dose; supõe zero nas horas cuja luz
+  não mudou). 74 por temporada é extensão (coeficientes da janela aplicados fora dela).
+  Resumo e conclusão citam 62; Tabela 7 valora a janela (Painel B) e a temporada só na
+  referência (Painel C).
+- **Custo em dólares internacionais de 2025 (PPC)**: janela 114 mi (EP 22), 287 na
+  escala ampla, até 571 nas regras alternativas; Ipea 19–49; temporada 135. ONS
+  convertido no mesmo fator (2,55441): combustível 96–139 mi, capacidade ~0,7 bi.
+- **Tabela A1 (`tab_measurement`)**: validação da hora do óbito (pares SIM↔PRF 59,2 vs
+  4,7; tripla nas parcelas na via e sem hora; amontoamento; janelas ±5/10/15 min;
+  espalhar/retirar :00 e :30; Meeus). Saiu o Painel A da Tabela B1 (painéis relettrados).
+- MME NT 5/2019: o aumento de carga é "possivelmente" por mudança de hábitos de uso dos
+  equipamentos (ar-condicionado de madrugada); não escrever "household" como fato.
+- "Casualties" para mortos e feridos nos acidentes da PRF.
+
 **Rodada do Leonardo Monasterio (16/10/2026, `monasterio.md`, VIABILIDADE §21):**
-sexo e idade dos mortos nas duas bases (Tabela B4; PRF por pessoa no `build/13`,
+sexo e idade dos mortos nas duas bases (Tabela B4; PRF por pessoa no `build/11`,
 idade 0 da PRF = desconhecida desde 2017): homens, ~4/5 dos mortos, SIM 33,8
 (9,9), PRF 65,2 (20,7); mulheres imprecisas demais para comparar (não dizer
 "não subiram"); idades a partir de 15 positivas, sem ordenação. Sem os 279
-municípios do litoral (`build/14`, Tabela B1): 36,3 (9,4). "Abolished" para
+municípios do litoral (`build/12`, Tabela B1): 36,3 (9,4). "Abolished" para
 2019, "the clocks went back/forward" para a troca sazonal. Fora: rugosidade
 (ofuscamento já saiu em 13/10) e luz por satélite. Custo com ele, para depois.
 

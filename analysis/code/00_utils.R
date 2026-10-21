@@ -23,19 +23,6 @@ UF_CODE <- c(RO = 11, AC = 12, AM = 13, RR = 14, PA = 15, AP = 16, TO = 17,
              SC = 42, RS = 43, MS = 50, MT = 51, GO = 52, DF = 53)
 code_to_uf <- setNames(names(UF_CODE), UF_CODE)
 
-# Mexico (26_mexico.R and the map in 29_figures.R). Units whose clock did not
-# change with the Ley de los Husos Horarios (DOF 28/10/2022): Baja California
-# (02), Quintana Roo (23) and Sonora (26), plus the border municipalities that
-# keep DST on US dates, as listed in Art. 5, fraction I (INEGI state codes;
-# names without accents). Chihuahua (08) changed time zone and is left out.
-MX_CONTROL_STATES <- c("02", "23", "26")
-MX_BORDER <- list(
-  "05" = c("Acuna", "Allende", "Guerrero", "Hidalgo", "Jimenez", "Morelos", "Nava", "Ocampo",
-           "Piedras Negras", "Villa Union", "Zaragoza"),
-  "19" = c("Anahuac"),
-  "28" = c("Nuevo Laredo", "Guerrero", "Mier", "Miguel Aleman", "Camargo", "Gustavo Diaz Ordaz",
-           "Reynosa", "Rio Bravo", "Valle Hermoso", "Matamoros"))
-
 # ── Seasons ─────────────────────────────────────────────────────────────────
 # A season runs July-June and is named by its first year. Season s needs data
 # through August of s + 1 (its off-season window), so the last usable season

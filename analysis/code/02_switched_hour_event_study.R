@@ -61,7 +61,7 @@ plac <- rbindlist(lapply(TRAFFIC, function(o) {
              n_fake = length(fake), n_fake_larger = sum(abs(fake) >= abs(real)))
 }))
 
-# Figure: drawn by 29_figures.R from the cache saved below.
+# Figure: drawn by 27_figures.R from the cache saved below.
 
 saveRDS(list(event_study = es, placebo = plac), file.path(path_audit, "switched_hour_event_study.rds"))
 options(width = 150)

@@ -1,8 +1,7 @@
 # CLAUDE.md — o build, os dados e as armadilhas
 
 Manual operacional do repositório **DaylightSaving**: o fim do horário de verão
-no Brasil (Decreto 9.772/2019) e seu efeito sobre as mortes no trânsito, com
-réplica no México (2022). A pergunta e o desenho estão em
+no Brasil (Decreto 9.772/2019) e seu efeito sobre as mortes no trânsito. A pergunta e o desenho estão em
 `horario_verao/CONTEXTO_PESQUISA.md`; a ordem do trabalho, em
 `horario_verao/ROADMAP.md`.
 
@@ -19,18 +18,18 @@ DaylightSaving/                      (git — código, nunca dado)
   build/manual/                      calendário legal digitado dos decretos (versionado)
   build/01_dst_calendar.R            manual/ → painéis UF × temporada e UF × dia
   build/02–12                        um passo por fonte (config/00_master_build.R roda tudo;
-                                     12 = fronteiras dos mapas)
-  analysis/code/01–28                estimam e guardam audit/*.rds
-  analysis/code/29, 30               figuras e tabelas, lidas só dos .rds
-                                     (00_master_analysis.R roda 01–30)
-  analysis/output/                   graphs/, tables/, maps/ (mapas do Brasil e do México)
+                                     10 = fronteiras do mapa)
+  analysis/code/01–26                estimam e guardam audit/*.rds
+  analysis/code/27, 28               figuras e tabelas, lidas só dos .rds
+                                     (00_master_analysis.R roda 01–28)
+  analysis/output/                   graphs/, tables/, maps/ (mapa do Brasil)
   latex/                             paper.tex (AEJ: Policy, anônimo), appendix.tex,
                                      title_page.tex, paper_wp.tex; texto em sections/;
                                      compila com latex/build.sh
   horario_verao/                     gestão: contexto, roadmap, tabela, fontes legais, skills
 
 Dropbox/DaylightSaving/build/        (dado, nunca git)
-  <fonte>/{input,output}/            prf sim pnct geo weather census mexico
+  <fonte>/{input,output}/            prf sim pnct geo weather census
   calendar/output/                   dst_uf_season.parquet, dst_uf_day.parquet
   audit/
 ```
@@ -58,7 +57,7 @@ Dropbox/DaylightSaving/build/        (dado, nunca git)
 
 ## 3. Período
 
-Jul/2008 a jun/2024 (temporadas jul–jun; 2023/24 é a última com SIM definitivo): 11 com horário de verão, 5 sem. Volume e acidentes na tabela de volume vão até 2024/25; México 2016–2025. Detalhes em `horario_verao/CONTEXTO_PESQUISA.md`.
+Jul/2008 a jun/2024 (temporadas jul–jun; 2023/24 é a última com SIM definitivo): 11 com horário de verão, 5 sem. Volume e acidentes na tabela de volume vão até 2024/25. Detalhes em `horario_verao/CONTEXTO_PESQUISA.md`.
 
 ## 4. Calendário legal (o que já está conferido)
 

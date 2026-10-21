@@ -16,7 +16,7 @@
 #       classes 15 November to 7 December, holidays 24 December to 15 January,
 #       the rest and 2020/21 apart); the state x window effect is split into
 #       the same parts. The three weeks after each clock change before 2019
-#       (28_transitions.R) fall in term time, so this asks whether the
+#       (26_transitions.R) fall in term time, so this asks whether the
 #       abolition effect differs between term time and the holidays. Para, a
 #       control state, runs its school year from March to January (2019:
 #       11 March 2019 to 30 January 2020), so the split is repeated without it.

@@ -8,8 +8,8 @@
 # DROPBOX_ROOT. Every repository path resolves through here::here().
 #
 # The project asks what happened to road deaths when Brazil abolished daylight
-# saving time (Decree 9,772 of 25 April 2019), and checks the answer against
-# Mexico's abolition of 2022. See horario_verao/CONTEXTO_PESQUISA.md.
+# saving time (Decree 9,772 of 25 April 2019). See
+# horario_verao/CONTEXTO_PESQUISA.md.
 #
 # Microdata NEVER enter git. They live under DROPBOX_ROOT.
 # =============================================================================

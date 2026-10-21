@@ -9,12 +9,11 @@ which the AEA Data Editor recommends.
 
 The code builds the data from public sources and then estimates the effect of
 Brazil's abolition of daylight saving time (Decree 9,772 of 25 April 2019) on
-road deaths in the clock hour that turned dark, with a replication on Mexico's
-abolition of 2022. It is written in R and has three entry points:
-`config/00_master_build.R` builds the data (14 scripts), `analysis/code/00_master_analysis.R`
-estimates everything and writes every figure and table (30 scripts), and `latex/build.sh`
+road deaths in the clock hour that turned dark. It is written in R and has three entry points:
+`config/00_master_build.R` builds the data (12 scripts), `analysis/code/00_master_analysis.R`
+estimates everything and writes every figure and table (28 scripts), and `latex/build.sh`
 compiles the paper and the Online Appendix. The main text has 4 figures and 7 tables
-and the Online Appendix has 10 figures and 8 tables, all produced by the code. The
+and the Online Appendix has 8 figures and 8 tables, all produced by the code. The
 analysis takes about 2 to 3 hours on an 8-core laptop; rebuilding the data from
 scratch takes longer, mostly in downloads.
 
@@ -27,9 +26,8 @@ scratch takes longer, mostly in downloads.
 
 Every source is public and free of charge. The second box is not checked because
 documented permission to redistribute has not been confirmed for every source; the
-last column of the table below gives the status of each. The two sources whose terms
-forbid redistribution (GADM) or state no terms (BR-DWGD) are not in the package:
-a script downloads the first, and the second is downloaded by hand from the URL given.
+last column of the table below gives the status of each. The one source that states no terms
+(BR-DWGD) is not in the package: it is downloaded by hand from the URL given.
 
 ### License for data
 
@@ -49,16 +47,13 @@ license of the repository (CC BY 4.0 on openICPSR); third-party data keep their 
 | Legal DST calendar, 1985–2019 | decrees, e.g. Brasil (2008, 2019) | `build/01` | typed by hand from the decrees on planalto.gov.br; texts in `horario_verao/fontes_legais/` | yes, `build/manual/*.csv` |
 | Death register (SIM), 2008–2024 | Ministério da Saúde (2025) | `build/05` | DATASUS FTP, `ftp.datasus.gov.br/dissemin/publicos/SIM/`, no registration | cleaned extract (`sim/output`); raw files re-downloaded by the script |
 | Federal highway crashes (PRF), 2007–2025 | Polícia Rodoviária Federal (2025) | `build/02`, `03` | open data page of the PRF; file ids in `build/manual/prf_files.csv` | cleaned extract (`prf/output`); raw files re-downloaded by the script |
-| Persons in federal highway crashes (PRF), 2007–2025: role, condition, sex, age | Polícia Rodoviária Federal (2025) | `build/13` | open data page of the PRF; file ids in `build/manual/prf_person_files.csv` | cleaned extract (`prf/output`); raw files re-downloaded by the script |
+| Persons in federal highway crashes (PRF), 2007–2025: role, condition, sex, age | Polícia Rodoviária Federal (2025) | `build/11` | open data page of the PRF; file ids in `build/manual/prf_person_files.csv` | cleaned extract (`prf/output`); raw files re-downloaded by the script |
 | Hourly traffic counts (PNCT), 2014–2019 and 2021–2025 | DNIT (2025) | `build/06`, `07` | public API of `servicos.dnit.gov.br/dadospnct` (routes in the script header) | cleaned extract (`pnct/output`); raw files re-downloaded by the script |
-| Municipal seats and state boundaries | IBGE (2020), via the R package `geobr` | `build/04`, `12` | downloaded by `geobr` | yes (`geo/output`) |
-| Municipalities that face the sea, 2022 | IBGE (2022) | `build/14` | geoftp.ibge.gov.br, downloaded by the script | yes (`geo/input`, `geo/output`) |
+| Municipal seats and state boundaries | IBGE (2020), via the R package `geobr` | `build/04`, `10` | downloaded by `geobr` | yes (`geo/output`) |
+| Municipalities that face the sea, 2022 | IBGE (2022) | `build/12` | geoftp.ibge.gov.br, downloaded by the script | yes (`geo/input`, `geo/output`) |
 | Daily rain grid BR-DWGD v3.2.4 | Xavier et al. (2022) | `build/08` | manual download of `pr_20010101_20251231_BR-DWGD_UFES_UTEXAS_v_3.2.4.nc` from <https://sites.google.com/site/alexandrecandidoxavierufes/brazilian-daily-weather-gridded-data>; no license stated | no (2.6 GB raw grid); the derived file `weather/output/pr_seat_day.parquet` is included |
 | Census 2022 (street lighting, table 9839) and Census 2010 (tract surroundings) | IBGE (2011, 2023) | `build/09` | SIDRA API; Census 2010 through the R package `censobr` | yes (`census/input`, `census/output`) |
 | Population of the states, Census 2022 (table 4709) | IBGE (2023) | none: quoted in Section I | SIDRA | the two totals are in the text |
-| Mexican road crashes (ATUS), 1997–2025 | INEGI (2026a) | `build/11` | open data zip, <https://www.inegi.org.mx/contenidos/programas/accidentes/datosabiertos/conjunto_de_datos_atus_anual_csv.zip> (release of 28/08/2026) | yes (`mexico/input/atus_raw`) |
-| Mexican municipal seats | INEGI (2026b) | `build/10` | INEGI geostatistical web service | yes (`mexico/input/inegi_geo`) |
-| Mexican boundaries, GADM 4.1 | GADM (2022) | `build/12` | downloaded by `geodata::gadm`; free for academic use, redistribution not allowed without permission | no; downloaded by the script |
 | Country outlines for the maps | Natural Earth (n.d.) | `analysis/code/29` | R packages `rnaturalearth`, `rnaturalearthdata`; public domain | read from the R package |
 | GNI per head and PPP conversion factor, 2025 | World Bank (2026) | `analysis/code/25` | WDI series NY.GNP.PCAP.PP.CD and PA.NUS.PPP; CC BY 4.0 | values written in the script |
 | Consumer price index (IPCA) | IBGE (2026) | `analysis/code/25` | SIDRA table 1737 | values written in the script |
@@ -79,15 +74,12 @@ Every data file lives under one folder, `DROPBOX_ROOT/build/`, with `DROPBOX_ROO
 | `calendar/output/dst_uf_season.parquet`, `dst_uf_day.parquet` | `build/01` | DST status by state and season, and by state and day | yes |
 | `sim/output/sim_<year>.parquet` (2008–2025) | `build/05` | death certificates, selected columns | yes |
 | `prf/output/prf_accidents.parquet` | `build/03` | one row per federal highway crash, 2007–2025 | yes |
-| `prf/output/prf_persons.parquet` | `build/13` | one row per person in a federal highway crash: role, condition, sex, age | yes |
+| `prf/output/prf_persons.parquet` | `build/11` | one row per person in a federal highway crash: role, condition, sex, age | yes |
 | `geo/output/muni_geo.parquet`, `br_states.gpkg` | `build/04`, `12` | municipal seats with time zone; state boundaries | yes |
-| `geo/input/Municipios_Defrontantes_com_o_Mar_2022.xls`, `geo/output/muni_coastal.parquet` | `build/14` | the 279 municipalities that face the sea | yes |
+| `geo/input/Municipios_Defrontantes_com_o_Mar_2022.xls`, `geo/output/muni_coastal.parquet` | `build/12` | the 279 municipalities that face the sea | yes |
 | `pnct/output/pnct_hourly.parquet`, `pnct_station_day_bins.parquet`, `download_log.csv` | `build/06`, `07`, `analysis/code/15` | hourly vehicle counts by station | yes |
 | `weather/output/pr_seat_day.parquet` | `build/08` | daily rain at each municipal seat | yes |
 | `census/input/*`, `census/output/muni_lighting.parquet` | `build/09` | share of households on unlit streets by municipality | yes |
-| `mexico/input/atus_raw/`, `mexico/input/inegi_geo/` | INEGI; `build/10` | raw ATUS zip; cached responses of the INEGI web service | yes |
-| `mexico/output/atus_accidents.parquet`, `mx_muni_geo.parquet` | `build/10`, `11` | one row per Mexican crash; municipal seats | yes |
-| `mexico/output/mx_states.gpkg`, `mx_border_states_munis.gpkg`, `mexico/input/gadm/` | `build/12` | GADM boundaries | no (GADM terms) |
 | `audit/events_sun_bins.parquet`, `audit/*.rds` | `analysis/code/01`–`28` | event file and the cached estimates that `29` and `30` read | yes |
 
 All files are Parquet, GeoPackage, CSV, JSON or R's `.rds`; each build script describes
@@ -105,7 +97,7 @@ its output in its header.
   `censobr` 0.2.0 (GitHub, commit 429440f), `read.dbc` 1.2.0 (GitHub, commit 52e0b15),
   `RCurl` 1.98-1.16, `curl` 6.1.0, `jsonlite` 2.0.0, `dplyr` 1.2.0, `here` 1.0.1, `readxl` 1.4.3.
 - TeX Live 2024 (`pdflatex`, `bibtex`); the AEA template (`AEA.cls`, `aea.bst`) is in `latex/`.
-- `unzip` on the command line (read by `build/11`).
+- `unzip` on the command line (read by `build/02`, `03`, `06`, `07` and `11`).
 - Tested on macOS 26.6. The parallel steps use `parallel::mclapply`, which forks;
   on Windows they run on one core.
 
@@ -114,7 +106,7 @@ its output in its header.
 - [x] Random seeds are set at the top of every script that draws:
   `analysis/code/05_imputation.R` line 37, `06_inference.R` lines 40–41,
   `09_within_day.R` line 51, `14_inference_pedestrian.R` lines 28–29,
-  `16_inference_volume.R` line 40, `26_mexico.R` lines 51–52.
+  `16_inference_volume.R` line 40.
   All draws are made before the work is split across cores, so results do not
   depend on the number of cores.
 
@@ -148,7 +140,7 @@ the remote servers and resume where they stopped.
 ```
 config/config.R           paths; DROPBOX_ROOT is the only line to edit
 config/00_setup.R         installs the R packages
-config/00_master_build.R  runs build/01-14 in order
+config/00_master_build.R  runs build/01-12 in order
 build/manual/             legal DST calendar typed from the decrees; PRF file ids;
                           PRF municipality name aliases
 build/01                  treatment calendar by state, season and day
@@ -158,15 +150,14 @@ build/05                  SIM death certificates
 build/06-07               PNCT traffic counts: download, clean
 build/08                  rain at each municipal seat (BR-DWGD)
 build/09                  street lighting, Census 2022 and 2010
-build/10-11               Mexico: municipal seats, ATUS crashes
-build/12                  boundaries for the two maps
-build/13                  PRF persons in each crash (sex, age of the dead)
-build/14                  municipalities that face the sea (IBGE)
+build/10                  state boundaries for the map
+build/11                  PRF persons in each crash (sex, age of the dead)
+build/12                  municipalities that face the sea (IBGE)
 analysis/code/00_utils.R  shared definitions: groups, windows, solar equations, panel
-analysis/code/00_master_analysis.R   runs 01-30 in order, each in its own R process
-analysis/code/01-28       one estimate each, cached in DROPBOX_ROOT/build/audit/*.rds
-analysis/code/29          every figure and map, read only from the caches
-analysis/code/30          every table, read only from the caches
+analysis/code/00_master_analysis.R   runs 01-28 in order, each in its own R process
+analysis/code/01-26       one estimate each, cached in DROPBOX_ROOT/build/audit/*.rds
+analysis/code/27          every figure and map, read only from the caches
+analysis/code/28          every table, read only from the caches
 analysis/output/          graphs/, maps/ (PDF and PNG), tables/ (LaTeX tabulars)
 latex/                    paper.tex (submission, anonymized), appendix.tex (Online
                           Appendix), title_page.tex, paper_wp.tex (working paper);
@@ -197,7 +188,7 @@ To be set at deposit, in a `LICENSE.txt` at the root of the package.
 ### Details
 
 - Run with the default draw counts. `DS_PERM` changes the 999 permutation draws of
-  `06`, `14`, `16` and `26` at once and also turns on a permutation test in `09` that the
+  `06`, `14` and `16` at once and also turns on a permutation test in `09` that the
   paper does not use; `DS_BOOT` changes the 299 bootstrap draws of `05`. `DS_CORES` sets
   the number of worker processes only.
 - `00_master_analysis.R 06 14` reruns single steps; `--from 15` reruns from a step on.
@@ -207,41 +198,39 @@ To be set at deposit, in a `LICENSE.txt` at the root of the package.
 
 ## List of tables and programs
 
-The estimates come from the scripts in the last column; `29_figures.R` and `30_tables.R`
+The estimates come from the scripts in the last column; `27_figures.R` and `28_tables.R`
 only read their caches and write the files. Figures are in `analysis/output/graphs/`
 (maps in `analysis/output/maps/`) and tables in `analysis/output/tables/`.
 
 | Exhibit | Program | Line | Output file | Estimated in |
 |---|---|---|---|---|
-| Figure 1 | `29_figures.R` | 442 | `maps/fig_map_brazil.pdf` | `build/01`, `12` |
-| Figure 2 | `29_figures.R` | 143 | `fig_light.pdf` | `03` |
-| Table 1 | `30_tables.R` | 77 | `tab_descriptives.tex` | `13` |
-| Table 2 | `30_tables.R` | 109 | `tab_main.tex` | `01`, `06` |
-| Figure 3 | `29_figures.R` | 165 | `fig_hours_from_sunset.pdf` | `01` |
-| Figure 4 | `29_figures.R` | 184 | `fig_event_study.pdf` | `02` |
-| Table 3 | `30_tables.R` | 267 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
-| Table 4 | `30_tables.R` | 162 | `tab_dose.tex` | `23` |
-| Table 5 | `30_tables.R` | 133 | `tab_pedestrians.tex` | `12`, `14` |
-| Table 6 | `30_tables.R` | 186 | `tab_excess.tex` | `11`, `23` |
-| Table 7 | `30_tables.R` | 425 | `tab_cost.tex` | `25` |
-| Figure A1 | `29_figures.R` | 353 | `fig_record_integrity.pdf` | `22` |
-| Figure B1 | `29_figures.R` | 312 | `fig_window_shift.pdf` | `19` |
-| Figure B2 | `29_figures.R` | 336 | `fig_leave_out.pdf` | `20` |
-| Table B1 | `30_tables.R` | 299 | `tab_sensitivity.tex` | `04`, `19`, `20`, `23` |
-| Figure B3 | `29_figures.R` | 224 | `fig_window_legs.pdf` | `04` |
-| Figure B4 | `29_figures.R` | 204 | `fig_within_day.pdf` | `02`, `09` |
-| Table B2 | `30_tables.R` | 240 | `tab_within_group.tex` | `09`, `15` |
-| Figure B5 | `29_figures.R` | 253 | `fig_honestdid.pdf` | `07` |
-| Table B3 | `30_tables.R` | 353 | `tab_road_users.tex` | `21` |
-| Table B4 | `30_tables.R` | 379 | `tab_sex_age.tex` | `21` |
-| Table B5 | `30_tables.R` | 218 | `tab_traffic_volume.tex` | `15`, `16` |
-| Table B6 | `30_tables.R` | 402 | `tab_street_lighting.tex` | `24` |
-| Table B7 | `30_tables.R` | 502 | `tab_transitions.tex` | `28` |
-| Figure B6 | `29_figures.R` | 290 | `fig_bahia.pdf` | `17` |
-| Figure B7 | `29_figures.R` | 268 | `fig_assault.pdf` | `10` |
-| Figure C1 | `29_figures.R` | 489 | `maps/fig_map_mexico.pdf` | `build/10`, `12` |
-| Table C1 | `30_tables.R` | 460 | `tab_mexico.tex` | `26`, `27` |
-| Figure C2 | `29_figures.R` | 374 | `fig_mexico_event_study.pdf` | `26` |
+| Figure 1 | `27_figures.R` | 417 | `maps/fig_map_brazil.pdf` | `build/01`, `10` |
+| Figure 2 | `27_figures.R` | 140 | `fig_light.pdf` | `03` |
+| Table 1 | `28_tables.R` | 78 | `tab_descriptives.tex` | `13` |
+| Table 2 | `28_tables.R` | 110 | `tab_main.tex` | `01`, `06` |
+| Figure 3 | `27_figures.R` | 162 | `fig_hours_from_sunset.pdf` | `01` |
+| Figure 4 | `27_figures.R` | 181 | `fig_event_study.pdf` | `02` |
+| Table 3 | `28_tables.R` | 268 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
+| Table 4 | `28_tables.R` | 163 | `tab_dose.tex` | `23` |
+| Table 5 | `28_tables.R` | 134 | `tab_pedestrians.tex` | `12`, `14` |
+| Table 6 | `28_tables.R` | 187 | `tab_excess.tex` | `11`, `23` |
+| Table 7 | `28_tables.R` | 473 | `tab_cost.tex` | `25` |
+| Figure A1 | `27_figures.R` | 350 | `fig_record_integrity.pdf` | `22` |
+| Figure B1 | `27_figures.R` | 309 | `fig_window_shift.pdf` | `19` |
+| Figure B2 | `27_figures.R` | 333 | `fig_leave_out.pdf` | `20` |
+| Table A1 | `28_tables.R` | 305 | `tab_measurement.tex` | `19`, `22` |
+| Table B1 | `28_tables.R` | 341 | `tab_sensitivity.tex` | `04`, `20`, `23` |
+| Figure B3 | `27_figures.R` | 221 | `fig_window_legs.pdf` | `04` |
+| Figure B4 | `27_figures.R` | 201 | `fig_within_day.pdf` | `02`, `09` |
+| Table B2 | `28_tables.R` | 241 | `tab_within_group.tex` | `09`, `15` |
+| Figure B5 | `27_figures.R` | 250 | `fig_honestdid.pdf` | `07` |
+| Table B3 | `28_tables.R` | 400 | `tab_road_users.tex` | `21` |
+| Table B4 | `28_tables.R` | 426 | `tab_sex_age.tex` | `21` |
+| Table B5 | `28_tables.R` | 219 | `tab_traffic_volume.tex` | `15`, `16` |
+| Table B6 | `28_tables.R` | 449 | `tab_street_lighting.tex` | `24` |
+| Table B7 | `28_tables.R` | 511 | `tab_transitions.tex` | `26` |
+| Figure B6 | `27_figures.R` | 287 | `fig_bahia.pdf` | `17` |
+| Figure B7 | `27_figures.R` | 265 | `fig_assault.pdf` | `10` |
 
 ## References
 
@@ -251,7 +240,6 @@ Brasil. 2019. "Decreto nº 9.772, de 25 de abril de 2019: Encerra a hora de ver�
 
 DNIT (Departamento Nacional de Infraestrutura de Transportes). 2025. "Plano Nacional de Contagem de Tráfego: Volume horário dos postos de contagem contínua, 2014–2019 and 2021–2025." servicos.dnit.gov.br/dadospnct (accessed October 2026).
 
-GADM. 2022. "Database of Global Administrative Areas, Version 4.1: Mexico, Levels 1 and 2." gadm.org (accessed October 2026).
 
 IBGE (Instituto Brasileiro de Geografia e Estatística). 2011. "Censo Demográfico 2010: Resultados do universo por setor censitário, entorno dos domicílios." Rio de Janeiro.
 
@@ -263,9 +251,7 @@ IBGE. 2023. "Censo Demográfico 2022: População residente (table 4709) and car
 
 IBGE. 2026. "Índice Nacional de Preços ao Consumidor Amplo (IPCA), número-índice (table 1737)." SIDRA, sidra.ibge.gov.br (accessed October 2026).
 
-INEGI (Instituto Nacional de Estadística y Geografía). 2026a. "Estadística de Accidentes de Tránsito Terrestre en Zonas Urbanas y Suburbanas (ATUS), datos abiertos 1997–2025." www.inegi.org.mx (accessed October 2026).
 
-INEGI. 2026b. "Catálogo Único de Claves Geoestadísticas: Servicio web del Marco Geoestadístico." www.inegi.org.mx (accessed October 2026).
 
 Ipea (Instituto de Pesquisa Econômica Aplicada) and PRF (Polícia Rodoviária Federal). 2015. "Acidentes de trânsito nas rodovias federais brasileiras: Caracterização, tendências e custos para a sociedade." Relatório de Pesquisa, Ipea, Brasília.
 

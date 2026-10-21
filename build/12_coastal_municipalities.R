@@ -1,5 +1,5 @@
 # =============================================================================
-# 14_coastal_municipalities.R
+# 12_coastal_municipalities.R
 #
 # The municipalities that face the sea ("municipios defrontantes com o mar"),
 # IBGE's official list of 2022: 279 municipalities in 17 states, plus the Lagoa
