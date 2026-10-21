@@ -353,7 +353,7 @@ write_tab("tab_sensitivity", c(
   panel("Panel A. Comparison states, places, seasons and days", 4),
   sens_row("Control states: Northeast only", pick_l("control", "North (control = Northeast only)")),
   sens_row("Control states: North only", pick_l("control", "Northeast (control = North only)")),
-  sens_row("Without the municipalities on the coast", pick_l("places", "coastal municipalities")),
+  sens_row("Without the oceanfront municipalities", pick_l("places", "coastal municipalities")),
   sens_row("Without the La Ni\\~na summers, 2020/21 to 2022/23", pick_l("seasons", "La Nina summers 2020/21-2022/23")),
   sens_row("Without 2019/20, the first summer without DST", pick_l("seasons", "2019/20")),
   sens_row("Without Carnival and the year-end holidays", pick_l("days", "Carnival and year-end holidays")),
@@ -374,12 +374,12 @@ write_tab("tab_sensitivity", c(
   "\\addlinespace",
   panel("Panel C. School calendar, summer window", 4),
   sens_row("School weeks", pick_l("school", "school weeks")),
-  sens_row("School holidays", pick_l("school", "school holidays")),
+  sens_row("School break", pick_l("school", "school holidays")),
   sens_row("\\quad 24 December to 1 January", pick_l("school", "school holidays, 24 December to 1 January")),
   sens_row("\\quad 2 to 15 January", pick_l("school", "school holidays, 2 to 15 January")),
-  sens_row("School weeks minus holidays", pick_l("school", "school weeks minus holidays")),
+  sens_row("School weeks minus break", pick_l("school", "school weeks minus holidays")),
   sens_row("\\quad without Par\\'a", pick_l("school", "school weeks minus holidays, without Para")),
-  sens_row("\\quad without the municipalities on the coast", pick_l("school", "school weeks minus holidays, without the coast")),
+  sens_row("\\quad without the oceanfront municipalities", pick_l("school", "school weeks minus holidays, without the coast")),
   sens_row("\\quad placebo before abolition", pick_l("school", "school weeks minus holidays, placebo 2014")),
   close_))
 
@@ -395,7 +395,7 @@ RU <- list(
        c(`15-64` = "Aged 15 to 64", `65+` = "Aged 65 or over", `0-14` = "Aged under 15",
          male = "Men", female = "Women")),
   list("Panel C. Day", c("day", "day, pedestrians"),
-       c(`working day` = "Working days", `weekend or holiday` = "Weekends and holidays")))
+       c(`working day` = "Weekdays", `weekend or holiday` = "Weekends and holidays")))
 ru_rows <- function(sp, lab, prefix = "") unlist(lapply(names(lab), function(g) {
   x <- ru[split %in% sp & group == g]
   if (nrow(x) == 0) return(NULL)

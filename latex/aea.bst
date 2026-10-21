@@ -405,7 +405,10 @@ FUNCTION {format.book.vol.series.ed} % writ
     if$
   edition empty$
     { skip$ }
-    { ". " * edition * " ed." *}
+    { duplicate$ "" =
+        { pop$ edition " ed." * }
+        { ". " * edition * " ed." * }
+      if$ }
     if$	
 }
 
