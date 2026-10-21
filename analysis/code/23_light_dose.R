@@ -179,13 +179,28 @@ dose_res <- rbindlist(lapply(DOSE_OUT, function(o) {
                    data = p, cluster = ~uf, notes = FALSE)
       bp <- coef(mp)
       cnt <- function(d, be, bm) sum(d$y * (1 - exp(-(d$xe * be + d$xm * bm)))) / N_POST
+      # Derivative of a count with respect to its two coefficients (delta method).
+      grad <- function(d, be, bm) {
+        k <- d$y * exp(-(d$xe * be + d$xm * bm))
+        c(sum(k * d$xe), sum(k * d$xm)) / N_POST
+      }
       w <- p[twp == 1L & (xe != 0 | xm != 0)]
+      qx <- q[xe != 0 | xm != 0]
       win_parts <- sum(vapply(c("school", "holiday", "other"), function(g)
         cnt(w[part == g], bp[[paste0("xe_", g)]], bp[[paste0("xm_", g)]]), numeric(1)))
-      extra_term <- cnt(q[xe != 0 | xm != 0], bp[["xe_school"]], bp[["xm_school"]])
+      extra_term <- cnt(qx, bp[["xe_school"]], bp[["xm_school"]])
+      G <- setNames(numeric(length(X)), X)
+      for (g in c("school", "holiday", "other")) {
+        k <- paste0(c("xe_", "xm_"), g)
+        G[k] <- G[k] + grad(w[part == g], bp[[k[1]]], bp[[k[2]]])
+      }
+      G[c("xe_school", "xm_school")] <- G[c("xe_school", "xm_school")] +
+        grad(qx, bp[["xe_school"]], bp[["xm_school"]])
+      Vp <- vcov(mp)[X, X]
       out[, `:=`(evening_school_lp = 100 * bp[["xe_school"]], evening_school_se = 100 * se(mp)[["xe_school"]],
                  evening_holiday_lp = 100 * bp[["xe_holiday"]], evening_holiday_se = 100 * se(mp)[["xe_holiday"]],
-                 season_net_term = win_parts + extra_term)]
+                 season_net_term = win_parts + extra_term,
+                 season_net_term_se = sqrt(drop(t(G) %*% Vp %*% G)))]
     }
     out
   }), fill = TRUE)

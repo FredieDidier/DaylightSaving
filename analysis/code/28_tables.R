@@ -22,7 +22,8 @@
 #   tab_robustness      the hour that turned dark under other choices,
 #                       and the hours whose light did not change  (04, 05, 08, 09, 18, 20)
 #   tab_sensitivity     the hour after sunset under other samples, places,
-#                       days, weather and school calendar             (04, 20, 23)
+#                       days and weather                              (04, 20, 23)
+#   tab_window_parts    the hour after sunset in parts of the window  (20)
 #   tab_transitions     the clock changes before 2019 against abolition  (26)
 #   tab_road_users      who dies: road user, pedestrian age and sex, day (21)
 #   tab_sex_age         sex and age of the dead, road deaths and federal
@@ -191,6 +192,7 @@ write_tab("tab_excess", c(
   row("\\quad of which evening hours", f0(dmain$evening)),
   row("\\quad of which morning hours", f0(dmain$morning)),
   row("Net, whole DST season (2017 rule)", f0(dmain$season_net)), row("", se0(dmain$season_net_se)),
+  row("\\quad effect by part of the window", f0(dmain$season_net_term)), row("", se0(dmain$season_net_term_se)),
   "\\addlinespace",
   panel("Panel B. Hour by hour", 4), ex_rows(names(EX)),
   close_))
@@ -371,16 +373,26 @@ write_tab("tab_sensitivity", c(
     row("", se1(rc$with_rain_control_se))),
   c(row("Effect on a dry state-day", f1(rc$effect_dry_lp)), row("", se1(rc$effect_dry_se))),
   c(row("Change, dry to fully rainy state-day", f1(rc$rain_change_lp)), row("", se1(rc$rain_change_se))),
-  "\\addlinespace",
-  panel("Panel C. School calendar, summer window", 4),
-  sens_row("School weeks", pick_l("school", "school weeks")),
-  sens_row("School break", pick_l("school", "school holidays")),
-  sens_row("\\quad 24 December to 1 January", pick_l("school", "school holidays, 24 December to 1 January")),
-  sens_row("\\quad 2 to 15 January", pick_l("school", "school holidays, 2 to 15 January")),
-  sens_row("School weeks minus break", pick_l("school", "school weeks minus holidays")),
+  close_))
+
+# ── Table: parts of the summer window ───────────────────────────────────────
+write_tab("tab_window_parts", c(
+  open3,
+  panel("Panel A. School weeks and 24 December to 15 January", 4),
+  sens_row("15 November to 7 December, school weeks", pick_l("school", "school weeks")),
+  sens_row("24 December to 15 January", pick_l("school", "school holidays")),
+  sens_row("School weeks minus 24 December to 15 January", pick_l("school", "school weeks minus holidays")),
   sens_row("\\quad without Par\\'a", pick_l("school", "school weeks minus holidays, without Para")),
   sens_row("\\quad without the oceanfront municipalities", pick_l("school", "school weeks minus holidays, without the coast")),
   sens_row("\\quad placebo before abolition", pick_l("school", "school weeks minus holidays, placebo 2014")),
+  "\\addlinespace",
+  panel("Panel B. The other days of the window", 4),
+  sens_row("8 to 23 December", pick_l("school", "8 to 23 December")),
+  sens_row("16 to 31 January, school break", pick_l("school", "16 to 31 January")),
+  sens_row("\\quad without Goi\\'as", pick_l("school", "16 to 31 January, without Goias")),
+  sens_row("1 to 14 February", pick_l("school", "1 to 14 February")),
+  sens_row("16 to 31 January minus 24 December to 15 January", pick_l("school", "16 to 31 January minus holidays")),
+  sens_row("\\quad placebo before abolition", pick_l("school", "16 to 31 January minus holidays, placebo 2014")),
   close_))
 
 # ── Table: who dies (road deaths only) ──────────────────────────────────────
@@ -512,6 +524,7 @@ tr_rows <- function(d) {
     row("Average of the two, (February $-$ October)/2", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)),
     row("Abolition minus the average", f1(x$diff_lp)), row("", se1(x$diff_se)),
     row("\\quad p-value, clustered by state", fp(x$diff_p)),
+    "\\addlinespace",
     row("Abolition, school weeks of the summer window", f1(x$school_regime_lp)), row("", se1(x$school_regime_se)),
     row("Abolition in school weeks minus the average", f1(x$school_diff_lp)), row("", se1(x$school_diff_se)),
     row("\\quad p-value, clustered by state", fp(x$school_diff_p)))

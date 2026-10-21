@@ -20,10 +20,13 @@
 #       abolition effect differs between term time and the holidays. Para, a
 #       control state, runs its school year from March to January (2019:
 #       11 March 2019 to 30 January 2020), so the split is repeated without it.
-#       The holidays are split again into the year-end days (24 December to
-#       1 January) and the January weeks, and estimated without the coastal
-#       municipalities (beach trips); a placebo repeats the split on the
-#       seasons before abolition, as if it had come in 2014/15;
+#       The other days of the window are opened by date (8-23 December,
+#       16-31 January, 1-14 February); late January is still school break
+#       in every treated state but Goias, so it separates the school calendar
+#       from the year-end holidays. The split is also estimated without the
+#       coastal municipalities (beach trips) and without Goias; a placebo
+#       repeats it on the seasons before abolition, as if it had come in
+#       2014/15;
 #   (g) the control states counted at the treated states' clock time. In the
 #       treated states' summer, hour 0 falls 50 to 90 minutes later on the
 #       clock than in the other three cells (control summer, both
@@ -85,19 +88,29 @@ school_est <- function(o, p, suffix = "") {
                                  2 * V["t_school", "t_hol"])))
 }
 
-# The holidays split into the year-end days (24 December to 1 January:
-# Christmas, New Year) and the January weeks (2 to 15 January), in one model.
-yearend_est <- function(o, p) {
+# The other days of the window opened by date, in one model with the school
+# weeks and the year-end holidays: 8 to 23 December (classes end between 12
+# and 23 December), 16 to 31 January (school break in every treated state
+# system except Goias, which returns in late January) and 1 to 14 February
+# (classes resume). Late January tells a school-calendar reading from one in
+# which the effect is missing only over the year-end holidays.
+other_est <- function(o, p, suffix = "") {
   p[, part := school_part(date, window, sy)]
-  p[part == "holiday", part := fifelse(month(date) == 12L | (month(date) == 1L & mday(date) == 1L),
-                                       "yearend", "january")]
-  p[, `:=`(t_school = twp * (part == "school"), t_ye = twp * (part == "yearend"),
-           t_jan = twp * (part == "january"), t_oth = twp * (part == "other"))]
-  m <- fepois(y ~ t_school + t_ye + t_jan + t_oth | uf^part + uf^sy + date,
+  p[part == "other" & sy != 2020L,
+    part := fcase(month(date) == 12L, "dec", month(date) == 1L, "jan", default = "feb")]
+  ks <- c("school", "holiday", "dec", "jan", "feb", "other")
+  for (k in ks) set(p, j = paste0("t_", k), value = p$twp * (p$part == k))
+  ks <- ks[vapply(ks, function(k) any(p[[paste0("t_", k)]] != 0), logical(1))]
+  m <- fepois(as.formula(paste("y ~", paste0("t_", ks, collapse = " + "), "| uf^part + uf^sy + date")),
               data = p, cluster = ~uf, notes = FALSE)
+  b <- coef(m); V <- vcov(m)
+  d  <- b[["t_jan"]] - b[["t_holiday"]]
+  sd <- sqrt(V["t_jan", "t_jan"] + V["t_holiday", "t_holiday"] - 2 * V["t_jan", "t_holiday"])
   data.table(outcome = o, kind = "school",
-             dropped = c("school holidays, 24 December to 1 January", "school holidays, 2 to 15 January"),
-             lp = 100 * coef(m)[c("t_ye", "t_jan")], se = 100 * se(m)[c("t_ye", "t_jan")])
+             dropped = paste0(c("8 to 23 December", "16 to 31 January", "1 to 14 February",
+                                "16 to 31 January minus holidays"), suffix),
+             lp = 100 * c(b[["t_dec"]], b[["t_jan"]], b[["t_feb"]], d),
+             se = 100 * c(sqrt(diag(V)[c("t_dec", "t_jan", "t_feb")]), sd))
 }
 # Placebo: the seasons before abolition only, 2014/15-2018/19 against
 # 2008/09-2013/14, as if abolition had come in 2014.
@@ -134,7 +147,9 @@ res <- rbindlist(lapply(TRAFFIC, function(o) {
                as.data.table(est(make_panel(ev[!code6 %in% COAST], days, o, 0L, "set")))),
     school_est(o, copy(p)),
     school_est(o, copy(p[uf != "PA"]), ", without Para"),
-    yearend_est(o, copy(p)),
+    other_est(o, copy(p)),
+    other_est(o, copy(p[uf != "GO"]), ", without Goias"),
+    other_est(o, placebo_days(copy(p)), ", placebo 2014"),
     school_est(o, make_panel(ev[!code6 %in% COAST], days, o, 0L, "set"), ", without the coast"),
     school_est(o, placebo_days(copy(p)), ", placebo 2014"),
     data.table(outcome = o, kind = "clock", dropped = "control states at the treated clock time",
