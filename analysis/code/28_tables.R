@@ -295,7 +295,6 @@ ri <- rd("record_integrity.rds")
 hs <- rd("heaping.rds")$heap_share[match(TRAFFIC, outcome)]
 hpm <- rd("heaping.rds")$results
 lnk <- ri$link
-pr <- function(label, x) row(label, c(x, "", ""))
 shift_row <- function(m) {
   x <- hpm[variant == "shift" & shift_min == m][match(TRAFFIC, outcome)]
   lab <- if (m < 0) sprintf("Window starting %d minutes earlier", -m) else sprintf("Window starting %d minutes later", m)
@@ -303,29 +302,38 @@ shift_row <- function(m) {
 }
 mv <- function(v) hpm[variant == v & shift_min == 0L][match(TRAFFIC, outcome)]
 write_tab("tab_measurement", c(
-  open3,
-  panel("Panel A. Time of death against time of crash (percent of pairs)", 4),
-  pr("Certificate in the hour after the crash, same date", f1(lnk[pairing == "same date"]$within_0_60_pct)),
-  pr("\\quad pairs formed seven days apart (chance)", f1(lnk[pairing != "same date"]$within_0_60_pct)),
-  pr("Certificate within 30 minutes of the crash, same date", f1(lnk[pairing == "same date"]$within_30_pct)),
-  pr("\\quad pairs formed seven days apart (chance)", f1(lnk[pairing != "same date"]$within_30_pct)),
+  "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
+  panel("Panel A. Death and crash times, death register (percent of pairs)", 4),
+  " & & Seven days later & \\\\",
+  " & Same date & (chance) & \\\\",
+  "\\cmidrule(lr){2-2}\\cmidrule(lr){3-3}",
+  row("Death in the hour after the crash",
+      c(f1(lnk[pairing == "same date"]$within_0_60_pct), f1(lnk[pairing != "same date"]$within_0_60_pct), "")),
+  row("Death within 30 minutes of the crash",
+      c(f1(lnk[pairing == "same date"]$within_30_pct), f1(lnk[pairing != "same date"]$within_30_pct), "")),
+  row("Pairs", c(f0(lnk[pairing == "same date"]$pairs), f0(lnk[pairing != "same date"]$pairs), "")),
   "\\addlinespace",
-  panel("Panel B. Records and abolition, triple difference (percentage points)", 4),
-  pr("Share of land-transport deaths on the road", f1(ri$test[measure == "on_road"]$pp)),
-  pr("", se1(ri$test[measure == "on_road"]$se_pp)),
-  pr("Share of road deaths without a clock time", f1(ri$test[measure == "no_time"]$pp)),
-  pr("", se1(ri$test[measure == "no_time"]$se_pp)),
-  "\\addlinespace",
-  panel("Panel C. Heaping (percent of events)", 4),
-  row("Recorded on the full hour", f1(hs$full_hour_pct)),
-  row("Recorded on the half hour", f1(hs$half_hour_pct)),
+  panel("Panel B. Records and abolition, death register", 4),
+  " & Mean & Change after abolition & \\\\",
+  " & (percent) & (percentage points) & \\\\",
+  "\\cmidrule(lr){2-2}\\cmidrule(lr){3-3}",
+  row("Share of land-transport deaths on the road",
+      c(f1(ri$test[measure == "on_road"]$mean_pct), f1(ri$test[measure == "on_road"]$pp), "")),
+  row("", c("", se1(ri$test[measure == "on_road"]$se_pp), "")),
+  row("Share of road deaths without a clock time",
+      c(f1(ri$test[measure == "no_time"]$mean_pct), f1(ri$test[measure == "no_time"]$pp), "")),
+  row("", c("", se1(ri$test[measure == "no_time"]$se_pp), "")),
+  "\\midrule", HEAD3, "\\midrule",
+  panel("Panel C. Times on the full or half hour (percent of events)", 4),
+  row("On the full hour", f1(hs$full_hour_pct)),
+  row("On the half hour", f1(hs$half_hour_pct)),
   "\\addlinespace",
   panel("Panel D. Hour after sunset (log points)", 4),
   c(row("Baseline", f1(mv("shift")$lp)), row("", se1(mv("shift")$se))),
   unlist(lapply(c(-15L, -10L, -5L, 5L, 10L, 15L), shift_row)),
-  c(row("Times recorded on the full or half hour spread over 30 minutes", f1(mv("spread :00 and :30")$lp)),
+  c(row("Full and half hours spread over 30 minutes", f1(mv("spread :00 and :30")$lp)),
     row("", se1(mv("spread :00 and :30")$se))),
-  c(row("Without times recorded on the full or half hour", f1(mv("drop :00 and :30")$lp)),
+  c(row("Without full and half hours", f1(mv("drop :00 and :30")$lp)),
     row("", se1(mv("drop :00 and :30")$se))),
   c(row("Sunset from the full NOAA solar algorithm", f1(mv("Meeus solar algorithm")$lp)),
     row("", se1(mv("Meeus solar algorithm")$se))),
