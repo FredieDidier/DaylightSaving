@@ -151,8 +151,11 @@ rows <- lapply(TRAFFIC, function(o)
     geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
     geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.6) +
     geom_point(size = 2) +
-    facet_wrap(~ side, nrow = 1) +
-    scale_x_continuous(breaks = -3:2, labels = signed_lab, limits = c(-3.4, 2.4)) +
+    # The morning starts at hour -2: hour -3, around 2 a.m., is dark under both
+    # clocks and is not estimated (01), so each panel spans its own hours.
+    facet_wrap(~ side, nrow = 1, scales = "free_x") +
+    scale_x_continuous(breaks = function(l) ceiling(l[1]):floor(l[2]), labels = signed_lab,
+                       expand = expansion(add = 0.4)) +
     scale_y_continuous(labels = num_lab) +
     scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["grey"]]), HR), drop = FALSE) +
     scale_shape_manual(values = setNames(c(16, 1), HR), drop = FALSE) +
