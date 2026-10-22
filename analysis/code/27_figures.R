@@ -131,7 +131,7 @@ g <- ggplot(fs, aes(m, share)) +
   scale_linetype_manual(values = setNames(c("solid", "22"), FS)) +
   scale_shape_manual(values = setNames(c(16, 17), FS)) +
   labs(x = "Clock minutes from standard-time sunset",
-       y = "Recorded at dusk or night (%)") +
+       y = "Dusk or night (% of crashes)") +
   theme_paper()
 g_first <- g
 
@@ -143,7 +143,7 @@ ptitle <- function(g, txt) g + labs(title = txt) +
         plot.title.position = "plot")
 g <- patchwork::wrap_plots(
   ptitle(g_design, "A. Clock time of sunset and sunrise, S\u00e3o Paulo, 2018/19"),
-  ptitle(g_first, "B. Federal highway crashes recorded at dusk or night, treated states, summer window"),
+  ptitle(g_first, "B. Share of federal highway crashes at dusk or night, treated states, summer window"),
   ncol = 1, heights = c(1, 1))
 save_fig(g, "fig_light", height = 7)
 

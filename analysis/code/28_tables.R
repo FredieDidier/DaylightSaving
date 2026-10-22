@@ -305,7 +305,7 @@ shift_row <- function(m) {
 mv <- function(v) hpm[variant == v & shift_min == 0L][match(TRAFFIC, outcome)]
 write_tab("tab_measurement", c(
   "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
-  panel("Panel A. Death and crash times, death register (percent of pairs)", 4),
+  panel("Panel A. Death and crash times, death registry (percent of pairs)", 4),
   " & & Seven days later & \\\\",
   " & Same date & (chance) & \\\\",
   "\\cmidrule(lr){2-2}\\cmidrule(lr){3-3}",
@@ -315,7 +315,7 @@ write_tab("tab_measurement", c(
       c(f1(lnk[pairing == "same date"]$within_30_pct), f1(lnk[pairing != "same date"]$within_30_pct), "")),
   row("Pairs", c(f0(lnk[pairing == "same date"]$pairs), f0(lnk[pairing != "same date"]$pairs), "")),
   "\\addlinespace",
-  panel("Panel B. Records and abolition, death register", 4),
+  panel("Panel B. Records and abolition, death registry", 4),
   " & Mean & Change after abolition & \\\\",
   " & (percent) & (percentage points) & \\\\",
   "\\cmidrule(lr){2-2}\\cmidrule(lr){3-3}",
@@ -326,16 +326,16 @@ write_tab("tab_measurement", c(
       c(f1(ri$test[measure == "no_time"]$mean_pct), f1(ri$test[measure == "no_time"]$pp), "")),
   row("", c("", se1(ri$test[measure == "no_time"]$se_pp), "")),
   "\\midrule", HEAD3, "\\midrule",
-  panel("Panel C. Times on the full or half hour (percent of events)", 4),
-  row("On the full hour", f1(hs$full_hour_pct)),
+  panel("Panel C. Times on the hour or half hour (percent of events)", 4),
+  row("On the hour", f1(hs$full_hour_pct)),
   row("On the half hour", f1(hs$half_hour_pct)),
   "\\addlinespace",
   panel("Panel D. Hour after sunset (log points)", 4),
   c(row("Baseline", f1(mv("shift")$lp)), row("", se1(mv("shift")$se))),
   unlist(lapply(c(-15L, -10L, -5L, 5L, 10L, 15L), shift_row)),
-  c(row("Full and half hours spread over 30 minutes", f1(mv("spread :00 and :30")$lp)),
+  c(row("Rounded times spread over 30 minutes", f1(mv("spread :00 and :30")$lp)),
     row("", se1(mv("spread :00 and :30")$se))),
-  c(row("Without full and half hours", f1(mv("drop :00 and :30")$lp)),
+  c(row("Without rounded times", f1(mv("drop :00 and :30")$lp)),
     row("", se1(mv("drop :00 and :30")$se))),
   c(row("Sunset from the full NOAA solar algorithm", f1(mv("Meeus solar algorithm")$lp)),
     row("", se1(mv("Meeus solar algorithm")$se))),
@@ -352,10 +352,10 @@ write_tab("tab_sensitivity", c(
   open3,
   sens_row("Baseline", pick_h("shift")),
   "\\addlinespace",
-  panel("Panel A. Comparison states, places, seasons and days", 4),
+  panel("Panel A. Comparison states, places, seasons, and days", 4),
   sens_row("Control states: Northeast only", pick_l("control", "North (control = Northeast only)")),
   sens_row("Control states: North only", pick_l("control", "Northeast (control = North only)")),
-  sens_row("Without the oceanfront municipalities", pick_l("places", "coastal municipalities")),
+  sens_row("Without the coastal municipalities", pick_l("places", "coastal municipalities")),
   sens_row("Without the La Ni\\~na summers, 2020/21 to 2022/23", pick_l("seasons", "La Nina summers 2020/21-2022/23")),
   sens_row("Without 2019/20, the first summer without DST", pick_l("seasons", "2019/20")),
   sens_row("Without Carnival and the year-end holidays", pick_l("days", "Carnival and year-end holidays")),
@@ -378,20 +378,20 @@ write_tab("tab_sensitivity", c(
 # ── Table: parts of the summer window ───────────────────────────────────────
 write_tab("tab_window_parts", c(
   open3,
-  panel("Panel A. School weeks and 24 December to 15 January", 4),
-  sens_row("15 November to 7 December, school weeks", pick_l("school", "school weeks")),
-  sens_row("24 December to 15 January", pick_l("school", "school holidays")),
-  sens_row("School weeks minus 24 December to 15 January", pick_l("school", "school weeks minus holidays")),
+  panel("Panel A. School weeks and December 24 to January 15", 4),
+  sens_row("November 15 to December 7, school weeks", pick_l("school", "school weeks")),
+  sens_row("December 24 to January 15", pick_l("school", "school holidays")),
+  sens_row("School weeks minus December 24 to January 15", pick_l("school", "school weeks minus holidays")),
   sens_row("\\quad without Par\\'a", pick_l("school", "school weeks minus holidays, without Para")),
-  sens_row("\\quad without the oceanfront municipalities", pick_l("school", "school weeks minus holidays, without the coast")),
+  sens_row("\\quad without the coastal municipalities", pick_l("school", "school weeks minus holidays, without the coast")),
   sens_row("\\quad placebo before abolition", pick_l("school", "school weeks minus holidays, placebo 2014")),
   "\\addlinespace",
   panel("Panel B. The other days of the window", 4),
-  sens_row("8 to 23 December", pick_l("school", "8 to 23 December")),
-  sens_row("16 to 31 January, school break", pick_l("school", "16 to 31 January")),
+  sens_row("December 8 to 23", pick_l("school", "8 to 23 December")),
+  sens_row("January 16 to 31, school break", pick_l("school", "16 to 31 January")),
   sens_row("\\quad without Goi\\'as", pick_l("school", "16 to 31 January, without Goias")),
-  sens_row("1 to 14 February", pick_l("school", "1 to 14 February")),
-  sens_row("16 to 31 January minus 24 December to 15 January", pick_l("school", "16 to 31 January minus holidays")),
+  sens_row("February 1 to 14", pick_l("school", "1 to 14 February")),
+  sens_row("January 16 to 31 minus December 24 to January 15", pick_l("school", "16 to 31 January minus holidays")),
   sens_row("\\quad placebo before abolition", pick_l("school", "16 to 31 January minus holidays, placebo 2014")),
   close_))
 
@@ -432,7 +432,7 @@ write_tab("tab_road_users", c(
   ru_rows("day, pedestrians", setNames(paste("Pedestrians,", tolower(RU[[3]][[3]])), names(RU[[3]][[3]]))),
   close_))
 
-# ── Table: sex and age of the dead, both registers ──────────────────────────
+# ── Table: sex and age of the dead, both sources ──────────────────────────
 SA <- c(male = "Men", female = "Women", `0-14` = "Aged under 15", `15-29` = "Aged 15 to 29",
         `30-44` = "Aged 30 to 44", `45-59` = "Aged 45 to 59", `60+` = "Aged 60 or over",
         unknown = "Age not recorded")
@@ -482,7 +482,7 @@ write_tab("tab_street_lighting", c(
 # ── Table: deaths and their value per summer ────────────────────────────────
 tc <- rd("total_cost.rds")
 CNT <- c("A on road, with clock time", "B on road", "C all transport deaths")
-DN <- c("dose model, summer window" = "Summer window, 15 November to 14 February",
+DN <- c("dose model, summer window" = "Summer window, November 15 to February 14",
         "dose model, DST season (2017 rule)" = "Whole DST season, 2017 rule")
 RULE <- c("(a) elasticity 1.5 from the US ratio of 160" = "VSL, income elasticity 1.5 (reference)",
           "(c) 100 x GNI per capita" = "VSL, 100 $\\times$ income per head",
