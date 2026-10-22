@@ -15,7 +15,7 @@ Commit `a3d7865` contra `74ca391`. Uma linha por frase alterada, na ordem do tex
    **Depois:** In modern societies, clocks, more than the sun, set the hours at which people work and sleep \citep{hamermesh2008cues}.
 
 3. **Antes:** (nada)
-   **Depois:** That debate has turned on electricity, but the clock also decides whether the evening commute takes place in daylight or in the dark.
+   **Depois:** While the debate, in Brazil and elsewhere, has largely focused on electricity \citep{kellogg2008daylight, kotchen2011does}, clock time also determines whether the evening commute occurs in daylight or after dark.
 
 4. **Antes:** A clock rule therefore moves the whole society's day relative to daylight at once. Two forces then set its cost on the road.
    **Depois:** A clock rule therefore shifts society's entire day relative to daylight at once. Three forces then set its cost on the road.
@@ -403,3 +403,17 @@ Commit `a3d7865` contra `74ca391`. Uma linha por frase alterada, na ordem do tex
 
 130. `ptitle(g_first, "B. Federal highway crashes recorded at dusk or night, treated states, summer window"),`
    → `ptitle(g_first, "B. Share of federal highway crashes at dusk or night, treated states, summer window"),`
+
+
+## Depois da rodada
+
+Mudanças feitas depois do commit `a3d7865`, para entrar \citet{james2023let} (Economic Inquiry 61(3), 2023; Austrália, nenhum efeito sobre as mortes no trânsito nem nas trocas de relógio nem no longo prazo, só uma realocação dos acidentes ao longo do dia).
+
+131. **Antes:** The first estimates the effect of DST on road safety, mostly from the clock changes: in the United States \citep{sood2007short, smith2016spring}, Greece \citep{laliotis2023summertime}, ...
+   **Depois:** The first estimates the effect of DST on road safety, mostly from the clock changes: in the United States \citep{sood2007short, smith2016spring}, Australia \citep{james2023let}, Greece \citep{laliotis2023summertime}, ...
+
+132. **Antes:** (nada)
+   **Depois:** \citet{james2023let} also uses the trials of DST in Australian states and its extension for the Sydney Olympics, and finds no long-run effect on road deaths, only a reallocation of crashes across the hours of the day.
+
+133. **Antes:** This paper observes a change of regime rather than simulating one, over five seasons and with a first stage recorded by third parties, and compares it with the same change of light at the clock changes, before travel adjusted.
+   **Depois:** This paper observes a national change of regime, neither simulated nor temporary, over five seasons and with a first stage recorded by third parties, and compares it with the same change of light at the clock changes, before travel adjusted.
