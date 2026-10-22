@@ -227,7 +227,7 @@ mesma pergunta de luz. A diferenciação tem de ser explícita:
   pôr do sol mais tarde → menos sono, mais obesidade, salário menor.
 - **Gibson, M. & J. Shrader (2018).** "Time use and labor productivity: the
   returns to sleep." *ReStat* ✔ (resumo).
-- **Jagnani, M. (2022).** "Children's sleep and human capital production."
+- **Jagnani, M. (2024).** "Children's sleep and human capital production."
   *ReStat* ✔ (resumo). Fuso único na Índia.
 - **Jin, L. & N. R. Ziebarth (2020).** "Sleep, health, and human capital:
   Evidence from daylight saving time." *JEBO* 170: 174–192,

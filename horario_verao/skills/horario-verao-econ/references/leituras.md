@@ -35,7 +35,7 @@ original.** A versão viva desta lista é o `LITERATURE.md` do projeto DaylightS
 - Depalo (2023), Economic Modelling 128, Itália, acidentes de trabalho ✔ (resumo)
 - Mitre-Becerril (2026), Criminology, luz e crime ✔ (resumo)
 - Gibson & Shrader (2018), ReStat ✔ (resumo)
-- Jagnani (2022), ReStat ✔ (resumo)
+- Jagnani (2024), ReStat 106(4) ✔ (resumo)
 - Jin & Ziebarth (2020), JEBO 170 ✔ (resumo)
 - Goodwin, Gonzalez & Fontenla (2024), Applied Economics, México ✔ (resumo)
 - Carreno Najera (2026), tese Royal Holloway, Cidade do México, abolição de 2022 e crime ✔ (página)

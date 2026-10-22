@@ -422,4 +422,4 @@ Mudanças feitas depois do commit `a3d7865`, para entrar \citet{james2023let} (E
    **Depois:** Russia's reforms of time-zone boundaries over four decades also shifted light persistently: the daylight regime had a lasting effect on women's sense of safety and an immediate one on the time people spent walking for transport \citep{jelnov2027sunset}.
 
 135. **Antes:** ...through sleep, health and productivity \citep{gibson2018time, giuntella2019sunset}.
-   **Depois:** ...through sleep, health and productivity \citep{gibson2018time, giuntella2019sunset, jin2020sleep, osbornechristenson2022saving}.
+   **Depois:** ...through sleep, health and productivity \citep{gibson2018time, giuntella2019sunset, jin2020sleep, osbornechristenson2022saving, jagnani2024children}.
