@@ -417,3 +417,9 @@ Mudanças feitas depois do commit `a3d7865`, para entrar \citet{james2023let} (E
 
 133. **Antes:** This paper observes a change of regime rather than simulating one, over five seasons and with a first stage recorded by third parties, and compares it with the same change of light at the clock changes, before travel adjusted.
    **Depois:** This paper observes a national change of regime, neither simulated nor temporary, over five seasons and with a first stage recorded by third parties, and compares it with the same change of light at the clock changes, before travel adjusted.
+
+134. **Antes:** (nada)
+   **Depois:** Russia's reforms of time-zone boundaries over four decades also shifted light persistently: the daylight regime had a lasting effect on women's sense of safety and an immediate one on the time people spent walking for transport \citep{jelnov2027sunset}.
+
+135. **Antes:** ...through sleep, health and productivity \citep{gibson2018time, giuntella2019sunset}.
+   **Depois:** ...through sleep, health and productivity \citep{gibson2018time, giuntella2019sunset, jin2020sleep, osbornechristenson2022saving}.
