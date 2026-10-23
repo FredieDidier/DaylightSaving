@@ -67,7 +67,7 @@ out[, gap := dst_days - no_dst_days]
 # vs post-abolition seasons. Twilight length is the same; only the clock moved.
 md <- prf[, month(date) * 100L + mday(date)]
 prf[, win := md >= 1115L | md <= 214L]
-curve <- prf[win == TRUE & sy %between% c(2009L, 2024L),
+curve <- prf[win == TRUE & sy %between% c(2008L, 2024L),
              .(share_dark = round(mean(dark), 3), n = .N),
              by = .(period = fifelse(sy <= 2018L, "pre (DST)", "post (no DST)"), rbin)]
 curve_w <- dcast(curve, rbin ~ period, value.var = "share_dark")
