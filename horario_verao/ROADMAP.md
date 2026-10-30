@@ -272,6 +272,60 @@ Feito nesta sessão:
   Painel B que os rótulos já dizem; o "1.6 minutes", que o corpo dá). Nenhum
   float excede a página em nenhum documento. Paper mantido em 35 páginas
   (frases novas compensadas na seção do México e nos limites da conclusão).
+- ✅ **Auditoria do manuscrito (30/10/2026, skill `manuscript-audit`),** sobre
+  tudo o que mudou desde a de 16/10 (30 commits: México fora, manchete 62,
+  Tabela A1, dólares internacionais, partes da janela, citações novas e as
+  duas rodadas de texto do Monastério). Números de cada parágrafo contra as
+  tabelas que ele cita; os que só existem em cache, contra os `.rds` relidos.
+  **Corrigido (antes → depois):** dois trechos da Seção V estavam fora do PDF
+  desde 21/10 (`f85663f`): um comentário de proveniência inserido no meio da
+  linha (`% total_cost.rds…`, `% ONS reais…`) transformou em comentário todo o
+  texto depois dele. Sumiram "Two costs are not valued…" (lesões não fatais; o
+  custo de quem mudou o horário da viagem) e a ressalva de que os números do
+  ONS vêm de outro método, junto com a frase das duas trocas de relógio por ano
+  e do infarto (Toro et al. 2015), que voltara à Seção V a pedido do Leonardo
+  em 16/10. Comentários movidos para linha própria; o texto voltou ao PDF (que
+  continua com 37 páginas). "All estimates remain significant" (antecedente
+  "three" cortado na rodada do Monastério; lido como todas as estimativas do
+  paper, e as da manhã não são) → "Each estimate remains significant". Dois
+  "therefore" no parágrafo da tendência → "Panel B instead uses". Os 10
+  "against" comparativos que sobravam no texto principal → "compared with",
+  "and", "relative to" ou "instead of" (sobram 14 no total, todos técnicos:
+  temporada de referência, conferência contra fonte). Linhas da Tabela B7
+  "Municipalities with darker/better-lit streets" → "Above/Below the median
+  (darker/better-lit streets)", como no texto desde 29/10 (`28_tables.R`; as
+  outras 15 tabelas saíram idênticas byte a byte).
+  **Conferido e sem mudança:** todo número decimal da prosa contra a tabela
+  citada ou o cache: dose dos pedestres 115,8 (29,7) e demais 33,6 (11,9);
+  tendência da PRF 103,9 (34,3) e 15,3 (23,5); tirar um fora 24,3/34,1 e
+  22,7/35,2; heaping 34,5/23,0/90 e 21,3/19,4/95,2; registro 0,4 (0,75);
+  relógio 7,8/17,1/24,5 e 0,23/0,32/0,38; HonestDiD 14,8, [28, 99], M = 0,02;
+  pernas da janela 39,3/31,2 e 36,9/18,7; agressões 2,4/−0,5/7,0/15,2;
+  Bahia (−21,4, posições 1, 4 e 11; 68 contra 93–100); horas vizinhas 16,4,
+  26,4, −22,3; noite da PRF −6,1 (p = 0,04); tráfego 17,6 (7,5) e 24,0
+  (p = 0,005); três horas 54 (20), 17%, p = 0,007; custo (2.933/2.382 =
+  1,231; 6.003/2.933 = 2,047; 114, 135, 287 mi; VSL 1,8 mi = R$ 4,66 mi);
+  locais de óbito fora da via 84,9/9,7/3,5/1,5/0,4 e "85% sem veículo"
+  recontados do SIM; 57,6 e −12,7 do 2º modelo das partes da janela
+  reestimados (só existiam no console); draws 299, 999 e 9.999 no código.
+  O `total_cost.rds` (21/10 08:16) é anterior ao `light_dose.rds` (14:48), mas
+  bate com ele (62,5 e 73,8). Citações novas na fonte: James (2023), Jelnov
+  (2027, JAE 30, online 09/10/2026; resumo no OpenAlex) e Osborne-Christenson
+  (2022) conferem; a frase dos calendários ("every treated state but Goiás")
+  se apoia no levantamento de `calendarios_escolares.md`. Quantificadores
+  ("every age group from 15", "every outcome" da chuva, "robust to excluding
+  any single state or season": todo p < 0,05) conferem. Build: 0 indefinidos,
+  0 overfull horizontais, 0 floats grandes demais nos três documentos; resumo
+  com 97 palavras; exibições em ordem de página; toda nota chega inteira ao PDF.
+  Dois "yields" num parágrafo do apêndice e dois "relative to" no de V.I,
+  criados pelas trocas de 29/10, → "moves the estimate to" e "in the
+  comparison with hours of the same day".
+  **Deixado como está:** três frases longas e encadeadas (a do Senado
+  americano, a dos efeitos de hora × data, a lista do Painel C); "yields"
+  (12) e "relative to" (18) espalhados; dois "relative to" seguem juntos onde
+  a construção é paralela (introdução: luz relativa ao relógio; notas da
+  tripla diferença: tratados relativo a controles, depois relativo a antes);
+  no working paper o apêndice vem depois das referências, por desenho.
 
 Próximos:
 1. SIM 2025 definitivo: 6ª temporada pós (rodar tudo de novo).

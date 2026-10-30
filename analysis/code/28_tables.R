@@ -462,8 +462,8 @@ sl <- rd("street_lighting.rds")$results
 SLO <- c("SIM transport deaths, on road", "SIM pedestrian deaths, on road", "PRF injury accidents")
 sl_rows <- function(b, meas = "unlit_pct_2022") {
   x <- sl[bin == b & measure == meas][match(SLO, outcome)]
-  c(row("Municipalities with darker streets", f1(x$dark_lp)), row("", se1(x$dark_se)),
-    row("Municipalities with better-lit streets", f1(x$lit_lp)), row("", se1(x$lit_se)),
+  c(row("Above the median (darker streets)", f1(x$dark_lp)), row("", se1(x$dark_se)),
+    row("Below the median (better-lit streets)", f1(x$lit_lp)), row("", se1(x$lit_se)),
     row("Difference, p-value", fp(x$diff_p)))
 }
 write_tab("tab_street_lighting", c(
