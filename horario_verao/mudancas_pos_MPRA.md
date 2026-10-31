@@ -22,10 +22,12 @@ inteiro.
 
 **Depois:**
 > The effect follows the local sun, not the clock, and the brighter mornings
-> showed no detectable decline. Abolition added an estimated 62 deaths at the
-> crash scene in each 92-day summer window, from mid-November to mid-February.
+> showed no detectable decline in deaths. Abolition added an estimated 62 deaths
+> at the crash scene in each summer window, from mid-November to mid-February.
 
-O resto do resumo não mudou (97 palavras, como antes).
+O resto do resumo não mudou. São 98 palavras (100 separando os hífens). O
+"92-day" saiu para caber "in deaths"; as datas logo depois definem o período, e
+os 92 dias estão na introdução.
 
 **Por quê:** "offset" fala do saldo do dia. O que está identificado com força é
 a hora da manhã que clareou (−3 log pts, EP 12) e a diferença entre manhã e
