@@ -24,6 +24,7 @@
 #   tab_sensitivity     the hour after sunset under other samples, places,
 #                       days and weather                              (04, 20, 23)
 #   tab_window_parts    the hour after sunset in parts of the window  (20)
+#   tab_traffic_parts   federal highway traffic in parts of the window  (15)
 #   tab_transitions     the clock changes before 2019 against abolition  (26)
 #   tab_road_users      who dies: road user, pedestrian age and sex, day (21)
 #   tab_sex_age         sex and age of the dead, road deaths and federal
@@ -161,14 +162,19 @@ dz_rows <- function(sp, col, secol) {
   c(row(DZ[[sp]], f1(x[[col]])), row("", se1(x[[secol]])))
 }
 dmain <- dz[spec == "main"][match(TRAFFIC, outcome)]
+di <- rd("light_dose.rds")$inference[match(TRAFFIC, outcome)]
 write_tab("tab_dose", c(
   open3,
   panel("Panel A. Evening clock hour, from full daylight to night (log points)", 4),
   unlist(lapply(names(DZ), dz_rows, col = "evening_lp", secol = "evening_se")),
+  row("Baseline: p-value, clustered by state", fp(2 * pnorm(-abs(dmain$evening_lp / dmain$evening_se)))),
+  row("Baseline: p-value, permutation of treated states", fp(di$evening_perm_p)),
+  row("Baseline: p-value, score wild bootstrap", fp(di$evening_score_p)),
   "\\addlinespace",
   panel("Panel B. Morning clock hour, from full daylight to night (log points)", 4),
   dz_rows("main", "morning_lp", "morning_se"),
-  row("Evening equals morning, p-value", fp(dmain$diff_p)),
+  row("Evening equals morning, p-value, clustered by state", fp(dmain$diff_p)),
+  row("Evening equals morning, p-value, permutation", fp(di$diff_perm_p)),
   close_))
 
 # ── Table: excess events per summer ─────────────────────────────────────────
@@ -189,6 +195,8 @@ write_tab("tab_excess", c(
   open3,
   panel("Panel A. Darkness dose model: every hour, weighted by its change in light", 4),
   row("Net, summer window", f0(dmain$net)), row("", se0(dmain$net_se)),
+  row("\\quad p-value, clustered by state", fp(2 * pnorm(-abs(dmain$net / dmain$net_se)))),
+  row("\\quad p-value, permutation of treated states", fp(di$net_perm_p)),
   row("\\quad of which evening hours", f0(dmain$evening)),
   row("\\quad of which morning hours", f0(dmain$morning)),
   row("Net, whole DST season (2017 rule)", f0(dmain$season_net)), row("", se0(dmain$season_net_se)),
@@ -393,6 +401,24 @@ write_tab("tab_window_parts", c(
   sens_row("February 1 to 14", pick_l("school", "1 to 14 February")),
   sens_row("January 16 to 31 minus December 24 to January 15", pick_l("school", "16 to 31 January minus holidays")),
   sens_row("\\quad placebo before abolition", pick_l("school", "16 to 31 January minus holidays, placebo 2014")),
+  close_))
+
+# ── Table: traffic in parts of the summer window ────────────────────────────
+tp <- tv$parts
+TPW <- c("hour 0, all vehicles", "hour 0, heavy vehicles", "whole day, all vehicles")
+TPP <- c(school = "November 15 to December 7, school weeks", holiday = "December 24 to January 15",
+         jan = "January 16 to 31, school break",
+         "school minus holiday" = "School weeks minus December 24 to January 15")
+write_tab("tab_traffic_parts", c(
+  "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
+  " & \\multicolumn{2}{c}{Hour after sunset} & Whole day \\\\",
+  "\\cmidrule(lr){2-3}\\cmidrule(l){4-4}",
+  " & All vehicles & Heavy vehicles & All vehicles \\\\",
+  " & (1) & (2) & (3) \\\\", "\\midrule",
+  unlist(lapply(names(TPP), function(k) {
+    x <- tp[part == k][match(TPW, what)]
+    c(row(TPP[[k]], f1(x$coef_lp)), row("", se1(x$se_lp)))
+  })),
   close_))
 
 # ── Table: who dies (road deaths only) ──────────────────────────────────────

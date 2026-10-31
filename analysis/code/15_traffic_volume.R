@@ -33,6 +33,14 @@
 #       the summers the stations counted (VOL_SEASONS), so that both effects
 #       come from the same seasons; on those seasons the crash pre-trend is
 #       also estimated (2014/15-2018/19).
+#   (e) Traffic in parts of the summer window. The road-death effect in hour 0
+#       is large in the school weeks and in late January and undetectable from
+#       24 December to 15 January (20_leave_out.R). If holiday travel left
+#       the evening, the volume in hour 0, or its heavy-vehicle part, or the
+#       day's volume should move differently in those weeks. The triple
+#       difference with separate effects for the parts of 20 (school weeks,
+#       year-end holidays, 16-31 January, the other days), the state x window
+#       effect split by part.
 #
 # Groups as everywhere: treated RS SC PR SP RJ ES MG GO MT MS DF; control the
 # North and Northeast without BA, TO, AC, AM. Only complete, counted
@@ -202,12 +210,31 @@ crash <- rbindlist(lapply(c("PRF injury accidents", "PRF deaths"), function(o)
 risk <- merge(crash, ddd[vehicles == "v", .(bin_key, vol_lp = coef_lp, vol_se = se_lp)], by = "bin_key")
 risk[, `:=`(per_vehicle_lp = crash_lp - vol_lp, per_vehicle_se = sqrt(crash_se^2 + vol_se^2))]
 
+# ── (e) Traffic in parts of the summer window ───────────────────────────────
+PARTS <- c("school", "holiday", "jan", "other")
+part_est <- function(p, what) {
+  p[, part := school_part(date, window, sy)]
+  p[part == "other" & month(date) == 1L, part := "jan"]
+  for (k in PARTS) set(p, j = paste0("t_", k), value = p$twp * (p$part == k))
+  m <- fepois(as.formula(paste("y ~", paste0("t_", PARTS, collapse = " + "),
+                               "| station + uf^part + uf^sy + date")),
+              data = p, cluster = ~uf, notes = FALSE)
+  b <- coef(m); V <- vcov(m)
+  d <- c(1, -1); k <- c("t_school", "t_holiday")
+  data.table(what = what, part = c(PARTS[1:3], "school minus holiday"),
+             coef_lp = 100 * c(b[paste0("t_", PARTS[1:3])], sum(d * b[k])),
+             se_lp = 100 * sqrt(c(diag(V)[paste0("t_", PARTS[1:3])], drop(t(d) %*% V[k, k] %*% d))))
+}
+parts <- rbind(part_est(bin_panel("set", 0L, "v"), "hour 0, all vehicles"),
+               part_est(bin_panel("set", 0L, "v_heavy"), "hour 0, heavy vehicles"),
+               part_est(sd[full, on = .(station, date), nomatch = 0][, y := v_day], "whole day, all vehicles"))
+
 # ── Coverage ────────────────────────────────────────────────────────────────
 cover <- sd[, .(stations = uniqueN(station), station_days = .N),
             keyby = .(group = fifelse(treated == 1, "treated", "control"), sy, window)]
 
 saveRDS(list(clock = clock, peak = peak, ddd = ddd, day = day, paired = paired, within = within,
-             by_group = by_group,
+             by_group = by_group, parts = parts,
              risk = risk, cover = cover, pairs = pairs), file.path(path_audit, "traffic_volume.rds"))
 options(width = 180)
 cat("(a) Clock check: distance between treated-summer net profiles, pre shifted by lag vs post\n")
@@ -222,4 +249,5 @@ cat("\nRelocated-station pairs (all vehicles):\n"); print(paired[, lapply(.SD, f
 cat("\n(c) Within the day (share of station-day traffic, log points):\n"); print(within[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
 cat("\n(c2) Within the day, each group alone (log points):\n")
 print(by_group[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
+cat("\n(e) Parts of the window (log points):\n"); print(parts[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
 cat("\n(d) Risk per vehicle (PRF):\n"); print(risk[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])

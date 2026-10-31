@@ -130,7 +130,7 @@ Approximate storage space needed: 3.3 GB with the raw rain grid, 0.7 GB without 
 
 The code was last run on an Apple M1 Pro laptop (8 cores, 16 GB of memory, macOS 26.6),
 with the default of 5 worker processes. The analysis takes about 2 to 3 hours, most of it
-in the permutation and bootstrap draws of `05`, `06`, `14`, `16` and `26`; this
+in the permutation and bootstrap draws of `05`, `06`, `14`, `16`, `23` and `26`; this
 figure comes from the timestamps of the cached results, not from one uninterrupted run.
 Rebuilding the data adds the downloads of `build/02`, `05`, `06`, `10` and `13`, which depend on
 the remote servers and resume where they stopped.
@@ -188,7 +188,7 @@ To be set at deposit, in a `LICENSE.txt` at the root of the package.
 ### Details
 
 - Run with the default draw counts. `DS_PERM` changes the 999 permutation draws of
-  `06`, `14` and `16` at once and also turns on a permutation test in `09` that the
+  `06`, `14`, `16` and `23` at once and also turns on a permutation test in `09` that the
   paper does not use; `DS_BOOT` changes the 299 bootstrap draws of `05`. `DS_CORES` sets
   the number of worker processes only.
 - `00_master_analysis.R 06 14` reruns single steps; `--from 15` reruns from a step on.
@@ -204,33 +204,35 @@ only read their caches and write the files. Figures are in `analysis/output/grap
 
 | Exhibit | Program | Line | Output file | Estimated in |
 |---|---|---|---|---|
-| Figure 1 | `27_figures.R` | 417 | `maps/fig_map_brazil.pdf` | `build/01`, `10` |
-| Figure 2 | `27_figures.R` | 140 | `fig_light.pdf` | `03` |
-| Table 1 | `28_tables.R` | 78 | `tab_descriptives.tex` | `13` |
-| Table 2 | `28_tables.R` | 110 | `tab_main.tex` | `01`, `06` |
-| Figure 3 | `27_figures.R` | 162 | `fig_hours_from_sunset.pdf` | `01` |
-| Figure 4 | `27_figures.R` | 181 | `fig_event_study.pdf` | `02` |
-| Table 3 | `28_tables.R` | 268 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
-| Table 4 | `28_tables.R` | 163 | `tab_dose.tex` | `23` |
-| Table 5 | `28_tables.R` | 134 | `tab_pedestrians.tex` | `12`, `14` |
-| Table 6 | `28_tables.R` | 187 | `tab_excess.tex` | `11`, `23` |
-| Table 7 | `28_tables.R` | 473 | `tab_cost.tex` | `25` |
-| Figure A1 | `27_figures.R` | 350 | `fig_record_integrity.pdf` | `22` |
-| Figure B1 | `27_figures.R` | 309 | `fig_window_shift.pdf` | `19` |
-| Figure B2 | `27_figures.R` | 333 | `fig_leave_out.pdf` | `20` |
-| Table A1 | `28_tables.R` | 305 | `tab_measurement.tex` | `19`, `22` |
-| Table B1 | `28_tables.R` | 341 | `tab_sensitivity.tex` | `04`, `20`, `23` |
-| Figure B3 | `27_figures.R` | 221 | `fig_window_legs.pdf` | `04` |
-| Figure B4 | `27_figures.R` | 201 | `fig_within_day.pdf` | `02`, `09` |
-| Table B2 | `28_tables.R` | 241 | `tab_within_group.tex` | `09`, `15` |
-| Figure B5 | `27_figures.R` | 250 | `fig_honestdid.pdf` | `07` |
-| Table B3 | `28_tables.R` | 400 | `tab_road_users.tex` | `21` |
-| Table B4 | `28_tables.R` | 426 | `tab_sex_age.tex` | `21` |
-| Table B5 | `28_tables.R` | 219 | `tab_traffic_volume.tex` | `15`, `16` |
-| Table B6 | `28_tables.R` | 449 | `tab_street_lighting.tex` | `24` |
-| Table B7 | `28_tables.R` | 511 | `tab_transitions.tex` | `26` |
-| Figure B6 | `27_figures.R` | 287 | `fig_bahia.pdf` | `17` |
-| Figure B7 | `27_figures.R` | 265 | `fig_assault.pdf` | `10` |
+| Figure 1 | `27_figures.R` | 428 | `maps/fig_map_brazil.pdf` | `build/01`, `10` |
+| Figure 2 | `27_figures.R` | 148 | `fig_light.pdf` | `03` |
+| Table 1 | `28_tables.R` | 80 | `tab_descriptives.tex` | `13` |
+| Table 2 | `28_tables.R` | 112 | `tab_main.tex` | `01`, `06` |
+| Figure 3 | `27_figures.R` | 173 | `fig_hours_from_sunset.pdf` | `01` |
+| Figure 4 | `27_figures.R` | 192 | `fig_event_study.pdf` | `02` |
+| Table 3 | `28_tables.R` | 278 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
+| Table 4 | `28_tables.R` | 166 | `tab_dose.tex` | `23` |
+| Table 5 | `28_tables.R` | 136 | `tab_pedestrians.tex` | `12`, `14` |
+| Table 6 | `28_tables.R` | 194 | `tab_excess.tex` | `11`, `23` |
+| Table 7 | `28_tables.R` | 519 | `tab_cost.tex` | `25` |
+| Figure A1 | `27_figures.R` | 361 | `fig_record_integrity.pdf` | `22` |
+| Table A1 | `28_tables.R` | 314 | `tab_measurement.tex` | `19`, `22` |
+| Figure B1 | `27_figures.R` | 320 | `fig_window_shift.pdf` | `19` |
+| Figure B2 | `27_figures.R` | 344 | `fig_leave_out.pdf` | `20` |
+| Table B1 | `28_tables.R` | 359 | `tab_sensitivity.tex` | `04`, `20`, `23` |
+| Table B2 | `28_tables.R` | 387 | `tab_window_parts.tex` | `20` |
+| Table B3 | `28_tables.R` | 412 | `tab_traffic_parts.tex` | `15` |
+| Figure B3 | `27_figures.R` | 232 | `fig_window_legs.pdf` | `04` |
+| Figure B4 | `27_figures.R` | 212 | `fig_within_day.pdf` | `02`, `09` |
+| Table B4 | `28_tables.R` | 251 | `tab_within_group.tex` | `09`, `15` |
+| Figure B5 | `27_figures.R` | 261 | `fig_honestdid.pdf` | `07` |
+| Table B5 | `28_tables.R` | 446 | `tab_road_users.tex` | `21` |
+| Table B6 | `28_tables.R` | 472 | `tab_sex_age.tex` | `21` |
+| Table B7 | `28_tables.R` | 229 | `tab_traffic_volume.tex` | `15`, `16` |
+| Table B8 | `28_tables.R` | 495 | `tab_street_lighting.tex` | `24` |
+| Table B9 | `28_tables.R` | 558 | `tab_transitions.tex` | `26` |
+| Figure B6 | `27_figures.R` | 298 | `fig_bahia.pdf` | `17` |
+| Figure B7 | `27_figures.R` | 276 | `fig_assault.pdf` | `10` |
 
 ## References
 

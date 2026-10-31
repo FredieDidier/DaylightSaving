@@ -169,6 +169,15 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 - **Contagem líquida sem escolher horas** (dose): 62 (12) por janela de verão, 74 (14)
   por temporada inteira da regra de 2017; escalas 91 e 186; VSL R$ 344 mi por temporada
   (R$ 867 mi na escala ampla). A soma de três horas (54, EP 20) virou checagem.
+- **Inferência robusta da dose e da contagem** (31/10/2026, depois do MPRA; `23`,
+  `inference`): mortes na via, noite permutação p = 0,002, score < 0,001; noite ≠
+  manhã p = 0,001; **62 com permutação p = 0,001** (clusterizado < 0,001). PRF mortes:
+  noite 0,031, mas noite ≠ manhã 0,139 e líquido 0,135. A contagem só admite
+  permutação (função não linear dos dois coeficientes). Registro das mudanças desde
+  o MPRA: `horario_verao/mudancas_pos_MPRA.md`.
+- **Tráfego nas festas** (`15`, `parts`; Tabela B3): hora 0 cai igual nas aulas
+  (−5,3, 1,8) e em 24/12–15/01 (−7,4, 3,2); pesados e dia inteiro idem. A viagem de
+  fim de ano nas rodovias federais não explica o nulo dessas semanas.
 - **Dinâmica** (`04`, Figura B3): a tripla dá 48,7 nas duas primeiras temporadas e 15,8
   nas três últimas, mas isso vem da perna do inverno (o fora de temporada de 2019/20
   inclui abr–jun/2020). Só o verão: 39,3 e 31,2. Sem mar/2020–fev/2022: 22,9 (9,1).

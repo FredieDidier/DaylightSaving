@@ -43,6 +43,13 @@
 #     Those extra days fall in term time; a second count refits the dose by
 #     part of the window (school weeks, holidays, other) and values the extra
 #     days at the school-week coefficients.
+#     Inference as in 06_inference.R, for the baseline specification: a
+#     permutation of the treated states (DS_PERM draws, default 999, run on
+#     DS_CORES cores), each fake set receiving its own states' doses, with
+#     t-statistics for the evening and morning coefficients, their difference
+#     and the net count (over its delta-method standard error); and a score
+#     wild bootstrap of the evening coefficient, null imposed with the morning
+#     term kept (Webb weights, 9,999 draws).
 # (c) Rain. On a rainy, overcast evening the hour was already dim under DST,
 #     so abolition darkens it less. Rain index per state-day: share of the
 #     state's on-road deaths (all hours, seasons before abolition, by municipality) that
@@ -55,6 +62,10 @@
 source(here::here("config", "config.R"))
 source(here::here("analysis", "code", "00_utils.R"))
 suppressPackageStartupMessages(library(fixest))
+N_PERM <- as.integer(Sys.getenv("DS_PERM", unset = "999"))
+CORES  <- as.integer(Sys.getenv("DS_CORES", unset = "5"))
+set.seed(20190425)                       # Decree 9,772
+setFixest_nthreads(1)
 
 SEASONS <- season_range()
 days <- make_days(SEASONS)
@@ -104,7 +115,8 @@ extra <- rbindlist(lapply(post_s, function(s) {
            seq(as.IDate(sprintf("%d-02-15", s + 1L)), end - 1L, by = 1L))
   data.table(sy = s, date = as.IDate(d))
 }))
-wt <- seat_weights(ev[uf %in% TREATED])
+# Every state gets its dose, so a permuted set of treated states has one.
+wt <- seat_weights(ev)
 wt <- geo[, .(code6, lat, lon, std_offset_h)][wt, on = "code6", nomatch = 0]
 dose_dates <- sort(unique(c(days[window == "win", date], extra$date)))
 dose <- rbindlist(lapply(dose_dates, function(x) {
@@ -205,6 +217,45 @@ dose_res <- rbindlist(lapply(DOSE_OUT, function(o) {
     out
   }), fill = TRUE)
 }))
+# ── Inference for the baseline dose model ───────────────────────────────────
+FAKES <- replicate(N_PERM, sample(c(TREATED, CONTROL), length(TREATED)), simplify = FALSE)
+dose_t <- function(p) {
+  m <- fepois(as.formula(paste("y ~ xe + xm", DOSE_FE[["main"]])), data = p,
+              cluster = ~uf, notes = FALSE)
+  b <- coef(m)[c("xe", "xm")]; V <- vcov(m)[c("xe", "xm"), c("xe", "xm")]
+  ex <- excess(p[twp == 1L & (xe != 0 | xm != 0)], b, V)
+  c(evening = b[["xe"]] / sqrt(V[1, 1]), morning = b[["xm"]] / sqrt(V[2, 2]),
+    diff = (b[["xe"]] - b[["xm"]]) / sqrt(V[1, 1] + V[2, 2] - 2 * V[1, 2]),
+    net = ex$net / ex$net_se)
+}
+dose_inf <- rbindlist(lapply(TRAFFIC, function(o) {
+  p <- hour_panel(o, days)
+  t_real <- dose_t(p)
+  perm <- do.call(rbind, parallel::mclapply(FAKES, function(fake) {
+    q <- copy(p)[, twp := as.integer(uf %in% fake) * win * post]
+    q[, `:=`(xe = dose * twp * (h >= 12L), xm = dose * twp * (h < 12L))]
+    dose_t(q)
+  }, mc.cores = CORES))
+  stopifnot(nrow(perm) == N_PERM)
+  # Score wild bootstrap of the evening coefficient, morning term kept.
+  m0 <- fepois(as.formula(paste("y ~ xm", DOSE_FE[["main"]])), data = p, notes = FALSE)
+  keep <- obs(m0); mu0 <- fitted(m0)
+  xt <- demean(p[keep, .(xe, xm)], f = p[keep, .(a = paste(uf, h, window), b = paste(uf, h, sy),
+                                                  c = paste(h, date))], weights = mu0)
+  xt <- xt$xe - xt$xm * sum(mu0 * xt$xe * xt$xm) / sum(mu0 * xt$xm^2)
+  sg <- tapply(xt * (p$y[keep] - mu0), p$uf[keep], sum)
+  t_score <- sum(sg) / sqrt(sum(sg^2))
+  webb <- c(-sqrt(1.5), -1, -sqrt(0.5), sqrt(0.5), 1, sqrt(1.5))
+  t_boot <- replicate(9999, { v <- sample(webb, length(sg), replace = TRUE)
+                              sum(v * sg) / sqrt(sum((v * sg)^2)) })
+  data.table(outcome = o,
+             evening_perm_p = perm_pvalue(perm[, "evening"], t_real[["evening"]]),
+             morning_perm_p = perm_pvalue(perm[, "morning"], t_real[["morning"]]),
+             diff_perm_p    = perm_pvalue(perm[, "diff"], t_real[["diff"]]),
+             net_perm_p     = perm_pvalue(perm[, "net"], t_real[["net"]]),
+             evening_score_p = mean(abs(t_boot) >= abs(t_score)), n_perm = N_PERM)
+}))
+
 # ── Rain: effect on dry and rainy state-days ────────────────────────────────
 pr <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "weather", "output",
                                            "pr_seat_day.parquet")))
@@ -239,9 +290,10 @@ rain_res <- rbindlist(lapply(TRAFFIC, function(o) {
              mean_rain_share_win = p[win == 1, mean(rain_share)])
 }))
 
-saveRDS(list(first_stage = fs, dose = dose_res, rain = rain_res),
+saveRDS(list(first_stage = fs, dose = dose_res, inference = dose_inf, rain = rain_res),
         file.path(path_audit, "light_dose.rds"))
 options(width = 200)
 print(fs)
 print(dose_res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 2) else x)])
+print(dose_inf[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)])
 print(rain_res[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 2) else x)])
