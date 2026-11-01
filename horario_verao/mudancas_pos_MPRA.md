@@ -228,6 +228,38 @@ do diff de texto, contra `light_dose.rds` e `traffic_volume.rds`.
   semente é fixada antes dos sorteios, e o `mclapply` não consome números
   aleatórios.
 
+## 11. Notas de tabelas e figuras (31/10/2026)
+
+Revisão das 29 notas (17 tabelas e 12 figuras, paper e apêndice): cada frase da nota contra as linhas, colunas, legendas
+e eixos do exibido, e cada número digitado na nota contra o `.rds` ou um
+recálculo. Quatro correções, todas só de texto; nenhum número mudou.
+
+- **`tab:road-users` (quem morre), nota.** Dizia "The last row of Panel C also drops
+  the Saturday before Carnival…"; a última linha é "Pedestrians, weekends and
+  holidays" (traços). Agora: "The row without Carnival and year-end in Panel C
+  also drops…". As datas conferem com `holiday_days` (Páscoa −50 a −46; 24/12 a
+  1/1).
+- **`fig:assault`, nota.** Dizia "by season as in Figure
+  [event-study]", mas a figura é contra 2018/19 (`ref = LAST_PRE` no `10`), e a
+  do estudo de evento é contra a média das temporadas com horário de verão.
+  Agora: "as in Figure [event-study], but relative to 2018/19", as palavras do eixo.
+- **`tab:window-parts`, nota.** "57.6 and −12.7" são de mortes na via
+  apenas (recalculados: 57,6 e −12,7; rodovias federais 67,7 e 28,8; acidentes
+  28,4 e 27,0). Agora: "… are 57.6 and −12.7 for road deaths".
+- **`tab:pedestrians`, nota.** A linha "p-value, wild cluster bootstrap" fica
+  sob a estimativa Poisson, mas vem do modelo linear (`14`, `boottest` sobre o
+  `lm` demeaned), como na Tabela 2. Agora: "Inference as in Table 2, with the
+  wild cluster bootstrap p-value from the linear model".
+
+Conferido e certo: 85/10/5 por cento dos outros usuários (V87–V89 85,3; V60–V69
+9,5); idade ausente 12 e 6 por cento (11,7 e 5,9); 85 por cento dos óbitos fora
+da via em hospital (84,9, LOCOCOR 1); 30 pares de estações; 279 municípios
+costeiros; PPP 2,554; "seven hours" de `tab:excess` (−2 a +1 no pôr do sol, −1 a +1
+no nascer); legendas, painéis e lados (esquerda/direita, topo/base,
+cinza/vermelho) de todas as figuras. Recompilado: 38 + 26 + 1 + 66 páginas, sem
+Overfull/Underfull, sem referência indefinida; as quatro frases novas aparecem no
+PDF.
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied
