@@ -12,7 +12,8 @@
 #   tab_dose            darkness as a dose, from the sun: a fully dark
 #                       evening and morning hour, four sets of effects     (23)
 #   tab_excess          excess events per summer: dose model, then hour by
-#                       hour, evening, morning, day                       (23, 11)
+#                       hour, evening, morning, day; then the events the
+#                       change in traffic alone implies              (23, 11, 25)
 #   tab_traffic_volume  vehicles, crashes and crashes per vehicle        (15, 16)
 #   tab_within_group    hour 0 against hours of the same state-day, treated
 #                       and control states each alone                     (09, 15)
@@ -191,6 +192,11 @@ ex_rows <- function(keys) unlist(lapply(keys, function(k) {
   x <- ex[sum == k][match(TRAFFIC, outcome)]
   c(row(EX[[k]], f0(x$excess_per_season)), row("", se0(x$se)))
 }))
+im <- rd("total_cost.rds")$implied
+im_rows <- function(h, label) {
+  x <- im[hours == h][match(TRAFFIC, outcome)]
+  c(row(label, f0(x$implied_per_season)), row("", se0(x$se)))
+}
 write_tab("tab_excess", c(
   open3,
   panel("Panel A. Darkness dose model: every hour, weighted by its change in light", 4),
@@ -203,6 +209,9 @@ write_tab("tab_excess", c(
   row("\\quad effect by part of the window", f0(dmain$season_net_term)), row("", se0(dmain$season_net_term_se)),
   "\\addlinespace",
   panel("Panel B. Hour by hour", 4), ex_rows(names(EX)),
+  "\\addlinespace",
+  panel("Panel C. Implied by the change in traffic alone, at an unchanged risk per vehicle", 4),
+  im_rows("light unchanged", "Hours whose light did not change"),
   close_))
 
 # ── Table: traffic volume and risk per vehicle ──────────────────────────────

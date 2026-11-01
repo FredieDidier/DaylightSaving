@@ -47,10 +47,28 @@
 #           number index (IBGE SIDRA table 1737, variable 2266): 4,059.86
 #           (Dec 2014) and 7,403.29 (Dec 2025), and to international dollars
 #           at the PPP rate above.
+#     Each count is also valued at the lower end of its 95 percent interval.
+#
+# (3) Deaths implied by moved trips. The net count of the dose model assumes
+#     that hours whose light did not change were unaffected; trips that left
+#     the dark hour for those hours could undo it. At an unchanged risk per
+#     vehicle, events in an hour move with its traffic. The volume triple
+#     difference of 15_traffic_volume.R, stacked over its 11 sun hours and the
+#     rest of the station-day with every fixed effect interacted with the hour
+#     (each coefficient equals the separate fit of 15; the hours share one
+#     clustered covariance), gives the change v_k in hour k's traffic. The
+#     events it implies per post season are S_k (1 - exp(-v_k)), with S_k the
+#     observed events in hour k of the treated states' summer window after
+#     abolition: the excess of 11_reallocation.R with the crash coefficient
+#     replaced by the traffic one. Hours whose light did not change, as in the
+#     dose of 23: evening -3 to -1 and +2, morning -2, +1 and +2, and the rest
+#     of the day; evening 0 and +1 and morning -1 and 0 changed. Sums get
+#     delta-method standard errors from the stacked covariance, S_k fixed.
 # =============================================================================
 
 source(here::here("config", "config.R"))
 source(here::here("analysis", "code", "00_utils.R"))
+suppressPackageStartupMessages(library(fixest))
 
 SEASONS <- season_range()
 days <- make_days(SEASONS)
@@ -112,8 +130,43 @@ value <- CJ(sum = SUMS, count = unique(deaths$count), rule = vsl$rule, sorted = 
 value <- deaths[value, on = .(sum, count)][vsl, on = "rule"]
 value[, `:=`(value_brl_million = deaths * vsl_brl_million, value_se_brl_million = se * vsl_brl_million,
              value_intl_million = deaths * vsl_intl_million, value_se_intl_million = se * vsl_intl_million)]
+lower <- base_counts[, .(sum, excess, excess_se, lo95 = excess - qnorm(0.975) * excess_se)]
+lower[, lo95_value_intl_million := lo95 * vsl[rule == names(vsl_intl)[1], vsl_intl_million]]
 
-saveRDS(list(scale = scale, deaths = deaths, vsl = vsl, value = value,
+# ── (3) Deaths implied by moved trips ───────────────────────────────────────
+vol <- as.data.table(read_parquet(file.path(DROPBOX_ROOT, "build", "pnct", "output",
+                                            "pnct_station_day_bins.parquet")))
+mv <- fepois(y ~ i(key, twp) | station^key + uf^window^key + uf^sy^key + date^key,
+             data = vol, cluster = ~uf, notes = FALSE)
+v <- coef(mv); Vv <- vcov(mv); vk <- sub("key::(.*):twp", "\\1", names(v))
+chk <- readRDS(file.path(path_audit, "traffic_volume.rds"))$ddd[vehicles == "v"]
+stopifnot(max(abs(100 * v[match(chk$bin_key, vk)] - chk$coef_lp)) < 0.01)
+UNCHANGED <- c("eve-3", "eve-2", "eve-1", "eve+2", "morn-2", "morn+1", "morn+2", "rest")
+N_POST <- sum(SEASONS > LAST_PRE)
+ev <- as.data.table(read_parquet(EVENTS_FILE))[outcome %in% TRAFFIC]
+ev <- days[, .(uf, date, twp = tw * post)][ev, on = .(uf, date), nomatch = 0][twp == 1L]
+ev[, hk := fcase(bin_set %between% c(-3, 2), sprintf("eve%+d", bin_set),
+                 bin_rise %between% c(-2, 2), sprintf("morn%+d", bin_rise), default = "rest")]
+implied_hours <- rbindlist(lapply(TRAFFIC, function(o) {
+  S <- ev[outcome == o, .(S = sum(w)), by = hk][match(vk, hk), S]
+  data.table(outcome = o, hour = vk, vol_lp = 100 * v, vol_se = 100 * sqrt(diag(Vv)),
+             obs_per_season = S / N_POST,
+             implied_per_season = S * (1 - exp(-v)) / N_POST,
+             implied_se = sqrt(diag(Vv)) * S * exp(-v) / N_POST)
+}))
+implied <- rbindlist(lapply(TRAFFIC, function(o) {
+  g <- implied_hours[outcome == o, obs_per_season * exp(-vol_lp / 100)]
+  E <- implied_hours[outcome == o, implied_per_season]
+  rbindlist(lapply(list("light unchanged" = UNCHANGED, "light changed" = setdiff(vk, UNCHANGED)),
+                   function(h) {
+    w <- as.numeric(vk %in% h)
+    data.table(outcome = o, implied_per_season = sum(w * E),
+               se = sqrt(drop(t(w * g) %*% Vv %*% (w * g))))
+  }), idcol = "hours")
+}))
+
+saveRDS(list(scale = scale, deaths = deaths, vsl = vsl, value = value, lower = lower,
+             implied = implied, implied_hours = implied_hours,
              inputs = list(GNI_PC_BRA = GNI_PC_BRA, GNI_PC_USA = GNI_PC_USA, PPP_BRL = PPP_BRL,
                            IPEA_DEATH_2014 = IPEA_DEATH_2014, IPCA_2014_12 = IPCA_2014_12,
                            IPCA_2025_12 = IPCA_2025_12)),
@@ -121,3 +174,7 @@ saveRDS(list(scale = scale, deaths = deaths, vsl = vsl, value = value,
 options(width = 180)
 print(scale); print(vsl); print(deaths)
 print(value[sum == SUMS[1], .(count, rule, deaths = round(deaths), value_intl_million = round(value_intl_million))])
+cat("\nLower end of the 95 percent interval, reference VSL:\n"); print(lower)
+cat("\nEvents implied by the change in traffic, per summer:\n")
+print(implied_hours[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])
+print(implied[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 1) else x)])

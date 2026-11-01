@@ -291,6 +291,53 @@ propósito. O cruzamento de 50% na janela continua em 0 (com horário de verão)
 contra −50 minutos (sem); nenhum número do texto vem desse `.rds`. Recompilado:
 39 + 26 + 1 + 66 páginas.
 
+## 14. Comentários sobre arredondamento e sobre as 62 mortes (01/11/2026)
+
+Dois comentários recebidos. **Arredondamento** (sem horários redondos, 16,7
+com erro-padrão de 12,9): sem mudança no paper. A queda vem só do SIM: as mortes
+PRF sem :00/:30 dão 56,1 (26,8) e os acidentes 16,7 (6,4) (`heaping.rds`);
+espalhar os horários redondos dá 31,4; e 16,7 não difere de 29,2, porque sobra
+menos da metade da amostra.
+
+**As 62 mortes dependem da hipótese de dose zero** (o dia inteiro dá −5 com
+erro-padrão de 66, que não descarta a realocação de James, 2023). Três mudanças:
+
+- **Mortes implicadas pelo tráfego** (`25`, seção 3; `tab:excess`, Painel C
+  novo). Volume do `15` empilhado nas 11 horas de sol e no resto do dia
+  (coeficientes iguais aos do `15`, covariância conjunta), aplicado às mortes
+  observadas em cada hora, com risco por veículo constante. Horas cuja luz não
+  mudou: na via +15 (31,6); PRF +7,2 (12,5); acidentes +99 (157). Horas cuja
+  luz mudou: −4, −1, −16 (só no `.rds`; a linha saiu da tabela para a nota caber
+  no `paper_wp`). O resto do dia mudou +2,6 no tráfego (erro-padrão de
+  2,0), e as horas da noite vizinhas à hora 0 perderam. O intervalo de 95% na via
+  ([−47, 77]) exclui uma queda de 62. Isso cobre só a compensação por viagens
+  que mudaram de hora, e só nas rodovias federais. Texto novo no fim de
+  `sec:offset` e uma frase na introdução.
+- **Fato separado da hipótese.** Na introdução: as 36 mortes a mais na própria
+  hora 0 não supõem nada sobre as outras horas, mas a contagem do dia supõe.
+  No resumo: "If hours whose light did not change were unaffected, abolition
+  added 62 crash-scene deaths each summer" (99 palavras).
+- **Valor no limite inferior** (`25`, `lower`). Modelo de dose: 38,8 mortes
+  (71 milhões) na janela e 45,6 (83 milhões) na temporada. Três horas
+  estimadas uma a uma: 14,9 (27 milhões). Na Seção 5, a economia de combustível
+  (96 a 139 milhões) passa do valor da temporada no limite inferior; está dito.
+
+Revisão com `applied-micro-paper-writing` sobre as linhas novas: modificador
+solto no resumo ("Assuming ..., abolition" → "If ..."); "Panel C computes" →
+"we compute"; frases encadeadas por dois-pontos separadas; "against a net count"
+→ "compared with"; "most direct route" → "mechanism"; "its"/"it" com referente.
+`manuscript-audit` sobre o diff: números conferidos com `total_cost.rds` e
+`reallocation.rds` (36; 15,1 e 31,6; 7,2 e 12,5; 2,60 e 2,03; 38,8, 45,6 e 14,9;
+70,9, 83,2 e 27,2 milhões). Dois verbos que o intervalo não sustentava foram
+corrigidos ("slightly more deaths, not fewer" virou o aumento de 15 (32) com o
+intervalo que exclui a queda; "rose slightly" virou "changed by 2.6 (2.0)"). Um
+início repetido ("At ... At") foi desfeito. Um "Float too large" de 37pt na
+`tab:excess` do `paper_wp`, criado por esta rodada, saiu encurtando a nota do
+Painel C e tirando a linha das horas cuja luz mudou. Recompilado: 40 + 26 + 1 +
+67 páginas; zero indefinidas, Overfull \hbox e floats grandes demais nos três
+documentos; o fim de cada nota nova aparece no PDF; resumo com 99 palavras; das
+17 tabelas, só `tab_excess.tex` mudou.
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied
