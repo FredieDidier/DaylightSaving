@@ -16,6 +16,8 @@
 \urlstyle{same}                    % the bibliography sets URLs in italics, where typewriter type spaces out every dot
 \usepackage{setspace}
 \setstretch{1.3}
+\usepackage{etoolbox}
+\AtBeginEnvironment{table}{\renewcommand{\arraystretch}{0.88}}   % tighter rows, so the tallest table fits the 12pt page
 \usepackage[labelfont=bf, labelsep=period, font=small]{caption}
 \captionsetup[table]{position=above, skip=6pt}
 \usepackage[hidelinks]{hyperref}

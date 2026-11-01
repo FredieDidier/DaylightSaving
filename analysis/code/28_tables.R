@@ -180,6 +180,7 @@ write_tab("tab_dose", c(
 
 # ── Table: excess events per summer ─────────────────────────────────────────
 ex <- rd("reallocation.rds")$sums
+exh <- rd("reallocation.rds")$hours[hour == "eve+0"][match(TRAFFIC, outcome)]
 EX <- c("evening, dark (0, +1)"            = "Two hours after sunset",
         "morning, light (0)"               = "Hour after sunrise",
         "net: evening 0, +1 and morning 0" = "Two hours after sunset and hour after sunrise",
@@ -208,10 +209,13 @@ write_tab("tab_excess", c(
   row("Net, whole DST season (2017 rule)", f0(dmain$season_net)), row("", se0(dmain$season_net_se)),
   row("\\quad effect by part of the window", f0(dmain$season_net_term)), row("", se0(dmain$season_net_term_se)),
   "\\addlinespace",
-  panel("Panel B. Hour by hour", 4), ex_rows(names(EX)),
+  panel("Panel B. Hour by hour", 4),
+  row("Hour after sunset", f0(exh$excess_per_season)), row("", se0(exh$excess_se)),
+  ex_rows(names(EX)),
   "\\addlinespace",
   panel("Panel C. Implied by the change in traffic alone, at an unchanged risk per vehicle", 4),
   im_rows("light unchanged", "Hours whose light did not change"),
+  im_rows("light changed", "Hours whose light changed"),
   close_))
 
 # ── Table: traffic volume and risk per vehicle ──────────────────────────────

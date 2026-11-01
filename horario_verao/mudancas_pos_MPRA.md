@@ -338,6 +338,15 @@ Painel C e tirando a linha das horas cuja luz mudou. Recompilado: 40 + 26 + 1 +
 documentos; o fim de cada nota nova aparece no PDF; resumo com 99 palavras; das
 17 tabelas, só `tab_excess.tex` mudou.
 
+Depois, a pedido do Fredie, a `tab:excess` ganhou duas linhas: "Hour after
+sunset" no Painel B (36 (10) na via, 24 (7) PRF, 112 (25) acidentes, de
+`reallocation.rds`, `hours`), para que as 36 mortes da introdução e da Seção 4.1
+tenham tabela; e de volta "Hours whose light changed" no Painel C. Para a tabela
+caber no `paper_wp` (12pt), as linhas das tabelas ali ficaram mais juntas
+(`\arraystretch` 0.88, só no `paper_wp.tex`); o paper da submissão não muda.
+Recompilado: 40 + 26 + 1 + 67 páginas, zero indefinidas, Overfull \hbox e
+floats grandes demais nos três documentos; a nota inteira aparece no PDF.
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied
