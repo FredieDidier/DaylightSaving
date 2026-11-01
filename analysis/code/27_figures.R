@@ -115,7 +115,7 @@ g_design <- g
 # night, by 10-minute bin of clock time minus standard-time sunset (plotted at
 # the bin midpoint).
 fs <- rd("prf_clock_check.rds")$window_curve
-FS <- c("With DST, 2008/09\u20132018/19", "Without DST, 2019/20\u20132024/25")
+FS <- c("With DST, 2008/09\u20132018/19", "Without DST, 2019/20\u20132023/24")
 fs <- rbind(fs[, .(m = rbin + 5, share = 100 * `pre (DST)`,     regime = FS[1])],
             fs[, .(m = rbin + 5, share = 100 * `post (no DST)`, regime = FS[2])])
 fs[, regime := factor(regime, levels = FS)]

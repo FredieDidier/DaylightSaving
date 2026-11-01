@@ -280,6 +280,17 @@ Só documentação; nenhuma estimativa, tabela ou interpretação mudou.
   pessoas da PRF já estava descrito no A.3 e não foi repetido.
 - **Apêndice B.5.** A frase da iluminação usa a mesma definição e remete ao A.
 
+## 13. Figura 2b no período da amostra (01/11/2026)
+
+O painel B de `fig:light` (parcela dos acidentes da PRF registrada como
+anoitecer ou noite, tratados, janela de verão) usava as temporadas sem horário
+de verão até 2024/25 (`03`, `sy %between% c(2008L, 2024L)`), uma a mais que a
+amostra principal (2008/09 a 2023/24). Agora para em 2023/24; legenda "Without
+DST, 2019/20–2023/24". Só a tabela de volume (PNCT) segue até 2024/25, de
+propósito. O cruzamento de 50% na janela continua em 0 (com horário de verão)
+contra −50 minutos (sem); nenhum número do texto vem desse `.rds`. Recompilado:
+39 + 26 + 1 + 66 páginas.
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied
