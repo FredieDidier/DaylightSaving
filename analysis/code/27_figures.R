@@ -299,21 +299,24 @@ save_fig(stack_rows(rows), "fig_bahia", height = 6.2)
 
 # ── Appendix: the hour moved earlier and later ──────────────────────────────
 # Each point: the 60-minute window starting s minutes after standard-time
-# sunset (19_heaping.R). s = 0 is the paper's hour.
-sh <- rd("heaping.rds")$results[variant == "shift"]
+# sunset (19_heaping.R), with times as recorded and with times on the hour or
+# half hour spread over 30 minutes, which keeps a shift from moving whole
+# heaps in or out of the window. s = 0 is the paper's hour.
+WS <- c("Times as recorded", "Rounded times spread over 30 minutes")
+sh <- rd("heaping.rds")$results[variant %in% c("shift", "spread :00 and :30")]
 sh[, `:=`(outcome = factor(OUTCOME_LAB[outcome], levels = TRAFFIC_LAB),
-          base = factor(fifelse(shift_min == 0L, "The paper's hour", "Window moved"),
-                        levels = c("The paper's hour", "Window moved")))]
+          series = factor(fifelse(variant == "shift", WS[1], WS[2]), levels = WS))]
 sh[, c("lo", "hi") := ci(lp / 100, se / 100)]
-g <- ggplot(sh, aes(shift_min, lp, colour = base, shape = base)) +
+g <- ggplot(sh, aes(shift_min, lp, colour = series, shape = series)) +
   geom_hline(yintercept = 0, colour = "grey55", linewidth = 0.4) +
-  geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.6) +
-  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = lo, ymax = hi), width = 0, linewidth = 0.5,
+                position = position_dodge(width = 2.5)) +
+  geom_point(size = 1.8, position = position_dodge(width = 2.5)) +
   facet_wrap(~ outcome, ncol = 1, scales = "free_y") +
   scale_x_continuous(breaks = seq(-15, 15, 5), labels = signed_lab) +
   scale_y_continuous(labels = num_lab) +
-  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["grey"]]), levels(sh$base))) +
-  scale_shape_manual(values = setNames(c(16, 1), levels(sh$base))) +
+  scale_colour_manual(values = setNames(c(PAL[["red"]], PAL[["blue"]]), WS)) +
+  scale_shape_manual(values = setNames(c(16, 17), WS)) +
   labs(x = "Start of the 60-minute window, minutes after standard-time sunset",
        y = "Effect of abolition (log points)") +
   theme_paper() + theme_outcome_strip()

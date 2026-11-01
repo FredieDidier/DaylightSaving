@@ -163,6 +163,41 @@ sunset" da Tabela 6.
 **Por quê:** a fonte da lista dos municípios defrontantes só aparecia na nota da
 Tabela B1.
 
+### Arredondamento dos horários e janela deslocada
+
+**Antes:**
+> Shifting the hour 0 window by 5 to 15 minutes moves the estimate in the
+> direction light predicts: it is larger when the window starts later and the
+> hour is darker. Spreading each death recorded on the hour or half hour evenly
+> over the 30 minutes around its recorded time gives 31.4 log points (9.5);
+> dropping those deaths altogether leaves 16.7 (12.9), with less than half the
+> sample (Online Appendix Figure~\ref{fig:window-shift}).
+
+**Depois:**
+> Shifting the hour 0 window by 5 to 15 minutes moves the estimate in the
+> direction light predicts, but each shift also moves heaps of recorded times
+> into or out of the window. Spreading each death recorded on the hour or half
+> hour evenly over the 30 minutes around its recorded time gives 31.4 log points
+> (9.5) in hour 0. With the times spread, the estimate rises at every step, from
+> 15.8 (9.2) for a window that starts 15 minutes before standard-time sunset to
+> 40.4 (9.2) for one that starts 15 minutes after it (Online Appendix
+> Figure~\ref{fig:window-shift}). Dropping the deaths recorded on the hour or
+> half hour altogether leaves 16.7 (12.9), with less than half the sample.
+
+**Por quê:** um comentário levantou três leituras da janela deslocada. (1) A −15
+o efeito cai para 14,6 (EP 11,3) e perde significância, o que pode ser lido como
+dependência da definição. (2) "It is larger when the window starts later" é mais
+forte que a sequência com os horários como registrados: 14,6; 23,9; 25,9; 29,2;
+35,3; 46,7; 41,2, com pico em +10. (3) Deslocar a janela muda quais picos de
+arredondamento (hora cheia, meia hora) entram nela, e o paper tratava o
+arredondamento e o deslocamento separadamente. O `19_heaping.R` agora estima a
+variante espalhada em cada deslocamento. Com os horários espalhados, a sequência
+sobe em todos os passos nos três desfechos: mortes na via 15,8; 21,7; 26,9; 31,4;
+35,8; 38,6; 40,4; mortes da PRF 21,0 a 72,3; acidentes com vítima 3,5 a 32,4.
+Excluindo os horários arredondados também sobe (−8,3 a 41,6 nas mortes na via;
+só no scratchpad, fora do paper). O pico em +10 vinha do arredondamento. Nenhuma
+estimativa que já estava no paper mudou; a Tabela B1 é a mesma.
+
 ## Seção IV.D — Light, not the clock (Tabela 4)
 
 ### Tabela 4
@@ -521,6 +556,55 @@ estimado e mantém o fecho sobre pedestres e iluminação.
 construção descritas.
 
 ## Apêndice B — Additional Results
+
+### B.1 Other windows, samples, and clocks — Figura B1, nota e parágrafo
+
+**Figura B1:** passa a ter duas séries por deslocamento, "Times as recorded" e
+"Rounded times spread over 30 minutes" (o mesmo nome da linha da Tabela B1).
+
+**Nota da Figura B1, Antes:**
+> Each point is equation~(\ref{eq:main}) for a 60-minute window that starts the
+> stated number of minutes after standard-time sunset; 0 is hour 0 of
+> Table~\ref{tab:main}. 95 percent confidence intervals, standard errors
+> clustered by state.
+
+**Depois:**
+> […] 0 is hour 0 of Table~\ref{tab:main}. Rounded times spread over 30
+> minutes: each event recorded on the hour or half hour counts in the window in
+> proportion to the part of the 30 minutes around its recorded time that falls
+> inside it. 95 percent confidence intervals, standard errors clustered by
+> state.
+
+**Parágrafo, Antes:**
+> Moving the window changes the estimate in the direction light predicts: a
+> window that starts 15 minutes before standard-time sunset includes minutes
+> that were light in both regimes and yields 14.6 log points for road deaths,
+> and one that starts 15 minutes after it is darker throughout and gives 41.2
+> (Figure~\ref{fig:window-shift}). Spreading the times recorded on the hour or
+> half hour moves the estimate to 31.4 (9.5), and dropping them 16.7 (12.9),
+> with less than half the deaths in hour 0 (Table~\ref{tab:measurement}).
+
+**Depois:**
+> Moving the window changes the estimate in the direction light predicts. A
+> window that starts 15 minutes before standard-time sunset includes minutes
+> that were light in both regimes and yields 14.6 log points for road deaths,
+> and one that starts 15 minutes after it is darker throughout and gives 41.2
+> (Figure~\ref{fig:window-shift}). With times as recorded, the estimate for
+> road deaths does not rise at every step: it is 46.7 for a window that starts
+> 10 minutes after standard-time sunset, above the 41.2 at 15 minutes. Each
+> shift also moves heaps of times recorded on the hour or half hour into or out
+> of the window. When those times are spread evenly over the 30 minutes around
+> them, the estimate rises at every step for all three outcomes, from 15.8 (9.2)
+> to 40.4 (9.2) for road deaths. In hour 0 itself, spreading the rounded times
+> moves the estimate to 31.4 (9.5), and dropping them gives 16.7 (12.9), with
+> less than half the deaths in hour 0 (Table~\ref{tab:measurement}).
+
+**Por quê:** o mesmo comentário da Seção IV.C. O apêndice mostra o pico em +10
+com os horários como registrados, em vez de deixá-lo para o parecerista, e diz
+que ele some quando o arredondamento é separado do deslocamento. A frase da
+janela a −15 fica: ela já explica que esses minutos estavam claros nos dois
+regimes, então um efeito menor ali é o que a luz prevê, e não sinal de que o
+resultado depende da escolha da janela.
 
 ### B.1 Other windows, samples, and clocks — nota da Tabela B2
 

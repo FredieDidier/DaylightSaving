@@ -16,10 +16,12 @@
 #   solar  s = 0, sunset from the full NOAA solar calculator (Meeus) instead of
 #          the NOAA general equations of 00_utils.R; at most 1.6 minutes apart
 #          over all event dates (sunset_gap in the cache)
-#   spread s = 0, every event recorded at :00 or :30 spread evenly over the 30
-#          minutes centred on its recorded time, so it counts in hour 0 in
-#          proportion to the part of that half hour inside the bin (Poisson
-#          pseudo-likelihood takes the fractional counts)
+#   spread every s of shift, every event recorded at :00 or :30 spread evenly
+#          over the 30 minutes centred on its recorded time, so it counts in
+#          the window in proportion to the part of that half hour inside it
+#          (Poisson pseudo-likelihood takes the fractional counts). Moving the
+#          window moves which heaps fall inside it; spreading separates that
+#          from the change in light across the shifts.
 # =============================================================================
 
 source(here::here("config", "config.R"))
@@ -37,10 +39,10 @@ ev[, rel := cmin - sun_times(date, lat, lon, std_offset_h)$sunset]
 # The minutes recomputed here must give back the bins of the event file.
 stopifnot(all(floor(ev$rel / 60) == ev$bin_set))
 ev[, heap := cmin %% 30L == 0L]
-# Share of each event inside hour 0: 0 or 1, except for a heaped time, spread
-# over [rel - 15, rel + 15).
-ev[, in0 := fifelse(heap, pmax(0, pmin(rel + 15, 60) - pmax(rel - 15, 0)) / 30,
-                    as.numeric(rel >= 0 & rel < 60))]
+# Share of each event inside the window [s, s + 60): 0 or 1, except for a
+# heaped time, spread over [rel - 15, rel + 15).
+share_in <- function(s) fifelse(ev$heap, pmax(0, pmin(ev$rel + 15, s + 60) - pmax(ev$rel - 15, s)) / 30,
+                                as.numeric(ev$rel >= s & ev$rel < s + 60))
 
 # Full NOAA solar calculator (Meeus, Astronomical Algorithms), sunset in
 # minutes after local standard midnight.
@@ -87,8 +89,11 @@ res <- rbindlist(lapply(TRAFFIC, function(o) rbind(
              as.data.table(fit(ev$outcome == o & ev$rel >= 0 & ev$rel < 60 & !ev$heap))),
   data.table(outcome = o, variant = "Meeus solar algorithm", shift_min = 0L,
              as.data.table(fit(ev$outcome == o & ev$rel_meeus >= 0 & ev$rel_meeus < 60))),
-  data.table(outcome = o, variant = "spread :00 and :30", shift_min = 0L,
-             as.data.table(fit(ev$outcome == o & ev$in0 > 0, ev$in0)))
+  rbindlist(lapply(SHIFTS, function(s) {
+    sh <- share_in(s)
+    data.table(outcome = o, variant = "spread :00 and :30", shift_min = s,
+               as.data.table(fit(ev$outcome == o & sh > 0, sh)))
+  }))
 )))
 heap_share <- ev[, .(full_hour_pct = 100 * mean(cmin %% 60L == 0L),
                      half_hour_pct = 100 * mean(cmin %% 60L == 30L),
