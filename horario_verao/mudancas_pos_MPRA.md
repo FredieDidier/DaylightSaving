@@ -339,8 +339,8 @@ como já fazia com a hora 0.
 > On federal highways, the dose model implies 31 deaths (12; permutation
 > $p=0.135$) per summer; injury crashes, whose response to darkness is weaker,
 > net 43 (57). An offset would require deaths to fall in the hours whose light
-> did not change, and the most direct mechanism would be trips moved from the
-> dark hour to those hours. In Panel C of Table~\ref{tab:excess}, we compute the
+> did not change, and the most direct mechanism would be trips moved out of
+> those hours. In Panel C of Table~\ref{tab:excess}, we compute the
 > deaths that the change in federal highway traffic would imply in each hour if
 > the risk per vehicle had stayed the same. Traffic fell in the evening hours
 > adjacent to hour 0 and changed by 2.6 log points (standard error 2.0) over the
@@ -365,6 +365,11 @@ como já fazia com a hora 0.
   mostrar que o aumento veio do risco por viagem. Termina com os dois limites do
   teste: só cobre mudança no horário das viagens, e só rodovias federais, não as
   vias urbanas, onde morre boa parte dos pedestres.
+- "trips moved out of those hours": uma versão intermediária dizia "trips moved
+  from the dark hour to those hours". Viagens que entram nas horas cuja luz não
+  mudou aumentariam as mortes nelas, não diminuiriam; o mecanismo tinha o sinal
+  errado e contradizia a introdução. Para as mortes caírem nessas horas, as
+  viagens têm de sair delas.
 
 ## Seção IV.I — Before and after travel adjusted
 
@@ -390,14 +395,17 @@ teste não a sustenta nas rodovias federais, e a ressalva fica para as outras vi
 
 **Depois:**
 > If the summer-window count is set at the lower end of its 95 percent
-> confidence interval, 39 deaths, the cost is 71 million. For the three hours
-> estimated one at a time, which do not impose the dose model's weighting of
-> hours, the lower end is 15 deaths, or 27 million.
+> confidence interval, 39 deaths, the cost is 71 million. For the two evening
+> hours and the morning hour estimated one at a time (Panel B of
+> Table~\ref{tab:excess}), whose sum does not impose the dose model's weighting
+> of hours, the lower end is 15 deaths, or 27 million.
 
 **Por quê:** a conta de custo usava só a estimativa pontual de um número que
 depende de uma hipótese e tem erro amostral. O limite inferior do intervalo de 95%
-mostra o menor custo que o intervalo admite. As três horas estimadas uma a uma
-mostram o mesmo sem os pesos de luz do modelo de dose.
+mostra o menor custo que o intervalo admite. A soma das duas horas da noite e da
+hora da manhã, estimadas uma a uma, mostra o mesmo sem os pesos de luz do modelo
+de dose. Uma versão intermediária dizia "the three hours" sem dizer quais nem onde
+estão; agora a frase as nomeia e aponta para a linha da Tabela 6.
 
 **Antes:**
 > The fuel savings are of the same order as the value of the deaths of a DST
