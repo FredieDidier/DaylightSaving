@@ -49,17 +49,24 @@ a leitura de que o 62 decorre da manhã não ter compensado. A hipótese de que 
 > […] from November 15 to February 14 (standard error 12; permutation
 > $p=0.001$). This is the count most directly supported by the observed summer
 > window. […] the change is too imprecise (standard error 66) to confirm the
-> count or rule it out. Within the treated states alone, the decline in deaths
-> in the morning hour that turned light offsets less than a third of the rise in
-> the evening hour (Online Appendix Table B4).
+> count or rule it out. In the model that weights each hour by its change in
+> light, a given change in darkness has a larger effect on road deaths in the
+> evening than in the morning (permutation $p=0.001$).
 
 **Por quê:** a frase final antiga contradizia a anterior: o parágrafo dizia que
 o dia inteiro é impreciso demais e logo fechava como se o dia inteiro tivesse
-confirmado a ausência de compensação. Agora o parágrafo fecha com a evidência
-que de fato sustenta a comparação manhã-noite (já estava no apêndice: dentro dos
-tratados, −19,4 log pts na manhã contra +47,2 na noite). O p da permutação
-responde à pergunta previsível de por que a inferência robusta só aparecia na
-hora 0.
+confirmado a ausência de compensação. Agora o parágrafo fecha com o teste que
+de fato compara manhã e noite, a diferença entre os dois coeficientes do modelo
+de dose, que é uma tripla diferença e passa na permutação. O p da permutação no
+62 responde à pergunta previsível de por que a inferência robusta só aparecia
+na hora 0.
+
+Uma versão intermediária usava a Tabela B4 ("within the treated states alone,
+the decline in deaths in the morning hour offsets less than a third of the rise
+in the evening hour"). Saiu numa segunda revisão: a queda da manhã dentro dos
+tratados (−19,4) é igual à dos controles (−23,5), então não é efeito da
+abolição; a conta só valia em mortes, não em log pts (41%); e a introdução
+mostraria uma queda na manhã que o resumo diz não ser detectável.
 
 ## 3. Introdução, segunda contribuição
 
@@ -103,11 +110,15 @@ contagem líquida). Agora os três números centrais têm a mesma proteção.
   clustered by state" (pelo EP do método delta: <0,001, 0,008, 0,448) e
   "p-value, permutation of treated states": 0,001 (mortes na via), 0,135 (mortes na PRF), 0,627
   (acidentes na PRF). A nota ganhou uma frase sobre o teste e outra dizendo por
-  que só há permutação: a contagem é uma função não linear dos dois
-  coeficientes, então não há modelo restrito para o score wild bootstrap nem
-  análogo linear para o wild cluster bootstrap da Tabela 2.
+  que não há os bootstraps da Tabela 2: a contagem é uma função não linear dos
+  dois coeficientes, então não há modelo restrito para o score wild bootstrap
+  nem análogo linear para o wild cluster bootstrap. (Um bootstrap-t sem impor a
+  nula seria possível; a nota não diz que só a permutação se aplica.)
 - **Texto**: "(standard error 12)" virou "(standard error 12; permutation
-  $p=0.001$)".
+  $p=0.001$)". Nas mortes da PRF, "31 deaths (12)" virou "31 deaths (12;
+  permutation $p=0.135$)". **Por quê:** o clusterizado dá 0,008 e a permutação
+  0,135; depois de reportar a permutação na tabela, omiti-la no texto pareceria
+  seletivo. Nenhum trecho afirma que noite ≠ manhã é significativa na PRF.
 
 ## 6. Seção 4 (transições e partes da janela) — o nulo de 24/12 a 15/01
 
@@ -116,17 +127,19 @@ contagem líquida). Agora os três números centrais têm a mesma proteção.
 > not say why no increase is detectable in those weeks.
 
 **Depois:**
-> Traffic on federal highways did not change differently in those weeks.
-> Vehicles in hour 0 fell by about as much from December 24 to January 15 as in
-> the school weeks, and neither trucks and buses in that hour nor the day's
-> traffic differed between the two periods (Online Appendix Table B3). These checks do not rule out holiday travel on other roads as
-> an explanation, and the data do not say why no increase is detectable in those
-> weeks.
+> Traffic on federal highways shows no detectable difference between the two
+> periods. Vehicles in hour 0 fell by 7.4 log points from December 24 to
+> January 15 and by 5.3 in the school weeks, and the same holds for trucks and
+> buses in that hour and for the day's traffic (Online Appendix Table B3). These
+> checks do not rule out holiday travel on other roads as an explanation, and
+> the data do not say why no increase is detectable in those weeks.
 
 **Por quê:** o nulo de fim de ano era a parte mais solta do texto. A hipótese
 óbvia (viagens de férias mudam o tráfego no início da noite) era testável com
 dados que o paper já tem. O teste não a sustenta nas rodovias federais, e o
-texto agora diz isso e limita a ressalva às outras vias.
+texto agora diz isso e limita a ressalva às outras vias. "No detectable
+difference", e não "did not change differently": a diferença de 2,1 (2,4) tem
+intervalo de cerca de −2,6 a 6,8.
 
 ## 7. Apêndice — tabela e parágrafo novos
 
@@ -181,7 +194,8 @@ nova afirma o que o desenho identifica e mantém o fecho sobre pedestres.
 - **Contagens das praças de pedágio da ANTT**: não. As praças ficam quase todas
   em estados tratados, então não servem para a tripla diferença.
 - **"SIM menos PRF" como proxy de vias não federais**: não. As duas bases não
-  casam óbito a óbito, e o SIM registra o local do óbito.
+  casam óbito a óbito, então a subtração por estado, dia e hora pode dar
+  negativa e soma os erros das duas bases.
 - **Temporada 2024/25**: fica para quando o SIM 2025 for definitivo; não é
   pré-requisito para submeter.
 - **Divisão capital/região metropolitana no SIM**: opcional, para uma tabela de
