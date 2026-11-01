@@ -69,10 +69,11 @@ robusta a poucos clusters (23 estados), e o 62 é o número do resumo.
 > change were unaffected, the change is too imprecise (standard error 66) to
 > confirm the count or rule it out. A decline in deaths in the hours whose light
 > did not change, large enough to cancel the count, could come from trips moving
-> out of those hours, but the traffic counts show no such shift: if the risk per
+> out of those hours, but the traffic counts show no such shift. If the risk per
 > vehicle had stayed the same, the change in traffic would imply an increase of
-> 15 deaths per summer (standard error 32) in those hours, and the 95 percent
-> confidence interval excludes a decline as large as the net count. In the model
+> 15 deaths per summer (standard error 32) in those hours. Its 95 percent
+> confidence interval excludes a decline as large as the net count, but not a
+> partial offset of up to about three quarters of it. In the model
 > that weights each hour by its change in light, a given change in darkness has a larger effect on road deaths in the
 > evening than in the morning (permutation $p=0.001$).
 
@@ -107,6 +108,11 @@ robusta a poucos clusters (23 estados), e o 62 é o número do resumo.
   não tinha antecedente no parágrafo e "shift of trips" não dizia de que horas
   as viagens sairiam. A frase atual diz qual queda anularia o 62 e por que
   canal.
+- "but not a partial offset of up to about three quarters of it": um comentário
+  pediu que o texto principal dissesse o que o intervalo não exclui, para
+  antecipar a objeção baseada em \citet{james2023let}. O limite inferior, −46,8,
+  é 75% do 62,5. A frase do tráfego, que encadeava três afirmações com dois-pontos
+  e "and", virou três frases.
 - A última frase (noite contra manhã, permutação p = 0,001) é o teste que de
   fato compara manhã e noite. O parágrafo fecha com o que está identificado.
 
@@ -321,6 +327,23 @@ lista a fonte de todo dado usado na tabela.
 ### Texto
 
 **Antes:**
+> Panel D of Table~\ref{tab:robustness} finds no detectable change at midday or
+> at night, but with about 580 road deaths a summer in each, its confidence
+> intervals also include a fall as large as the net count.
+
+**Depois:**
+> Panel D of Table~\ref{tab:robustness} finds no detectable change at midday or
+> at night. Each of these blocks had only about 580 road deaths with a recorded
+> time per summer window in the treated states before abolition, so their
+> confidence intervals also include a fall as large as the net count.
+
+**Por quê:** um comentário disse que não estava claro o que eram as 580 mortes.
+São as mortes na via com hora registrada em cada bloco (meio-dia 585, noite 572)
+por janela de verão, nos estados tratados antes da abolição (`placebo_hours.rds`).
+"In each" não dizia a que "each" se referia; a frase agora nomeia os blocos e diz
+que o número pequeno é a razão dos intervalos largos.
+
+**Antes:**
 > Abolition added 62 road deaths per summer window (standard error 12): 57 in
 > the evening hours that grew darker, […]
 
@@ -347,8 +370,9 @@ como já fazia com a hora 0.
 > adjacent to hour 0 and changed by 2.6 log points (standard error 2.0) over the
 > rest of the day. In the hours whose light did not change, the implied change
 > is an increase of 15 road deaths per summer (standard error 32). Its 95
-> percent confidence interval excludes a decline as large as the net count of
-> 62. For federal highway deaths, which the stations cover, the implied change
+> percent confidence interval, from a decline of about 47 deaths to an increase
+> of about 77, excludes a decline as large as the net count of 62 but not a
+> partial offset of up to about three quarters of it. For federal highway deaths, which the stations cover, the implied change
 > is 7 (12), compared with a net count of 31. In the hours whose light changed,
 > the traffic alone would imply 4 fewer road deaths (standard error 15), so the
 > increase in those hours came from a higher risk per trip, not from more trips.
@@ -366,6 +390,9 @@ como já fazia com a hora 0.
   mostrar que o aumento veio do risco por viagem. Termina com os dois limites do
   teste: só cobre mudança no horário das viagens, e só rodovias federais, não as
   vias urbanas, onde morre boa parte dos pedestres.
+- O intervalo (−46,8 a 77,0) e a compensação parcial que ele não exclui: mesmo
+  comentário da introdução. Aqui o texto dá os dois extremos, para o leitor ver
+  de onde vêm os três quartos.
 - "trips moved out of those hours": uma versão intermediária dizia "trips moved
   from the dark hour to those hours". Viagens que entram nas horas cuja luz não
   mudou aumentariam as mortes nelas, não diminuiriam; o mecanismo tinha o sinal
