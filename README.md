@@ -13,7 +13,7 @@ road deaths in the clock hour that turned dark. It is written in R and has three
 `config/00_master_build.R` builds the data (12 scripts), `analysis/code/00_master_analysis.R`
 estimates everything and writes every figure and table (28 scripts), and `latex/build.sh`
 compiles the paper and the Online Appendix. The main text has 4 figures and 7 tables
-and the Online Appendix has 8 figures and 8 tables, all produced by the code. The
+and the Online Appendix has 8 figures and 10 tables, all produced by the code. The
 analysis takes about 2 to 3 hours on an 8-core laptop; rebuilding the data from
 scratch takes longer, mostly in downloads.
 
@@ -54,7 +54,7 @@ license of the repository (CC BY 4.0 on openICPSR); third-party data keep their 
 | Daily rain grid BR-DWGD v3.2.4 | Xavier et al. (2022) | `build/08` | manual download of `pr_20010101_20251231_BR-DWGD_UFES_UTEXAS_v_3.2.4.nc` from <https://sites.google.com/site/alexandrecandidoxavierufes/brazilian-daily-weather-gridded-data>; no license stated | no (2.6 GB raw grid); the derived file `weather/output/pr_seat_day.parquet` is included |
 | Census 2022 (street lighting, table 9839) and Census 2010 (tract surroundings) | IBGE (2011, 2023) | `build/09` | SIDRA API; Census 2010 through the R package `censobr` | yes (`census/input`, `census/output`) |
 | Population of the states, Census 2022 (table 4709) | IBGE (2023) | none: quoted in Section I | SIDRA | the two totals are in the text |
-| Country outlines for the maps | Natural Earth (n.d.) | `analysis/code/29` | R packages `rnaturalearth`, `rnaturalearthdata`; public domain | read from the R package |
+| Country outlines for the maps | Natural Earth (n.d.) | `analysis/code/27` | R packages `rnaturalearth`, `rnaturalearthdata`; public domain | read from the R package |
 | GNI per head and PPP conversion factor, 2025 | World Bank (2026) | `analysis/code/25` | WDI series NY.GNP.PCAP.PP.CD and PA.NUS.PPP; CC BY 4.0 | values written in the script |
 | Consumer price index (IPCA) | IBGE (2026) | `analysis/code/25` | SIDRA table 1737 | values written in the script |
 | Social cost of a death on a federal highway | Ipea and PRF (2015), Table 6A | `analysis/code/25` | public report | value written in the script |
@@ -75,12 +75,12 @@ Every data file lives under one folder, `DROPBOX_ROOT/build/`, with `DROPBOX_ROO
 | `sim/output/sim_<year>.parquet` (2008–2025) | `build/05` | death certificates, selected columns | yes |
 | `prf/output/prf_accidents.parquet` | `build/03` | one row per federal highway crash, 2007–2025 | yes |
 | `prf/output/prf_persons.parquet` | `build/11` | one row per person in a federal highway crash: role, condition, sex, age | yes |
-| `geo/output/muni_geo.parquet`, `br_states.gpkg` | `build/04`, `12` | municipal seats with time zone; state boundaries | yes |
+| `geo/output/muni_geo.parquet`, `br_states.gpkg` | `build/04`, `10` | municipal seats with time zone; state boundaries | yes |
 | `geo/input/Municipios_Defrontantes_com_o_Mar_2022.xls`, `geo/output/muni_coastal.parquet` | `build/12` | the 279 municipalities that face the sea | yes |
 | `pnct/output/pnct_hourly.parquet`, `pnct_station_day_bins.parquet`, `download_log.csv` | `build/06`, `07`, `analysis/code/15` | hourly vehicle counts by station | yes |
 | `weather/output/pr_seat_day.parquet` | `build/08` | daily rain at each municipal seat | yes |
-| `census/input/*`, `census/output/muni_lighting.parquet` | `build/09` | share of households on unlit streets by municipality | yes |
-| `audit/events_sun_bins.parquet`, `audit/*.rds` | `analysis/code/01`–`28` | event file and the cached estimates that `29` and `30` read | yes |
+| `census/input/*`, `census/output/muni_lighting.parquet` | `build/09` | share of households on block faces without street lighting, by municipality | yes |
+| `audit/events_sun_bins.parquet`, `audit/*.rds` | `analysis/code/01`–`28` | event file and the cached estimates that `27` and `28` read | yes |
 
 All files are Parquet, GeoPackage, CSV, JSON or R's `.rds`; each build script describes
 its output in its header.
@@ -105,8 +105,8 @@ its output in its header.
 
 - [x] Random seeds are set at the top of every script that draws:
   `analysis/code/05_imputation.R` line 37, `06_inference.R` lines 40–41,
-  `09_within_day.R` line 51, `14_inference_pedestrian.R` lines 28–29,
-  `16_inference_volume.R` line 40.
+  `09_within_day.R` line 50, `14_inference_pedestrian.R` lines 28–29,
+  `16_inference_volume.R` line 40, `23_light_dose.R` line 67.
   All draws are made before the work is split across cores, so results do not
   depend on the number of cores.
 
@@ -132,7 +132,7 @@ The code was last run on an Apple M1 Pro laptop (8 cores, 16 GB of memory, macOS
 with the default of 5 worker processes. The analysis takes about 2 to 3 hours, most of it
 in the permutation and bootstrap draws of `05`, `06`, `14`, `16`, `23` and `26`; this
 figure comes from the timestamps of the cached results, not from one uninterrupted run.
-Rebuilding the data adds the downloads of `build/02`, `05`, `06`, `10` and `13`, which depend on
+Rebuilding the data adds the downloads of `build/02`, `05`, `06`, `10`, `11` and `12`, which depend on
 the remote servers and resume where they stopped.
 
 ## Description of programs/code
@@ -206,31 +206,31 @@ only read their caches and write the files. Figures are in `analysis/output/grap
 |---|---|---|---|---|
 | Figure 1 | `27_figures.R` | 428 | `maps/fig_map_brazil.pdf` | `build/01`, `10` |
 | Figure 2 | `27_figures.R` | 148 | `fig_light.pdf` | `03` |
-| Table 1 | `28_tables.R` | 80 | `tab_descriptives.tex` | `13` |
-| Table 2 | `28_tables.R` | 112 | `tab_main.tex` | `01`, `06` |
+| Table 1 | `28_tables.R` | 81 | `tab_descriptives.tex` | `13` |
+| Table 2 | `28_tables.R` | 113 | `tab_main.tex` | `01`, `06` |
 | Figure 3 | `27_figures.R` | 173 | `fig_hours_from_sunset.pdf` | `01` |
 | Figure 4 | `27_figures.R` | 192 | `fig_event_study.pdf` | `02` |
-| Table 3 | `28_tables.R` | 278 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
-| Table 4 | `28_tables.R` | 166 | `tab_dose.tex` | `23` |
-| Table 5 | `28_tables.R` | 136 | `tab_pedestrians.tex` | `12`, `14` |
-| Table 6 | `28_tables.R` | 194 | `tab_excess.tex` | `11`, `23` |
-| Table 7 | `28_tables.R` | 519 | `tab_cost.tex` | `25` |
+| Table 3 | `28_tables.R` | 291 | `tab_robustness.tex` | `04`, `05`, `08`, `09`, `18`, `20` |
+| Table 4 | `28_tables.R` | 167 | `tab_dose.tex` | `23` |
+| Table 5 | `28_tables.R` | 137 | `tab_pedestrians.tex` | `12`, `14` |
+| Table 6 | `28_tables.R` | 201 | `tab_excess.tex` | `11`, `23`, `25` |
+| Table 7 | `28_tables.R` | 532 | `tab_cost.tex` | `25` |
 | Figure A1 | `27_figures.R` | 361 | `fig_record_integrity.pdf` | `22` |
-| Table A1 | `28_tables.R` | 314 | `tab_measurement.tex` | `19`, `22` |
+| Table A1 | `28_tables.R` | 327 | `tab_measurement.tex` | `19`, `22` |
 | Figure B1 | `27_figures.R` | 320 | `fig_window_shift.pdf` | `19` |
 | Figure B2 | `27_figures.R` | 344 | `fig_leave_out.pdf` | `20` |
-| Table B1 | `28_tables.R` | 359 | `tab_sensitivity.tex` | `04`, `20`, `23` |
-| Table B2 | `28_tables.R` | 387 | `tab_window_parts.tex` | `20` |
-| Table B3 | `28_tables.R` | 412 | `tab_traffic_parts.tex` | `15` |
+| Table B1 | `28_tables.R` | 372 | `tab_sensitivity.tex` | `04`, `20`, `23` |
+| Table B2 | `28_tables.R` | 400 | `tab_window_parts.tex` | `20` |
+| Table B3 | `28_tables.R` | 425 | `tab_traffic_parts.tex` | `15` |
 | Figure B3 | `27_figures.R` | 232 | `fig_window_legs.pdf` | `04` |
 | Figure B4 | `27_figures.R` | 212 | `fig_within_day.pdf` | `02`, `09` |
-| Table B4 | `28_tables.R` | 251 | `tab_within_group.tex` | `09`, `15` |
+| Table B4 | `28_tables.R` | 264 | `tab_within_group.tex` | `09`, `15` |
 | Figure B5 | `27_figures.R` | 261 | `fig_honestdid.pdf` | `07` |
-| Table B5 | `28_tables.R` | 446 | `tab_road_users.tex` | `21` |
-| Table B6 | `28_tables.R` | 472 | `tab_sex_age.tex` | `21` |
-| Table B7 | `28_tables.R` | 229 | `tab_traffic_volume.tex` | `15`, `16` |
-| Table B8 | `28_tables.R` | 495 | `tab_street_lighting.tex` | `24` |
-| Table B9 | `28_tables.R` | 558 | `tab_transitions.tex` | `26` |
+| Table B5 | `28_tables.R` | 459 | `tab_road_users.tex` | `21` |
+| Table B6 | `28_tables.R` | 485 | `tab_sex_age.tex` | `21` |
+| Table B7 | `28_tables.R` | 242 | `tab_traffic_volume.tex` | `15`, `16` |
+| Table B8 | `28_tables.R` | 508 | `tab_street_lighting.tex` | `24` |
+| Table B9 | `28_tables.R` | 571 | `tab_transitions.tex` | `26` |
 | Figure B6 | `27_figures.R` | 298 | `fig_bahia.pdf` | `17` |
 | Figure B7 | `27_figures.R` | 276 | `fig_assault.pdf` | `10` |
 
