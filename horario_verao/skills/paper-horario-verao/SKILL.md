@@ -263,6 +263,10 @@ hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
 - Status do projeto de lei de 2025 que proíbe o horário de verão.
 - Controle no relógio de Brasília (15/10/2026, `tab_within_group`): o tráfego da
   noite do controle não se moveu; as mortes na via na hora 0 do controle subiram
-  (+19,7) em relação ao resto do dia; o mecanismo segue sem teste direto.
+  (+19,7) em relação ao resto do dia (já é tripla janela × fora × pós). Candidato:
+  horários marcados por Brasília, que passaram para uma hora mais tarde no relógio
+  do controle no verão. Pernas (31/10/2026): hora 0 janela +11,1, fora −9,5; hora −1
+  janela −11,1, fora −18,6. Nem confirma nem descarta; o viés possível é
+  conservador. Trocas pré-2019 e noites de jogo: sem poder.
 - SIM 2025 definitivo: 6ª temporada pós (2024/25; não é pré-requisito para submeter).
 - Divisão capital/RM no SIM (apêndice, opcional; adiado em 31/10/2026).

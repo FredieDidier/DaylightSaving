@@ -182,6 +182,23 @@ become detectably safer."
 **Por quê:** a frase antiga afirmava algo sobre o dia todo ("do not return"). A
 nova afirma o que o desenho identifica e mantém o fecho sobre pedestres.
 
+## 9. Apêndice B.2 — a manhã dentro de cada grupo
+
+**Antes:**
+> Within the treated states alone, road deaths in the morning hour that turned
+> light fell by 19.4 log points (9.6). Applied to the 107 and 110 deaths per
+> summer the two hours had before abolition, that fall offsets less than a
+> third of the evening rise.
+
+**Depois:**
+> Road deaths in that hour fell by 19.4 log points (9.6) in the treated states
+> and by 23.5 (9.6) in the control states, so neither group alone isolates an
+> effect of the light on the morning.
+
+**Por quê:** é a mesma conta que saiu da introdução na segunda revisão (seção 2).
+A queda da manhã nos tratados é igual à dos controles, então não é efeito da
+abolição; o apêndice tinha ficado com a versão antiga.
+
 ---
 
 ## O que foi considerado e não entrou
@@ -200,3 +217,16 @@ nova afirma o que o desenho identifica e mantém o fecho sobre pedestres.
   pré-requisito para submeter.
 - **Divisão capital/região metropolitana no SIM**: opcional, para uma tabela de
   apêndice numa versão futura.
+- **Decompor o 19,7 do controle (Tabela B4) e olhar a hora −1**: feito fora do
+  paper (31/10/2026; conta avulsa com o modelo do `09` por grupo, sem
+  `uf^bin^sy`, que a perna sozinha não comporta; a tripla reproduz o 19,7). Mortes
+  na via no controle, hora 0: janela +11,1 (5,6), fora da temporada −9,5 (7,3).
+  Hora −1: janela −11,1 (8,6), fora −18,6 (9,6), tripla +6,8 (10,9). Nos tratados,
+  a hora 0 vem quase toda do verão (janela +41,5, fora −5,2). Leitura: na janela, o
+  controle mostra a assinatura de deslocamento (−1 cai, 0 sobe), mas a hora −1 cai
+  ainda mais fora do verão, quando Brasília não mudava nada para o controle; e
+  metade do 19,7 é a hora 0 caindo fora da temporada. Não confirma nem descarta o
+  canal dos horários de Brasília. Não entra no paper: o texto já diz "to the extent
+  that", o viés possível é conservador, e pôr as pernas na Tabela B4 pediria
+  mexer no `09`, no `15` (veículos) e no `28` por um resultado que não muda a
+  frase.
