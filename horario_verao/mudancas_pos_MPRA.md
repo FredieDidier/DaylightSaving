@@ -7,9 +7,10 @@ no paper.
 
 Resumo: nenhum estimado pontual mudou. Entram (i) inferência robusta para o
 modelo de dose e para a contagem líquida de 62 mortes, (ii) um teste com o
-tráfego do PNCT para o nulo de 24/12 a 15/01 e (iii) reescritas que separam o
+tráfego do PNCT para o nulo de 24/12 a 15/01, (iii) reescritas que separam o
 que é identificado na hora da manhã do que depende da hipótese sobre o dia
-inteiro.
+inteiro e (iv) as mortes implicadas pelo tráfego, que limitam a compensação
+nas horas cuja luz não mudou, e o valor no limite inferior (seção 14).
 
 ---
 
@@ -22,12 +23,15 @@ inteiro.
 
 **Depois:**
 > The effect follows the local sun, not the clock, and the brighter mornings
-> showed no detectable decline in deaths. Abolition added an estimated 62 deaths
-> at the crash scene in each 92-day summer window, from mid-November to
-> mid-February.
+> showed no detectable decline in deaths. If hours whose light did not change
+> were unaffected, abolition added 62 crash-scene deaths each summer,
+> mid-November to mid-February.
 
-O resto do resumo não mudou. São 99 palavras pelo contador do projeto (102 se
-um sistema separar as palavras nos hífens).
+O resto do resumo não mudou. São 99 palavras pelo contador do projeto. A
+condicional "If hours whose light did not change were unaffected" entrou na
+segunda rodada (seção 14); a primeira tinha só o ponto final no lugar dos
+dois-pontos ("Abolition added an estimated 62 deaths at the crash scene in each
+92-day summer window").
 
 **Por quê:** "offset" fala do saldo do dia. O que está identificado com força é
 a hora da manhã que clareou (−3 log pts, EP 12) e a diferença entre manhã e
@@ -35,8 +39,9 @@ noite. O saldo sem hipótese adicional, estimado no dia inteiro, é −5 mortes 
 EP 66, que não confirma nem descarta os 62. A frase antiga afirmava mais do que
 o teste mostra, e um parecerista atento marcaria isso. Agora a frase da manhã
 diz exatamente o que foi estimado, e o ponto final no lugar dos dois-pontos tira
-a leitura de que o 62 decorre da manhã não ter compensado. A hipótese de que o
-62 depende fica na introdução e na Seção IV.H.
+a leitura de que o 62 decorre da manhã não ter compensado. A condicional deixa
+no próprio resumo a hipótese de que o 62 depende, detalhada na introdução e na
+Seção IV.H.
 
 ## 2. Introdução, parágrafo dos resultados da manhã e da contagem líquida
 
@@ -46,12 +51,24 @@ a leitura de que o 62 decorre da manhã não ter compensado. A hipótese de que 
 > it out. The brighter morning did not give these deaths back.
 
 **Depois:**
-> […] from November 15 to February 14 (standard error 12; permutation
+> […] standard error 12). In the hour that turned dark, road deaths exceeded
+> the counterfactual by 36 per summer, an estimate that requires no assumption
+> about the other hours of the day. A count for the whole day needs one. […]
+> from November 15 to February 14 (standard error 12; permutation
 > $p=0.001$). This is the count most directly supported by the observed summer
-> window. […] the change is too imprecise (standard error 66) to confirm the
-> count or rule it out. In the model that weights each hour by its change in
-> light, a given change in darkness has a larger effect on road deaths in the
-> evening than in the morning (permutation $p=0.001$).
+> window. […] Estimated over the whole day without that assumption, the change
+> is too imprecise (standard error 66) to confirm the count or rule it out. The
+> traffic counts show no shift of trips large enough to produce such an offset.
+> If the risk per vehicle had stayed the same, the change in traffic would imply
+> an increase of 15 deaths per summer (standard error 32) in the hours whose
+> light did not change, and the 95 percent confidence interval excludes a
+> decline as large as the net count. In the model that weights each hour by its
+> change in light, a given change in darkness has a larger effect on road deaths
+> in the evening than in the morning (permutation $p=0.001$).
+
+As frases das 36 mortes, de "A count for the whole day needs one" e do tráfego
+entraram na segunda rodada (seção 14); "without assuming which hours were
+affected" virou "without that assumption".
 
 **Por quê:** a frase final antiga contradizia a anterior: o parágrafo dizia que
 o dia inteiro é impreciso demais e logo fechava como se o dia inteiro tivesse
@@ -307,8 +324,8 @@ erro-padrão de 66, que não descarta a realocação de James, 2023). Três muda
   (coeficientes iguais aos do `15`, covariância conjunta), aplicado às mortes
   observadas em cada hora, com risco por veículo constante. Horas cuja luz não
   mudou: na via +15 (31,6); PRF +7,2 (12,5); acidentes +99 (157). Horas cuja
-  luz mudou: −4, −1, −16 (só no `.rds`; a linha saiu da tabela para a nota caber
-  no `paper_wp`). O resto do dia mudou +2,6 no tráfego (erro-padrão de
+  luz mudou: −4, −1, −16 (a linha saiu da tabela para a nota caber no
+  `paper_wp` e voltou depois; ver abaixo). O resto do dia mudou +2,6 no tráfego (erro-padrão de
   2,0), e as horas da noite vizinhas à hora 0 perderam. O intervalo de 95% na via
   ([−47, 77]) exclui uma queda de 62. Isso cobre só a compensação por viagens
   que mudaram de hora, e só nas rodovias federais. Texto novo no fim de
