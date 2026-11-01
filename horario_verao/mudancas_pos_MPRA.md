@@ -339,9 +339,8 @@ como já fazia com a hora 0.
 > On federal highways, the dose model implies 31 deaths (12; permutation
 > $p=0.135$) per summer; injury crashes, whose response to darkness is weaker,
 > net 43 (57). An offset would require deaths to fall in the hours whose light
-> did not change. In Australia, \citet{james2023let} finds that ambient light
-> reallocated fatal crashes across the hours of the day and that DST had no
-> effect on road deaths overall. The most direct mechanism for such an offset
+> did not change, the reallocation across hours that \citet{james2023let} finds
+> in Australia. The most direct mechanism for such an offset
 > would be trips moved out of the hours whose light did not change. In Panel C of Table~\ref{tab:excess}, we compute the
 > deaths that the change in federal highway traffic would imply in each hour if
 > the risk per vehicle had stayed the same. Traffic fell in the evening hours
@@ -374,11 +373,12 @@ como já fazia com a hora 0.
   viagens têm de sair delas.
 - A frase do James (2023): a compensação que o parágrafo testa é o resultado
   publicado mais próximo contra a contagem do dia, e até aqui ele só aparecia na
-  revisão de literatura. A frase diz apenas o que o resumo do artigo afirma
-  (acidentes fatais realocados ao longo do dia pela luz ambiente; nenhum efeito
-  do DST sobre as mortes). O resumo não atribui a realocação a viagens que
-  mudaram de horário, então a citação fica na frase do resultado e não na do
-  mecanismo.
+  revisão de literatura. A introdução já descreve o resultado dele, então a
+  IV.H só o nomeia como o caso testado ("the reallocation across hours that
+  \citet{james2023let} finds in Australia"), sem recontá-lo; uma versão
+  intermediária repetia o resultado inteiro. O resumo do artigo não atribui a
+  realocação a viagens que mudaram de horário, então a citação fica na frase da
+  realocação e não na do mecanismo.
 
 ## Seção IV.I — Before and after travel adjusted
 
