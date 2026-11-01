@@ -12,11 +12,11 @@ Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
   obra anotada acima dela).
 - `paper.tex`: submissão à AEJ: Economic Policy, **anônima** (revisão
   duplo-cega), template oficial da AEA (`AEA.cls`, `aea.bst`) em `reviewmode`,
-  12 pt, espaçamento 1,5, margens de 1 polegada. 29 páginas.
-- `appendix.tex`: Online Appendix, anônimo, arquivo separado (19 páginas).
+  12 pt, espaçamento 1,5, margens de 1 polegada. 38 páginas (31/10/2026).
+- `appendix.tex`: Online Appendix, anônimo, arquivo separado (26 páginas).
 - `title_page.tex`: página de título exigida pela revista (autor, afiliação,
-  agradecimentos). **Preencher os campos entre colchetes.**
-- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 50 páginas).
+  agradecimentos).
+- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 66 páginas; versão depositada no MPRA, nº 131638).
 - Compilar: `latex/build.sh` (o artigo e o apêndice citam rótulos um do outro
   pelo pacote `xr`, então cada um compila depois do outro).
 
@@ -68,17 +68,19 @@ corrido de 8,4 a 13 mil palavras (o nosso, ~6,5 mil) e introdução de 1,8 a
 | Tab. 1 descritivas | a tripla "na mão" (dá 29 lp) |
 | Tab. 2 principal | |
 | Tab. 3 robustez e horas sem mudança de luz | tendência, imputação, sono |
-| Tab. 4 pedestres | o mecanismo |
-| Tab. 5 excesso por verão | a quantidade de política (líquido 54) |
-| Tab. 6 custo | a conta de política |
+| Tab. 4 escuridão como dose (`tab:dose`) | luz, não relógio |
+| Tab. 5 pedestres | o mecanismo |
+| Tab. 6 excesso por verão | a quantidade de política (62 por janela, pela dose) |
+| Tab. 7 custo | a conta de política |
 
-Apêndice online (16 exibições): A1 integridade do registro; B1 janela
-deslocada; B2 deixar um de fora; Tab. B1 sensibilidade; B3 FE de UF × dia;
-**Tab. dentro do dia por grupo** (`tab_within_group`, 15/10/2026: controle no relógio de Brasília);
-B4 HonestDiD; Tab. B2 quem morre; **Tab. B3 volume e risco por veículo**
-(números no texto do corpo); Tab. B4 dose e chuva; Tab. B5 iluminação; B5
-Bahia; B6 agressões; C1 mapa do México; **Tab. C1 México** (Seção VI do corpo
-cita o painel D); C2 estudo de eventos do México.
+Apêndice online (18 exibições em 31/10/2026; rótulos do `appendix_body.tex`):
+A. medição da hora do óbito (`tab:measurement`) e como as mortes são registradas
+(`fig:records`); B. janela deslocada, deixar um de fora, sensibilidade de amostra,
+partes da janela (`tab:window-parts`), tráfego nas partes da janela
+(`tab:traffic-parts`), as duas pernas da tripla, FE de UF × dia, dentro do dia por
+grupo (`tab:within-group`), HonestDiD, quem morre, sexo e idade, volume e risco por
+veículo, iluminação, trocas de relógio antes de 2019 (`tab:transitions`), Bahia,
+agressões. O México saiu em 20/10/2026 (ROADMAP).
 
 **Não reintroduzir (navalha de Occam, 13/10/2026).** Cortes por mérito, não
 por resultado incômodo.
@@ -371,7 +373,7 @@ Apêndice
   maior); com outra fórmula solar, 29,8; sem :00 e :30, 16,7 (12,9) com menos da
   metade da amostra (`19_heaping.R`).
 
-## Réplica no México (12/10/2026; EXPLICANDO §5.13)
+## Réplica no México (12/10/2026; EXPLICANDO §5.13) — fora do paper desde 20/10/2026, histórico
 
 Abolição de 30/10/2022 (Ley de los Husos Horarios, DOF 28/10/2022), exceto na
 fronteira norte. ATUS (INEGI), 2016–2025. O desenho que se sustenta compara,

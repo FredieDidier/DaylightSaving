@@ -8,9 +8,11 @@ description: Gerencia o projeto DaylightSaving — o fim do horário de verão n
 Você coordena o **DaylightSaving**: o que a abolição do horário de verão
 (Decreto 9.772, de 25/04/2019) fez com mortes no trânsito e acidentes no Brasil.
 Autores: Fredie Didier e Leonardo Monasterio (coautor desde 16/10/2026; o que ele
-sugeriu está em `horario_verao/monasterio.md`). Primeiro rascunho do manuscrito em `latex/` (13/10/2026),
-alvo **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e
-cortes em `horario_verao/PAPER.md`, seção "Manuscrito"). Para o conhecimento
+sugeriu está em `horario_verao/monasterio.md`). Manuscrito em `latex/`, alvo
+**AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e cortes em
+`horario_verao/PAPER.md`, seção "Manuscrito"). Working paper depositado no MPRA
+em 30/10/2026 (nº 131638, aguardando aprovação); o que mudou depois está em
+`horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
 do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
 
 Responda em **português**. **Comentários de código em inglês.** O manuscrito,
@@ -154,9 +156,8 @@ janela e trocar a fórmula solar), tirar um de fora (SIM 24–35), quem morre
 mudança, dose (hora toda escura ~124 lp), iluminação (Censo 2022: 42,5 contra 10,9, p = 0,10 desde 18/10;
 sem precisão), custo em reais de 2025 (54/67/137 mortes por verão;
 VSL R$ 253/311/637 mi; Ipea R$ 43/53/108 mi). Parecer e ranking de periódicos
-em `PARECER.md`: AEJ Applied → AEJ Policy → JHE (depois do México). **México** (`29`, `30`): a réplica
-vale pelo desenho dentro do dia (horas de referência do `09`, desde 15/10/2026: mortes +58, pedestres +143; o mesmo estimador só nos tratados do Brasil dá +47); a tripla com 6
-controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
+em `PARECER.md` (a escolha final foi a AEJ: Policy). O México, discutido nessa
+rodada, saiu do paper em 20/10/2026 (ver abaixo). Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 159,5 mi de 2016/17 (imprensa) não se citam.
 
 **Rodada do parecer simulado da AEJ: Policy (15/10/2026, `PARECER_AEJ_POLICY.md`):**
@@ -204,9 +205,6 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
   (`light_dose.rds`, `season_net_term`); o paper diz que 74 é conservador.
 - **Pesos municipais** (dose, chuva, relógio dos tratados, iluminação): mortes antes
   de 2019 (`seat_weights()`, 18/10/2026). Janela de verão: 62 mortes (era 63).
-- **México com placebo** (`27`, Tabela C1 painel E): nas unidades que mantiveram o
-  relógio, o mesmo estimador dá mortes −20 (27), mas acidentes +10,8 e atropelados
-  +20,7. O México sustenta mortes, não acidentes.
 - **Volume** (`15`, `16`): acidentes reestimados nos verões das estações; hora 0 +17,6,
   por veículo +24,0 (permutação p = 0,005), sem tendência pré nesses verões.
 - Score bootstrap no Poisson (`06`): p = 0,010 / 0,023 / 0,001.
@@ -214,8 +212,8 @@ controles é frágil. Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 **Rodada do Monasterio de 20/10/2026 (PDF anotado + 9 áudios; ROADMAP):**
 - **México saiu do paper** (código 10/11 do build e 26/27 da análise apagados; scripts
   renumerados: build 10 mapa, 11 PRF por pessoa, 12 litoral; análise 26 trocas,
-  27 figuras, 28 tabelas). Os dados do México foram apagados do Dropbox (21/10). Ignorar
-  a seção México abaixo, que é histórico.
+  27 figuras, 28 tabelas). Os dados do México foram apagados do Dropbox (21/10). Não
+  reintroduzir sem decisão do Fredie.
 - **Número de manchete: 62 por janela de verão** (dose; supõe zero nas horas cuja luz
   não mudou). 74 por temporada é extensão (coeficientes da janela aplicados fora dela).
   Resumo e conclusão citam 62; Tabela 7 valora a janela (Painel B) e a temporada só na
@@ -237,7 +235,8 @@ idade 0 da PRF = desconhecida desde 2017): homens, ~4/5 dos mortos, SIM 33,8
 "não subiram"); idades a partir de 15 positivas, sem ordenação. Sem os 279
 municípios do litoral (`build/12`, Tabela B1): 36,3 (9,4). "Abolished" para
 2019, "the clocks went back/forward" para a troca sazonal. Fora: rugosidade
-(ofuscamento já saiu em 13/10) e luz por satélite. Custo com ele, para depois.
+(ofuscamento já saiu em 13/10) e luz por satélite. O custo foi refeito com ele na
+rodada de 20/10 (PPC, acima).
 
 **Apêndice:** Bahia 2011/12 como checagem de sinal (`18`, VIABILIDADE §15):
 primeiro estágio claro (PRF anota escuro em 68% contra 93–100%); na noite, os
@@ -251,20 +250,19 @@ hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
 - que a abolição "aumentou as mortes no trânsito" sem dizer "nas horas que
   escureceram"; nem que o total do dia "não muda" (é só ruidoso demais);
 - que a PRF "confirma" sem a ressalva da tendência;
-- que o México replica os acidentes (o placebo nas unidades que mantiveram o relógio
-  sobe quase o mesmo); só mortes;
 - qualquer efeito sobre nascimentos (partos seguem o relógio do hospital) ou
   sobre agressões (tendência, não luz: VIABILIDADE §9).
 
 ## Abertos
 
-- A **hora antes do pôr do sol** cai na PRF (e não no SIM). Mecanismo candidato:
-  ofuscamento pelo sol baixo, tráfego que muda de hora.
+- A **hora antes do pôr do sol** cai na PRF (e não no SIM). A queda já aparece em
+  2018/19, ainda com horário de verão; o ofuscamento está descartado (PAPER.md,
+  "Não reintroduzir").
 - Ler o texto completo de Gillmore (2025) e Depalo (2023) antes de citar números
   além do resumo.
 - Status do projeto de lei de 2025 que proíbe o horário de verão.
 - Controle no relógio de Brasília (15/10/2026, `tab_within_group`): o tráfego da
   noite do controle não se moveu; as mortes na via na hora 0 do controle subiram
-  (+19,7) em relação ao resto do dia. O placebo mexicano mostra o mesmo tipo de
-  subida em acidentes onde nada mudou; o mecanismo segue sem teste direto.
-- SIM 2025 definitivo: 6ª temporada pós.
+  (+19,7) em relação ao resto do dia; o mecanismo segue sem teste direto.
+- SIM 2025 definitivo: 6ª temporada pós (2024/25; não é pré-requisito para submeter).
+- Divisão capital/RM no SIM (apêndice, opcional; adiado em 31/10/2026).
