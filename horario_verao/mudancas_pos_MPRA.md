@@ -602,8 +602,9 @@ construção descritas.
 
 ### B.1 Other windows, samples, and clocks — Figura B1, nota e parágrafo
 
-**Figura B1:** passa a ter duas séries por deslocamento, "Times as recorded" e
-"Rounded times spread over 30 minutes" (o mesmo nome da linha da Tabela B1).
+**Figura B1:** passa a ter três séries por deslocamento, "Times as recorded",
+"Rounded times spread over 30 minutes" e "Without rounded times" (os mesmos
+nomes das linhas da Tabela B1).
 
 **Nota da Figura B1, Antes:**
 > Each point is equation~(\ref{eq:main}) for a 60-minute window that starts the
@@ -615,8 +616,8 @@ construção descritas.
 > […] 0 is hour 0 of Table~\ref{tab:main}. Rounded times spread over 30
 > minutes: each event recorded on the hour or half hour counts in the window in
 > proportion to the part of the 30 minutes around its recorded time that falls
-> inside it. 95 percent confidence intervals, standard errors clustered by
-> state.
+> inside it. Without rounded times: events recorded on the hour or half hour are
+> dropped. 95 percent confidence intervals, standard errors clustered by state.
 
 **Parágrafo, Antes:**
 > Moving the window changes the estimate in the direction light predicts: a
@@ -632,22 +633,29 @@ construção descritas.
 > window that starts 15 minutes before standard-time sunset includes minutes
 > that were light in both regimes and yields 14.6 log points for road deaths,
 > and one that starts 15 minutes after it is darker throughout and gives 41.2
-> (Figure~\ref{fig:window-shift}). With times as recorded, the estimate for
-> road deaths does not rise at every step: it is 46.7 for a window that starts
-> 10 minutes after standard-time sunset, above the 41.2 at 15 minutes. Each
-> shift also moves heaps of times recorded on the hour or half hour into or out
-> of the window. When those times are spread evenly over the 30 minutes around
-> them, the estimate rises at every step for all three outcomes, from 15.8 (9.2)
-> to 40.4 (9.2) for road deaths. In hour 0 itself, spreading the rounded times
-> moves the estimate to 31.4 (9.5), and dropping them gives 16.7 (12.9), with
-> less than half the deaths in hour 0 (Table~\ref{tab:measurement}).
+> (Figure~\ref{fig:window-shift}). With times as recorded, the estimate for road
+> deaths does not rise at every step: it is 46.7 for a window that starts 10
+> minutes after standard-time sunset, above the 41.2 at 15 minutes. Each shift
+> also moves heaps of times recorded on the hour or half hour into or out of the
+> window. When those times are spread evenly over the 30 minutes around them,
+> the estimate rises at every step for all three outcomes, from 15.8 (9.2) to
+> 40.4 (9.2) for road deaths. Spreading smooths the counts across the window by
+> construction, so the rise could partly come from the correction itself.
+> Dropping the rounded times instead assumes nothing about where they fell, and
+> the estimate still rises at every step for all three outcomes, from $-8.3$
+> (15.9) to 41.6 (10.6) for road deaths, with less than half the deaths. In hour
+> 0 itself, spreading the rounded times moves the estimate to 31.4 (9.5), and
+> dropping them gives 16.7 (12.9) (Table~\ref{tab:measurement}).
 
 **Por quê:** o mesmo comentário da Seção IV.C. O apêndice mostra o pico em +10
 com os horários como registrados, em vez de deixá-lo para o parecerista, e diz
 que ele some quando o arredondamento é separado do deslocamento. A frase da
 janela a −15 fica: ela já explica que esses minutos estavam claros nos dois
 regimes, então um efeito menor ali é o que a luz prevê, e não sinal de que o
-resultado depende da escolha da janela.
+resultado depende da escolha da janela. Espalhar os horários redondos suaviza
+a contagem por construção; descartá-los não supõe nada sobre onde caíram, e a
+estimativa também sobe a cada passo nos três desfechos (mortes na via de −8,3
+a 41,6), agora visível na Figura B1 em vez de só citada no texto.
 
 ### B.1 Other windows, samples, and clocks — nota da Tabela B2
 
