@@ -355,6 +355,12 @@ três documentos; comentários no meio das linhas (só procedência, nenhuma pro
 das 67 frases mudadas desde f5df776, todas aparecem no PDF (um falso alarme de
 hífen em fim de linha).
 
+Tipografia (pedido do Fredie): `\frenchspacing` em `preamble_aea.tex`,
+`title_page.tex` e `paper_wp.tex`, para o espaço depois do ponto final ser
+igual ao entre palavras; notas de autor alinhadas à esquerda (`\raggedright`)
+em `title_page.tex` e `paper_wp.tex`, porque o e-mail inquebrável esticava a
+linha anterior. Páginas inalteradas (40 + 26 + 1 + 67); build limpo.
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied
