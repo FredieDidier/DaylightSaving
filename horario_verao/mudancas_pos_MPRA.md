@@ -347,6 +347,14 @@ caber no `paper_wp` (12pt), as linhas das tabelas ali ficaram mais juntas
 Recompilado: 40 + 26 + 1 + 67 páginas, zero indefinidas, Overfull \hbox e
 floats grandes demais nos três documentos; a nota inteira aparece no PDF.
 
+A linha "Hours whose light changed" ganhou uma frase na Seção 4.6: o tráfego
+sozinho implicaria 4 mortes a menos (14,9) nessas horas, então o aumento veio do
+risco por viagem. O parágrafo da Seção 4.1 que cita as 36 mortes passou a citar
+a `tab:excess`, Painel B. Checagens: ordem das tabelas e figuras por página nos
+três documentos; comentários no meio das linhas (só procedência, nenhuma prosa);
+das 67 frases mudadas desde f5df776, todas aparecem no PDF (um falso alarme de
+hífen em fim de linha).
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied
