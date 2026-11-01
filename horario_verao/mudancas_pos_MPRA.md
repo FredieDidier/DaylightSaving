@@ -260,6 +260,26 @@ cinza/vermelho) de todas as figuras. Recompilado: 38 + 26 + 1 + 66 páginas, sem
 Overfull/Underfull, sem referência indefinida; as quatro frases novas aparecem no
 PDF.
 
+## 12. Fontes das bases auxiliares (01/11/2026)
+
+Só documentação; nenhuma estimativa, tabela ou interpretação mudou.
+
+- **Corpo, IV.F (quem morre).** "share of households on unlit streets" virou
+  "share of households on block faces without street lighting
+  \citep{ibge2023censo}": a variável é municipal, a parcela dos domicílios em
+  face de quadra sem iluminação, e não a luz da via do acidente.
+- **Corpo, IV.C (robustez).** Os "279 coastal municipalities" ganharam
+  `\citep{ibge2022defrontantes}`, antes só na nota da Tabela B1.
+- **Apêndice A, nova subseção "Other sources" (`app:other`).** Chuva (célula
+  BR-DWGD de 0,1° que contém a sede, a mais próxima com dado para sedes no mar,
+  Noronha sem dado; ≥ 1 mm, ponderado pelas mortes antes da abolição);
+  iluminação (Censo 2022, pesquisa do entorno nos setores selecionados,
+  "não declarado" fora do denominador; Censo 2010, setores urbanos, poste na face
+  ou na face oposta); os 279 defrontantes de 2022 sem a Lagoa dos Patos.
+  Conferido em `build/08`, `09`, `12` e `analysis/code/23`, `24`. O arquivo de
+  pessoas da PRF já estava descrito no A.3 e não foi repetido.
+- **Apêndice B.5.** A frase da iluminação usa a mesma definição e remete ao A.
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied

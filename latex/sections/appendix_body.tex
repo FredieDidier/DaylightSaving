@@ -63,6 +63,14 @@ The stations record legal clock time. If they recorded standard time, the profil
 Sunrise and sunset are computed at the municipal seat \citep{noaa2025solar}, with the seat coordinates from IBGE (2010 seats; a point inside the 2020 boundary for the five municipalities created in 2013) and the standard offset of each municipality's legal time zone \citep{brasil1913decreto, brasil2008lei, brasil2013lei}. Recorded clock times heap: 34.5 percent of road deaths are recorded on the hour and 23.0 percent on the half hour, and 90 percent on a multiple of five minutes (21.3, 19.4, and 95.2 percent for federal highway deaths). % heaping.rds, heap_share.
 Because hour 0 is defined relative to the sunset of each municipality and date, a heap at, say, 7:00 p.m.\ falls inside or outside hour 0 depending on the place and the date. Figure~\ref{fig:window-shift} and Panel D of Table~\ref{tab:measurement} show the estimates when the window is moved by up to 15 minutes, when sunset comes from NOAA's full solar algorithm \citep{meeus1998astronomical} instead of the general equations, when every time recorded on the hour or half hour is spread evenly over the 30 minutes around it, and when those times are dropped.
 
+\subsection{Other sources}\label{app:other}
+
+Rain comes from the BR-DWGD daily precipitation grid at 0.1 degree \citep{xavier2022new}. Each municipal seat takes the cell that contains it; a coastal seat whose cell lies over the sea takes the nearest cell with data, and Fernando de Noronha, outside the grid, has none. The rain share of a state-day (Panel B of Table~\ref{tab:sensitivity}) is the share of the state's municipalities, weighted by their road deaths before abolition, with at least 1 mm of rain at the seat that day.
+
+Street lighting in 2022 comes from the Census survey of the surroundings of households, which covers the tracts selected for it \citep{ibge2023censo}. The measure is the share of occupied private households on a block face without public lighting, out of those for which lighting was recorded as present or absent. In 2010 the Census recorded, for each block face with households, whether there was a light pole on that face or the one opposite \citep{ibge2011censo}; the 2010 measure is the same share in urban tracts. Table~\ref{tab:lighting} splits the municipalities of each state at the median of this share.
+
+The coastal municipalities are the 279 that IBGE lists as facing the sea in 2022 \citep{ibge2022defrontantes}; the list also includes the Lagoa dos Patos, a lagoon coded like a municipality, which is left out.
+
 % -----------------------------------------------------------------------------
 \section{Additional Results}\label{app:results}
 
@@ -271,7 +279,7 @@ On a rainy, overcast evening the hour was already dim under DST, so abolition sh
   \end{tablenotes}
 \end{table}
 
-If darkness kills pedestrians, street lighting should blunt the effect. Table~\ref{tab:lighting} splits the municipalities of each state at the median share of households on unlit streets. With the 2022 Census, the estimate for road deaths is 42.5 log points (10.0) in municipalities above the median and 10.9 (16.0) in those below it; the difference has the predicted sign but $p=0.10$. With the 2010 Census the gap is smaller (37.1 and 22.9). The two groups of municipalities also differ in the hour before sunset, whose light changed only in degree (Panel B), so the split may capture other differences between municipalities. We read the table as consistent with a role for street lighting, not as evidence of one.
+If darkness kills pedestrians, street lighting should blunt the effect. Table~\ref{tab:lighting} splits the municipalities of each state at the median share of households on block faces without street lighting (Appendix~\ref{app:other}). With the 2022 Census, the estimate for road deaths is 42.5 log points (10.0) in municipalities above the median and 10.9 (16.0) in those below it; the difference has the predicted sign but $p=0.10$. With the 2010 Census the gap is smaller (37.1 and 22.9). The two groups of municipalities also differ in the hour before sunset, whose light changed only in degree (Panel B), so the split may capture other differences between municipalities. We read the table as consistent with a role for street lighting, not as evidence of one.
 
 \subsection{Valuing the deaths}\label{app:cost}
 
