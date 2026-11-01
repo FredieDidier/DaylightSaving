@@ -461,6 +461,17 @@ como já fazia com a hora 0.
   realocação a viagens que mudaram de horário, então a citação fica na frase da
   realocação e não na do mecanismo.
 
+**Antes:**
+> Events per summer in the treated states after abolition minus those predicted
+> without it; delta-method standard errors in parentheses.
+
+**Depois:**
+> Events per summer in the treated states after abolition minus those predicted
+> without it; delta-method standard errors in parentheses, from coefficients with
+> standard errors clustered by state.
+
+**Por quê:** o erro-padrão do método delta vem da matriz de covariância dos coeficientes, que é agrupada por estado. Sem dizer isso, a nota deixava em aberto o agrupamento, que as outras tabelas declaram.
+
 ## Seção IV.I — Before and after travel adjusted
 
 **Antes:**
@@ -480,6 +491,19 @@ como já fazia com a hora 0.
 teste não a sustenta nas rodovias federais, e a ressalva fica para as outras vias.
 
 ## Seção V — What Abolition Cost
+
+### Nota da Tabela 7
+
+**Antes:**
+> Delta-method standard errors in parentheses.
+
+**Depois:**
+> Delta-method standard errors in parentheses, from coefficients with standard
+> errors clustered by state.
+
+**Por quê:** o erro-padrão do método delta vem da matriz de covariância dos coeficientes, que é agrupada por estado. Sem dizer isso, a nota deixava em aberto o agrupamento, que as outras tabelas declaram.
+
+### Texto
 
 **Antes:** —
 
@@ -739,6 +763,18 @@ holidays"); a nota apontava para a linha errada.
 contra a média das temporadas com horário de verão.
 
 ---
+
+### B.7 The clock changes before abolition — nota da Tabela B9
+
+**Antes:**
+> Both changes enter one model with every effect interacted with the change, so
+> the average has a clustered standard error.
+
+**Depois:**
+> Both changes enter one model with every effect interacted with the change, so
+> the average has a standard error clustered by state.
+
+**Por quê:** "clustered" não dizia por onde; as demais tabelas dizem "by state".
 
 ## Figura 2, painel B
 
