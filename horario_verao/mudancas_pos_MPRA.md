@@ -194,9 +194,28 @@ arredondamento e o deslocamento separadamente. O `19_heaping.R` agora estima a
 variante espalhada em cada deslocamento. Com os horários espalhados, a sequência
 sobe em todos os passos nos três desfechos: mortes na via 15,8; 21,7; 26,9; 31,4;
 35,8; 38,6; 40,4; mortes da PRF 21,0 a 72,3; acidentes com vítima 3,5 a 32,4.
-Excluindo os horários arredondados também sobe (−8,3 a 41,6 nas mortes na via;
-só no scratchpad, fora do paper). O pico em +10 vinha do arredondamento. Nenhuma
-estimativa que já estava no paper mudou; a Tabela B1 é a mesma.
+O pico em +10 vinha do arredondamento. Nenhuma estimativa que já estava no paper
+mudou; a Tabela B1 é a mesma.
+
+**Acréscimo, Apêndice B.1 (depois da sequência espalhada):**
+> Spreading smooths the counts across the window by construction, so the rise
+> could partly come from the correction itself. Dropping the rounded times
+> instead assumes nothing about where they fell, and the estimate still rises at
+> every step for all three outcomes, from $-8.3$ (15.9) to 41.6 (10.6) for road
+> deaths, with less than half the deaths.
+
+**Por quê:** espalhar é uma suavização e pode, por si só, produzir uma subida
+monotônica; um parecerista pode atribuir a sequência à correção. Excluir os
+horários arredondados não supõe onde eles caíram. O `19_heaping.R` agora estima a
+variante "drop" em cada deslocamento, não só na hora 0. Mortes na via: −8,3
+(15,9); 4,2; 8,4; 16,7; 25,6; 36,1; 41,6 (10,6). Mortes da PRF: 18,4 a 87,0.
+Acidentes com vítima: −3,4 a 28,6. Sobe em todos os passos nos três desfechos.
+Fica só uma frase no apêndice, sem série nova na Fig. B1: a amostra tem menos da
+metade das mortes e muda de composição, e o −8,3 sem o EP convidaria a uma
+leitura errada. As linhas que já existiam no `heaping.rds` saíram idênticas
+(diferença máxima de 2e-13); as tabelas e as figuras não mudaram. O dicionário
+de dados não muda: ele documenta as bases do build, e nem este commit nem os dois
+anteriores (a83f838, 466caae) tocam o build.
 
 ## Seção IV.D — Light, not the clock (Tabela 4)
 

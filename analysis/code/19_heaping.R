@@ -11,8 +11,10 @@
 #
 # Same Poisson triple difference as 01 for clock [sunset_std + s, + 60 min):
 #   shift  s = -15, -10, -5, 0, +5, +10, +15 minutes
-#   drop   s = 0, events recorded at :00 or :30 removed (in every cell, so the
-#          comparison stays like for like)
+#   drop   every s of shift, events recorded at :00 or :30 removed (in every
+#          cell, so the comparison stays like for like). Spreading smooths the
+#          window by construction; dropping checks the rise across the shifts
+#          without assuming where the rounded times fell.
 #   solar  s = 0, sunset from the full NOAA solar calculator (Meeus) instead of
 #          the NOAA general equations of 00_utils.R; at most 1.6 minutes apart
 #          over all event dates (sunset_gap in the cache)
@@ -85,8 +87,9 @@ res <- rbindlist(lapply(TRAFFIC, function(o) rbind(
     data.table(outcome = o, variant = "shift", shift_min = s,
                as.data.table(fit(ev$outcome == o & ev$rel >= s & ev$rel < s + 60)))))
   ,
-  data.table(outcome = o, variant = "drop :00 and :30", shift_min = 0L,
-             as.data.table(fit(ev$outcome == o & ev$rel >= 0 & ev$rel < 60 & !ev$heap))),
+  rbindlist(lapply(SHIFTS, function(s)
+    data.table(outcome = o, variant = "drop :00 and :30", shift_min = s,
+               as.data.table(fit(ev$outcome == o & ev$rel >= s & ev$rel < s + 60 & !ev$heap))))),
   data.table(outcome = o, variant = "Meeus solar algorithm", shift_min = 0L,
              as.data.table(fit(ev$outcome == o & ev$rel_meeus >= 0 & ev$rel_meeus < 60))),
   rbindlist(lapply(SHIFTS, function(s) {
