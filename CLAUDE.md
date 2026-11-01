@@ -23,6 +23,8 @@ DaylightSaving/                      (git — código, nunca dado)
   analysis/code/27, 28               figuras e tabelas, lidas só dos .rds
                                      (00_master_analysis.R roda 01–28)
   analysis/output/                   graphs/, tables/, maps/ (mapa do Brasil)
+  dictionary/                        build_dictionary.R → data_dictionary.xlsx (PT/EN,
+                                     todas as bases; para se uma coluna mudar sem descrição)
   latex/                             paper.tex (AEJ: Policy, anônimo), appendix.tex,
                                      title_page.tex, paper_wp.tex; texto em sections/;
                                      compila com latex/build.sh
