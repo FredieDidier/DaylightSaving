@@ -105,7 +105,8 @@ contagem líquida). Agora os três números centrais têm a mesma proteção.
 
 - **Título**: "The Morning Does Not Offset the Evening" virou "The Morning Hour
   Does Not Offset the Evening Hour". **Por quê:** o título passa a falar das
-  horas estimadas, não do saldo do dia.
+  horas estimadas, não do saldo do dia. Na auditoria (§10) se cogitou "does not
+  detectably offset"; o Fredie manteve o título sem "detectably".
 - **Tabela 6**: duas linhas novas abaixo da contagem líquida, "p-value,
   clustered by state" (pelo EP do método delta: <0,001, 0,008, 0,448) e
   "p-value, permutation of treated states": 0,001 (mortes na via), 0,135 (mortes na PRF), 0,627
@@ -129,7 +130,8 @@ contagem líquida). Agora os três números centrais têm a mesma proteção.
 **Depois:**
 > Traffic on federal highways shows no detectable difference between the two
 > periods. Vehicles in hour 0 fell by 7.4 log points from December 24 to
-> January 15 and by 5.3 in the school weeks, and the same holds for trucks and
+> January 15 and by 5.3 in the school weeks, a difference of 2.1 (standard error
+> 2.4), and the same holds for trucks and
 > buses in that hour and for the day's traffic (Online Appendix Table B3). These
 > checks do not rule out holiday travel on other roads as an explanation, and
 > the data do not say why no increase is detectable in those weeks.
@@ -200,6 +202,31 @@ A queda da manhã nos tratados é igual à dos controles, então não é efeito 
 abolição; o apêndice tinha ficado com a versão antiga.
 
 ---
+
+## 10. Auditoria das mudanças pós-MPRA (31/10/2026)
+
+Code audit do diff de código (`15`, `23`, `28`, `build/01`) e manuscript audit
+do diff de texto, contra `light_dose.rds` e `traffic_volume.rds`.
+
+- **Corrigido, crítico:** a nota `% light_dose.rds, inference.` tinha sido posta
+  no meio da linha da Seção 4 (dose) e escondia do PDF duas frases que estavam na
+  versão do MPRA: PRF no modelo de dose (79,5, EP 20,6; acidentes 13,6, EP 9,0) e
+  pedestres (115,8, EP 29,7, contra 33,6, EP 11,9). A nota foi juntada à do fim da
+  linha; as frases voltaram.
+- **Corrigido:** no corpo, o tráfego das festas citava os dois níveis e dizia "no
+  detectable difference" sem a linha da diferença; entrou "a difference of 2.1
+  (standard error 2.4)".
+- **Conferido, sem mudança:** os três p-valores novos da Tabela 4 e os dois da
+  Tabela 6 batem com o `.rds` (os clusterizados foram recalculados à mão); a
+  Tabela B3 de tráfego bate com `parts`; a permutação e o score bootstrap do `23`
+  usam os efeitos fixos da especificação principal, 999 e 9.999 sorteios, como a
+  Tabela 2 declara; dar dose a todos os estados não muda a dose dos tratados
+  (pesos normalizados por estado), e nenhuma estimativa pontual da Tabela 4
+  mudou; os efeitos fixos do modelo por parte no `15` repetem os do `20`; o
+  resumo tem 99 palavras.
+- **Não rodado:** a reprodução do `23` (999 permutações por desfecho). A
+  semente é fixada antes dos sorteios, e o `mclapply` não consome números
+  aleatórios.
 
 ## O que foi considerado e não entrou
 
