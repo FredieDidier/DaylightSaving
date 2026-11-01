@@ -132,15 +132,22 @@ depois da auditoria de 09/10/2026; a tabela-resumo está no PAPER.md) e em
   nos verões das estações (permutação p = 0,005; `15`, `16`). Nenhum
   posto é contado antes e depois; jul/2019–abr/2021 sem contagem (Nota Técnica
   DNIT 001/2020/DE).
-- **A manhã não paga a conta da noite** (VIABILIDADE §10): noite escura
-  (horas 0 e +1) +57 mortes na via por verão (EP 19), manhã clara −3 (11),
-  líquido +54 (p = 0,007). O total do dia tem EP 66: é **inconclusivo**, não
-  zero. Na PRF as horas antes do pôr do sol perdem o que a noite ganha.
+- **A manhã que clareou não ficou detectavelmente mais segura** (`11`, `23`;
+  Tabela 6, `tab:excess`): hora 0 da noite +36 mortes na via por verão (EP 10),
+  sem hipótese sobre as outras horas; hora 0 da manhã −3 (11). O dia inteiro
+  (62 pela dose) **supõe** que as horas de dose zero não mudaram; estimado sem
+  essa hipótese, o dia tem EP 66: **inconclusivo**, não zero. O tráfego do PNCT,
+  com risco por veículo constante, implica +15 (32) nas horas cuja luz não mudou
+  (IC de 95% exclui uma queda de 62) e −4 (15) nas que mudaram (Painel C; `25`,
+  `implied`). No limite inferior de 95%: 38,8 mortes na janela, 45,6 na
+  temporada. O resumo diz "If hours whose light did not change were unaffected,
+  abolition added 62 crash-scene deaths each summer". Na PRF as horas antes do
+  pôr do sol perdem o que a noite ganha.
 
 **Sono (entra no paper; rascunhos em inglês no PAPER.md):** a janela exclui as
 semanas da troca e a abolição não tem noite de sono perdida; o sono crônico se
 descarta pela hora única, pelo FE de UF × dia, pelo pedestre e pelo placebo das
-horas de luz inalterada (`19`, VIABILIDADE §16: nada sobe no meio do dia nem na
+horas de luz inalterada (`18`, VIABILIDADE §16: nada sobe no meio do dia nem na
 noite fechada).
 
 **Contribuição, dita com cuidado:** medir a hora pelo pôr do sol local **não é
@@ -196,13 +203,14 @@ rodada, saiu do paper em 20/10/2026 (ver abaixo). Energia: MME NT 5/2019 (+0,7% 
 - **Aula contra férias** (`20`, Tabela B1; datas em `00_utils.R::school_part()`,
   fontes em `horario_verao/fontes_dados/calendarios_escolares.md`): aula 15/11–07/12,
   férias 24/12–15/01, 2020/21 fora. Mortes na via, hora 0: aula 58,1 (12,6), férias
-  −12,3 (16,8). No paper (Tabela B1, painel D): férias de 24/12–01/01 5,8 (28,7) e de
+  −12,3 (16,8). No paper (Tabela B2, `tab:window-parts`): férias de 24/12–01/01 5,8 (28,7) e de
   02–15/01 −27,9 (19,0) (não são as festas); diferença aula − férias sem litoral 66,6
   (22,1), sem Pará 73,7 (21,3) (o Pará, controle, tem ano letivo de março a janeiro);
   placebo pré-2019 −15,9 (26,2). Fora do paper, por falta de células: pedestres por
   parte (~3 mortes por verão em cada); a diferença vem dos demais usuários. Contagem
   da temporada com o efeito das semanas com aula nos dias extras: 79 em vez de 74
-  (`light_dose.rds`, `season_net_term`); o paper diz que 74 é conservador.
+  (`light_dose.rds`, `season_net_term`); o paper chama o 79 de cálculo de
+  sensibilidade, porque os dias extras ficam fora da janela estimada.
 - **Pesos municipais** (dose, chuva, relógio dos tratados, iluminação): mortes antes
   de 2019 (`seat_weights()`, 18/10/2026). Janela de verão: 62 mortes (era 63).
 - **Volume** (`15`, `16`): acidentes reestimados nos verões das estações; hora 0 +17,6,
@@ -229,7 +237,7 @@ rodada, saiu do paper em 20/10/2026 (ver abaixo). Energia: MME NT 5/2019 (+0,7% 
 - "Casualties" para mortos e feridos nos acidentes da PRF.
 
 **Rodada do Leonardo Monasterio (16/10/2026, `monasterio.md`, VIABILIDADE §21):**
-sexo e idade dos mortos nas duas bases (Tabela B4; PRF por pessoa no `build/11`,
+sexo e idade dos mortos nas duas bases (Tabela B6; PRF por pessoa no `build/11`,
 idade 0 da PRF = desconhecida desde 2017): homens, ~4/5 dos mortos, SIM 33,8
 (9,9), PRF 65,2 (20,7); mulheres imprecisas demais para comparar (não dizer
 "não subiram"); idades a partir de 15 positivas, sem ordenação. Sem os 279
@@ -238,7 +246,7 @@ municípios do litoral (`build/12`, Tabela B1): 36,3 (9,4). "Abolished" para
 (ofuscamento já saiu em 13/10) e luz por satélite. O custo foi refeito com ele na
 rodada de 20/10 (PPC, acima).
 
-**Apêndice:** Bahia 2011/12 como checagem de sinal (`18`, VIABILIDADE §15):
+**Apêndice:** Bahia 2011/12 como checagem de sinal (`17`, Figura B6; VIABILIDADE §15):
 primeiro estágio claro (PRF anota escuro em 68% contra 93–100%); na noite, os
 acidentes com vítima têm o menor valor de 16 temporadas; a manhã não aparece.
 Uma temporada só: p ≈ 0,06, nada além disso.

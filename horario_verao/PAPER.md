@@ -12,11 +12,11 @@ Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
   obra anotada acima dela).
 - `paper.tex`: submissão à AEJ: Economic Policy, **anônima** (revisão
   duplo-cega), template oficial da AEA (`AEA.cls`, `aea.bst`) em `reviewmode`,
-  12 pt, espaçamento 1,5, margens de 1 polegada. 38 páginas (31/10/2026).
+  12 pt, espaçamento 1,5, margens de 1 polegada. 40 páginas (01/11/2026).
 - `appendix.tex`: Online Appendix, anônimo, arquivo separado (26 páginas).
 - `title_page.tex`: página de título exigida pela revista (autor, afiliação,
   agradecimentos).
-- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 66 páginas; versão depositada no MPRA, nº 131638).
+- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 67 páginas em 01/11/2026). A versão depositada no MPRA (nº 131638) é a do commit `88e60cc`; o que mudou depois está em `mudancas_pos_MPRA.md`.
 - Compilar: `latex/build.sh` (o artigo e o apêndice citam rótulos um do outro
   pelo pacote `xr`, então cada um compila depois do outro).
 
@@ -28,8 +28,9 @@ Avaliação crítica, como editor:
   É o que essa revista publica. Na Applied pesariam mais duas fraquezas: medir a
   hora pelo pôr do sol local não é novo (Doleac & Sanders; Bünnings & Schiele
   2021, ReStat) e o efeito no dia todo é inconclusivo.
-- *Riscos que o editor vai ver:* (i) efeito pequeno em nível (54 mortes por
-  verão, 0,9% das mortes de transporte no verão dos tratados); (ii) dia todo
+- *Riscos que o editor vai ver:* (i) efeito pequeno em nível (36 mortes por
+  verão na hora 0; 62 no dia, pela dose, supondo zero nas horas cuja luz não
+  mudou); (ii) dia todo
   inconclusivo (EP 66); (iii) 23 clusters e 5 verões pós, dois na pandemia;
   (iv) PRF sensível à tendência; (v) o vizinho mais próximo em periódico top é
   Bünnings & Schiele (2021), que **simula** regimes a partir da variação de
@@ -38,7 +39,7 @@ Avaliação crítica, como editor:
 - *Ordem, se não der:* JPubE ou JHE (como no `PARECER.md`).
 
 **Normas da revista seguidas** (página de submissão e style guide da AEA,
-lidas em 13/10/2026): PDF; resumo ≤ 100 palavras (98); JEL e palavras-chave;
+lidas em 13/10/2026): PDF; resumo ≤ 100 palavras (99); JEL e palavras-chave;
 título e resumo no topo da 1ª página; manuscrito e apêndice anônimos, autor só
 na página de título; ≤ 45 páginas em 12 pt (29); seções em algarismos romanos,
 introdução sem título; equações numeradas à esquerda; tabelas só com linhas
@@ -273,7 +274,10 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
 - Inferência que não depende de 23 clusters: wild cluster restrito (Webb) e
   permutação dos 11 estados tratados.
 
-## Resultados (o que já sabemos)
+## Resultados (retrato de 09/10/2026)
+
+Os números vigentes estão nas Tabelas 2, 4 e 6 do paper e na skill
+`paper-horario-verao`; esta tabela fica como registro da primeira rodada.
 
 | | SIM, mortes na via | PRF, mortes | PRF, com vítima |
 |---|--:|--:|--:|
@@ -291,9 +295,11 @@ Rodada de 09/10/2026, depois da correção do casamento de municípios da PRF
 contagens de excesso só incluem óbitos com hora registrada (15–20% das mortes
 na via não têm hora).
 
-**A frase do paper:** a abolição trouxe ~54 mortes na via a mais por verão
-nas horas que escureceram; a manhã que ganhou luz não compensa. O total do dia
-é estimado com ruído demais para dizer se o saldo aparece nele. É um limite
+**A frase do paper (vigente):** a hora que escureceu teve 36 mortes na via a
+mais por verão, sem hipótese sobre as outras horas; se as horas cuja luz não
+mudou não foram afetadas, a abolição trouxe 62 por janela de verão (dose). A
+manhã que clareou não ficou detectavelmente mais segura. O total do dia, sem a
+hipótese, é estimado com ruído demais (EP 66) para confirmar ou descartar o 62. É um limite
 inferior, porque exclui quem morre no hospital e quem não tem hora do óbito
 registrada.
 
@@ -308,42 +314,38 @@ quanto a noite ganha, o que nas rodovias federais parece realocação de hora
 
 ## Exibições
 
-Todas geradas a partir dos `audit/*.rds`, sem reestimar: figuras por
-`analysis/code/28_figures.R` (`analysis/output/graphs/fig_*.pdf`), tabelas por
-`analysis/code/29_tables.R` (`analysis/output/tables/tab_*.tex`, só o
-`tabular`). Legendas e notas em rascunho, com a equação (1), em
-`latex/exhibits.tex` (compila com `latexmk -pdf`). Nomes dos desfechos, em
-toda figura, tabela e frase: *Road deaths* (SIM, óbito na via),
-*Federal highway deaths* e *Federal highway injury crashes* (PRF). Nunca a
-fonte entre parênteses.
+Todas geradas a partir dos `audit/*.rds`, sem reestimar: figuras e mapas por
+`analysis/code/27_figures.R` (`analysis/output/graphs/`, `analysis/output/maps/`),
+tabelas por `analysis/code/28_tables.R` (`analysis/output/tables/tab_*.tex`, só o
+`tabular`). Legendas e notas ficam em `latex/sections/`. A lista com o script e a
+linha de cada exibição está no `README.md` ("List of tables and programs"). Nomes
+dos desfechos, em toda figura, tabela e frase: *Road deaths* (SIM, óbito na via),
+*Federal highway deaths* e *Federal highway injury crashes* (PRF). Nunca a fonte
+entre parênteses.
 
-Texto principal
-1. **Fig. 1** `fig_design`: pôr e nascer do sol no relógio, São Paulo 2018/19,
-   com e sem horário de verão; a hora que trocou de luz sombreada.
-2. **Fig. 2** `fig_first_stage`: parcela dos acidentes da PRF anotada como
-   anoitecer ou noite, por minuto desde o pôr do sol padrão (03).
-3. **Fig. 3** `fig_hours_from_sunset`: efeito por hora relativa ao pôr e ao
-   nascer do sol (01). O pico na hora 0, e nada longe dela.
-4. **Fig. 4** `fig_event_study`: hora depois × hora antes do pôr do sol, por
-   temporada (02).
-5. **Tabela 1** `tab_descriptives`: eventos por verão, grupo × janela × período.
-6. **Tabela 2** `tab_main`: hora que escureceu e hora que clareou; EP por UF,
-   WCR, permutação, base por verão.
-7. **Tabela 3** `tab_pedestrians`: pedestre × resto, diferença e parcelas (12, 14).
-8. **Tabela 4** `tab_excess`: excesso por verão, noite, manhã e saldo (11).
-9. **Tabela 5** `tab_traffic_volume`: volume do PNCT, acidentes e risco por
-   veículo, hora a hora; p de permutação (15, 16).
-10. **Tabela 6** `tab_robustness`: hora 0 com tendência, sem 2020–21, FE de
-    UF × dia, duas horas, teste conjunto pré; imputação; placebo das horas
-    sem mudança de luz (04, 05, 08, 09, 18).
+Texto principal (4 figuras, 7 tabelas)
+1. **Fig. 1** `fig_map_brazil`: estados tratados e de controle.
+2. **Fig. 2** `fig_light`: a luz na hora que trocou; painel B, parcela dos
+   acidentes da PRF anotada como anoitecer ou noite (03).
+3. **Tabela 1** `tab_descriptives`: eventos por verão, grupo × janela × período (13).
+4. **Tabela 2** `tab_main`: hora que escureceu e hora que clareou; EP por UF,
+   WCR, score bootstrap, permutação (01, 06).
+5. **Fig. 3** `fig_hours_from_sunset`: efeito por hora relativa ao pôr e ao
+   nascer do sol (01).
+6. **Fig. 4** `fig_event_study`: por temporada (02).
+7. **Tabela 3** `tab_robustness`: tendência, imputação, sem pandemia, janela,
+   placebo das horas (04, 05, 08, 09, 18, 20).
+8. **Tabela 4** `tab_dose`: modelo de dose, noite e manhã, com permutação (23).
+9. **Tabela 5** `tab_pedestrians`: pedestre × resto (12, 14).
+10. **Tabela 6** `tab_excess`: excesso por verão; Painel A dose (62), B horas
+    estimadas uma a uma (36 na hora 0), C mortes implicadas pelo tráfego (11, 23, 25).
+11. **Tabela 7** `tab_cost`: escala e valor das mortes (25).
 
-Apêndice
-- `fig_within_day` (09), `fig_honestdid` (07), `fig_assault` (10, nulo),
-  `fig_bahia` (17, checagem de sinal; VIABILIDADE §15).
-- Ainda sem exibição: calendário legal (TABELA_ESTADOS), checagem do relógio
-  da PRF por temporada (03), quebra da e-DAT, repetição dos totais do PNCT.
-- Aposentadas (09/10/2026): `fig00` (primeira olhada, com nascimentos) e
-  `fig01` (blocos fixos 5–8h); os scripts saíram do repositório (estão no git).
+Apêndice online (8 figuras, 10 tabelas): A1 e Figura A1 (medida da hora do
+óbito e registro; 19, 22); B1 a B9 e Figuras B1 a B7 (janela deslocada, deixar
+um de fora, outras amostras, partes da janela, tráfego nas partes, pernas da
+tripla, estado × dia, dentro de cada grupo, HonestDiD, usuários da via, sexo e
+idade, volume do PNCT, iluminação, trocas de relógio, Bahia, agressões).
 
 ## Objeções antecipadas e a resposta (parecer de 12/10/2026, `PARECER.md`)
 
