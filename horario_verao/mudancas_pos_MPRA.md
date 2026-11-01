@@ -49,8 +49,7 @@ a leitura de que o 62 decorre da manhã não ter compensado. A hipótese de que 
 > […] from November 15 to February 14 (standard error 12; permutation
 > $p=0.001$). This is the count most directly supported by the observed summer
 > window. […] the change is too imprecise (standard error 66) to confirm the
-> count or rule it out, so the figure of 62 depends on that assumption. Within
-> the treated states alone, the decline in deaths in the morning hour that
+> count or rule it out. Within the treated states alone, the decline in deaths in the morning hour that
 > turned light offsets less than a third of the rise in the evening hour
 > (Online Appendix Table B4).
 
