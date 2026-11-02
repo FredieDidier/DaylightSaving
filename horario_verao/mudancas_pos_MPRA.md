@@ -60,61 +60,64 @@ antes de usá-la. O p da permutação entra porque só a hora 0 tinha inferênci
 robusta a poucos clusters (23 estados), e o 62 é o número do resumo.
 
 **Antes:**
-> Estimated over the whole day without assuming which hours were affected, the
-> change is too imprecise (standard error 66) to confirm the count or rule it
-> out. The brighter morning did not give these deaths back.
+> This is the count most directly supported by the observed summer window.
+> Extended to the full DST season, the estimate is 74 deaths (standard error
+> 14). These counts include only deaths at the crash scene with a recorded time;
+> scaling them to deaths without a recorded time and to deaths off the road,
+> most of them in hospitals, raises the summer-window count to between 77 and
+> 157. Estimated over the whole day without assuming which hours were affected,
+> the change is too imprecise (standard error 66) to confirm the count or rule
+> it out. The brighter morning did not give these deaths back.
 
 **Depois:**
+> The count includes only deaths at the crash scene with a recorded time.
 > Estimated over the whole day without assuming that hours whose light did not
-> change were unaffected, the change is too imprecise (standard error 66) to
-> confirm the count or rule it out. A decline in deaths in the hours whose light
-> did not change, large enough to cancel the count, could come from trips moving
-> out of those hours, but the traffic counts show no such shift. If the risk per
-> vehicle had stayed the same, the change in traffic would imply an increase of
-> 15 deaths per summer (standard error 32) in those hours. Its 95 percent
-> confidence interval excludes a decline as large as the net count, but not a
-> partial offset of up to about three quarters of it. In the model
-> that weights each hour by its change in light, a given change in darkness has a larger effect on road deaths in the
-> evening than in the morning (permutation $p=0.001$).
+> change were unaffected, the change is too imprecise to confirm the count or
+> rule it out. A decline in deaths in the hours whose light did not change, large
+> enough to cancel the count, could come from trips moving out of those hours,
+> but the traffic counts show no such shift. They cannot exclude a smaller
+> decline (Section~\ref{sec:offset}). In the model that weights each
+> hour by its change in light, a given change in darkness has a larger effect on
+> road deaths in the evening than in the morning (permutation $p=0.001$).
 
 **Por quê:**
-- "without assuming that hours whose light did not change were unaffected" no
-  lugar de "without assuming which hours were affected": a frase antiga era
-  imprecisa, porque o modelo do dia inteiro não deixa de supor quais horas foram
-  afetadas; ele deixa de supor que as outras não foram. A frase nova repete a
-  hipótese com as palavras do resumo, para que ela tenha um nome só no paper. Uma
-  versão intermediária dizia "without that assumption", mas a hipótese fica três
-  frases antes, depois do escalonamento para 77–157, que é outra suposição, e o
-  leitor poderia ligar "that assumption" a ele.
+- O parágrafo tinha nove resultados seguidos (−3, 36, 62, 74, 77–157, EP 66,
+  15 com EP 32, "três quartos", p da permutação), e quem lê pela primeira vez
+  não sabia qual guardar. A introdução fica com a cadeia principal: 36 na hora 0,
+  62 sob a hipótese das horas de dose zero, a ressalva de que o dia inteiro não
+  confirma nem descarta, e o teste noite contra manhã. O 74 da temporada, o
+  77–157 do escalonamento, o EP 66 e o 15 (32) do tráfego com os "três quartos"
+  ficam na IV.H e na Seção V, onde já estavam com a explicação.
+- A ressalva continua: a hipótese tem nome, o dia inteiro aparece como
+  impreciso, e "cannot exclude a smaller decline" guarda o que os "três
+  quartos" diziam, com o número na IV.H. A frase do tráfego é a que já estava
+  aprovada ("A decline in deaths [...] no such shift"). Uma versão intermediária
+  ("no shift of trips [...] that would cancel it, although they cannot exclude a
+  partial offset") saiu na conferência com a skill de escrita: "that would
+  cancel it" podia se ligar a "hours", o "it" voltava duas frases, e "partial
+  offset" não dizia o que cai nem onde.
+- "without assuming that hours whose light did not change were unaffected"
+  continua por extenso, e não "without that assumption": a frase anterior agora
+  é a das mortes com horário registrado, e "that assumption" poderia se ligar a
+  ela.
+- Saiu "This is the count most directly supported by the observed summer
+  window": dizia de novo o que "per summer window, from November 15 to
+  February 14" já diz.
 - Saiu "The brighter morning did not give these deaths back": contradizia a
-  frase anterior. O parágrafo dizia que o dia inteiro é impreciso demais para
-  confirmar ou descartar o 62 e fechava como se o dia inteiro tivesse mostrado
-  que a manhã não compensou.
-- A frase do tráfego responde ao comentário de que o 62 depende de as
-  horas cuja luz não mudou não terem sido afetadas. A estimativa do dia inteiro
-  (EP 66) não descarta que as mortes tenham caído nessas horas o bastante para
-  anular o 62. O canal mais provável para essa queda seria o tráfego: se as
-  pessoas tivessem tirado viagens dessas horas, haveria menos carros nelas e,
-  com o mesmo risco por veículo, menos mortes. O PNCT mede isso. O tráfego
-  nessas horas não caiu (no resto do dia, +2,6 lp, EP 2,0), e as mortes que a
-  mudança de tráfego implica nelas são +15 por janela de verão (EP 32), com
-  intervalo de 95% de −47 a 77, que exclui uma queda de 62. Ou seja, a
-  hipótese do 62 continua sendo hipótese, mas o único canal de compensação que
-  os dados permitem medir não a contradiz. Os limites desse teste (só rodovias
-  federais, só mudança no horário das viagens, não no risco de cada viagem)
-  estão na Seção IV.H. Uma versão intermediária usava duas frases ("The
-  traffic counts show no shift of trips large enough to produce such an
-  offset. If the risk per vehicle had stayed the same, […]"); "such an offset"
-  não tinha antecedente no parágrafo e "shift of trips" não dizia de que horas
-  as viagens sairiam. A frase atual diz qual queda anularia o 62 e por que
-  canal.
-- "but not a partial offset of up to about three quarters of it": um comentário
-  pediu que o texto principal dissesse o que o intervalo não exclui, para
-  antecipar a objeção baseada em \citet{james2023let}. O limite inferior, −46,8,
-  é 75% do 62,5. A frase do tráfego, que encadeava três afirmações com dois-pontos
-  e "and", virou três frases.
-- A última frase (noite contra manhã, permutação p = 0,001) é o teste que de
-  fato compara manhã e noite. O parágrafo fecha com o que está identificado.
+  frase anterior, porque o dia inteiro é impreciso demais para mostrar que a
+  manhã não compensou.
+
+### Parágrafo do custo (introdução)
+
+**Antes:**
+> […] rising to 287 million under the broadest scaling.
+
+**Depois:**
+> […] rising to 287 million when the count is scaled to deaths without a
+> recorded time and off the road.
+
+**Por quê:** "the broadest scaling" se apoiava no 77–157 do parágrafo anterior,
+que saiu da introdução. A frase agora diz qual escalonamento dá o 287.
 
 ### Segunda contribuição
 
