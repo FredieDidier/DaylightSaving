@@ -45,7 +45,7 @@ agora o resumo diz isso. O resumo tem 99 palavras.
 
 **Depois:**
 > In the hour that turned dark, road deaths exceeded the counterfactual by 36 per
-> summer, an estimate that requires no assumption about the other hours of the
+> summer window, an estimate that requires no assumption about the other hours of the
 > day. A count for the whole day needs one. When every hour of the day is
 > weighted by how much its light changed, and hours that remained in full
 > daylight or full darkness are assumed unaffected, abolition added 62 road
@@ -142,12 +142,13 @@ ficou detectavelmente mais segura.
 > that hour alone, before any offset elsewhere in the day.
 
 **Depois:**
-> […] after it, observed deaths exceed the counterfactual by 36 per summer in
-> that hour alone, before any offset elsewhere in the day
+> […] after it, observed deaths exceed the counterfactual by 36 per summer window
+> in that hour alone, before any offset elsewhere in the day
 > (Table~\ref{tab:excess}, Panel B).
 
 **Por quê:** as 36 mortes não tinham tabela; agora estão na linha "Hour after
-sunset" da Tabela 6.
+sunset" da Tabela 6. "Per summer window", como no 62 da mesma tabela, deixa
+claro que as duas contagens têm a mesma unidade (15/11 a 14/02).
 
 ## Seção IV.C — Trends and robustness
 
