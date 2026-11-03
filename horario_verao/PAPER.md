@@ -100,6 +100,8 @@ por resultado incômodo.
 | "If people could re-time their activities freely, each household would re-optimize its day around the sun" | nenhum paper sustenta a frase (era raciocínio, e "each household" generaliza demais); Hamermesh et al. sustentam só a coordenação e o peso maior das pistas artificiais. Pedido do Fredie, 14/10/2026 |
 | "economics says why a clock rule matters at all" | o texto não comenta a disciplina; o parágrafo abre pela coordenação dos horários. Pedido do Fredie, 14/10/2026 |
 | tabelas de volume (PNCT) e do México no corpo | 13 exibições era muito para a revista (mediana 9 nos artigos medidos); os números ficam no texto do corpo, as tabelas no apêndice. Decisão do Fredie, 13/10/2026 |
+| "Part of the gap may reflect who is on the road" (IV.H, depois de Coate & Markowitz) | a fatia de pedestres e motociclistas (35%) como razão de o efeito superar a projeção dos EUA: nenhuma exibição testa. A comparação com Coate & Markowitz fica. Navalha de 02/11/2026, aprovada pelo Fredie |
+| o mesmo número no corpo e no apêndice B.1 (sequência da janela deslocada, tráfego nas partes da janela, Nordeste/Norte, feriados, costeiros) | o corpo dá o número que o argumento usa e remete ao apêndice; o apêndice dá o detalhe que o corpo não dá. Navalha de 02/11/2026 (`mudancas_pos_MPRA.md`) |
 
 **Revisão de escrita (15/10/2026).** O que não voltar a escrever, e por quê:
 - "mostly pedestrians", "Pedestrians bear most of the increase": o pedestre é

@@ -825,6 +825,60 @@ Tipografia, sem mudança de texto:
 
 Páginas: 40 (paper) + 26 (apêndice) + 1 (título) + 67 (working paper).
 
+## Navalha de Occam (02/11/2026)
+
+Corpo e apêndice lidos inteiros com a skill `occam-razor`, a pedido do Fredie
+("aplica de 1-6 e decide se vc vai aplicar a 7. Vamos manter a 8"). Só saiu
+prosa repetida; nenhuma exibição, especificação ou ressalva saiu, e nenhum número
+mudou.
+
+1. **IV.I:** saiu "Late January gives an estimate of about the same size." A
+   mesma seção já diz isso ("the late-January school break shows about as large
+   an effect").
+2. **IV.I, tráfego nas partes da janela:** as duas frases com 7,4, 5,3 e 2,1 (2,4)
+   viraram uma: "Federal highway traffic shows no detectable difference between
+   the two periods, whether counted in hour 0, for trucks and buses alone, or over
+   the whole day (Online Appendix Table B3)." Os números estão no apêndice B.1. A
+   ressalva sobre viagens de férias em outras vias fica.
+3. **IV.I, Pará:** "whose 2019 school year ran from March 2019 to January 2020
+   \citep{para2018calendario}" virou "whose 2019 school year ran into January
+   2020". A data e a fonte estão no apêndice B.1.
+4. **IV.C, arredondamento:** a sequência 15,8 → 40,4 e a lista do que a Tabela A1
+   reúne saíram do corpo (estão no apêndice B.1 e na Figura B1). Ficam o 31,4
+   (9,5) com os horários espalhados, o **16,7 (12,9) sem os horários redondos**
+   (ressalva de resultado frágil, não se corta), o fato de que mover a janela
+   também muda quais picos entram nela, e que, com os horários espalhados ou
+   excluídos, a estimativa sobe a cada passo de −15 a +15 minutos.
+5. **Apêndice B.1:** saíram Nordeste/Norte como controle, feriados e municípios
+   costeiros, que o corpo já dá com os mesmos números (IV.C). Ficam o deixar um
+   de fora, que nomeia os estados e as temporadas (São Paulo, Minas Gerais,
+   2019/20, 2022/23), e La Niña, que só está no apêndice. Para a Tabela B1
+   continuar lida, a frase do Nordeste/Norte no corpo ganhou "(Online Appendix
+   Table B1)".
+6. **IV.H:** saiu "Part of the gap may reflect who is on the road: before
+   abolition, pedestrians and motorcyclists were 35 percent of road deaths…".
+   Era um mecanismo para a diferença em relação a Coate & Markowitz que nenhuma
+   exibição testa. A comparação com Coate & Markowitz fica, porque é o benchmark.
+
+**Considerado e mantido:**
+- **Introdução §34**, a frase "This paper adds the road deaths of the regime
+  itself": fica. Os três parágrafos de literatura (§30, §32, §34) terminam todos
+  dizendo o que o paper acrescenta àquela literatura; o §36 resume. Tirar só uma
+  dessas frases quebraria o paralelo para ganhar nove palavras.
+- **Conclusão**, a oração sobre o Natal e o fim de janeiro: fica, por decisão do
+  Fredie. Ela qualifica a frase sobre o efeito depois que as viagens se ajustaram.
+- **Seção V, as 79 mortes:** respondem à objeção de que a média dos 74 inclui as
+  semanas do Natal, onde não há efeito detectável.
+- **Introdução §28**, a frase "This holds both when…": é a qualificação do
+  intra-dia.
+- Ficam também, porque são ressalvas: a dose zero não quer dizer luz inalterada,
+  "too imprecise to confirm or rule out", "cannot exclude a smaller decline", os
+  limites inferiores do custo (15 mortes, 27 milhões) e os horários de Brasília
+  no controle.
+
+Páginas, medidas no `build.sh` antes e depois dos cortes: paper 40 → 39,
+apêndice 27 → 26, working paper 67 → 66. Nenhuma referência indefinida.
+
 ---
 
 ## O que foi considerado e não entrou
