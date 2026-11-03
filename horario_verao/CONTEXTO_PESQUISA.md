@@ -2,7 +2,8 @@
 
 **Aberto em 08/10/2026.** Fredie Didier e Leonardo Monasterio. Este arquivo é a
 pergunta e o desenho como foram pensados na abertura; o desenho que ficou está em
-`PAPER.md`, o estado em `ROADMAP.md`. Working paper no MPRA desde 30/10/2026; alvo
+`PAPER.md`, o estado em `ROADMAP.md`. Working paper no MPRA (nº 131638) desde 30/10/2026,
+versão de 02/11/2026 desde 03/11/2026; alvo
 AEJ: Economic Policy. Do desenho inicial abaixo, ficaram a diferença tripla e o
 teste por hora (só trânsito); as fronteiras, o liga-desliga do TO, violência e
 nascimentos saíram (PAPER.md, "O que não entra"), e a BA 2011/12 ficou como

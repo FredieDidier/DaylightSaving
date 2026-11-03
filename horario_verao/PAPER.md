@@ -16,7 +16,7 @@ Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
 - `appendix.tex`: Online Appendix, anônimo, arquivo separado (26 páginas).
 - `title_page.tex`: página de título exigida pela revista (autor, afiliação,
   agradecimentos).
-- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 67 páginas em 01/11/2026). A versão depositada no MPRA (nº 131638) é a do commit `88e60cc`; o que mudou depois está em `mudancas_pos_MPRA.md`.
+- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 67 páginas em 01/11/2026). O MPRA (nº 131638) recebeu a versão do commit `88e60cc` em 30/10/2026 e a do `6544124` em 03/11/2026; o que mudou entre as duas está em `mudancas_pos_MPRA.md`.
 - Compilar: `latex/build.sh` (o artigo e o apêndice citam rótulos um do outro
   pelo pacote `xr`, então cada um compila depois do outro).
 

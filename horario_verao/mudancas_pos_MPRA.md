@@ -1,7 +1,9 @@
 # Mudanças no paper e no apêndice desde a versão do MPRA
 
 Versão de referência: a depositada no MPRA (MPRA 131638), commit `88e60cc` de
-30/10/2026. Abaixo está **cada trecho que mudou**, na ordem do paper, com o texto
+30/10/2026. Em 03/11/2026 o PDF do depósito foi trocado pelo do commit `6544124`
+(02/11/2026), que já traz tudo o que está abaixo; mudanças posteriores contam a
+partir de `6544124`. Abaixo está **cada trecho que mudou**, na ordem do paper, com o texto
 da versão do MPRA ("Antes") e o texto atual ("Depois"), em inglês como no paper.
 Trechos novos aparecem com "Antes: —". A lista foi tirada do diff, frase a frase,
 de `abstract.tex`, `body.tex`, `appendix_body.tex`, `title_page.tex`,

@@ -11,8 +11,9 @@ Autores: Fredie Didier e Leonardo Monasterio (coautor desde 16/10/2026; o que el
 sugeriu está em `horario_verao/monasterio.md`). Manuscrito em `latex/`, alvo
 **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e cortes em
 `horario_verao/PAPER.md`, seção "Manuscrito"). Working paper depositado no MPRA
-em 30/10/2026 (nº 131638, aguardando aprovação); o que mudou depois está em
-`horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
+em 30/10/2026 (nº 131638, aguardando aprovação); o PDF foi trocado em
+03/11/2026 pela versão do commit `6544124`. O que mudou entre as duas versões está
+em `horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
 do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
 
 Responda em **português**. **Comentários de código em inglês.** O manuscrito,
