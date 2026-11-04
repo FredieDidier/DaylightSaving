@@ -12,11 +12,11 @@ Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
   obra anotada acima dela).
 - `paper.tex`: submissão à AEJ: Economic Policy, **anônima** (revisão
   duplo-cega), template oficial da AEA (`AEA.cls`, `aea.bst`) em `reviewmode`,
-  12 pt, espaçamento 1,5, margens de 1 polegada. 40 páginas (01/11/2026).
+  12 pt, espaçamento 1,5, margens de 1 polegada. 39 páginas (04/11/2026).
 - `appendix.tex`: Online Appendix, anônimo, arquivo separado (26 páginas).
 - `title_page.tex`: página de título exigida pela revista (autor, afiliação,
   agradecimentos).
-- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 67 páginas em 01/11/2026). O MPRA (nº 131638) recebeu a versão do commit `88e60cc` em 30/10/2026 e a do `6544124` em 03/11/2026; o que mudou entre as duas está em `mudancas_pos_MPRA.md`.
+- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 67 páginas em 04/11/2026). O MPRA (nº 131638) recebeu a versão do commit `88e60cc` em 30/10/2026 e a do `6544124` em 03/11/2026; o que mudou entre as duas está em `mudancas_pos_MPRA.md`.
 - Compilar: `latex/build.sh` (o artigo e o apêndice citam rótulos um do outro
   pelo pacote `xr`, então cada um compila depois do outro).
 
@@ -102,6 +102,18 @@ por resultado incômodo.
 | tabelas de volume (PNCT) e do México no corpo | 13 exibições era muito para a revista (mediana 9 nos artigos medidos); os números ficam no texto do corpo, as tabelas no apêndice. Decisão do Fredie, 13/10/2026 |
 | "Part of the gap may reflect who is on the road" (IV.H, depois de Coate & Markowitz) | a fatia de pedestres e motociclistas (35%) como razão de o efeito superar a projeção dos EUA: nenhuma exibição testa. A comparação com Coate & Markowitz fica. Navalha de 02/11/2026, aprovada pelo Fredie |
 | o mesmo número no corpo e no apêndice B.1 (sequência da janela deslocada, tráfego nas partes da janela, Nordeste/Norte, feriados, costeiros) | o corpo dá o número que o argumento usa e remete ao apêndice; o apêndice dá o detalhe que o corpo não dá. Navalha de 02/11/2026 (`mudancas_pos_MPRA.md`) |
+
+**Revisão do Michael Challis (04/11/2026, `REVISAO_MICHAEL_2026-11-04.md`).** Leitor
+nativo de fora do subcampo; adotada. Convenções que ficam: `Equation (1)` com
+maiúscula; `$p$-value` e `$t$-statistic` como matemática, inclusive nas tabelas;
+título "Introduction" só no working paper (macro `\introsection`; o guia da AER proíbe
+na submissão); seção de dados com `\paragraph`; a introdução não usa "hour 0" (usa "the
+hour that turned dark"). Não voltar: "DST relies on this", "did turn dark", "A count ...
+needs one", "Even Depalo", "Extrapolating the trend costs precision, not effect",
+citação de literatura na frase que dá o resultado, fecho "This paper ..." nos parágrafos
+de literatura (o parágrafo de contribuições diz isso), detalhe do MME e do ONS na I.A (está
+na Seção V), seção citada na conclusão. Comparação com a energia no custo: sempre com a
+capacidade junto do combustível, que é maior.
 
 **Revisão de escrita (15/10/2026).** O que não voltar a escrever, e por quê:
 - "mostly pedestrians", "Pedestrians bear most of the increase": o pedestre é

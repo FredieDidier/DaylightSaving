@@ -7,6 +7,9 @@
 #             pre-hospital care (SAMU) reaches victims sooner in one region;
 #   no_time   among on-road deaths, share without a valid clock time; those
 #             deaths never enter the hourly design.
+#   ped_no_time, ped_time  among on-road deaths without and with a clock time,
+#             share of pedestrians (V01-V09): do the deaths the hourly design
+#             misses change composition with abolition, relative to those it sees?
 # Cells are UF x season x window (summer window / off-season, as in make_days).
 # Test: linear triple difference on the share, cells weighted by deaths,
 #   share ~ treated x window x post | uf^window + uf^sy + window^sy,
@@ -39,16 +42,18 @@ sim[, `:=`(on_road = as.integer(LOCOCOR %in% "4"), no_time = as.integer(is.na(cl
 
 cells <- rbind(
   sim[, .(measure = "on_road", share = mean(on_road), n = .N), by = .(uf, sy, window, treated, post)],
-  sim[on_road == 1L, .(measure = "no_time", share = mean(no_time), n = .N), by = .(uf, sy, window, treated, post)])
+  sim[on_road == 1L, .(measure = "no_time", share = mean(no_time), n = .N), by = .(uf, sy, window, treated, post)],
+  sim[on_road == 1L & no_time == 1L, .(measure = "ped_no_time", share = mean(CAUSABAS < "V10"), n = .N), by = .(uf, sy, window, treated, post)],
+  sim[on_road == 1L & no_time == 0L, .(measure = "ped_time", share = mean(CAUSABAS < "V10"), n = .N), by = .(uf, sy, window, treated, post)])
 cells[, `:=`(win = as.integer(window == "win"))][, twp := treated * win * post]
 
-test <- rbindlist(lapply(c("on_road", "no_time"), function(ms) {
+test <- rbindlist(lapply(c("on_road", "no_time", "ped_no_time", "ped_time"), function(ms) {
   m <- feols(share ~ twp | uf^window + uf^sy + window^sy, data = cells[measure == ms],
              weights = ~n, cluster = ~uf)
   data.table(measure = ms, pp = 100 * coef(m)[["twp"]], se_pp = 100 * se(m)[["twp"]],
              p = pvalue(m)[["twp"]], mean_pct = 100 * cells[measure == ms, weighted.mean(share, n)])
 }))
-series <- cells[, .(share = 100 * sum(share * n) / sum(n), n = sum(n)),
+series <- cells[measure %in% c("on_road", "no_time"), .(share = 100 * sum(share * n) / sum(n), n = sum(n)),
                 by = .(measure, group = fifelse(treated == 1L, "treated", "control"), window, sy)]
 
 # Clock check, as for the traffic counts (15): if certificates carried

@@ -247,6 +247,13 @@ municípios do litoral (`build/12`, Tabela B1): 36,3 (9,4). "Abolished" para
 (ofuscamento já saiu em 13/10) e luz por satélite. O custo foi refeito com ele na
 rodada de 20/10 (PPC, acima).
 
+**Rodada do Michael J. Challis (04/11/2026, `REVISAO_MICHAEL_2026-11-04.md`):** leitor
+nativo, à mão, sobre `6544124`; adotada, sem estimativa nova. Convenções: `Equation (1)`,
+`$p$-value`, `$t$-statistic` (também em `28_tables.R`); título "Introduction" só no
+working paper (`\introsection`); seção de dados com `\paragraph`. Óbitos sem hora,
+conta avulsa: 23,5% nos pedestres contra 17,5%, sem mudança com a abolição (1,9, EP 1,6;
+0,3, EP 0,7), fora do paper. No paper e na Tabela A1: parcela de pedestres entre as sem hora +2,9 (1,2), entre as com hora −0,3 (0,8); isso reduziria, não aumentaria, as estimativas horárias.
+
 **Apêndice:** Bahia 2011/12 como checagem de sinal (`17`, Figura B6; VIABILIDADE §15):
 primeiro estágio claro (PRF anota escuro em 68% contra 93–100%); na noite, os
 acidentes com vítima têm o menor valor de 16 temporadas; a manhã não aparece.

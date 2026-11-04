@@ -883,6 +883,14 @@ apêndice 27 → 26, working paper 67 → 66. Nenhuma referência indefinida.
 
 ---
 
+## Revisão do Michael J. Challis (04/11/2026)
+
+Revisão à mão de um falante nativo sobre a versão `6544124`, adotada. Comentário por
+comentário, com a decisão e cada trecho antes e depois, em
+`REVISAO_MICHAEL_2026-11-04.md`. Nenhuma estimativa mudou. Título "Introduction" só no
+working paper; `Equation`, `$p$-value` e `$t$-statistic` em tudo; subseções de dados
+viraram `\paragraph`; contagem de páginas: paper 39, apêndice 26, working paper 67.
+
 ## O que foi considerado e não entrou
 
 - **Citar Jelnov (2027) como "forthcoming"**: não. O *Journal of Applied

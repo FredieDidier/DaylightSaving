@@ -29,6 +29,13 @@
 \newenvironment{tablenotes}[1][Note]{\par\vspace{5pt}\noindent\begin{minipage}{\linewidth}\footnotesize\setstretch{1}\textit{#1:} }{\end{minipage}\par}
 \newenvironment{figurenotes}[1][Note]{\par\vspace{5pt}\noindent\begin{minipage}{\linewidth}\footnotesize\setstretch{1}\textit{#1:} }{\end{minipage}\par}
 
+% The working paper numbers its introduction and closes run-in headings with a
+% full stop; the AEA class adds its own suffix and the journal prints no
+% introduction heading (preamble_aea.tex).
+\newcommand{\introsection}{\section{Introduction}}
+\let\runinheading\paragraph
+\renewcommand{\paragraph}[1]{\runinheading{#1.}}
+
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.6}
 \renewcommand{\textfraction}{0.07}
@@ -36,7 +43,7 @@
 \graphicspath{{../analysis/output/graphs/}}
 \newcommand{\tabdir}{../analysis/output/tables}
 
-\title{\textbf{Darker Evenings: Road Deaths after Brazil Abolished Daylight Saving Time}}
+\title{\textbf{Darker Evenings: Road Deaths after Brazil Abolished Daylight Saving Time}\thanks{\raggedright We thank Michael Challis for excellent comments and suggestions.}}
 \author{Fredie Didier\thanks{\raggedright Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa (IDP), Bras\'ilia, DF, Brazil. Email: fdidier@terra.com.br.} \and Leonardo Monasterio\thanks{\raggedright Instituto de Pesquisa Econ\^omica Aplicada (Ipea), Rio de Janeiro, RJ, Brazil, and Instituto Brasileiro de Ensino, Desenvolvimento e Pesquisa (IDP), Bras\'ilia, DF, Brazil. Email: leonardo.monasterio@idp.edu.br.}}
 \date{Working paper, \today}
 

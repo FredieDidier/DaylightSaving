@@ -102,11 +102,11 @@ main_panel <- function(s) {
   c(row("Effect of abolition (log points)", f1(100 * x$coef)),
     row("", se1(100 * x$se)),
     row("Change (percent)", f1(x$pct)),
-    row("p-value, clustered by state", fp(x$p)),
-    row("p-value, permutation of treated states", fp(x$perm_p)),
-    row("p-value, score wild bootstrap", fp(x$score_p)),
+    row("$p$-value, clustered by state", fp(x$p)),
+    row("$p$-value, permutation of treated states", fp(x$perm_p)),
+    row("$p$-value, score wild bootstrap", fp(x$score_p)),
     row("Linear model: effect (percent of pre-abolition mean)", f1(x$linear_effect_pct_of_base)),
-    row("Linear model: p-value, wild cluster bootstrap", fp(x$wcr_p)),
+    row("Linear model: $p$-value, wild cluster bootstrap", fp(x$wcr_p)),
     row("Mean events per summer, treated states before abolition", f0(x$n_treated_win_pre / N_PRE)),
     row("Observations (state-days)", f0(x$nobs)))
 }
@@ -126,9 +126,9 @@ ped_panel <- function(g) {
   x <- pm[group == g][match(PAIR, pair)]
   c(row("Effect of abolition (log points)", f1(x$poisson_lp)),
     row("", se1(x$se_lp)),
-    row("p-value, clustered by state", fp(x$cluster_p)),
-    row("p-value, wild cluster bootstrap", fp(x$wcr_p)),
-    row("p-value, permutation of treated states", fp(x$perm_p)),
+    row("$p$-value, clustered by state", fp(x$cluster_p)),
+    row("$p$-value, wild cluster bootstrap", fp(x$wcr_p)),
+    row("$p$-value, permutation of treated states", fp(x$perm_p)),
     row("Mean events per summer, treated states before abolition", f0(x$pre_per_season)))
 }
 dx <- pm[group == "ped - other"][match(PAIR, pair)]
@@ -143,8 +143,8 @@ write_tab("tab_pedestrians", c(
   panel("Panel C. Pedestrians minus other road users", 4),
   row("Difference (log points)", f1(dx$coef_lp)),
   row("", se1(dx$se_lp)),
-  row("p-value, clustered by state", fp(dx$p)),
-  row("p-value, permutation of treated states", fp(dx$perm_p)),
+  row("$p$-value, clustered by state", fp(dx$p)),
+  row("$p$-value, permutation of treated states", fp(dx$perm_p)),
   "\\addlinespace",
   panel("Panel D. Pedestrian share (percent)", 4),
   row("Of events before abolition", f1(100 * pp$pre_per_season / (pp$pre_per_season + po$pre_per_season))),
@@ -168,14 +168,14 @@ write_tab("tab_dose", c(
   open3,
   panel("Panel A. Evening clock hour, from full daylight to night (log points)", 4),
   unlist(lapply(names(DZ), dz_rows, col = "evening_lp", secol = "evening_se")),
-  row("Baseline: p-value, clustered by state", fp(2 * pnorm(-abs(dmain$evening_lp / dmain$evening_se)))),
-  row("Baseline: p-value, permutation of treated states", fp(di$evening_perm_p)),
-  row("Baseline: p-value, score wild bootstrap", fp(di$evening_score_p)),
+  row("Baseline: $p$-value, clustered by state", fp(2 * pnorm(-abs(dmain$evening_lp / dmain$evening_se)))),
+  row("Baseline: $p$-value, permutation of treated states", fp(di$evening_perm_p)),
+  row("Baseline: $p$-value, score wild bootstrap", fp(di$evening_score_p)),
   "\\addlinespace",
   panel("Panel B. Morning clock hour, from full daylight to night (log points)", 4),
   dz_rows("main", "morning_lp", "morning_se"),
-  row("Evening equals morning, p-value, clustered by state", fp(dmain$diff_p)),
-  row("Evening equals morning, p-value, permutation", fp(di$diff_perm_p)),
+  row("Evening equals morning, $p$-value, clustered by state", fp(dmain$diff_p)),
+  row("Evening equals morning, $p$-value, permutation", fp(di$diff_perm_p)),
   close_))
 
 # ── Table: excess events per summer ─────────────────────────────────────────
@@ -202,8 +202,8 @@ write_tab("tab_excess", c(
   open3,
   panel("Panel A. Darkness dose model: every hour, weighted by its change in light", 4),
   row("Net, summer window", f0(dmain$net)), row("", se0(dmain$net_se)),
-  row("\\quad p-value, clustered by state", fp(2 * pnorm(-abs(dmain$net / dmain$net_se)))),
-  row("\\quad p-value, permutation of treated states", fp(di$net_perm_p)),
+  row("\\quad $p$-value, clustered by state", fp(2 * pnorm(-abs(dmain$net / dmain$net_se)))),
+  row("\\quad $p$-value, permutation of treated states", fp(di$net_perm_p)),
   row("\\quad of which evening hours", f0(dmain$evening)),
   row("\\quad of which morning hours", f0(dmain$morning)),
   row("Net, whole DST season (2017 rule)", f0(dmain$season_net)), row("", se0(dmain$season_net_se)),
@@ -297,7 +297,7 @@ write_tab("tab_robustness", c(
   est_rows("First two summers without DST", pt$early_lp, pt$early_se),
   est_rows("Last three summers without DST", pt$late_lp, pt$late_se),
   est_rows("Summer window only (no off-season)", pt$summer_dd_lp, pt$summer_dd_se),
-  row("Seasons before abolition equal, p-value", fp(pt$wald_pre_p)),
+  row("Seasons before abolition equal, $p$-value", fp(pt$wald_pre_p)),
   "\\addlinespace",
   panel("Panel B. Imputation estimator (percent)", 4),
   imp_row("Without a trend", FALSE),
@@ -346,6 +346,12 @@ write_tab("tab_measurement", c(
   row("Share of road deaths without a clock time",
       c(f1(ri$test[measure == "no_time"]$mean_pct), f1(ri$test[measure == "no_time"]$pp), "")),
   row("", c("", se1(ri$test[measure == "no_time"]$se_pp), "")),
+  row("Pedestrians among deaths without a clock time",
+      c(f1(ri$test[measure == "ped_no_time"]$mean_pct), f1(ri$test[measure == "ped_no_time"]$pp), "")),
+  row("", c("", se1(ri$test[measure == "ped_no_time"]$se_pp), "")),
+  row("Pedestrians among deaths with a clock time",
+      c(f1(ri$test[measure == "ped_time"]$mean_pct), f1(ri$test[measure == "ped_time"]$pp), "")),
+  row("", c("", se1(ri$test[measure == "ped_time"]$se_pp), "")),
   "\\midrule", HEAD3, "\\midrule",
   panel("Panel C. Times on the hour or half hour (percent of events)", 4),
   row("On the hour", f1(hs$full_hour_pct)),
@@ -459,7 +465,7 @@ allr <- ru[split == "all"]
 write_tab("tab_road_users", c(
   "\\begin{tabular}{@{}l cccc@{}}", "\\toprule",
   " & Effect & Standard & & Mean deaths per summer, \\\\",
-  " & (log points) & error & p-value & treated states before \\\\",
+  " & (log points) & error & $p$-value & treated states before \\\\",
   "\\midrule",
   row("All road deaths", c(f1(allr$lp), sprintf("(%s)", formatC(allr$se, format = "f", digits = 1)),
                            fp(allr$p), f1(allr$pre_per_season))),
@@ -487,7 +493,7 @@ write_tab("tab_sex_age", c(
   " & \\multicolumn{4}{c}{Road deaths} & \\multicolumn{4}{c}{Federal highway deaths} \\\\",
   "\\cmidrule(lr){2-5}\\cmidrule(l){6-9}",
   paste(" & Effect & Standard & & Deaths per & Effect & Standard & & Deaths per \\\\"),
-  paste(" & (log points) & error & p-value & summer & (log points) & error & p-value & summer \\\\"),
+  paste(" & (log points) & error & $p$-value & summer & (log points) & error & $p$-value & summer \\\\"),
   "\\midrule",
   sa_row("All", "all", "all"),
   "\\addlinespace", panel("Panel A. Sex", 9),
@@ -503,7 +509,7 @@ sl_rows <- function(b, meas = "unlit_pct_2022") {
   x <- sl[bin == b & measure == meas][match(SLO, outcome)]
   c(row("Above the median (darker streets)", f1(x$dark_lp)), row("", se1(x$dark_se)),
     row("Below the median (better-lit streets)", f1(x$lit_lp)), row("", se1(x$lit_se)),
-    row("Difference, p-value", fp(x$diff_p)))
+    row("Difference, $p$-value", fp(x$diff_p)))
 }
 write_tab("tab_street_lighting", c(
   "\\begin{tabular}{@{}l ccc@{}}", "\\toprule",
@@ -562,11 +568,11 @@ tr_rows <- function(d) {
     row("Start of DST in October, three weeks", f1(x$start_lp)), row("", se1(x$start_se)),
     row("Average of the two, (February $-$ October)/2", f1(x$avg_dark_lp)), row("", se1(x$avg_dark_se)),
     row("Abolition minus the average", f1(x$diff_lp)), row("", se1(x$diff_se)),
-    row("\\quad p-value, clustered by state", fp(x$diff_p)),
+    row("\\quad $p$-value, clustered by state", fp(x$diff_p)),
     "\\addlinespace",
     row("Abolition, school weeks of the summer window", f1(x$school_regime_lp)), row("", se1(x$school_regime_se)),
     row("Abolition in school weeks minus the average", f1(x$school_diff_lp)), row("", se1(x$school_diff_se)),
-    row("\\quad p-value, clustered by state", fp(x$school_diff_p)))
+    row("\\quad $p$-value, clustered by state", fp(x$school_diff_p)))
 }
 write_tab("tab_transitions", c(
   open3,
