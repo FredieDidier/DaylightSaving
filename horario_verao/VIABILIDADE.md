@@ -1,8 +1,11 @@
 # Viabilidade — 08/10/2026
 
-> **Rodada vigente: §17 (09/10/2026, depois da auditoria de código).** As
-> tabelas de §§2–14 são das rodadas anteriores. Os números da PRF ali estão
-> 1–4 lp acima dos atuais; os do SIM, até 0,3 lp acima. Nenhuma conclusão mudou.
+> **Registro das rodadas de 08 a 16/10/2026, com a numeração de scripts da época
+> (tabela de renumeração no ROADMAP, decisões de 13 e 21/10/2026).** Os números
+> vigentes estão em `analysis/output/tables/` e em `audit/*.rds`. Dentro deste
+> arquivo, a última rodada completa do desenho principal é a §17; as tabelas de
+> §§2–14 são anteriores (PRF 1–4 lp acima, SIM até 0,3 lp acima). O que aqui trata do
+> México, do custo em reais e do Wald da dose saiu do paper.
 
 Pergunta: o projeto tem futuro? **Resposta provisória: sim, ancorada no SIM.** O alerta de registro
 da hora (item 5) foi descartado; resta um quebra-cabeça de mecanismo.

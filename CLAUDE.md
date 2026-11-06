@@ -5,8 +5,8 @@ no Brasil (Decreto 9.772/2019) e seu efeito sobre as mortes no trânsito. A perg
 `horario_verao/CONTEXTO_PESQUISA.md`; a ordem do trabalho, em
 `horario_verao/ROADMAP.md`.
 
-Responda em **português**. **Comentários de código em inglês.** O manuscrito,
-quando existir, será em inglês.
+Responda em **português**. **Comentários de código em inglês.** O manuscrito é
+em inglês.
 
 ---
 

@@ -454,6 +454,20 @@ Os demais comandos de citação do manuscrito (146 ao todo) são de obras já co
 por ponto em 14/10/2026 (tabela acima); as frases reescritas desde então foram
 relidas contra aquela tabela e nenhuma mudou o que atribui à obra.
 
+## Citadas depois de 16/10/2026 (conferidas ao entrar; a afirmação fica acima de cada entrada do `references.bib`)
+
+- **James, J. (2023).** "Let There Be Light: Daylight Saving Time and Road Traffic
+  Collisions." *Economic Inquiry* 61(3): 523–545. Austrália, 1989–2015: sem efeito das
+  trocas, dos testes estaduais nem da extensão de Sydney sobre as mortes; acidentes
+  realocados ao longo do dia pela luz. É o caso que o parágrafo da compensação testa.
+- **Osborne-Christenson, E. J. (2022).** "Saving Light, Losing Lives." *Health
+  Economics* 31(S2): 40–68. EUA, 1979–1988: suicídios +6,25% depois da troca da
+  primavera, nada na do outono; atribuído ao sono, não à luz.
+- **Jelnov (2027, *JAE* 30, online em 09/10/2026)**: conferido no resumo (OpenAlex).
+- **Calendários escolares (apêndice, semanas com aula):** São Paulo, Resolução SE
+  64/2018; Goiás, Parecer CEE/CP 25/2018; demais redes em
+  `horario_verao/fontes_dados/calendarios_escolares.md`.
+
 ## Fontes consultadas
 
 - https://preprints.scielo.org/index.php/scielo/preprint/view/6458

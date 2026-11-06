@@ -1,6 +1,6 @@
 # Replication package: *Darker Evenings: Road Deaths after Brazil Abolished Daylight Saving Time*
 
-Authors: Fredie Didier and Leonardo Monasterio. Manuscript in `latex/` (submitted to *AEJ: Economic Policy*).
+Authors: Fredie Didier and Leonardo Monasterio. Manuscript in `latex/` (prepared for submission to *AEJ: Economic Policy*).
 
 This README follows the template of the Social Science Data Editors (version 1.1),
 which the AEA Data Editor recommends.
@@ -95,7 +95,7 @@ its output in its header.
   `patchwork` 1.3.0, `ragg` 1.5.0, `sf` 1.1-0, `terra` 1.8-50, `geobr` 2.0.0,
   `geodata` 0.6-6, `rnaturalearth` 1.2.0, `rnaturalearthdata` 1.0.0.9000 (r-universe),
   `censobr` 0.2.0 (GitHub, commit 429440f), `read.dbc` 1.2.0 (GitHub, commit 52e0b15),
-  `RCurl` 1.98-1.16, `curl` 6.1.0, `jsonlite` 2.0.0, `dplyr` 1.2.0, `here` 1.0.1, `readxl` 1.4.3.
+  `RCurl` 1.98-1.16, `curl` 7.0.0, `jsonlite` 2.0.0, `dplyr` 1.2.0, `here` 1.0.1, `readxl` 1.4.3.
 - TeX Live 2024 (`pdflatex`, `bibtex`); the AEA template (`AEA.cls`, `aea.bst`) is in `latex/`.
 - `unzip` on the command line (read by `build/02`, `03`, `06`, `07` and `11`).
 - Tested on macOS 26.6. The parallel steps use `parallel::mclapply`, which forks;
@@ -130,7 +130,7 @@ Approximate storage space needed: 3.3 GB with the raw rain grid, 0.7 GB without 
 
 The code was last run on an Apple M1 Pro laptop (8 cores, 16 GB of memory, macOS 26.6),
 with the default of 5 worker processes. The analysis takes about 2 to 3 hours, most of it
-in the permutation and bootstrap draws of `05`, `06`, `14`, `16`, `23` and `26`; this
+in the permutation and bootstrap draws of `05`, `06`, `14`, `16` and `23`; this
 figure comes from the timestamps of the cached results, not from one uninterrupted run.
 Rebuilding the data adds the downloads of `build/02`, `05`, `06`, `10`, `11` and `12`, which depend on
 the remote servers and resume where they stopped.
@@ -204,7 +204,7 @@ only read their caches and write the files. Figures are in `analysis/output/grap
 
 | Exhibit | Program | Line | Output file | Estimated in |
 |---|---|---|---|---|
-| Figure 1 | `27_figures.R` | 428 | `maps/fig_map_brazil.pdf` | `build/01`, `10` |
+| Figure 1 | `27_figures.R` | 435 | `maps/fig_map_brazil.pdf` | `build/01`, `10` |
 | Figure 2 | `27_figures.R` | 148 | `fig_light.pdf` | `03` |
 | Table 1 | `28_tables.R` | 81 | `tab_descriptives.tex` | `13` |
 | Table 2 | `28_tables.R` | 113 | `tab_main.tex` | `01`, `06` |
@@ -214,23 +214,23 @@ only read their caches and write the files. Figures are in `analysis/output/grap
 | Table 4 | `28_tables.R` | 167 | `tab_dose.tex` | `23` |
 | Table 5 | `28_tables.R` | 137 | `tab_pedestrians.tex` | `12`, `14` |
 | Table 6 | `28_tables.R` | 201 | `tab_excess.tex` | `11`, `23`, `25` |
-| Table 7 | `28_tables.R` | 532 | `tab_cost.tex` | `25` |
-| Figure A1 | `27_figures.R` | 361 | `fig_record_integrity.pdf` | `22` |
+| Table 7 | `28_tables.R` | 538 | `tab_cost.tex` | `25` |
+| Figure A1 | `27_figures.R` | 368 | `fig_record_integrity.pdf` | `22` |
 | Table A1 | `28_tables.R` | 327 | `tab_measurement.tex` | `19`, `22` |
-| Figure B1 | `27_figures.R` | 320 | `fig_window_shift.pdf` | `19` |
-| Figure B2 | `27_figures.R` | 344 | `fig_leave_out.pdf` | `20` |
-| Table B1 | `28_tables.R` | 372 | `tab_sensitivity.tex` | `04`, `20`, `23` |
-| Table B2 | `28_tables.R` | 400 | `tab_window_parts.tex` | `20` |
-| Table B3 | `28_tables.R` | 425 | `tab_traffic_parts.tex` | `15` |
+| Figure B1 | `27_figures.R` | 327 | `fig_window_shift.pdf` | `19` |
+| Figure B2 | `27_figures.R` | 351 | `fig_leave_out.pdf` | `20` |
+| Table B1 | `28_tables.R` | 378 | `tab_sensitivity.tex` | `04`, `20`, `23` |
+| Table B2 | `28_tables.R` | 406 | `tab_window_parts.tex` | `20` |
+| Table B3 | `28_tables.R` | 431 | `tab_traffic_parts.tex` | `15` |
 | Figure B3 | `27_figures.R` | 232 | `fig_window_legs.pdf` | `04` |
 | Figure B4 | `27_figures.R` | 212 | `fig_within_day.pdf` | `02`, `09` |
 | Table B4 | `28_tables.R` | 264 | `tab_within_group.tex` | `09`, `15` |
 | Figure B5 | `27_figures.R` | 261 | `fig_honestdid.pdf` | `07` |
-| Table B5 | `28_tables.R` | 459 | `tab_road_users.tex` | `21` |
-| Table B6 | `28_tables.R` | 485 | `tab_sex_age.tex` | `21` |
+| Table B5 | `28_tables.R` | 465 | `tab_road_users.tex` | `21` |
+| Table B6 | `28_tables.R` | 491 | `tab_sex_age.tex` | `21` |
 | Table B7 | `28_tables.R` | 242 | `tab_traffic_volume.tex` | `15`, `16` |
-| Table B8 | `28_tables.R` | 508 | `tab_street_lighting.tex` | `24` |
-| Table B9 | `28_tables.R` | 571 | `tab_transitions.tex` | `26` |
+| Table B8 | `28_tables.R` | 514 | `tab_street_lighting.tex` | `24` |
+| Table B9 | `28_tables.R` | 577 | `tab_transitions.tex` | `26` |
 | Figure B6 | `27_figures.R` | 298 | `fig_bahia.pdf` | `17` |
 | Figure B7 | `27_figures.R` | 276 | `fig_assault.pdf` | `10` |
 

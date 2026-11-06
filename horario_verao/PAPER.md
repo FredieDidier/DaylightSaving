@@ -1,9 +1,9 @@
 # PAPER.md — o paper, em uma página e meia
 
-Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
-(§7–§10). Quando os dois divergirem, vale o `.rds`.
+Aberto em 09/10/2026; as seções datadas são registro. Os números vigentes estão em
+`analysis/output/tables/` e `audit/*.rds`; quando este arquivo divergir deles, valem eles.
 
-## Manuscrito (primeiro rascunho, 13/10/2026)
+## Manuscrito (primeiro rascunho em 13/10/2026)
 
 **Arquivos (`latex/`)**, um texto só para as duas versões:
 - `sections/abstract.tex`, `sections/body.tex` (introdução a conclusão, com as
@@ -16,7 +16,7 @@ Rascunho de 09/10/2026. Os números vêm de `audit/*.rds` e do `VIABILIDADE.md`
 - `appendix.tex`: Online Appendix, anônimo, arquivo separado (26 páginas).
 - `title_page.tex`: página de título exigida pela revista (autor, afiliação,
   agradecimentos).
-- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 67 páginas em 04/11/2026). O MPRA (nº 131638) recebeu a versão do commit `88e60cc` em 30/10/2026 e a do `6544124` em 03/11/2026; o que mudou entre as duas está em `mudancas_pos_MPRA.md`.
+- `paper_wp.tex`: versão working paper (autor, links, apêndice anexado; 67 páginas em 04/11/2026). O MPRA (nº 131638) recebeu a versão do commit `88e60cc` em 30/10/2026, a do `6544124` em 03/11/2026 e depois a do `4e6b8f1` (04/11/2026); o que mudou está em `mudancas_pos_MPRA.md`.
 - Compilar: `latex/build.sh` (o artigo e o apêndice citam rótulos um do outro
   pelo pacote `xr`, então cada um compila depois do outro).
 
@@ -41,7 +41,7 @@ Avaliação crítica, como editor:
 **Normas da revista seguidas** (página de submissão e style guide da AEA,
 lidas em 13/10/2026): PDF; resumo ≤ 100 palavras (99); JEL e palavras-chave;
 título e resumo no topo da 1ª página; manuscrito e apêndice anônimos, autor só
-na página de título; ≤ 45 páginas em 12 pt (29); seções em algarismos romanos,
+na página de título; ≤ 45 páginas em 12 pt (39, com o texto até a pág. 33); seções em algarismos romanos,
 introdução sem título; equações numeradas à esquerda; tabelas só com linhas
 horizontais, sem asteriscos, EP entre parênteses, zero antes da vírgula
 decimal, ≤ 9 colunas, painéis "Panel A"; notas de fonte depois das notas;
@@ -53,12 +53,12 @@ formulário de submissão; taxa de submissão; pacote de replicação só antes 
 aceite (o repositório já está pronto para isso).
 
 **Exibições, divididas como editor da AEJ: Policy leria** (13/10/2026; revisto
-no mesmo dia). Corpo: **10 exibições** (4 figuras, 6 tabelas). Calibrado em
+no mesmo dia). Corpo hoje: **11 exibições** (4 figuras, 7 tabelas; eram 10 em 13/10). Calibrado em
 quatro artigos publicados na AEJ: Policy 2022–2025 (manuscritos aceitos no
 PubMed Central; o PDF da AEA exige login): 8, 9, 9 e 12 exibições no corpo
 (mediana 9); todos com mapa no início e tabela descritiva no corpo; texto
-corrido de 8,4 a 13 mil palavras (o nosso, ~6,5 mil) e introdução de 1,8 a
-2,1 mil (a nossa, ~1,5 mil); notas com mediana de 90 a 105 palavras.
+corrido de 8,4 a 13 mil palavras (o nosso, ~10,8 mil com as notas, em 06/11/2026) e introdução de 1,8 a
+2,1 mil (a nossa, ~2,5 mil); notas com mediana de 90 a 105 palavras.
 
 | corpo | por quê |
 |---|---|
@@ -99,7 +99,7 @@ por resultado incômodo.
 | "is therefore an empirical question" (2º parágrafo da introdução) | soa escrito por IA. No lugar: o que a evitação e a externalidade fazem, e o que nenhuma das duas diz. Pedido do Fredie, 14/10/2026 |
 | "If people could re-time their activities freely, each household would re-optimize its day around the sun" | nenhum paper sustenta a frase (era raciocínio, e "each household" generaliza demais); Hamermesh et al. sustentam só a coordenação e o peso maior das pistas artificiais. Pedido do Fredie, 14/10/2026 |
 | "economics says why a clock rule matters at all" | o texto não comenta a disciplina; o parágrafo abre pela coordenação dos horários. Pedido do Fredie, 14/10/2026 |
-| tabelas de volume (PNCT) e do México no corpo | 13 exibições era muito para a revista (mediana 9 nos artigos medidos); os números ficam no texto do corpo, as tabelas no apêndice. Decisão do Fredie, 13/10/2026 |
+| tabelas de volume (PNCT) e do México (que depois saiu do paper) no corpo | 13 exibições era muito para a revista (mediana 9 nos artigos medidos); os números ficam no texto do corpo, as tabelas no apêndice. Decisão do Fredie, 13/10/2026 |
 | "Part of the gap may reflect who is on the road" (IV.H, depois de Coate & Markowitz) | a fatia de pedestres e motociclistas (35%) como razão de o efeito superar a projeção dos EUA: nenhuma exibição testa. A comparação com Coate & Markowitz fica. Navalha de 02/11/2026, aprovada pelo Fredie |
 | o mesmo número no corpo e no apêndice B.1 (sequência da janela deslocada, tráfego nas partes da janela, Nordeste/Norte, feriados, costeiros) | o corpo dá o número que o argumento usa e remete ao apêndice; o apêndice dá o detalhe que o corpo não dá. Navalha de 02/11/2026 (`mudancas_pos_MPRA.md`) |
 
@@ -142,9 +142,6 @@ capacidade junto do combustível, que é maior.
     17,1 e 24,5 com uma hora. Frase no apêndice A, como a do PNCT;
   - manhã, Painel B: o texto cita o p = 0,031 do wild bootstrap nas mortes
     das rodovias federais, em vez de calar sobre ele;
-  - México: desde 2016, 15 de 3,6 milhões de acidentes sem dia ou hora (5 e
-    10), nenhum dos 10 sem hora com morte. "Nearly every" fica no corpo; o
-    apêndice dizia "nenhum" e foi corrigido.
 
 **Pendências do manuscrito (para o Fredie):**
 1. ~~Afiliação e agradecimentos~~ feitos (14/10/2026): IDP; e-mail fdidier@terra.com.br. Desde 16/10/2026 Leonardo Monasterio é coautor (Ipea e IDP, a confirmar com ele; leonardo.monasterio@idp.edu.br) e o agradecimento a ele saiu; o que ele sugeriu, e o que foi feito, está em `monasterio.md`. O custo (VSL alternativo, anos de vida pela idade dos mortos) fica para depois de o Fredie conversar com ele. Financiamento, conflitos e IRB **não** vão no rodapé: a AEA pede um PDF separado, "Disclosure Statement", por autor, que diga explicitamente quando não há nada a declarar (sem ele a submissão não é avaliada); a frase de IRB só é exigida para dados coletados de seres humanos (Disclosure Policy e Submission Guidelines da AEJ: Policy, lidas em 14/10/2026).
@@ -155,7 +152,7 @@ capacidade junto do combustível, que é maior.
    economizou ~0,7%); pela NT-ONS 0093/2024 a volta economizaria combustível e
    vidas, então os dois lados apontam para o mesmo lado, sem troca. Mais uma
    frase: as trocas de relógio que a abolição tirou (sono) não entram na conta.
-5. Rodar a skill `manuscript-audit` antes de mandar a alguém.
+5. Skill `manuscript-audit`: rodada em 16/10 e 30/10/2026; rodar de novo antes de submeter (o texto mudou em 02 e 04/11).
 6. **Pacote de replicação** (exigido antes do aceite; Data and Code
    Availability Policy da AEA, lida em 15/10/2026). O `README.md` segue o
    modelo dos Social Science Data Editors desde 15/10/2026, e
@@ -164,9 +161,9 @@ capacidade junto do combustível, que é maior.
      foi apagado depois da limpeza; rebaixar com 02, 05 e 06 e incluir, ou
      justificar no README;
    - **licenças**: escolher a do código e a dos dados derivados (`LICENSE.txt`);
-     conferir os termos de redistribuição de SIM, PRF, PNCT, IBGE e INEGI para
-     marcar a segunda caixa do "Statement about Rights". GADM proíbe
-     redistribuir sem permissão e o BR-DWGD não declara licença: ficam fora;
+     conferir os termos de redistribuição de SIM, PRF, PNCT e IBGE para
+     marcar a segunda caixa do "Statement about Rights". O BR-DWGD não declara
+     licença: fica fora;
    - **uma rodada limpa** do build e da análise, cronometrada, para trocar a
      estimativa de 2 a 3 horas (tirada dos horários dos caches) por um tempo
      medido;
@@ -195,7 +192,7 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
    permanente, sem a noite de sono perdida da troca, só a luz.
 2. **A luz medida na hora certa, antes e depois do fim do regime.** Medir a
    hora em relação ao pôr do sol do lugar não é novo. Doleac & Sanders (2015),
-   Toro (2016, homicídios no Brasil) e Mitre-Becerril (2026) fazem isso, nas
+   e Toro (2016, homicídios no Brasil) fazem isso, nas
    transições e, no caso de Toro, também num DiD dos meses de horário de verão.
    O novo é usar essa hora numa comparação que não depende da troca: a hora do
    relógio [pôr do sol padrão, +60 min), calculada por município e por dia, na
@@ -230,7 +227,7 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
   > process 50600.022817/2019-66) and signed on 30 Dec 2020 (lots 1-4) and
   > 13 Jan 2021 (lot 5; contracts 827-831/2020, Comprasnet Contratos). We drop every station-day from June 2019 to
   > December 2020, and flag as model-based any station-day whose daily total
-  > repeats exactly on the same weekday one to four weeks apart (Appendix X).
+  > repeats exactly on the same weekday one to four weeks apart.
   - Fontes, todas primárias: **Nota Técnica DNIT nº 001/2020/DE** (17/11/2020,
     p. 7; no portal do PNCT, Downloads > VMDa > 2019; trecho em
     `horario_verao/fontes_dados/pnct_nota_tecnica_vmda2019.txt`);
@@ -248,7 +245,8 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
     13/01/2021. As contagens recomeçam em 2021, o que bate com o dado.
   - **A prova que não depende de fonte:** o próprio dado. No posto DF BR-251
     km 17, zero repetições de total diário de jan a mai/2019 e 10–15 por mês a
-    partir de 18/06/2019. Vira uma figura de apêndice (Appendix X).
+    partir de 18/06/2019. A figura de apêndice prevista não foi feita: o paper descarta
+    jun/2019–abr/2021 e diz por quê.
 
 ## Desenho
 
@@ -281,12 +279,12 @@ trânsito nessa hora, e a manhã que ganhou luz compensa?
     > pedestrians, the road users who depend most on being seen. Any chronic
     > sleep effect of abolition would, if anything, run against our estimates:
     > an earlier clock sunset should lengthen sleep.
-  - Números do placebo e o "Table X": `18_placebo_hours.R`, VIABILIDADE §16.
-    Conferir os 11 dias contra o calendário ao redigir.
+  - O "Table X" é o Painel D da Tabela 3 (`18_placebo_hours.R`). Os 11 dias foram
+    conferidos contra o calendário.
 - Poisson PML, `y ~ tratado × janela × pós | UF×janela + UF×temporada + data`,
   painel UF × dia, EP por UF (23 clusters).
-- Inferência que não depende de 23 clusters: wild cluster restrito (Webb) e
-  permutação dos 11 estados tratados.
+- Inferência que não depende de 23 clusters: wild cluster restrito (Webb), score
+  wild bootstrap no Poisson e permutação dos 11 estados tratados (estatística t).
 
 ## Resultados (retrato de 09/10/2026)
 
@@ -396,9 +394,8 @@ fronteira norte. ATUS (INEGI), 2016–2025. O desenho que se sustenta compara,
 nas unidades que perderam o horário de verão, a hora após o pôr do sol com as
 duas anteriores no mesmo dia: mortes no local +55 lp (17), pedestres +154 (66),
 atropelamentos com vítima +23 (8). A tripla com os 6 controles dá o mesmo sinal
-na hora 0 mas é frágil (hora −1 −126, movida pelos controles). Entra como
-seção própria ou apêndice; muda a contribuição de "Brasil" para "duas
-abolições".
+na hora 0 mas é frágil (hora −1 −126, movida pelos controles). Não entra no paper
+nem no apêndice (ROADMAP, decisão de 21/10/2026); código e dados foram apagados.
 
 ## O lado da energia (para a conta de política; fontes em `fontes_dados/`)
 
@@ -407,16 +404,18 @@ abolições".
   10/2017). Ou seja, quando foi abolido, a energia não pagava nada.
 - **ONS, NT DPL 0093/2024** (a mais recente): com a ponta noturna da geração
   distribuída, a volta economizaria R$ 244–356 mi de combustível num verão e
-  ~R$ 1,8 bi/ano de reserva de capacidade.
-- **Vidas (`28`):** R$ 253–637 mi por verão pelo VSL de referência; R$ 43–108 mi
-  pelo custo do Ipea.
+  ~R$ 1,8 bi/ano de reserva de capacidade (96–139 mi e ~0,7 bi em dólares
+  internacionais de 2025, fator 2,55441).
+- **Vidas (`25`, Tabela 7):** 114–287 mi de dólares internacionais de 2025 por janela de
+  verão pelo VSL de referência; 19–49 mi pelo custo do Ipea.
 - Os R$ 159,5 mi de 2016/17 são de imprensa (Agência Brasil; O Globo no
   clipping do MME de 16/12/2017). Não citar como fonte do MME.
 
 ## O que não entra
 
-- Nascimentos (os partos seguem o relógio do hospital) e agressões (sem
-  assinatura de luz, VIABILIDADE §9).
+- Nascimentos (os partos seguem o relógio do hospital) e agressões como desfecho
+  (sem assinatura de luz, VIABILIDADE §9; a Figura B7 só mostra isso).
+- O México (seção acima).
 - A contagem total da PRF (e-DAT).
 - Fronteiras GO/MG × BA/TO: sem poder (ROADMAP, 09/10/2026); ficam como
   extensão, se o parecerista pedir. O liga-desliga do TO (2012/13) também fica
@@ -425,12 +424,10 @@ abolições".
 - A frase "a abolição aumentou as mortes no trânsito" sem "nas horas que
   escureceram".
 
-## Abertos antes de escrever
+## Abertos antes de escrever (todos fechados)
 
 0. ~~Pedestre contra ocupante~~ feito (12): é o pedestre.
-1. **Fluxo de tráfego (PNCT/DNIT, volume horário 2014–19 e 2021–25; VIABILIDADE §12)**: separar exposição de risco por viagem e
-   explicar a queda nas horas −1/−2 da PRF.
+1. ~~Fluxo de tráfego (PNCT/DNIT)~~ feito (15, 16; Tabelas B3 e B7): separa exposição de risco por veículo; explica só parte da queda da hora −1 na PRF, que já começa antes da abolição.
 2. ~~WCR e permutação para o pedestre~~ feito (14): passa nas três fontes.
-3. Bootstrap da imputação para as somas da realocação (hoje por método delta,
-   sem tendência).
+3. ~~Bootstrap da imputação para as somas~~ substituído: a contagem de manchete vem da dose, com permutação (23; 31/10/2026).
 4. ~~Periódico-alvo~~ decidido em 13/10/2026: AEJ: Economic Policy (seção "Manuscrito").

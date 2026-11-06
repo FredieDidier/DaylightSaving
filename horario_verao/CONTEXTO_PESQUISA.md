@@ -3,8 +3,7 @@
 **Aberto em 08/10/2026.** Fredie Didier e Leonardo Monasterio. Este arquivo é a
 pergunta e o desenho como foram pensados na abertura; o desenho que ficou está em
 `PAPER.md`, o estado em `ROADMAP.md`. Working paper no MPRA (nº 131638) desde 30/10/2026,
-versão de 02/11/2026 desde 03/11/2026; alvo
-AEJ: Economic Policy. Do desenho inicial abaixo, ficaram a diferença tripla e o
+hoje com a versão de 04/11/2026 (commit `4e6b8f1`); alvo AEJ: Economic Policy, ainda não submetido. Do desenho inicial abaixo, ficaram a diferença tripla e o
 teste por hora (só trânsito); as fronteiras, o liga-desliga do TO, violência e
 nascimentos saíram (PAPER.md, "O que não entra"), e a BA 2011/12 ficou como
 checagem de sinal no apêndice.
@@ -32,7 +31,7 @@ no relógio: mais luz de manhã, menos luz no fim da tarde.
 - Varredura rápida em 08/10/2026: sobre a abolição de 2019 só achei trabalhos
   de **energia** (Estudos Econômicos/USP 2025; dissertação UFJF 2023). Nada
   sobre mortalidade, trânsito, violência ou nascimentos. A varredura completa
-  ainda falta (ROADMAP, passo 3).
+  foi feita depois (`LITERATURE.md`).
 
 ## Desenho
 
@@ -49,9 +48,12 @@ no relógio: mais luz de manhã, menos luz no fim da tarde.
 
 ## Período
 
-**Jul/2008 a jun/2024**, em temporadas jul–jun: 11 temporadas com horário de verão (2008/09–2018/19) e 5 sem (2019/20–2023/24), porque 2023/24 é a última com SIM definitivo (decisão de 08/10/2026 no ROADMAP; o plano inicial ia até 2024/25). O PNCT e os acidentes da tabela de volume vão até 2024/25. Início = primeira temporada sob a regra fixa do Dec. 6.558/2008. Jan–fev/2025 de SIM e SINASC depende de 2025 estar consolidado (conferir no FTP); SIH e PRF podem ir até 2025/26. A temporada 2019/20 termina antes da COVID; 2020/21 e 2021/22 entram com e sem. Voltar a 2004/05 só como robustez.
+**Jul/2008 a jun/2024**, em temporadas jul–jun: 11 temporadas com horário de verão (2008/09–2018/19) e 5 sem (2019/20–2023/24), porque 2023/24 é a última com SIM definitivo (decisão de 08/10/2026 no ROADMAP; o plano inicial ia até 2024/25). O PNCT e os acidentes da tabela de volume vão até 2024/25. Início = primeira temporada sob a regra fixa do Dec. 6.558/2008. O SIM de 2025 ainda é preliminar; quando sair definitivo, 2024/25 vira a 6ª temporada pós. A janela de 2019/20 termina antes da COVID; o paper mostra a tripla com e sem mar/2020–fev/2022.
 
-## Dados (núcleo: todos públicos, nenhum precisa de LAI)
+## Dados (plano da abertura: todos públicos, nenhum precisa de LAI)
+
+Ficaram o SIM e a PRF, mais o PNCT, a chuva (Xavier) e os Censos, que entraram depois
+(`README.md`). SINASC e SIH saíram com nascimentos e internações.
 
 | fonte | o que dá | grão | acesso |
 |---|---|---|---|
@@ -60,9 +62,7 @@ no relógio: mais luz de manhã, menos luz no fim da tarde.
 | **SIH** | internações por dia (sem hora) | internação | FTP do DATASUS |
 | **PRF** | acidentes em rodovias federais com **hora**, km, coordenada e **fase do dia** (amanhecer, pleno dia, anoitecer, plena noite) | acidente / pessoa | dados abertos da PRF (planilhas anuais) |
 
-O WorldCupHealth já tem SIM e SINASC limpos com hora (2009–2024) no Dropbox
-dele. Servem para a primeira olhada; o build deste projeto deve ser autônomo
-para a replicação.
+O build deste projeto é autônomo: nada é lido de outro projeto (`CLAUDE.md`, regra 7).
 
 **Fora do núcleo:** boletins de ocorrência estaduais (ex.: SSP-SP). Dariam o
 canal "roubo no escuro" de Doleac & Sanders, mas são de um estado só, que estava
@@ -71,11 +71,11 @@ extensão, se algum dia valer a pena.
 
 ## Riscos já conhecidos
 
-- **Só 6–7 temporadas depois de 2019, e a COVID cai em cima de 2020.** Mostrar
-  tudo com e sem 2020–2021.
+- **Só 5 temporadas depois de 2019, e a COVID cai em cima de 2020.** Mostrar
+  com e sem mar/2020–fev/2022.
 - **O tratado é um bloco regional** (S/SE/CO contra N/NE). Choques regionais no
-  verão (chuva, férias, calor) viram ameaça. As fronteiras e o teste por hora
-  existem para isso.
+  verão (chuva, férias, calor) viram ameaça. O teste por hora existe para isso
+  (as fronteiras saíram, por falta de poder).
 - **Fuso horário.** AC e o oeste do AM mudaram de fuso em 2008 e voltaram em
   2013; o oeste do PA mudou em 2008. Hora local ≠ hora solar ≠ UTC. Ver
   `build/manual/fusos_mudancas.csv`.

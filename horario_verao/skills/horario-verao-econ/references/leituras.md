@@ -24,7 +24,7 @@ original.** A versão viva desta lista é o `LITERATURE.md` do projeto DaylightS
 - Lins & Menezes (2020), WP IEPS, suicídio RS ✔ (PDF)
 - Frischtak, Foguel & Canini (2019), nota sobre violência no RJ ✔ (PDF)
 - Parro et al. (2026), Braz. J. Med. Biol. Res., hora do dia e acidentes PRF ✔
-- Energia: Estudos Econômicos/USP (2025) (?); UFJF (2023) (?)
+- Energia: Raad, Oliveira & Cruz (2025), Estudos Econômicos ✔; Souza (2023), dissertação UFJF ✔; Soares et al. (2024) ✔ (`LITERATURE.md`, §1)
 
 ## Outros
 
@@ -44,7 +44,7 @@ original.** A versão viva desta lista é o `LITERATURE.md` do projeto DaylightS
 
 ## Métodos
 
-- Borusyak, Jaravel & Spiess, estimador de imputação (?)
-- Rambachan & Roth, "honest DiD" (?)
-- Roodman, MacKinnon, Nielsen & Webb, wild cluster bootstrap (`fwildclusterboot`) (?)
-- NOAA, General Solar Position Calculations (equações de nascer e pôr do sol) (?)
+- Borusyak, Jaravel & Spiess (2024), ReStud 91(6): 3253–3285, estimador de imputação ✔
+- Rambachan & Roth (2023), ReStud 90(5): 2555–2591, "honest DiD" ✔
+- Roodman, MacKinnon, Nielsen & Webb, wild cluster bootstrap (`fwildclusterboot`) ✔
+- NOAA, General Solar Position Calculations (equações de nascer e pôr do sol) ✔

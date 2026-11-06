@@ -21,7 +21,7 @@
 # Each script gets its own process because several fork a worker pool over a
 # large panel, and one session would keep every earlier script's memory alive.
 # The slow ones (permutation and bootstrap draws) read their draw counts from
-# the environment: DS_PERM (06, 09, 14, 16, 26), DS_BOOT (05) and DS_CORES for
+# the environment: DS_PERM (06, 09, 14, 16, 23), DS_BOOT (05) and DS_CORES for
 # the number of workers. 09 runs its permutation test only when DS_PERM is set.
 #
 # The first failure stops the run and its exit status is propagated.

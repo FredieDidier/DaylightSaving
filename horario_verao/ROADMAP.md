@@ -17,7 +17,22 @@ nos dados é a da skill de projeto.
 | 4 | **Skills.** `horario-verao-econ` (campo) e `paper-horario-verao` (projeto), em `horario_verao/skills/` e instaladas em `~/.claude/skills/` | ✅ 08/10/2026 |
 | 5 | **PAPER.md.** Pergunta, desenho, exibições previstas, o que não entra | ✅ 09/10/2026 — `horario_verao/PAPER.md` (rascunho) |
 
-## Retomar daqui (09/10/2026)
+## Estado (06/11/2026)
+
+- **Manuscrito:** commit `4e6b8f1` (04/11/2026), com a revisão do Michael adotada. Paper
+  com 39 páginas (texto até a 33), apêndice com 26, working paper com 67; 4 figuras e 7
+  tabelas no corpo, 8 e 10 no apêndice. Alvo: AEJ: Economic Policy. **Ainda não submetido.**
+- **Working paper:** MPRA 131638, em revisão; a página pública ainda dá 404 (06/11/2026).
+  O PDF no depósito é o de `4e6b8f1` (versão de 04/11/2026), trocado pelo Fredie.
+
+Próximos:
+1. Guardar aqui o link do IDEAS quando o depósito do MPRA for aprovado.
+2. `manuscript-audit` antes de submeter (a última é de 30/10; o texto mudou em 02 e 04/11).
+3. Pacote de replicação (`PAPER.md`, pendência 6): rodada limpa cronometrada, licenças, bruto.
+4. Formulário da revista: declarações de conflito por autor e uso de IA (`PAPER.md`, normas).
+5. SIM 2025 definitivo: 6ª temporada pós (opcional; não é pré-requisito para submeter).
+
+## Histórico das rodadas (09 a 30/10/2026, com a numeração de scripts da época)
 
 Feito nesta sessão:
 - ✅ Agressões do SIM (`10_assault_trends.R`, VIABILIDADE §9): **tendência, não
@@ -327,9 +342,6 @@ Feito nesta sessão:
   tripla diferença: tratados relativo a controles, depois relativo a antes);
   no working paper o apêndice vem depois das referências, por desenho.
 
-Próximos:
-1. SIM 2025 definitivo: 6ª temporada pós (rodar tudo de novo).
-
 ## Decisões tomadas
 
 | data | decisão | motivo |
@@ -395,11 +407,11 @@ Próximos:
 | 31/10–01/11/2026 | Notas das exibições, fontes auxiliares, tipografia e documentação | Quatro notas corrigidas só no texto (`tab:road-users`, `fig:assault`, `tab:window-parts`, `tab:pedestrians`; §11). Fontes de chuva, iluminação e litoral no corpo e no novo Apêndice A "Other sources" (§12). Tabela 6 ganhou "Hour after sunset" (36) e "Hours whose light changed" (−4); `\frenchspacing` e notas de autor à esquerda. `README.md`, `PAPER.md`, a skill do projeto e `mudancas_pos_MPRA.md` postos em dia com o paper (scripts 27/28, 10 tabelas no apêndice, resumo com a condicional). Detalhe em `mudancas_pos_MPRA.md` §11–14 |
 | 01/11/2026 | Agrupamento dos erros-padrão em toda nota de tabela | Tabelas 6 e 7 diziam só "delta-method": agora "from coefficients with standard errors clustered by state"; Tabela B9 (transições) dizia "clustered" sem dizer por quê, agora "by state". As demais notas já diziam, ou remetiam à Tabela 2. Detalhe em `mudancas_pos_MPRA.md` |
 | 03/11/2026 | PDF do MPRA 131638 trocado pela versão atual | O depósito, ainda em revisão no MPRA, passou a ter o paper do commit `6544124` (02/11/2026) no lugar do de `88e60cc` (30/10/2026); mesmo número e mesmo link. A capa do MPRA mostra a data do formulário do depósito (30/10), não a do PDF. `mudancas_pos_MPRA.md` registra o que mudou entre as duas versões |
-| 04/11/2026 | Revisão do Michael J. Challis adotada | Leitor nativo, à mão, sobre `6544124`: introdução e dados mais claros, sem estimativa nova. `REVISAO_MICHAEL_2026-11-04.md` traz comentário por comentário. Skills de escrita e navalha atualizadas. Fredie tenta trocar o PDF do MPRA por esta versão. |
+| 04/11/2026 | Revisão do Michael J. Challis adotada | Leitor nativo, à mão, sobre `6544124`: introdução e dados mais claros, sem estimativa nova. `REVISAO_MICHAEL_2026-11-04.md` traz comentário por comentário. Skills de escrita e navalha atualizadas. O Fredie trocou o PDF do MPRA por esta versão. |
 
 ## Pendências pequenas
 
 - Achar o texto do Dec. 91.698/1985 (início da temporada 1985/86; hoje vem do
   tzdata). Irrelevante para a janela dos dados, mas fecha a tabela.
 - `renv` ainda não foi iniciado.
-- Próxima versão: rodar `23` com o SIM 2024/25 definitivo, se sair antes da submissão (o `season_range()` pega sozinho). Opcional: divisão capital/RM do município de ocorrência (`CODMUNOCOR`) como tabela de apêndice.
+- Se o SIM 2024/25 definitivo sair antes da submissão: rodar tudo de novo (o `season_range()` pega a temporada sozinho). Opcional: divisão capital/RM do município de ocorrência (`CODMUNOCOR`) como tabela de apêndice.

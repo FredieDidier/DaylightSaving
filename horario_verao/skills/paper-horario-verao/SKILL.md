@@ -1,6 +1,6 @@
 ---
 name: paper-horario-verao
-description: Gerencia o projeto DaylightSaving — o fim do horário de verão no Brasil (Decreto 9.772/2019) e seus efeitos sobre mortes no trânsito, acidentes e violência — do Fredie Didier. Use quando ele perguntar sobre o repositório DaylightSaving, horário de verão, a abolição de 2019, a tabela de estados por temporada, os decretos de horário de verão, a hora que trocou de luz, pôr do sol por município, a PRF (acidentes em rodovias federais, fase_dia, e-DAT), o SIM com hora do óbito e local de ocorrência, a diferença tripla tratado × janela × pós, o estimador de imputação, wild bootstrap ou inferência por permutação (randomization inference) do projeto, status ou próximos passos, quiser rodar ou revisar scripts do build ou da análise, checar um número, ou discutir a estratégia de identificação. Não confundir com o WorldCupHealth (Copa do Mundo e saúde), que também usa o SIM com hora do óbito.
+description: Gerencia o projeto DaylightSaving — o fim do horário de verão no Brasil (Decreto 9.772/2019) e seus efeitos sobre mortes no trânsito e acidentes — do Fredie Didier. Use quando ele perguntar sobre o repositório DaylightSaving, horário de verão, a abolição de 2019, a tabela de estados por temporada, os decretos de horário de verão, a hora que trocou de luz, pôr do sol por município, a PRF (acidentes em rodovias federais, fase_dia, e-DAT), o SIM com hora do óbito e local de ocorrência, a diferença tripla tratado × janela × pós, o estimador de imputação, wild bootstrap ou inferência por permutação (randomization inference) do projeto, status ou próximos passos, quiser rodar ou revisar scripts do build ou da análise, checar um número, ou discutir a estratégia de identificação. Não confundir com o WorldCupHealth (Copa do Mundo e saúde), que também usa o SIM com hora do óbito.
 ---
 
 # Gerenciamento do projeto DaylightSaving — o fim do horário de verão
@@ -11,13 +11,13 @@ Autores: Fredie Didier e Leonardo Monasterio (coautor desde 16/10/2026; o que el
 sugeriu está em `horario_verao/monasterio.md`). Manuscrito em `latex/`, alvo
 **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e cortes em
 `horario_verao/PAPER.md`, seção "Manuscrito"). Working paper depositado no MPRA
-em 30/10/2026 (nº 131638, aguardando aprovação); o PDF foi trocado em
-03/11/2026 pela versão do commit `6544124`. O que mudou entre as duas versões está
+em 30/10/2026 (nº 131638, aguardando aprovação); o PDF no depósito é o
+da versão de 04/11/2026 (commit `4e6b8f1`). O que mudou entre as duas versões está
 em `horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
 do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
 
-Responda em **português**. **Comentários de código em inglês.** O manuscrito,
-quando existir, será em inglês.
+Responda em **português**. **Comentários de código em inglês.** O manuscrito é
+em inglês.
 
 **Commits e pushes são do Fredie.** Não faça commit; deixe as mudanças na
 árvore de trabalho e diga quais arquivos mudaram. Ele sobe pelo GitHub Desktop
@@ -61,6 +61,7 @@ quando existir, será em inglês.
                             title_page.tex, paper_wp.tex; texto em sections/;
                             ./build.sh compila tudo
   analysis/output/maps/     mapa do Brasil (27_figures.R; fronteiras do build/10)
+  dictionary/               build_dictionary.R → data_dictionary.xlsx (PT/EN)
   horario_verao/            CONTEXTO_PESQUISA, ROADMAP, TABELA_ESTADOS,
                             VIABILIDADE, PAPER, fontes_legais/, skills/
 
@@ -110,9 +111,8 @@ quando existir, será em inglês.
 
 ## Onde o resultado está, e como dizer
 
-Os números vigentes estão em `horario_verao/VIABILIDADE.md` (§17 é a rodada vigente,
-depois da auditoria de 09/10/2026; a tabela-resumo está no PAPER.md) e em
-`audit/*.rds`. O que se pode dizer hoje:
+Os números vigentes estão em `analysis/output/tables/` e em `audit/*.rds`
+(`VIABILIDADE.md` é o registro das rodadas até 16/10/2026). O que se pode dizer hoje:
 
 - O **primeiro estágio** é enorme e medido por terceiros: a parcela de
   acidentes que a PRF anota como crepúsculo ou noite na hora 0 subiu 23,6 p.p.
@@ -152,18 +152,16 @@ horas de luz inalterada (`18`, VIABILIDADE §16: nada sobe no meio do dia nem na
 noite fechada).
 
 **Contribuição, dita com cuidado:** medir a hora pelo pôr do sol local **não é
-novo** (Doleac & Sanders; Toro 2016 com homicídios no Brasil; Mitre-Becerril
-2026). O novo é o fim do regime (sem sono, só luz), o trânsito com óbito na via e
+novo** (Doleac & Sanders; Toro 2016 com homicídios no Brasil). O novo é o fim do regime (sem sono, só luz), o trânsito com óbito na via e
 a mesma janela do calendário em 11 temporadas com e 5 sem. Franco et al., Toro e
 Cortes et al. estudam o horário de verão enquanto ele existia; nenhum estuda o fim.
 
-**Rodada do parecer (12/10/2026, VIABILIDADE §19, EXPLICANDO §5.12):**
+**Rodada do parecer (12/10/2026, VIABILIDADE §19; o custo e a dose desta rodada foram
+refeitos depois, abaixo):**
 amontoamento das horas (34,5% em hora cheia; a estimativa resiste a mover a
 janela e trocar a fórmula solar), tirar um de fora (SIM 24–35), quem morre
 (pedestre 77, moto 20, carro 0; fim de semana > dia útil), registro sem
-mudança, dose (hora toda escura ~124 lp), iluminação (Censo 2022: 42,5 contra 10,9, p = 0,10 desde 18/10;
-sem precisão), custo em reais de 2025 (54/67/137 mortes por verão;
-VSL R$ 253/311/637 mi; Ipea R$ 43/53/108 mi). Parecer e ranking de periódicos
+mudança, iluminação (Censo 2022: 42,5 contra 10,9, p = 0,10; sem precisão). Parecer e ranking de periódicos
 em `PARECER.md` (a escolha final foi a AEJ: Policy). O México, discutido nessa
 rodada, saiu do paper em 20/10/2026 (ver abaixo). Energia: MME NT 5/2019 (+0,7% de carga), ONS 2024; os R$
 159,5 mi de 2016/17 (imprensa) não se citam.
@@ -173,11 +171,11 @@ rodada, saiu do paper em 20/10/2026 (ver abaixo). Energia: MME NT 5/2019 (+0,7% 
   crepúsculo civil 1/2) por hora do relógio, com EF hora do relógio × data. Hora da
   noite de dia pleno a noite: mortes na via +47,7 lp (9,7); com efeito livre por hora
   do relógio nos tratados pós (só a diferença de pôr do sol entre tratados identifica)
-  +52,4 (18,3); manhã −6,4 (14,7). Controle contado na hora do relógio da hora 0 dos
-  tratados (`20`): 32,9 (12,1).
+  +52,3 (18,4); manhã −6,4 (14,7). Controle contado na hora do relógio da hora 0 dos
+  tratados (`20`): 33,3 (12,1).
 - **Contagem líquida sem escolher horas** (dose): 62 (12) por janela de verão, 74 (14)
-  por temporada inteira da regra de 2017; escalas 91 e 186; VSL R$ 344 mi por temporada
-  (R$ 867 mi na escala ampla). A soma de três horas (54, EP 20) virou checagem.
+  por temporada inteira da regra de 2017; escalas 91 e 186; VSL 135 mi de dólares
+  internacionais por temporada (340 na escala ampla). A soma de três horas (54, EP 20) virou checagem.
 - **Inferência robusta da dose e da contagem** (31/10/2026, depois do MPRA; `23`,
   `inference`): mortes na via, noite permutação p = 0,002, score < 0,001; noite ≠
   manhã p = 0,001; **62 com permutação p = 0,001** (clusterizado < 0,001). PRF mortes:
@@ -195,23 +193,23 @@ rodada, saiu do paper em 20/10/2026 (ver abaixo). Energia: MME NT 5/2019 (+0,7% 
   troca, 42,3 (13,8) contra 29,2 da abolição; dentro do dia, 79,1 contra 27,7. Num
   modelo empilhado (covariância das amostras sobrepostas), abolição menos trocas:
   −13,1 (12,5), p = 0,29, na comparação entre estados; −51,4 (18,3), p = 0,005,
-  dentro do dia. **Mas as trocas caem em período letivo e a janela é quase toda
-  férias** (18/10/2026): contra a abolição só nas semanas com aula, as trocas não se
+  dentro do dia. **Mas as trocas caem em período letivo** (18/10/2026): contra a abolição
+  só nas semanas com aula, as trocas não se
   distinguem (15,8, EP 18,0; dentro do dia −22,2, EP 20,9). Não escrever que o efeito
   "caiu dois terços" nem que as pessoas "se ajustaram"; o que se diz é que, na mesma
   época do ano letivo, o efeito cinco verões depois é próximo do efeito logo após a
   troca (sem descartar queda moderada).
-- **Aula contra férias** (`20`, Tabela B1; datas em `00_utils.R::school_part()`,
-  fontes em `horario_verao/fontes_dados/calendarios_escolares.md`): aula 15/11–07/12,
-  férias 24/12–15/01, 2020/21 fora. Mortes na via, hora 0: aula 58,1 (12,6), férias
-  −12,3 (16,8). No paper (Tabela B2, `tab:window-parts`): férias de 24/12–01/01 5,8 (28,7) e de
-  02–15/01 −27,9 (19,0) (não são as festas); diferença aula − férias sem litoral 66,6
-  (22,1), sem Pará 73,7 (21,3) (o Pará, controle, tem ano letivo de março a janeiro);
-  placebo pré-2019 −15,9 (26,2). Fora do paper, por falta de células: pedestres por
-  parte (~3 mortes por verão em cada); a diferença vem dos demais usuários. Contagem
-  da temporada com o efeito das semanas com aula nos dias extras: 79 em vez de 74
-  (`light_dose.rds`, `season_net_term`); o paper chama o 79 de cálculo de
-  sensibilidade, porque os dias extras ficam fora da janela estimada.
+- **Partes da janela** (`20`, Tabela B2, `tab:window-parts`; datas em
+  `00_utils.R::school_part()`, fontes em `horario_verao/fontes_dados/calendarios_escolares.md`;
+  2020/21 fora). Mortes na via, hora 0: 15/11–07/12 (aulas) 58,1 (12,6); 24/12–15/01
+  −12,3 (16,8); 08–23/12 12,7 (14,5); 16–31/01, férias em todo tratado menos GO, 49,1
+  (15,6), sem GO 50,4 (16,7); 01–14/02 31,0 (23,4). Aulas menos 24/12–15/01: 70,3 (20,9);
+  sem Pará 73,7; sem litoral 66,6; placebo pré-2019 −15,9 (26,2). **O nulo é só de 24/12 a
+  15/01: não escrever "aula contra férias"** (decisão de 21/10/2026, `PARECER_FINAL.md`).
+  Fora do paper, por falta de células: pedestres por parte (~3 mortes por verão em cada).
+  Contagem da temporada com o efeito por parte da janela: 79 (14) em vez de 74
+  (`light_dose.rds`, `season_net_term`); o paper chama o 79 de cálculo de sensibilidade,
+  porque os dias extras ficam fora da janela estimada.
 - **Pesos municipais** (dose, chuva, relógio dos tratados, iluminação): mortes antes
   de 2019 (`seat_weights()`, 18/10/2026). Janela de verão: 62 mortes (era 63).
 - **Volume** (`15`, `16`): acidentes reestimados nos verões das estações; hora 0 +17,6,
@@ -219,7 +217,7 @@ rodada, saiu do paper em 20/10/2026 (ver abaixo). Energia: MME NT 5/2019 (+0,7% 
 - Score bootstrap no Poisson (`06`): p = 0,010 / 0,023 / 0,001.
 
 **Rodada do Monasterio de 20/10/2026 (PDF anotado + 9 áudios; ROADMAP):**
-- **México saiu do paper** (código 10/11 do build e 26/27 da análise apagados; scripts
+- **México saiu do paper** (pedido de 20/10, feito em 21/10; código 10/11 do build e 26/27 da análise apagados; scripts
   renumerados: build 10 mapa, 11 PRF por pessoa, 12 litoral; análise 26 trocas,
   27 figuras, 28 tabelas). Os dados do México foram apagados do Dropbox (21/10). Não
   reintroduzir sem decisão do Fredie.
@@ -274,8 +272,8 @@ hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
 - A **hora antes do pôr do sol** cai na PRF (e não no SIM). A queda já aparece em
   2018/19, ainda com horário de verão; o ofuscamento está descartado (PAPER.md,
   "Não reintroduzir").
-- Ler o texto completo de Gillmore (2025) e Depalo (2023) antes de citar números
-  além do resumo.
+- Gillmore (2025) e Depalo (2023) entram no paper só pelo que o resumo sustenta; ler o
+  texto completo antes de citar qualquer número deles.
 - Status do projeto de lei de 2025 que proíbe o horário de verão.
 - Controle no relógio de Brasília (15/10/2026, `tab_within_group`): o tráfego da
   noite do controle não se moveu; as mortes na via na hora 0 do controle subiram
