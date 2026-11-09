@@ -71,3 +71,6 @@ latex/*.fdb_latexmk
 *.vrb
 *.xdv
 *.texugo-tmp
+
+# TeXugo: arquivos gerados pelo LaTeX
+.texugo/
