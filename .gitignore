@@ -51,3 +51,23 @@ latex/*.fdb_latexmk
 
 .DS_Store
 *.html
+
+# TeXugo: arquivos gerados pelo LaTeX
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
+*.lof
+*.lot
+*.blg
+*.bcf
+*.run.xml
+*.synctex.gz
+*.synctex(busy)
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.texugo-tmp
