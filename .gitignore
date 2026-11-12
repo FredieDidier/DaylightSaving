@@ -74,3 +74,10 @@ latex/*.fdb_latexmk
 
 # TeXugo: arquivos gerados pelo LaTeX
 .texugo/
+
+# TeXugo: arquivos gerados pelo LaTeX
+*.bbl
+/latex/appendix.pdf
+/latex/paper.pdf
+/latex/paper_wp.pdf
+/latex/title_page.pdf
