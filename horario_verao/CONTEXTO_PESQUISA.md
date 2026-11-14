@@ -2,8 +2,8 @@
 
 **Aberto em 08/10/2026.** Fredie Didier e Leonardo Monasterio. Este arquivo é a
 pergunta e o desenho como foram pensados na abertura; o desenho que ficou está em
-`PAPER.md`, o estado em `ROADMAP.md`. Working paper no MPRA (nº 131638) desde 30/10/2026,
-hoje com a versão de 04/11/2026 (commit `4e6b8f1`); alvo AEJ: Economic Policy, ainda não submetido. Do desenho inicial abaixo, ficaram a diferença tripla e o
+`PAPER.md`, o estado em `ROADMAP.md`. Working paper submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059). O periódico-alvo é AEJ: Economic Policy,
+onde o manuscrito ainda não foi submetido. Do desenho inicial abaixo, ficaram a diferença tripla e o
 teste por hora (só trânsito); as fronteiras, o liga-desliga do TO, violência e
 nascimentos saíram (PAPER.md, "O que não entra"), e a BA 2011/12 ficou como
 checagem de sinal no apêndice.

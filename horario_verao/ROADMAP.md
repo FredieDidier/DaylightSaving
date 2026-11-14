@@ -17,20 +17,18 @@ nos dados é a da skill de projeto.
 | 4 | **Skills.** `horario-verao-econ` (campo) e `paper-horario-verao` (projeto), em `horario_verao/skills/` e instaladas em `~/.claude/skills/` | ✅ 08/10/2026 |
 | 5 | **PAPER.md.** Pergunta, desenho, exibições previstas, o que não entra | ✅ 09/10/2026 — `horario_verao/PAPER.md` (rascunho) |
 
-## Estado (06/11/2026)
+## Estado
 
 - **Manuscrito:** commit `4e6b8f1` (04/11/2026), com a revisão do Michael adotada. Paper
   com 39 páginas (texto até a 33), apêndice com 26, working paper com 67; 4 figuras e 7
   tabelas no corpo, 8 e 10 no apêndice. Alvo: AEJ: Economic Policy. **Ainda não submetido.**
-- **Working paper:** MPRA 131638, em revisão; a página pública ainda dá 404 (06/11/2026).
-  O PDF no depósito é o de `4e6b8f1` (versão de 04/11/2026), trocado pelo Fredie.
+- **Working paper:** submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059).
 
 Próximos:
-1. Guardar aqui o link do IDEAS quando o depósito do MPRA for aprovado.
-2. `manuscript-audit` antes de submeter (a última é de 30/10; o texto mudou em 02 e 04/11).
-3. Pacote de replicação (`PAPER.md`, pendência 6): rodada limpa cronometrada, licenças, bruto.
-4. Formulário da revista: declarações de conflito por autor e uso de IA (`PAPER.md`, normas).
-5. SIM 2025 definitivo: 6ª temporada pós (opcional; não é pré-requisito para submeter).
+1. `manuscript-audit` antes de submeter (a última é de 30/10; o texto mudou em 02 e 04/11).
+2. Pacote de replicação (`PAPER.md`, pendência 6): rodada limpa cronometrada, licenças, bruto.
+3. Formulário da revista: declarações de conflito por autor e uso de IA (`PAPER.md`, normas).
+4. SIM 2025 definitivo: 6ª temporada pós (opcional; não é pré-requisito para submeter).
 
 ## Histórico das rodadas (09 a 30/10/2026, com a numeração de scripts da época)
 

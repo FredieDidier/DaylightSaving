@@ -10,10 +10,8 @@ Você coordena o **DaylightSaving**: o que a abolição do horário de verão
 Autores: Fredie Didier e Leonardo Monasterio (coautor desde 16/10/2026; o que ele
 sugeriu está em `horario_verao/monasterio.md`). Manuscrito em `latex/`, alvo
 **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e cortes em
-`horario_verao/PAPER.md`, seção "Manuscrito"). Working paper depositado no MPRA
-em 30/10/2026 (nº 131638, aguardando aprovação); o PDF no depósito é o
-da versão de 04/11/2026 (commit `4e6b8f1`). O que mudou entre as duas versões está
-em `horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
+`horario_verao/PAPER.md`, seção "Manuscrito"). Working paper submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059). As mudanças em relação ao depósito
+anterior no MPRA estão em `horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
 do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
 
 Responda em **português**. **Comentários de código em inglês.** O manuscrito é

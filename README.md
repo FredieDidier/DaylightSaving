@@ -1,6 +1,6 @@
 # Replication package: *Darker Evenings: Road Deaths after Brazil Abolished Daylight Saving Time*
 
-Authors: Fredie Didier and Leonardo Monasterio. Manuscript in `latex/` (prepared for submission to *AEJ: Economic Policy*).
+Authors: Fredie Didier and Leonardo Monasterio. Working paper submitted to [SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059). Manuscript in `latex/` (prepared for submission to *AEJ: Economic Policy*).
 
 This README follows the template of the Social Science Data Editors (version 1.1),
 which the AEA Data Editor recommends.
