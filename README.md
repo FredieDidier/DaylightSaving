@@ -49,7 +49,7 @@ license of the repository (CC BY 4.0 on openICPSR); third-party data keep their 
 | Federal highway crashes (PRF), 2007–2025 | Polícia Rodoviária Federal (2025) | `build/02`, `03` | open data page of the PRF; file ids in `build/manual/prf_files.csv` | cleaned extract (`prf/output`); raw files re-downloaded by the script |
 | Persons in federal highway crashes (PRF), 2007–2025: role, condition, sex, age | Polícia Rodoviária Federal (2025) | `build/11` | open data page of the PRF; file ids in `build/manual/prf_person_files.csv` | cleaned extract (`prf/output`); raw files re-downloaded by the script |
 | Hourly traffic counts (PNCT), 2014–2019 and 2021–2025 | DNIT (2025) | `build/06`, `07` | public API of `servicos.dnit.gov.br/dadospnct` (routes in the script header) | cleaned extract (`pnct/output`); raw files re-downloaded by the script |
-| Municipal seats and state boundaries | IBGE (2020), via the R package `geobr` | `build/04`, `10` | downloaded by `geobr` | yes (`geo/output`) |
+| Municipal seats and state boundaries | IBGE (2010, 2020a, 2020b), via the R package `geobr` | `build/04`, `10` | downloaded by `geobr` | yes (`geo/output`) |
 | Municipalities that face the sea, 2022 | IBGE (2022) | `build/12` | geoftp.ibge.gov.br, downloaded by the script | yes (`geo/input`, `geo/output`) |
 | Daily rain grid BR-DWGD v3.2.4 | Xavier et al. (2022) | `build/08` | manual download of `pr_20010101_20251231_BR-DWGD_UFES_UTEXAS_v_3.2.4.nc` from <https://sites.google.com/site/alexandrecandidoxavierufes/brazilian-daily-weather-gridded-data>; no license stated | no (2.6 GB raw grid); the derived file `weather/output/pr_seat_day.parquet` is included |
 | Census 2022 (street lighting, table 9839) and Census 2010 (tract surroundings) | IBGE (2011, 2023) | `build/09` | SIDRA API; Census 2010 through the R package `censobr` | yes (`census/input`, `census/output`) |
@@ -245,7 +245,11 @@ DNIT (Departamento Nacional de Infraestrutura de Transportes). 2025. "Plano Naci
 
 IBGE (Instituto Brasileiro de Geografia e Estatística). 2011. "Censo Demográfico 2010: Resultados do universo por setor censitário, entorno dos domicílios." Rio de Janeiro.
 
-IBGE. 2020. "Malha Territorial: Unidades da Federação, 2020." Read with the R package geobr.
+IBGE. 2010. "Sedes Municipais, 2010." Read with the R package geobr.
+
+IBGE. 2020a. "Malha Municipal, 2020." Read with the R package geobr.
+
+IBGE. 2020b. "Malha Territorial: Unidades da Federação, 2020." Read with the R package geobr.
 
 IBGE. 2022. "Municípios Defrontantes com o Mar, 2022." geoftp.ibge.gov.br (accessed October 2026).
 
