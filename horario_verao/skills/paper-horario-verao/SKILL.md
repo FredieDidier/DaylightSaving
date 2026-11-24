@@ -10,7 +10,9 @@ Você coordena o **DaylightSaving**: o que a abolição do horário de verão
 Autores: Fredie Didier e Leonardo Monasterio (coautor desde 16/10/2026; o que ele
 sugeriu está em `horario_verao/monasterio.md`). Manuscrito em `latex/`, alvo
 **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e cortes em
-`horario_verao/PAPER.md`, seção "Manuscrito"). Working paper submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059). As mudanças em relação ao depósito
+`horario_verao/PAPER.md`, seção "Manuscrito"). **Submetido à AEJ: Economic Policy em
+24/11/2026** (commit `7e86307`; aguardando decisão: não submeter a outra revista, e o
+texto enviado só muda numa revisão). Working paper submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059). As mudanças em relação ao depósito
 anterior no MPRA estão em `horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
 do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
 
@@ -280,5 +282,5 @@ hora 0 a até 100 km da divisa); liga-desliga do TO; agressões; nascimentos.
   do controle no verão. Pernas (31/10/2026): hora 0 janela +11,1, fora −9,5; hora −1
   janela −11,1, fora −18,6. Nem confirma nem descarta; o viés possível é
   conservador. Trocas pré-2019 e noites de jogo: sem poder.
-- SIM 2025 definitivo: 6ª temporada pós (2024/25; não é pré-requisito para submeter).
+- SIM 2025 definitivo: 6ª temporada pós (2024/25; opção para uma revisão).
 - Divisão capital/RM no SIM (apêndice, opcional; adiado em 31/10/2026).
