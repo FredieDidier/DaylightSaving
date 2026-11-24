@@ -19,15 +19,15 @@ nos dados é a da skill de projeto.
 
 ## Estado
 
-- **Manuscrito:** commit `4e6b8f1` (04/11/2026), com a revisão do Michael adotada. Paper
-  com 39 páginas (texto até a 33), apêndice com 26, working paper com 67; 4 figuras e 7
-  tabelas no corpo, 8 e 10 no apêndice. Alvo: AEJ: Economic Policy. **Ainda não submetido.**
+- **Manuscrito:** **submetido à AEJ: Economic Policy em 24/11/2026** (commit `7e86307`).
+  Paper com 39 páginas, apêndice com 27, working paper com 66; 4 figuras e 7 tabelas no
+  corpo, 8 e 10 no apêndice.
 - **Working paper:** submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059).
 
 Próximos:
 1. ~~`manuscript-audit` antes de submeter~~ rodada em 24/11/2026 (ver a tabela).
 2. Pacote de replicação (`PAPER.md`, pendência 6): rodada limpa cronometrada, licenças, bruto.
-3. Formulário da revista: conferir as duas Disclosure Statements (`latex/disclosure_*.tex`) e declarar o uso de IA (frase do Fredie). Sem carta; taxa de US$ 200 (não sócio, renda média).
+3. ~~Formulário da revista~~ enviado em 24/11/2026, sem carta; taxa de US$ 200 paga (não sócio, renda média).
 4. SIM 2025 definitivo: 6ª temporada pós (opcional; não é pré-requisito para submeter).
 
 ## Histórico das rodadas (09 a 30/10/2026, com a numeração de scripts da época)
@@ -409,6 +409,7 @@ Feito nesta sessão:
 | 24/11/2026 | Rodada do Monasterio (4 áudios + PDF anotado da versão de 04/11) | Cortes que ele marcou, eletricidade reduzida a uma frase no custo, "effect of darkness", 65% da população no resumo (Censo 2022), Franco et al. com comparação própria, iluminação com parágrafo próprio. Nenhuma estimativa mudou; submissão de 40 para 39 páginas. Item a item, com o que ficou em aberto, em `REVISAO_MONASTERIO_2026-11-24.md`. |
 | 24/11/2026 | `manuscript-audit` antes de submeter, sobre `342b831` | **Corrigido:** referências "B.B6" e "A.A6" → B6 e A6 (`appendix.tex`); Seção IV.B, "moves as much" → "rises as much" (a 2ª hora depois do nascer do sol cai 19,6, EP 20,4, mais que os 16,4 citados); IV.I, "Only the within-day comparison" → "For road deaths, only…" (nas mortes da PRF a diferença entre estados também é significativa, p = 0,013); "Panel B" → "Panel B of Table 6" (IV.H). **Novo:** frase de financiamento na nota da página de título (a Disclosure Policy pede a fonte no artigo; revê a decisão de 14/10) e uma Disclosure Statement por autor, a confirmar por cada um. **Conferido, sem mudança:** números de cada parágrafo contra as tabelas que cita; os que só existem em cache contra os `.rds`; contas derivadas; chaves de citação (todas citadas e no `.bib`); texto escondido por comentário (nenhum); contador de vícios (sem aumento desde 31/10); anonimato do texto e dos metadados; PDF da submissão com 39 + 26 páginas, zero referência indefinida, zero float grande demais. **Não conferido:** conteúdo das citações cujas frases não mudaram (auditado em 30/10); nenhuma estimativa foi refeita. |
 | 24/11/2026 | Fontes de dados sem referência (formulário da AEJ: Policy) | A auditoria conferiu as chaves, não as fontes do README contra a lista. Entraram na lista: sedes municipais 2010 e malha municipal 2020 (IBGE), decretos 7.584/2011, 7.826/2012 e 8.112/2013; a base de pessoas da PRF passou a ser citada também no corpo. A chuva fica citada no apêndice, onde é usada. Nenhum número mudou. |
+| 24/11/2026 | Submissão à AEJ: Economic Policy | Enviado e taxa paga pelo Fredie. Aguardando a decisão da revista; até lá, não submeter a outra. |
 
 ## Pendências pequenas
 
