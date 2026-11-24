@@ -406,6 +406,7 @@ Feito nesta sessão:
 | 01/11/2026 | Agrupamento dos erros-padrão em toda nota de tabela | Tabelas 6 e 7 diziam só "delta-method": agora "from coefficients with standard errors clustered by state"; Tabela B9 (transições) dizia "clustered" sem dizer por quê, agora "by state". As demais notas já diziam, ou remetiam à Tabela 2. Detalhe em `mudancas_pos_MPRA.md` |
 | 03/11/2026 | PDF do MPRA 131638 trocado pela versão atual | O depósito, ainda em revisão no MPRA, passou a ter o paper do commit `6544124` (02/11/2026) no lugar do de `88e60cc` (30/10/2026); mesmo número e mesmo link. A capa do MPRA mostra a data do formulário do depósito (30/10), não a do PDF. `mudancas_pos_MPRA.md` registra o que mudou entre as duas versões |
 | 04/11/2026 | Revisão do Michael J. Challis adotada | Leitor nativo, à mão, sobre `6544124`: introdução e dados mais claros, sem estimativa nova. `REVISAO_MICHAEL_2026-11-04.md` traz comentário por comentário. Skills de escrita e navalha atualizadas. O Fredie trocou o PDF do MPRA por esta versão. |
+| 24/11/2026 | Rodada do Monasterio (4 áudios + PDF anotado da versão de 04/11) | Cortes que ele marcou, eletricidade reduzida a uma frase no custo, "effect of darkness", 65% da população no resumo (Censo 2022), Franco et al. com comparação própria, iluminação com parágrafo próprio. Nenhuma estimativa mudou; submissão de 40 para 39 páginas. Item a item, com o que ficou em aberto, em `REVISAO_MONASTERIO_2026-11-24.md`. |
 
 ## Pendências pequenas
 

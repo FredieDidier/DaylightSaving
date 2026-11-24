@@ -115,6 +115,13 @@ de literatura (o parágrafo de contribuições diz isso), detalhe do MME e do ON
 na Seção V), seção citada na conclusão. Comparação com a energia no custo: sempre com a
 capacidade junto do combustível, que é maior.
 
+**Rodada do Monasterio (24/11/2026, `REVISAO_MONASTERIO_2026-11-24.md`).** Substitui, nas
+convenções acima, a comparação do custo com a energia (agora uma só frase, no fim da Seção de
+custo, com combustível e capacidade) e o detalhe do ONS fora da I.A (há uma frase lá).
+O custo na conclusão é o da janela (114 milhões), como as 62 mortes. Não voltar: explicação do dólar internacional no
+corpo, valoração como terceira contribuição, parágrafo de roteiro, "changed its light",
+"effect of light" para o efeito estimado (é "effect of darkness").
+
 **Revisão de escrita (15/10/2026).** O que não voltar a escrever, e por quê:
 - "mostly pedestrians", "Pedestrians bear most of the increase": o pedestre é
   43% do excesso no SIM, não a maioria. Usar "disproportionately".
