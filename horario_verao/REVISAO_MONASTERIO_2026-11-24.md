@@ -13,7 +13,7 @@ notas adesivas. O texto dessa versão é o mesmo do repositório antes desta rod
 pedido · ◐ feito com ajuste · ✗ não feito, com o motivo · — não pede ação.
 
 Nenhuma estimativa mudou e nenhuma tabela ou figura foi refeita. Submissão: 40 → 39
-páginas (limite 45). Apêndice: 26, igual. Working paper: 67 → 66. Resumo: 99 palavras
+páginas (limite 45). Apêndice: 26, igual. Working paper: 67 → 66. Resumo: 100 palavras
 (limite 100).
 
 ---
@@ -44,7 +44,7 @@ mesma frase, vale o texto da proposta.
 Áudio 4: do jeito que estava, parecia que o horário de verão foi abolido para toda a
 população. A conta certa é **65%**: 131.067.357 de 203.080.756 (Censo 2022, SIDRA 4714)
 = 64,5%. Os 62% saem de dividir por 210 milhões (item 3). Os 131 milhões ficaram
-na introdução. A frase "and the brighter mornings" virou frase própria. Resumo: 99 palavras.
+na introdução. "And the brighter mornings" perdeu o "the". Resumo: 100 palavras, o limite.
 - Antes: for 131 million people.
 - Depois: for 65 percent of the population.
 
