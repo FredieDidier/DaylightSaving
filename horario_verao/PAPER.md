@@ -151,7 +151,7 @@ corpo, valoração como terceira contribuição, parágrafo de roteiro, "changed
     das rodovias federais, em vez de calar sobre ele;
 
 **Pendências do manuscrito (para o Fredie):**
-1. ~~Afiliação e agradecimentos~~ feitos (14/10/2026): IDP; e-mail fdidier@terra.com.br. Desde 16/10/2026 Leonardo Monasterio é coautor (Ipea e IDP, a confirmar com ele; leonardo.monasterio@idp.edu.br) e o agradecimento a ele saiu; o que ele sugeriu, e o que foi feito, está em `monasterio.md`. O custo (VSL alternativo, anos de vida pela idade dos mortos) fica para depois de o Fredie conversar com ele. Financiamento, conflitos e IRB **não** vão no rodapé: a AEA pede um PDF separado, "Disclosure Statement", por autor, que diga explicitamente quando não há nada a declarar (sem ele a submissão não é avaliada); a frase de IRB só é exigida para dados coletados de seres humanos (Disclosure Policy e Submission Guidelines da AEJ: Policy, lidas em 14/10/2026).
+1. ~~Afiliação e agradecimentos~~ feitos (14/10/2026): IDP; e-mail fdidier@terra.com.br. Desde 16/10/2026 Leonardo Monasterio é coautor (Ipea e IDP, a confirmar com ele; leonardo.monasterio@idp.edu.br) e o agradecimento a ele saiu; o que ele sugeriu, e o que foi feito, está em `monasterio.md`. O custo (VSL alternativo, anos de vida pela idade dos mortos) fica para depois de o Fredie conversar com ele. Conflitos e IRB **não** vão no rodapé (o financiamento vai, desde 24/11/2026): a AEA pede um PDF separado, "Disclosure Statement", por autor, que diga explicitamente quando não há nada a declarar (sem ele a submissão não é avaliada); a frase de IRB só é exigida para dados coletados de seres humanos (Disclosure Policy e Submission Guidelines da AEJ: Policy, lidas em 14/10/2026).
 2. ~~Primeira pessoa~~ feita (16/10/2026): com o coautor, o texto passou de "I" para "we" (23 ocorrências, resumo, corpo e apêndice).
 3. ~~`latex/exhibits.tex`~~ apagado (13/10/2026): legendas e notas vivem no manuscrito.
 4. ~~Comparação de energia~~ decidida (15/10/2026, delegada pelo Fredie): fica,
@@ -159,7 +159,7 @@ corpo, valoração como terceira contribuição, parágrafo de roteiro, "changed
    economizou ~0,7%); pela NT-ONS 0093/2024 a volta economizaria combustível e
    vidas, então os dois lados apontam para o mesmo lado, sem troca. Mais uma
    frase: as trocas de relógio que a abolição tirou (sono) não entram na conta.
-5. Skill `manuscript-audit`: rodada em 16/10 e 30/10/2026; rodar de novo antes de submeter (o texto mudou em 02 e 04/11).
+5. Skill `manuscript-audit`: rodada em 16/10, 30/10 e 24/11/2026 (`ROADMAP.md`).
 6. **Pacote de replicação** (exigido antes do aceite; Data and Code
    Availability Policy da AEA, lida em 15/10/2026). O `README.md` segue o
    modelo dos Social Science Data Editors desde 15/10/2026, e

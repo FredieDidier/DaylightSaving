@@ -23,8 +23,10 @@ This appendix documents the data and the measurement of the hour whose light cha
 \appendix
 % The template's appendix \section prints no letter, though the text cites
 % "Appendix A", and does not accept a star, so the references heading printed
-% a stray "*". A standard section in the appendix style fixes both.
+% a stray "*". A standard section in the appendix style fixes both. References to
+% a subsection carry no section prefix, since its number already has the letter.
 \makeatletter
+\renewcommand\p@subsection{}
 \renewcommand\section{\@startsection{section}{1}{\z@}{\abovesectionskip}%
   {\belowsectionskip}{\appendixsectionstyle}}
 \makeatother

@@ -25,9 +25,9 @@ nos dados é a da skill de projeto.
 - **Working paper:** submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059).
 
 Próximos:
-1. `manuscript-audit` antes de submeter (a última é de 30/10; o texto mudou em 02 e 04/11).
+1. ~~`manuscript-audit` antes de submeter~~ rodada em 24/11/2026 (ver a tabela).
 2. Pacote de replicação (`PAPER.md`, pendência 6): rodada limpa cronometrada, licenças, bruto.
-3. Formulário da revista: declarações de conflito por autor e uso de IA (`PAPER.md`, normas).
+3. Formulário da revista: conferir as duas Disclosure Statements (`latex/disclosure_*.tex`) e declarar o uso de IA (frase do Fredie). Sem carta; taxa de US$ 200 (não sócio, renda média).
 4. SIM 2025 definitivo: 6ª temporada pós (opcional; não é pré-requisito para submeter).
 
 ## Histórico das rodadas (09 a 30/10/2026, com a numeração de scripts da época)
@@ -407,6 +407,7 @@ Feito nesta sessão:
 | 03/11/2026 | PDF do MPRA 131638 trocado pela versão atual | O depósito, ainda em revisão no MPRA, passou a ter o paper do commit `6544124` (02/11/2026) no lugar do de `88e60cc` (30/10/2026); mesmo número e mesmo link. A capa do MPRA mostra a data do formulário do depósito (30/10), não a do PDF. `mudancas_pos_MPRA.md` registra o que mudou entre as duas versões |
 | 04/11/2026 | Revisão do Michael J. Challis adotada | Leitor nativo, à mão, sobre `6544124`: introdução e dados mais claros, sem estimativa nova. `REVISAO_MICHAEL_2026-11-04.md` traz comentário por comentário. Skills de escrita e navalha atualizadas. O Fredie trocou o PDF do MPRA por esta versão. |
 | 24/11/2026 | Rodada do Monasterio (4 áudios + PDF anotado da versão de 04/11) | Cortes que ele marcou, eletricidade reduzida a uma frase no custo, "effect of darkness", 65% da população no resumo (Censo 2022), Franco et al. com comparação própria, iluminação com parágrafo próprio. Nenhuma estimativa mudou; submissão de 40 para 39 páginas. Item a item, com o que ficou em aberto, em `REVISAO_MONASTERIO_2026-11-24.md`. |
+| 24/11/2026 | `manuscript-audit` antes de submeter, sobre `342b831` | **Corrigido:** referências "B.B6" e "A.A6" → B6 e A6 (`appendix.tex`); Seção IV.B, "moves as much" → "rises as much" (a 2ª hora depois do nascer do sol cai 19,6, EP 20,4, mais que os 16,4 citados); IV.I, "Only the within-day comparison" → "For road deaths, only…" (nas mortes da PRF a diferença entre estados também é significativa, p = 0,013); "Panel B" → "Panel B of Table 6" (IV.H). **Novo:** frase de financiamento na nota da página de título (a Disclosure Policy pede a fonte no artigo; revê a decisão de 14/10) e uma Disclosure Statement por autor, a confirmar por cada um. **Conferido, sem mudança:** números de cada parágrafo contra as tabelas que cita; os que só existem em cache contra os `.rds`; contas derivadas; chaves de citação (todas citadas e no `.bib`); texto escondido por comentário (nenhum); contador de vícios (sem aumento desde 31/10); anonimato do texto e dos metadados; PDF da submissão com 39 + 26 páginas, zero referência indefinida, zero float grande demais. **Não conferido:** conteúdo das citações cujas frases não mudaram (auditado em 30/10); nenhuma estimativa foi refeita. |
 
 ## Pendências pequenas
 
