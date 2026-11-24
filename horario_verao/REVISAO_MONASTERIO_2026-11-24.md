@@ -29,10 +29,10 @@ páginas (limite 45). Apêndice: 26, igual. Working paper: 67 → 66. Resumo: 10
 | 28 | Eletricidade | Uma frase no fim da Seção 6 |
 | 29 | Iluminação | Parágrafo na 5.6 e frase na introdução; a Tabela B8 fica no apêndice |
 | — | "contributes to" → "relates to three literatures" | Feito: a terceira contribuição saiu (item 13) |
-| — | Cortes na introdução, na 5.9 e na conclusão | Feitos: `PROPOSTA_CORTES_2026-11-24.md` |
+| — | Cortes na introdução, na 5.9 e na conclusão | Feitos (antes e depois no commit `b2ba27f`) |
 
 Nos itens abaixo, "Depois" é o texto após as marcas dele; onde esses cortes mexeram na
-mesma frase, vale o texto da proposta.
+mesma frase, vale o texto do paper.
 
 ---
 
