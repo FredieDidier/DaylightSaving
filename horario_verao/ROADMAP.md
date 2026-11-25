@@ -19,7 +19,7 @@ nos dados é a da skill de projeto.
 
 ## Estado
 
-- **Manuscrito:** **submetido à AEJ: Economic Policy em 24/11/2026** (commit `7e86307`).
+- **Manuscrito:** **submetido à AEJ: Economic Policy em 24/11/2026** (manuscrito AEJPol-2026-1056, commit `7e86307`).
   Paper com 39 páginas, apêndice com 27, working paper com 66; 4 figuras e 7 tabelas no
   corpo, 8 e 10 no apêndice.
 - **Working paper:** submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059).

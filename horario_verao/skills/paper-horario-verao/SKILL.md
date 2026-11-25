@@ -11,7 +11,7 @@ Autores: Fredie Didier e Leonardo Monasterio (coautor desde 16/10/2026; o que el
 sugeriu está em `horario_verao/monasterio.md`). Manuscrito em `latex/`, alvo
 **AEJ: Economic Policy** (escolha, normas, divisão corpo/apêndice e cortes em
 `horario_verao/PAPER.md`, seção "Manuscrito"). **Submetido à AEJ: Economic Policy em
-24/11/2026** (commit `7e86307`; aguardando decisão: não submeter a outra revista, e o
+24/11/2026** (manuscrito AEJPol-2026-1056, commit `7e86307`; aguardando decisão: não submeter a outra revista, e o
 texto enviado só muda numa revisão). Working paper submetido ao [SSRN 7701059](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7701059). As mudanças em relação ao depósito
 anterior no MPRA estão em `horario_verao/mudancas_pos_MPRA.md`. Para o conhecimento
 do campo (literatura, desenhos, armadilhas), acione **`horario-verao-econ`**.
