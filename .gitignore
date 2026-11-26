@@ -81,3 +81,6 @@ latex/*.fdb_latexmk
 /latex/paper.pdf
 /latex/paper_wp.pdf
 /latex/title_page.pdf
+
+# Project management notes stay local
+horario_verao/**/*.md
